@@ -33,17 +33,22 @@ if escolha == 'Reservar':
 
     valor_loja = st.number_input('Receber na Loja :', format='%d', step=10)
 
-    if st.button('Reservar'):
-        data_mergulho = f'{data}'
-        cliente(cpf, nome, telefone, peso, altura)
-        id_vend = id_vendedor(comissario)
-        time.sleep(1)
-        id_cli = id_cliente(nome)
-        st.write(id_vend)
-        st.write(id_cli)
-        st.write(data_mergulho)
-        st.write(pago_loja)
-        st.write(pago_vendedor)
+    col1, col2 = st.columns(2)
 
-        vendas(data, id_cliente, id_vendedor, pago_loja, pago_vendedor)
-        st.success('Reserva realizada com sucesso!')
+    with col1:
+        if st.button('Cadastrar Cliente'):
+            data_mergulho = f'{data}'
+            cliente(cpf, nome, telefone, peso, altura)
+            id_vend = id_vendedor(comissario)
+            id_cli = id_cliente(nome)
+            st.write(id_vend)
+            st.write(id_cli)
+            st.write(data_mergulho)
+            st.write(pago_loja)
+            st.write(pago_vendedor)
+            st.success('Cliente Cadastrado com sucesso')
+
+        with col2:
+            if st.button('Reservar','secondary'):
+                vendas(data, id_cliente, id_vendedor, pago_loja, pago_vendedor)
+                st.success('Reserva realizada com sucesso!')
