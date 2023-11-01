@@ -11,7 +11,7 @@ mydb = mysql.connector.connect(
     ssl_verify_identity=False,
     ssl_ca=r"C:\users\acqua\downloads\cacert-2023-08-22.pem")
 
-cursor = mydb.cursor()
+cursor = mydb.cursor(buffered= True)
 chars = "'),([]"
 
 
