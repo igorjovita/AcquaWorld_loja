@@ -13,6 +13,7 @@ if escolha == 'Reservar':
 
     data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
     nome = st.text_input('Nome do Cliente :').replace(' ', '_')
+    cpf = st.text_input('Cpf do cliente', help='Apenas numeros')
     telefone = st.text_input('Telefone do Cliente :')
     comissario = st.selectbox('Vendedor :', lista, placeholder=' ')
     tipo = st.selectbox('Modalidade : ', ('', 'BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'), placeholder='Vendedor')

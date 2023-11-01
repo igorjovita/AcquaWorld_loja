@@ -31,3 +31,7 @@ def lista_vendedores():
     cursor.execute("SELECT apelido FROM vendedores")
     dados = cursor.fetchall()
     return dados
+
+
+def vendas(data, id_cliente, id_vendedor, pago_loja, pago_vendedor):
+    cursor.execute("INSERT INTO vendas (data, id_cliente, id_vendedor, pago_loja, pago_vendedor) VALUES (%s, %s, %s, %s, %s)", (data, id_cliente, id_vendedor, pago_loja, pago_vendedor))
