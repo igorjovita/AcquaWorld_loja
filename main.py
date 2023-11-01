@@ -41,9 +41,9 @@ if escolha == 'Reservar':
         id_cli = id_cliente(nome)
         st.write(id_vend)
         st.write(id_cli)
-        st.write(data)
+        st.write(data_mergulho)
         st.write(pago_loja)
         st.write(pago_vendedor)
 
-        vendas(data, id_cliente, id_vendedor, pago_loja, pago_vendedor)
+        vendas(data_mergulho, id_cliente, id_vendedor, pago_loja, pago_vendedor)
         st.success('Reserva realizada com sucesso!')
