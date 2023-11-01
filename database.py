@@ -38,12 +38,12 @@ def vendas(data, id_cliente, id_vendedor, pago_loja, pago_vendedor):
 
 
 def id_vendedor(vendedor):
-    cursor.execute(f"SELECT id FROM vendedores WHERE nome = {vendedor}")
+    cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{vendedor}'")
     id_ven = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
     return id_ven
 
 
 def id_cliente(nome):
-    cursor.execute(f"SELECT id FROM cliente WHERE nome = {nome}")
+    cursor.execute(f"SELECT id FROM cliente WHERE nome = '{nome}'")
     id_ven = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
     return id_cli
