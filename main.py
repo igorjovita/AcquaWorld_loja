@@ -12,7 +12,7 @@ if escolha == 'Reservar':
     lista = str(lista_vendedores()).translate(str.maketrans('', '', chars)).split()
     st.subheader('Reservar Clientes')
 
-    data = str(st.date_input('Data da Reserva', format='DD/MM/YYYY'))
+    data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
     nome = st.text_input('Nome do Cliente :').replace(' ', '_')
     cpf = st.text_input('Cpf do cliente', help='Apenas numeros')
     telefone = st.text_input('Telefone do Cliente :')
@@ -34,6 +34,7 @@ if escolha == 'Reservar':
     valor_loja = st.number_input('Receber na Loja :', format='%d', step=10)
 
     if st.button('Reservar'):
+        data_mergulho = f'{data}'
         cliente(cpf, nome, telefone, peso, altura)
         id_vend = id_vendedor(comissario)
         time.sleep(1)
