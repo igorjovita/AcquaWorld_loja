@@ -12,7 +12,7 @@ if escolha == 'Reservar':
     lista = str(lista_vendedores()).translate(str.maketrans('', '', chars)).split()
     st.subheader('Reservar Clientes')
 
-    data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
+    data = str(st.date_input('Data da Reserva', format='DD/MM/YYYY'))
     nome = st.text_input('Nome do Cliente :').replace(' ', '_')
     cpf = st.text_input('Cpf do cliente', help='Apenas numeros')
     telefone = st.text_input('Telefone do Cliente :')
