@@ -25,9 +25,9 @@ if escolha == 'Reservar':
     st.subheader('Reservar Clientes')
 
     data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
-    nome = st.text_input('Nome do Cliente :').replace(' ', '_')
+    nome_cliente = st.text_input('Nome do Cliente :').replace(' ', '_')
     cpf = st.text_input('Cpf do cliente', help='Apenas numeros')
-    telefone = st.text_input('Telefone do Cliente :')
+    telefone_cliente = st.text_input('Telefone do Cliente :')
     comissario = st.selectbox('Vendedor :', lista, placeholder=' ')
     tipo = st.selectbox('Modalidade : ', ('', 'BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'), placeholder='Vendedor')
     altura = st.slider('Altura do Cliente', 1.50, 2.10)
@@ -46,6 +46,10 @@ if escolha == 'Reservar':
     valor_loja = st.number_input('Receber na Loja :', format='%d', step=10)
 
     if st.button('Reservar'):
+
+        cursor.execute("INSERT INTO cliente (cpf, nome, telefone, peso, altura) VALUES (%s, %s, %s, %s, %s)",
+                       (cpf, nome_cliente, telefone_cliente, peso, altura))
+
         cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
         id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
 
