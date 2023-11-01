@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from streamlit_option_menu import option_menu
 from database import lista_vendedores, cliente, vendas, id_vendedor, id_cliente
+import time
 
 escolha = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visualizar', 'Editar', 'Pagamento'], icons=['book', 'card-checklist', 'pencil-square', 'currency-dollar'],
                           orientation='horizontal')
@@ -35,6 +36,7 @@ if escolha == 'Reservar':
     if st.button('Reservar'):
         cliente(cpf, nome, telefone, peso, altura)
         id_vendedor(comissario)
+        time.sleep(0.5)
         id_cliente(nome)
         vendas(data, id_cliente, id_vendedor, pago_loja, pago_vendedor)
         st.success('Reserva realizada com sucesso!')
