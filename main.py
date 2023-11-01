@@ -35,8 +35,11 @@ if escolha == 'Reservar':
 
     if st.button('Reservar'):
         cliente(cpf, nome, telefone, peso, altura)
-        id_vendedor(comissario)
+        id_vend = id_vendedor(comissario)
         time.sleep(1)
-        id_cliente(nome)
-        vendas(data, id_cliente, id_vendedor, pago_loja, pago_vendedor)
+        id_cli = id_cliente(nome)
+        st.write(id_vend)
+        st.write(id_cli)
+
+        #vendas(data, id_cliente, id_vendedor, pago_loja, pago_vendedor)
         st.success('Reserva realizada com sucesso!')
