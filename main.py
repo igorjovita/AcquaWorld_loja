@@ -62,10 +62,10 @@ if escolha == 'Reservar':
 
         with col2:
             if st.button('Reservar', ):
-                cursor.execute(f"SELECT id FROM vendedores WHERE nome = {comissario}")
+                cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
                 id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
 
-                cursor.execute(f"SELECT id FROM cliente WHERE nome = {nome}")
+                cursor.execute(f"SELECT id FROM cliente WHERE nome = '{nome}'")
                 id_cliente = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
 
                 cursor.execute("INSERT INTO vendas (data, id_cliente, id_vendedor,pago_loja, pago_vendedor) values (%s, %s, %s, %s, %s)", (data, id_cliente, id_vendedor, pago_loja, pago_vendedor))
