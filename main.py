@@ -45,28 +45,16 @@ if escolha == 'Reservar':
 
     valor_loja = st.number_input('Receber na Loja :', format='%d', step=10)
 
-    col1, col2 = st.columns(2)
+    if st.button('Reservar'):
+        cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
+        id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
 
-    with col1:
-        if st.button('Cadastrar Cliente'):
-            data_mergulho = f'{data}'
-            cliente(cpf, nome, telefone, peso, altura)
-            id_vend = id_vendedor(comissario)
-            id_cli = id_cliente(nome)
-            st.write(id_vend)
-            st.write(id_cli)
-            st.write(data_mergulho)
-            st.write(pago_loja)
-            st.write(pago_vendedor)
-            st.success('Cliente Cadastrado com sucesso')
+        cursor.execute(f"SELECT id FROM cliente WHERE nome = '{nome}'")
+        id_cliente = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
 
-        with col2:
-            if st.button('Reservar', ):
-                cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
-                id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
+        cursor.execute(
+            "INSERT INTO vendas (data, id_cliente, id_vendedor,pago_loja, pago_vendedor) values (%s, %s, %s, %s, %s)",
+            (data, id_cliente, id_vendedor, pago_loja, pago_vendedor))
+        st.success('Reserva realizada com sucesso!')
 
-                cursor.execute(f"SELECT id FROM cliente WHERE nome = '{nome}'")
-                id_cliente = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
 
-                cursor.execute("INSERT INTO vendas (data, id_cliente, id_vendedor,pago_loja, pago_vendedor) values (%s, %s, %s, %s, %s)", (data, id_cliente, id_vendedor, pago_loja, pago_vendedor))
-                st.success('Reserva realizada com sucesso!')
