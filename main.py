@@ -62,5 +62,5 @@ if escolha == 'Reservar':
 
         with col2:
             if st.button('Reservar', type= 'secondary'):
-                cursor.execute("INSERT INTO vendas (data, id_cliente, id_vendedor, pago_loja) values (%s, %s, %s, %s)", (data, id_cliente, id_vendedor, pago_loja))
+                cursor.execute("INSERT INTO vendas (data, id_cliente, id_vendedor) values (%s, %s, %s)", (data, id_cliente, id_vendedor))
                 st.success('Reserva realizada com sucesso!')
