@@ -44,5 +44,5 @@ if escolha == 'Reservar':
         st.write(pago_loja)
         st.write(pago_vendedor)
 
-        #vendas(data, id_cliente, id_vendedor, pago_loja, pago_vendedor)
+        vendas(data, id_cliente, id_vendedor, pago_loja, pago_vendedor)
         st.success('Reserva realizada com sucesso!')
