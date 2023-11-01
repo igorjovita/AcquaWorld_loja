@@ -6,9 +6,9 @@ from database import lista_vendedores
 escolha = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visualizar', 'Editar', 'Pagamento'], icons=['book', 'card-checklist', 'pencil-square', 'currency-dollar'],
                           orientation='horizontal')
 
-chars = "'),([]"
+chars = "')([]"
 if escolha == 'Reservar':
-    lista = str(lista_vendedores()).translate(str.maketrans('', '', chars))
+    lista = str(lista_vendedores()).translate(str.maketrans('', '', chars)).split(',')
     st.subheader('Reservar Clientes')
 
     data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
