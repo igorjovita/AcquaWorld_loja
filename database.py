@@ -20,7 +20,7 @@ def lançamento_caixa(data_caixa, id_staff, tipo_lancamento, pagamento_entrada, 
 
 
 def cliente(cpf, nome_cliente, telefone_cliente, peso, altura):
-    cursor.execute("INSERT INTO cliente (cpf, nome, telefone, peso, altura) VALUES (%s, %s, %s, %s, %s, )", (cpf, nome_cliente, telefone_cliente, peso, altura))
+    cursor.execute("INSERT INTO cliente (cpf, nome, telefone, peso, altura) VALUES (%s, %s, %s, %s, %s)", (cpf, nome_cliente, telefone_cliente, peso, altura))
 
 
 def cadastrar_vendedor(nome_vendedor, telefone_vendedor, apelido_vendedor, valor_neto):
