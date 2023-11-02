@@ -47,8 +47,8 @@ if escolha == 'Reservar':
 
     with colu1:
         altura = st.slider('Altura do Cliente', 1.50, 2.10)
-        valor_loja = st.number_input('Receber na Loja :', format='%d', step=10)
-        
+
+
     with colu2:
         peso = st.slider('Peso do Cliente', 40, 160)
 
@@ -56,7 +56,8 @@ if escolha == 'Reservar':
 
     with colun1:
         valor_mergulho = st.text_input('Valor do Mergulho')
-
+        valor_loja = st.number_input('Receber na Loja :', format='%d', step=10)
+        
     with colun2:
         sinal = st.text_input('Valor do Sinal')
 
