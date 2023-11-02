@@ -25,9 +25,11 @@ if escolha == 'Reservar':
     vendedores = cursor.fetchall()
     lista = str(vendedores).translate(str.maketrans('', '', chars)).split()
     st.subheader('Reservar Clientes')
-    col1, col2, col3 = st.columns(3)
 
     data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
+
+    
+    col1, col2, col3 = st.columns(3)
 
     with col1:
         nome_cliente = st.text_input('Nome do Cliente :').replace(' ', '_')
