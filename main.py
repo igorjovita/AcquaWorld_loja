@@ -21,7 +21,9 @@ escolha = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visual
 
 chars = "'),([]"
 if escolha == 'Reservar':
-    lista = str(lista_vendedores()).translate(str.maketrans('', '', chars)).split()
+    cursor.execute("SELECT apelido FROM vendedores")
+    vendedores = cursor.fetchall()
+    lista = str(vendedores).translate(str.maketrans('', '', chars)).split()
     st.subheader('Reservar Clientes')
 
     data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
