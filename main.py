@@ -29,20 +29,23 @@ if escolha == 'Reservar':
 
     with col1:
         data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
-
+        telefone_cliente = st.text_input('Telefone do Cliente :')
+        altura = st.slider('Altura do Cliente', 1.50, 2.10)
+        sinal = st.text_input('Valor do Sinal')
     with col2:
         nome_cliente = st.text_input('Nome do Cliente :').replace(' ', '_')
-
+        comissario = st.selectbox('Vendedor :', lista)
+        peso = st.slider('Peso do Cliente', 40, 160)
+        recebedor_sinal = st.selectbox('Quem recebeu o sinal?', ['', 'AcquaWorld', 'Vendedor'])
     with col3:
         cpf = st.text_input('Cpf do cliente', help='Apenas numeros')
-    telefone_cliente = st.text_input('Telefone do Cliente :')
-    comissario = st.selectbox('Vendedor :', lista, placeholder=' ')
-    tipo = st.selectbox('Modalidade : ', ('', 'BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'), placeholder='Vendedor')
-    altura = st.slider('Altura do Cliente', 1.50, 2.10)
-    peso = st.slider('Peso do Cliente', 40, 160)
-    valor_mergulho = st.text_input('Valor do Mergulho')
-    sinal = st.text_input('Valor do Sinal')
-    recebedor_sinal = st.selectbox('Quem recebeu o sinal?', ['', 'AcquaWorld', 'Vendedor'])
+        tipo = st.selectbox('Modalidade : ', ('', 'BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'), placeholder='Vendedor')
+        valor_mergulho = st.text_input('Valor do Mergulho')
+
+
+
+
+
     if recebedor_sinal == 'AcquaWorld':
         pago_loja = sinal
         pago_vendedor = 0
