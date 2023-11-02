@@ -25,10 +25,16 @@ if escolha == 'Reservar':
     vendedores = cursor.fetchall()
     lista = str(vendedores).translate(str.maketrans('', '', chars)).split()
     st.subheader('Reservar Clientes')
+    col1, col2, col3 = st.columns(3)
 
-    data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
-    nome_cliente = st.text_input('Nome do Cliente :').replace(' ', '_')
-    cpf = st.text_input('Cpf do cliente', help='Apenas numeros')
+    with col1:
+        data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
+
+    with col2:
+        nome_cliente = st.text_input('Nome do Cliente :').replace(' ', '_')
+
+    with col3:
+        cpf = st.text_input('Cpf do cliente', help='Apenas numeros')
     telefone_cliente = st.text_input('Telefone do Cliente :')
     comissario = st.selectbox('Vendedor :', lista, placeholder=' ')
     tipo = st.selectbox('Modalidade : ', ('', 'BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'), placeholder='Vendedor')
