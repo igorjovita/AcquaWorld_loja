@@ -83,8 +83,8 @@ if escolha == 'Reservar':
         mydb.connect()
         cursor.execute(f"SELECT COUNT(*) FROM reserva where data = '{data}'")
         contagem = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
-
-
+        cursor.execute(f"SELECT * FROM planilha_diaria WHERE data = '{data}'")
+        restricao = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
 
         cursor.execute("INSERT INTO cliente (cpf, nome, telefone, peso, altura) VALUES (%s, %s, %s, %s, %s)",
                        (cpf, nome_cliente, telefone_cliente, peso, altura))
@@ -101,5 +101,6 @@ if escolha == 'Reservar':
         mydb.close()
         st.success('Reserva realizada com sucesso!')
         st.write(contagem)
+        st.write(restricao)
 
 
