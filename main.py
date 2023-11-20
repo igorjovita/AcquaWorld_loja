@@ -14,7 +14,7 @@ mydb = mysql.connector.connect(
     ssl_verify_identity=False,
     ssl_ca=r"C:\users\acqua\downloads\cacert-2023-08-22.pem")
 
-cursor = mydb.cursor(buffered= True)
+cursor = mydb.cursor(buffered=True)
 
 escolha = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visualizar', 'Editar', 'Pagamento'], icons=['book', 'card-checklist', 'pencil-square', 'currency-dollar'],
                           orientation='horizontal')
@@ -80,8 +80,12 @@ if escolha == 'Reservar':
 
 
     if st.button('Reservar'):
-
         mydb.connect()
+        cursor.execute(f"SELECT COUNT(*) FROM reserva where data = '{data}'")
+        contagem = cursor.fetchall()
+
+
+
         cursor.execute("INSERT INTO cliente (cpf, nome, telefone, peso, altura) VALUES (%s, %s, %s, %s, %s)",
                        (cpf, nome_cliente, telefone_cliente, peso, altura))
 
@@ -96,5 +100,6 @@ if escolha == 'Reservar':
             (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor))
         mydb.close()
         st.success('Reserva realizada com sucesso!')
+        st.write(contagem)
 
 
