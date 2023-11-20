@@ -75,7 +75,7 @@ if escolha == 'Reservar':
         cursor.execute(f"SELECT COUNT(*) FROM reserva where data = '{data}'")
         contagem = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
 
-        cursor.execute(f"SELECT * FROM planilha_diaria WHERE data = '{data}'")
+        cursor.execute(f"SELECT * FROM restricao WHERE data = '{data}'")
         restricao = cursor.fetchone()
 
         cursor.execute(f"SELECT COUNT(tipo) FROM reserva WHERE tipo = 'TUR2' or tipo = 'OWD' or tipo = 'ADV' or tipo = 'RESCUE' or tipo = 'REVIEW' and data = '{data}'")
