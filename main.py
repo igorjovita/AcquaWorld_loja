@@ -16,8 +16,9 @@ mydb = mysql.connector.connect(
 
 cursor = mydb.cursor(buffered=True)
 
-escolha = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visualizar', 'Editar', 'Pagamento'], icons=['book', 'card-checklist', 'pencil-square', 'currency-dollar'],
-                          orientation='horizontal')
+escolha = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visualizar', 'Editar', 'Pagamento'],
+                      icons=['book', 'card-checklist', 'pencil-square', 'currency-dollar'],
+                      orientation='horizontal')
 
 chars = "'),([]"
 if escolha == 'Reservar':
@@ -28,30 +29,24 @@ if escolha == 'Reservar':
 
     data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
 
-
     col1, col2, col3 = st.columns(3)
 
     with col1:
         nome_cliente = st.text_input('Nome do Cliente :').replace(' ', '_').capitalize()
         comissario = st.selectbox('Vendedor :', lista)
 
-
     with col2:
         cpf = st.text_input('Cpf do cliente', help='Apenas numeros')
         tipo = st.selectbox('Modalidade : ', ('', 'BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'), placeholder='Vendedor')
-
 
     with col3:
         telefone_cliente = st.text_input('Telefone do Cliente :')
         valor_mergulho = st.text_input('Valor do Mergulho')
 
-
-
     colu1, colu2 = st.columns(2)
 
     with colu1:
         altura = st.slider('Altura do Cliente', 1.50, 2.10)
-
 
     with colu2:
         peso = st.slider('Peso do Cliente', 40, 160)
@@ -61,13 +56,11 @@ if escolha == 'Reservar':
     with colun1:
         sinal = st.text_input('Valor do Sinal')
 
-
     with colun2:
         recebedor_sinal = st.selectbox('Quem recebeu o sinal?', ['', 'AcquaWorld', 'Vendedor'])
 
     with colun3:
         valor_loja = st.number_input('Receber na Loja :', format='%d', step=10)
-
 
     if recebedor_sinal == 'AcquaWorld':
         pago_loja = sinal
@@ -77,14 +70,12 @@ if escolha == 'Reservar':
         pago_loja = 0
         pago_vendedor = sinal
 
-
-
     if st.button('Reservar'):
         mydb.connect()
         cursor.execute(f"SELECT COUNT(*) FROM reserva where data = '{data}'")
         contagem = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
         cursor.execute(f"SELECT * FROM planilha_diaria WHERE data = '{data}'")
-        restricao =cursor.fetchall()
+        restricao = cursor.fetchone()
 
         cursor.execute("INSERT INTO cliente (cpf, nome, telefone, peso, altura) VALUES (%s, %s, %s, %s, %s)",
                        (cpf, nome_cliente, telefone_cliente, peso, altura))
@@ -102,5 +93,3 @@ if escolha == 'Reservar':
         st.success('Reserva realizada com sucesso!')
         st.write(contagem)
         st.write(restricao)
-
-
