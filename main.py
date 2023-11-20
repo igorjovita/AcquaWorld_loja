@@ -92,4 +92,5 @@ if escolha == 'Reservar':
         mydb.close()
         st.success('Reserva realizada com sucesso!')
         st.write(contagem)
-        st.write(restricao)
+        if restricao == 'None':
+            st.write('Sem restrições para essa data')
