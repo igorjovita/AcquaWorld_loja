@@ -81,6 +81,8 @@ if escolha == 'Reservar':
         cursor.execute(f"SELECT COUNT(tipo) FROM reserva WHERE tipo = 'TUR2' or tipo = 'OWD' or tipo = 'ADV' or tipo = 'RESCUE' or tipo = 'REVIEW' and data = '{data}'")
         contagem_cred = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
 
+        lista_cred = ['TUR2', 'OWD', 'ADV', 'RESCUE', 'REVIEW']
+
 
         if restricao is None:
             vaga_cred = 8
@@ -96,7 +98,7 @@ if escolha == 'Reservar':
         if contagem >= vaga_total:
             st.error('Planilha está lotada nessa data!')
 
-        if tipo == 'TUR2' or 'OWD' or 'ADV' or 'REVIEW' or 'RESCUE' and contagem_cred >= vaga_cred:
+        elif tipo in lista_cred and contagem_cred >= vaga_cred:
             st.write(contagem_cred)
             st.write(vaga_cred)
             st.error('Todas as vagas de credenciados foram preenchidas')
