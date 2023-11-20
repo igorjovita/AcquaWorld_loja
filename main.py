@@ -28,7 +28,7 @@ if escolha == 'Reservar':
 
     data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
 
-    
+
     col1, col2, col3 = st.columns(3)
 
     with col1:
@@ -81,6 +81,7 @@ if escolha == 'Reservar':
 
     if st.button('Reservar'):
 
+        mydb.connect()
         cursor.execute("INSERT INTO cliente (cpf, nome, telefone, peso, altura) VALUES (%s, %s, %s, %s, %s)",
                        (cpf, nome_cliente, telefone_cliente, peso, altura))
 
@@ -91,8 +92,9 @@ if escolha == 'Reservar':
         id_cliente = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
 
         cursor.execute(
-            "INSERT INTO vendas (data, id_cliente, id_vendedor,pago_loja, pago_vendedor) values (%s, %s, %s, %s, %s)",
-            (data, id_cliente, id_vendedor, pago_loja, pago_vendedor))
+            "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor,pago_loja, pago_vendedor) values (%s, %s, %s, %s, %s)",
+            (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor))
+        mydb.close()
         st.success('Reserva realizada com sucesso!')
 
 
