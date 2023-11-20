@@ -96,7 +96,7 @@ if escolha == 'Reservar':
         if contagem >= vaga_total:
             st.error('Planilha está lotada nessa data!')
 
-        elif tipo == 'TUR2' or 'OWD' or 'ADV' or 'REVIEW' or 'RESCUE' and vaga_cred >= contagem_cred:
+        if tipo == 'TUR2' or 'OWD' or 'ADV' or 'REVIEW' or 'RESCUE' and contagem_cred >= vaga_cred:
             st.write(contagem_cred)
             st.write(vaga_cred)
             st.error('Todas as vagas de credenciados foram preenchidas')
