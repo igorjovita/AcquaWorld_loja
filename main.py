@@ -82,7 +82,7 @@ if escolha == 'Reservar':
     if st.button('Reservar'):
         mydb.connect()
         cursor.execute(f"SELECT COUNT(*) FROM reserva where data = '{data}'")
-        contagem = cursor.fetchall()
+        contagem = cursor.fetchone()
 
 
 
