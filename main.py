@@ -82,7 +82,7 @@ if escolha == 'Reservar':
             vaga_total = 40
         else:
             cursor.execute(f"SELECT vaga_bat, vaga_tur, vaga_curso, vaga_total FROM planilha_diaria WHERE data = '{data}'")
-            restricoes = int(str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split())
+            restricoes = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
 
         cursor.execute("INSERT INTO cliente (cpf, nome, telefone, peso, altura) VALUES (%s, %s, %s, %s, %s)",
                        (cpf, nome_cliente, telefone_cliente, peso, altura))
