@@ -129,12 +129,12 @@ if escolha == 'Editar':
 
     st.subheader('Limitar Vagas')
     data_lim = st.date_input('Data da Limitação', format='DD/MM/YYYY')
-    limite_bat = int(str(st.text_input('Limite de vagas para o Batismo')))
-    limite_cred = int(st.text_input('Limite de vagas para Credenciado ou Curso'))
-    limite_total = int(st.text_input('Limite de vagas totais'))
+    limite_bat = st.text_input('Limite de vagas para o Batismo')
+    limite_cred = st.text_input('Limite de vagas para Credenciado ou Curso')
+    limite_total = st.text_input('Limite de vagas totais')
     if st.button('Limitar Vagas'):
         mydb.connect()
-        cursor.execute("INSERT into restricao (data, vaga_bat, vaga_cred, vaga_total) values (%s, %s, %s, %s)", (data_lim, limite_bat, limite_cred, limite_total))
+        cursor.execute("INSERT into restricao (data, vaga_bat, vaga_cred, vaga_total) values (%s, %s, %s, %s)", (data_lim, int(limite_bat), int(limite_cred), int(limite_total)))
         mydb.close()
 
     st.write('---')
