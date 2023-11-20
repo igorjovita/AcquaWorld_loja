@@ -84,7 +84,7 @@ if escolha == 'Reservar':
         cursor.execute(f"SELECT COUNT(*) FROM reserva where data = '{data}'")
         contagem = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
         cursor.execute(f"SELECT * FROM planilha_diaria WHERE data = '{data}'")
-        restricao = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
+        restricao =cursor.fetchall()
 
         cursor.execute("INSERT INTO cliente (cpf, nome, telefone, peso, altura) VALUES (%s, %s, %s, %s, %s)",
                        (cpf, nome_cliente, telefone_cliente, peso, altura))
