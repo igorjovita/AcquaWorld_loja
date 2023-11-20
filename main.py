@@ -74,13 +74,14 @@ if escolha == 'Reservar':
         mydb.connect()
         cursor.execute(f"SELECT COUNT(*) FROM reserva where data = '{data}'")
         contagem = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
+
         cursor.execute(f"SELECT * FROM planilha_diaria WHERE data = '{data}'")
         restricao = cursor.fetchone()
         if restricao is None:
             vaga_bat = 41
             vaga_tur = 8
             vaga_curso = 9
-            vaga_total = 41
+            vaga_total = 13
         else:
             cursor.execute(f"SELECT vaga_bat, vaga_tur, vaga_curso, vaga_total FROM planilha_diaria WHERE data = '{data}'")
             restricoes = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
@@ -89,23 +90,26 @@ if escolha == 'Reservar':
             vaga_curso = int(restricoes[2])
             vaga_total = int(restricoes[3])
 
-        cursor.execute("INSERT INTO cliente (cpf, nome, telefone, peso, altura) VALUES (%s, %s, %s, %s, %s)",
-                       (cpf, nome_cliente, telefone_cliente, peso, altura))
+        if contagem >= vaga_total:
+            st.error('Planilha está lotada nessa data!')
+        else:
+            cursor.execute("INSERT INTO cliente (cpf, nome, telefone, peso, altura) VALUES (%s, %s, %s, %s, %s)",
+                           (cpf, nome_cliente, telefone_cliente, peso, altura))
 
-        cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
-        id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
+            cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
+            id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
 
-        cursor.execute(f"SELECT id FROM cliente WHERE cpf = {cpf}")
-        id_cliente = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
+            cursor.execute(f"SELECT id FROM cliente WHERE cpf = {cpf}")
+            id_cliente = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
 
-        cursor.execute(
-            "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor,pago_loja, pago_vendedor) values (%s, %s, %s, %s, %s, %s)",
-            (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor))
-        mydb.close()
-        st.success('Reserva realizada com sucesso!')
-        st.write(contagem)
+            cursor.execute(
+                "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor,pago_loja, pago_vendedor) values (%s, %s, %s, %s, %s, %s)",
+                (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor))
+            mydb.close()
+            st.success('Reserva realizada com sucesso!')
+            st.write(contagem)
 
-        st.write(vaga_bat)
-        st.write(vaga_tur)
-        st.write(vaga_curso)
-        st.write(vaga_total)
+            st.write(vaga_bat)
+            st.write(vaga_tur)
+            st.write(vaga_curso)
+            st.write(vaga_total)
