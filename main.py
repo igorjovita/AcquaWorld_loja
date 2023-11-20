@@ -32,7 +32,7 @@ if escolha == 'Reservar':
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        nome_cliente = st.text_input('Nome do Cliente :').replace(' ', '_')
+        nome_cliente = st.text_input('Nome do Cliente :').replace(' ', '_').capitalize()
         comissario = st.selectbox('Vendedor :', lista)
 
 
@@ -82,7 +82,7 @@ if escolha == 'Reservar':
     if st.button('Reservar'):
         mydb.connect()
         cursor.execute(f"SELECT COUNT(*) FROM reserva where data = '{data}'")
-        contagem = cursor.fetchone()
+        contagem = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
 
 
 
