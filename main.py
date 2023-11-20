@@ -77,21 +77,28 @@ if escolha == 'Reservar':
 
         cursor.execute(f"SELECT * FROM planilha_diaria WHERE data = '{data}'")
         restricao = cursor.fetchone()
+
+        cursor.execute(f"SELECT COUNT(tipo) FROM reserva WHERE tipo = 'TUR2' or tipo = 'OWD' or tipo = 'ADV' or tipo = 'RESCUE' or tipo = 'REVIEW' and data = '{data}'")
+        contagem_cred = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
+
+
         if restricao is None:
-            vaga_bat = 41
-            vaga_tur = 8
-            vaga_curso = 9
-            vaga_total = 13
+            vaga_cred = 8
+            vaga_total = 40
+            vaga_bat = vaga_total - contagem_cred
         else:
-            cursor.execute(f"SELECT vaga_bat, vaga_tur, vaga_curso, vaga_total FROM planilha_diaria WHERE data = '{data}'")
+            cursor.execute(f"SELECT vaga_bat, vaga_cred, vaga_total FROM restricao WHERE data = '{data}'")
             restricoes = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
             vaga_bat = int(restricoes[0])
-            vaga_tur = int(restricoes[1])
-            vaga_curso = int(restricoes[2])
-            vaga_total = int(restricoes[3])
+            vaga_cred = int(restricoes[1])
+            vaga_total = int(restricoes[2])
 
         if contagem >= vaga_total:
             st.error('Planilha está lotada nessa data!')
+
+        elif tipo == 'TUR2' or 'OWD' or 'ADV' or 'REVIEW' or 'RESCUE' and contagem_cred >= vaga_cred:
+            st.error('Todas as vagas de credenciados foram preenchidas')
+
         else:
             cursor.execute("INSERT INTO cliente (cpf, nome, telefone, peso, altura) VALUES (%s, %s, %s, %s, %s)",
                            (cpf, nome_cliente, telefone_cliente, peso, altura))
@@ -103,13 +110,29 @@ if escolha == 'Reservar':
             id_cliente = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
 
             cursor.execute(
-                "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor,pago_loja, pago_vendedor) values (%s, %s, %s, %s, %s, %s)",
+                "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor,pago_loja, pago_vendedor) values (%s, %s, "
+                "%s, %s, %s, %s)",
                 (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor))
             mydb.close()
             st.success('Reserva realizada com sucesso!')
             st.write(contagem)
 
             st.write(vaga_bat)
-            st.write(vaga_tur)
-            st.write(vaga_curso)
+            st.write(vaga_cred)
             st.write(vaga_total)
+
+if escolha == 'Editar':
+
+    st.subheader('Limitar Vagas')
+    data_lim = st.date_input('Data da Limitação', format='DD/MM/YYYY')
+    limite_bat = int(st.text_input('Limite de vagas para o Batismo'))
+    limite_cred = int(st.text_input('Limite de vagas para Credenciado ou Curso'))
+    limite_total = int(st.text_input('Limite de vagas totais'))
+    if st.button('Limitar Vagas'):
+        mydb.connect()
+        cursor.execute("INSERT into restricao (data, vaga_bat, vaga_cred, vaga_total) values (%s, %s, %s, %s)", (data_lim, limite_bat, limite_cred, limite_total))
+        mydb.close()
+
+    st.write('---')
+    st.subheader('Editar Reserva')
+    data_ed = st.date_input('Data da Reserva', format='DD/MM/YYYY')
