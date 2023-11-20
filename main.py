@@ -76,6 +76,13 @@ if escolha == 'Reservar':
         contagem = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
         cursor.execute(f"SELECT * FROM planilha_diaria WHERE data = '{data}'")
         restricao = cursor.fetchone()
+        if restricao is None:
+            vaga_tur = 4
+            vaga_curso = 8
+            vaga_total = 40
+        else:
+            cursor.execute(f"SELECT vaga_bat, vaga_tur, vaga_curso, vaga_total WHERE data = '{data}'")
+            restricoes = int(str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split())
 
         cursor.execute("INSERT INTO cliente (cpf, nome, telefone, peso, altura) VALUES (%s, %s, %s, %s, %s)",
                        (cpf, nome_cliente, telefone_cliente, peso, altura))
@@ -92,5 +99,5 @@ if escolha == 'Reservar':
         mydb.close()
         st.success('Reserva realizada com sucesso!')
         st.write(contagem)
-        if restricao is None:
-            st.write('Sem restrições para essa data')
+
+        st.write(restricoes)
