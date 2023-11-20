@@ -129,7 +129,7 @@ if escolha == 'Editar':
 
     st.subheader('Limitar Vagas')
     data_lim = st.date_input('Data da Limitação', format='DD/MM/YYYY')
-    limite_bat = int(st.text_input('Limite de vagas para o Batismo'))
+    limite_bat = int(str(st.text_input('Limite de vagas para o Batismo')))
     limite_cred = int(st.text_input('Limite de vagas para Credenciado ou Curso'))
     limite_total = int(st.text_input('Limite de vagas totais'))
     if st.button('Limitar Vagas'):
