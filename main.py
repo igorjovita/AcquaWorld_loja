@@ -70,6 +70,10 @@ if escolha == 'Reservar':
         pago_loja = 0
         pago_vendedor = sinal
 
+    if recebedor_sinal == '':
+        pago_loja = 0
+        pago_vendedor = 0
+
     if st.button('Reservar'):
         mydb.connect()
         cursor.execute(f"SELECT COUNT(*) FROM reserva where data = '{data}'")
@@ -136,6 +140,7 @@ if escolha == 'Editar':
         mydb.connect()
         cursor.execute("INSERT into restricao (data, vaga_bat, vaga_cred, vaga_total) values (%s, %s, %s, %s)", (data_lim, int(limite_bat), int(limite_cred), int(limite_total)))
         mydb.close()
+        st.success('Limitação inserida no sistema')
 
     st.write('---')
     st.subheader('Editar Reserva')
