@@ -153,7 +153,6 @@ if escolha == 'Editar':
     for cliente in lista_clientes:
         nome_cli = str(cliente).translate(str.maketrans('', '', chars2))
         lista.append(nome_cli)
-    st.write(lista)
     novo_nome = st.selectbox('Selecione o Cliente para Editar', options=lista)
 
 if escolha == 'Visualizar':
