@@ -150,6 +150,8 @@ if escolha == 'Editar':
     cursor.execute(f"select cliente.nome from reserva join cliente on cliente.id = reserva.id_cliente  where data = '{nova_data}'")
     lista_clientes = cursor.fetchall()
     st.subheader(lista_clientes)
+    st.subheader(lista_clientes[0])
+    st.subheader(lista_clientes[1])
     for i, cliente in enumerate(lista_clientes):
         nome_cli = str(cliente[i]).translate(str.maketrans('', '', chars2))
     st.write(nome_cli)
