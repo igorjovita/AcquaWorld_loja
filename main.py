@@ -147,8 +147,8 @@ if escolha == 'Editar':
         mydb.connect()
         cursor.execute(f"select r.data, c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.altura, c.peso from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{nova_data}' and c.nome = '{novo_nome}'")
         reserva_selecionada = cursor.fetchall()
-        reserva = reserva_selecionada[0]
-        st.write([reserva])
+        reserva = str(reserva_selecionada[0]).translate(str.maketrans('', '', chars2)).split()
+        st.write(reserva)
 
     st.write('---')
 
