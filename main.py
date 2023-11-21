@@ -155,7 +155,7 @@ if escolha == 'Editar':
         data = f'{ano}{mes}{dia}'
         st.subheader(data)
         data_f = date.fromisoformat(data)
-        st.date_input('Insira a nova data', value=data_f)
+        st.date_input('Insira a nova data', value=data_f, format='DD/MM/YYYY')
 
 
     st.write('---')
