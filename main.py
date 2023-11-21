@@ -21,7 +21,7 @@ escolha = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visual
                       orientation='horizontal')
 
 chars = "'),([]"
-chars2 = "[]"
+chars2 = "),([]"
 if escolha == 'Reservar':
     cursor.execute("SELECT apelido FROM vendedores")
     vendedores = cursor.fetchall()
@@ -148,7 +148,7 @@ if escolha == 'Editar':
     nova_data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
     mydb.connect()
     cursor.execute(f"select cliente.nome from reserva join cliente on cliente.id = reserva.id_cliente  where data = '{nova_data}'")
-    nome_cli = str(cursor.fetchall()).split("'")
+    nome_cli = str(cursor.fetchall()).translate(str.maketrans('', '', chars2)).split("'")
     st.write(nome_cli)
     novo_nome = st.selectbox('Selecione o Cliente para Editar', options=nome_cli)
 
