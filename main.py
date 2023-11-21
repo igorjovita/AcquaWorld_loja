@@ -132,6 +132,19 @@ if escolha == 'Reservar':
 
 if escolha == 'Editar':
 
+    st.subheader('Editar Reserva')
+    nova_data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
+    mydb.connect()
+    cursor.execute(
+        f"select cliente.nome from reserva join cliente on cliente.id = reserva.id_cliente  where data = '{nova_data}'")
+    lista_clientes = cursor.fetchall()
+    lista = []
+    for cliente in lista_clientes:
+        nome_cli = str(cliente).translate(str.maketrans('', '', chars2))
+        lista.append(nome_cli)
+    novo_nome = st.selectbox('Selecione o Cliente para Editar', options=lista)
+    st.write('---')
+
     st.subheader('Limitar Vagas')
     data_lim = st.date_input('Data da Limitação', format='DD/MM/YYYY')
     limite_bat = st.text_input('Limite de vagas para o Batismo')
@@ -144,16 +157,7 @@ if escolha == 'Editar':
         st.success('Limitação inserida no sistema')
 
     st.write('---')
-    st.subheader('Editar Reserva')
-    nova_data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
-    mydb.connect()
-    cursor.execute(f"select cliente.nome from reserva join cliente on cliente.id = reserva.id_cliente  where data = '{nova_data}'")
-    lista_clientes = cursor.fetchall()
-    lista = []
-    for cliente in lista_clientes:
-        nome_cli = str(cliente).translate(str.maketrans('', '', chars2))
-        lista.append(nome_cli)
-    novo_nome = st.selectbox('Selecione o Cliente para Editar', options=lista)
+
 
 if escolha == 'Visualizar':
     st.subheader('Visualizar Planilha')
