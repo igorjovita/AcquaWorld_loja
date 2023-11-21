@@ -146,13 +146,9 @@ if escolha == 'Editar':
     if st.button('Pesquisar Reserva'):
         mydb.connect()
         cursor.execute(f"select r.data, c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.altura, c.peso from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{nova_data}' and c.nome = '{novo_nome}'")
-        reserva_selecionada = cursor.fetchall()
-        lista_reserva = []
-        for item in reserva_selecionada:
-            lista_reserva.append(item)
-        st.subheader(lista_reserva[1])
-        st.write(reserva_selecionada)
-        st.subheader(reserva_selecionada)
+        reserva_selecionada = [cursor.fetchall()]
+        st.subheader(reserva_selecionada[1])
+
     st.write('---')
 
     st.subheader('Limitar Vagas')
