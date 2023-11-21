@@ -21,7 +21,7 @@ escolha = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visual
                       orientation='horizontal')
 
 chars = "'),([]"
-chars2 = "')([]"
+chars2 = "')("
 if escolha == 'Reservar':
     cursor.execute("SELECT apelido FROM vendedores")
     vendedores = cursor.fetchall()
