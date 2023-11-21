@@ -157,15 +157,17 @@ if escolha == 'Editar':
         dia = reserva[2].strip()
         data = f'{ano}{mes}{dia}'
         data_f = date.fromisoformat(data)
-        mydb.connect()
-        cursor.execute("SELECT apelido FROM vendedores")
-        lista_comissario = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+
 
         data_nova = st.date_input('Insira a nova data', value=data_f, format='DD/MM/YYYY')
         nome_novo = st.text_input('Nome do Cliente', value=reserva[3])
         cpf_novo = st.text_input('Cpf do Cliente', value=reserva[4])
         telefone_novo = st.text_input('Telefone do Cliente', value=reserva[5])
-        st.selectbox('Comissario', value=reserva[6],options=lista_comissario)
+        comissario_novo = st.text_input('Comissario', value=reserva[6])
+        tipo_novo = st.text_input('Tipo', value=reserva[7])
+        altura_novo = st.slider('Altura', 1.5, 2.10, value=reserva[8])
+        peso_novo = st.slider('Peso', 40, 160, value=reserva[9])
+
 
 
     st.write('---')
