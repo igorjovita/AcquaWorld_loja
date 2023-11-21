@@ -32,7 +32,7 @@ if escolha == 'Reservar':
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        nome_cliente = st.text_input('Nome do Cliente :').replace(' ', '_').capitalize()
+        nome_cliente = st.text_input('Nome do Cliente :')
         comissario = st.selectbox('Vendedor :', lista)
 
     with col2:
