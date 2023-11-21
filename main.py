@@ -4,6 +4,7 @@ from streamlit_option_menu import option_menu
 from database import lista_vendedores, cliente, vendas, id_vendedor, id_cliente
 import os
 import mysql.connector
+from datetime import date
 
 mydb = mysql.connector.connect(
     host=os.getenv("DB_HOST"),
@@ -153,7 +154,8 @@ if escolha == 'Editar':
         dia = reserva[2]
         data = f'{ano}-{mes}-{dia}'
         st.subheader(data)
-        st.date_input('Insira a nova data', value=[ano, mes, dia])
+        data_f = date.fromisoformat(data)
+        st.date_input('Insira a nova data', value=data_f)
 
 
     st.write('---')
