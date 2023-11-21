@@ -150,7 +150,6 @@ if escolha == 'Editar':
         reserva_selecionada = cursor.fetchall()
         mydb.close()
         reserva = str(reserva_selecionada).translate(str.maketrans('', '', chars2)).split(',')
-        st.write(reserva)
 
         ano = (reserva[0])[13:].strip()
         mes = reserva[1].strip()
