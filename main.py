@@ -155,7 +155,8 @@ if escolha == 'Editar':
         dia = reserva[2].strip()
         data = f'{ano}{mes}{dia}'
         data_f = date.fromisoformat(data)
-        st.date_input('Insira a nova data', value=data_f, format='DD/MM/YYYY')
+        data_nova = st.date_input('Insira a nova data', value=data_f, format='DD/MM/YYYY')
+        nome_novo = st.text_input('Nome do Cliente', value=reserva[3])
 
 
     st.write('---')
