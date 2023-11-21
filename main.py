@@ -150,7 +150,7 @@ if escolha == 'Editar':
     cursor.execute(f"select cliente.nome from reserva join cliente on cliente.id = reserva.id_cliente  where data = '{nova_data}'")
     lista_clientes = cursor.fetchall()
     for cliente in lista_clientes:
-        nome_cli = str(cursor.fetchall()).translate(str.maketrans('', '', chars2))
+        nome_cli = str(cliente).translate(str.maketrans('', '', chars2))
     st.write(nome_cli)
     novo_nome = st.selectbox('Selecione o Cliente para Editar', options=nome_cli)
 
