@@ -145,7 +145,7 @@ if escolha == 'Editar':
     novo_nome = st.selectbox('Selecione o Cliente para Editar', options=lista)
     if st.button('Pesquisar Reserva'):
         mydb.connect()
-        cursor.execute(f"select r.data, c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.altura, c.peso from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{nova_data}' and nome = '{novo_nome}'")
+        cursor.execute(f"select r.data, c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.altura, c.peso from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{nova_data}' and c.nome = '{novo_nome}'")
         reserva_selecionada = cursor.fetchone()
         st.write(reserva_selecionada)
         st.subheader(reserva_selecionada)
