@@ -156,7 +156,7 @@ if escolha == 'Visualizar':
     mydb.connect()
     cursor.execute(f"select c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.altura, c.peso from reserva as r join cliente "
                    f"as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{data_vis}'")
-    planilha = cursor.fetchall()
+    planilha = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
 
     df = pd.DataFrame(planilha, columns=['Nome', 'Cpf', 'Telefone', 'Comissário', 'Cert', 'Fotos', 'Altura', 'Peso'])
     st.dataframe(df)
