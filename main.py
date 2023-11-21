@@ -148,7 +148,7 @@ if escolha == 'Editar':
     nova_data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
     mydb.connect()
     cursor.execute(f"select cliente.nome from reserva join cliente on cliente.id = reserva.id_cliente  where data = '{nova_data}'")
-    lista_clientes = cursor.fetchall()
+    lista_clientes = [cursor.fetchall()]
     st.write(lista_clientes)
     for i, cliente in enumerate(lista_clientes):
         nome_cli = str(cliente[i]).translate(str.maketrans('', '', chars2))
