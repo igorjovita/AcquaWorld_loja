@@ -165,8 +165,8 @@ if escolha == 'Editar':
         telefone_novo = st.text_input('Telefone do Cliente', value=reserva[5])
         comissario_novo = st.text_input('Comissario', value=reserva[6])
         tipo_novo = st.text_input('Tipo', value=reserva[7])
-        altura_novo = st.slider('Altura', 1.5, 2.10, value=reserva[8])
-        peso_novo = st.slider('Peso', 40, 160, value=reserva[9])
+        altura_novo = st.slider('Altura', value=reserva[8])
+        peso_novo = st.slider('Peso', value=reserva[9])
 
 
 
