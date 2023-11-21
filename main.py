@@ -152,10 +152,12 @@ if escolha == 'Editar':
     st.subheader(lista_clientes)
     st.subheader(lista_clientes[0])
     st.subheader(lista_clientes[1])
-    for i, cliente in enumerate(lista_clientes):
-        nome_cli = str(cliente[i]).translate(str.maketrans('', '', chars2))
-    st.write(nome_cli)
-    novo_nome = st.selectbox('Selecione o Cliente para Editar', options=nome_cli)
+    for cliente in lista_clientes:
+        lista = []
+        nome_cli = str(cliente).translate(str.maketrans('', '', chars2))
+        lista.append(nome_cli)
+    st.write(lista)
+    novo_nome = st.selectbox('Selecione o Cliente para Editar', options=lista)
 
 if escolha == 'Visualizar':
     st.subheader('Visualizar Planilha')
