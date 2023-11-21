@@ -157,7 +157,7 @@ if escolha == 'Editar':
         data = f'{ano}{mes}{dia}'
         data_f = date.fromisoformat(data)
 
-
+        st.subheader(f"Editar a reserva de '{reserva[3]}'")
         data_nova = st.date_input('Insira a nova data', value=data_f, format='DD/MM/YYYY')
         nome_novo = st.text_input('Nome do Cliente', value=reserva[3])
         cpf_novo = st.text_input('Cpf do Cliente', value=reserva[4])
