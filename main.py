@@ -152,8 +152,8 @@ if escolha == 'Editar':
     st.subheader(lista_clientes)
     st.subheader(lista_clientes[0])
     st.subheader(lista_clientes[1])
+    lista = []
     for cliente in lista_clientes:
-        lista = []
         nome_cli = str(cliente).translate(str.maketrans('', '', chars2))
         lista.append(nome_cli)
     st.write(lista)
