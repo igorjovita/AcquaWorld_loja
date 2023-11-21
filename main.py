@@ -143,6 +143,12 @@ if escolha == 'Editar':
         nome_cli = str(cliente).translate(str.maketrans('', '', chars2))
         lista.append(nome_cli)
     novo_nome = st.selectbox('Selecione o Cliente para Editar', options=lista)
+    if st.button('Pesquisar Reserva'):
+        mydb.connect()
+        cursor.execute(f"select r.data, c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.altura, c.peso from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{nova_data}'")
+        reserva_selecionada = cursor.fetchall()
+        st.write(reserva_selecionada)
+        st.subheader(reserva_selecionada)
     st.write('---')
 
     st.subheader('Limitar Vagas')
