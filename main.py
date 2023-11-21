@@ -147,7 +147,7 @@ if escolha == 'Editar':
     nova_data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
     mydb.connect()
     cursor.execute(f"select cliente.nome from reserva join cliente on cliente.id = reserva.id_cliente  where data = '{nova_data}'")
-    nome_cli = cursor.fetchall()
+    nome_cli = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
     novo_nome = st.selectbox('Selecione o Cliente para Editar', options= nome_cli)
 
 if escolha == 'Visualizar':
@@ -156,7 +156,7 @@ if escolha == 'Visualizar':
     mydb.connect()
     cursor.execute(f"select c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.altura, c.peso from reserva as r join cliente "
                    f"as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{data_vis}'")
-    planilha = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
+    planilha = cursor.fetchall()
 
     df = pd.DataFrame(planilha, columns=['Nome', 'Cpf', 'Telefone', 'Comissário', 'Cert', 'Fotos', 'Altura', 'Peso'])
     st.dataframe(df)
