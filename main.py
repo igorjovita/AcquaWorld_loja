@@ -148,7 +148,7 @@ if escolha == 'Editar':
     nova_data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
     mydb.connect()
     cursor.execute(f"select cliente.nome from reserva join cliente on cliente.id = reserva.id_cliente  where data = '{nova_data}'")
-    nome_cli = str(cursor.fetchall()).translate(str.maketrans('', '', chars2)).split('"')
+    nome_cli = str(cursor.fetchall()).split('"')
     st.write(nome_cli)
     novo_nome = st.selectbox('Selecione o Cliente para Editar', options=nome_cli)
 
