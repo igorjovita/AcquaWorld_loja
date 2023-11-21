@@ -150,7 +150,7 @@ if escolha == 'Editar':
         lista_reserva = []
         for item in reserva_selecionada:
             lista_reserva.append(item)
-        st.subheader(lista_reserva)
+        st.subheader(lista_reserva[1])
         st.write(reserva_selecionada)
         st.subheader(reserva_selecionada)
     st.write('---')
