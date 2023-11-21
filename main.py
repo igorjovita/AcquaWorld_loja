@@ -148,7 +148,10 @@ if escolha == 'Editar':
         cursor.execute(f"select r.data, c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.altura, c.peso from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{nova_data}' and c.nome = '{novo_nome}'")
         reserva_selecionada = cursor.fetchall()
         reserva = str(reserva_selecionada).translate(str.maketrans('', '', chars2)).split(',')
-        data = (reserva[0])[13:]
+        ano = (reserva[0])[13:]
+        mes = reserva[1]
+        dia = reserva[2]
+        data = f'{ano}-{mes}-{dia}'
         st.subheader(data)
 
 
