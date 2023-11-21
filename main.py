@@ -145,3 +145,15 @@ if escolha == 'Editar':
     st.write('---')
     st.subheader('Editar Reserva')
     data_ed = st.date_input('Data da Reserva', format='DD/MM/YYYY')
+    mydb.connect()
+    cursor.execute("SELECT ")
+
+if escolha == 'Visualizar':
+    st.subheader('Visualizar Planilha')
+    data_vis = st.date_input('Data da Visualização')
+    mydb.connect()
+    cursor.execute(f"select c.nome, c.cpf, v.nome , r.tipo, r.fotos, c.altura, c.peso from reserva as r join cliente "
+                   f"as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{data_vis}'")
+    planilha = cursor.fetchall()
+
+    st.subheader(planilha)
