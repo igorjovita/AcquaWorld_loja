@@ -144,9 +144,11 @@ if escolha == 'Editar':
 
     st.write('---')
     st.subheader('Editar Reserva')
-    data_ed = st.date_input('Data da Reserva', format='DD/MM/YYYY')
+    nova_data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
     mydb.connect()
-    cursor.execute("SELECT ")
+    cursor.execute(f"select cliente.nome from reserva join cliente on cliente.id = reserva.id_cliente  where data = '{nova_data}'")
+    nome_cli = cursor.fetchall()
+    novo_nome = st.selectbox('Selecione o Cliente para Editar', options= nome_cli)
 
 if escolha == 'Visualizar':
     st.subheader('Visualizar Planilha')
