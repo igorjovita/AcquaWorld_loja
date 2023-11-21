@@ -154,7 +154,7 @@ if escolha == 'Editar':
         dia = reserva[2]
         data = f'{ano}{mes}{dia}'
         st.subheader(data)
-        data_f = date.fromisoformat(data)
+        data_f = date.fromisoformat(data.strip())
         st.date_input('Insira a nova data', value=data_f)
 
 
