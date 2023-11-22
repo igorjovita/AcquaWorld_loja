@@ -189,9 +189,11 @@ if escolha == 'Visualizar':
     st.subheader('Visualizar Planilha')
     data_vis = st.date_input('Data da Visualização', format='DD/MM/YYYY')
     mydb.connect()
-    cursor.execute(f"select c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.altura, c.peso from reserva as r join cliente "
+    cursor.execute(f"select c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.altura, c.peso from reserva as r "
+                   f"join cliente"
                    f"as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{data_vis}'")
     planilha = cursor.fetchall()
 
     df = pd.DataFrame(planilha, columns=['Nome', 'Cpf', 'Telefone', 'Comissário', 'Cert', 'Fotos', 'Altura', 'Peso'])
-    st.dataframe(df)
+    st.dataframe(df, hide_index=True)
+
