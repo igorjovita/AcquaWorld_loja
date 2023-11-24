@@ -134,58 +134,65 @@ if escolha == 'Reservar':
 if escolha == 'Editar':
 
     st.subheader('Editar Reserva')
-    nova_data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
+    data_editar = st.date_input('Data da Reserva', format='DD/MM/YYYY')
     mydb.connect()
-    cursor.execute(
-        f"select cliente.nome from reserva join cliente on cliente.id = reserva.id_cliente  where data = '{nova_data}'")
-    lista_clientes = cursor.fetchall()
-    lista = []
-    for cliente in lista_clientes:
-        nome_cli = str(cliente).translate(str.maketrans('', '', chars))
-        lista.append(nome_cli)
-    nome_antigo = st.selectbox('Selecione o Cliente para Editar', options=lista)
+    cursor.execute(f"SELECT id FROM cliente where data = '{data_editar}'")
+    id_cliente_editar = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+    st.write(id_cliente_editar)
 
-    if nome_antigo is not None:
+    # st.subheader('Editar Reserva')
+    # nova_data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
+    # mydb.connect()
+    # cursor.execute(
+    #     f"select cliente.nome from reserva join cliente on cliente.id = reserva.id_cliente  where data = '{nova_data}'")
+    # lista_clientes = cursor.fetchall()
+    # lista = []
+    # for cliente in lista_clientes:
+    #     nome_cli = str(cliente).translate(str.maketrans('', '', chars))
+    #     lista.append(nome_cli)
+    # nome_antigo = st.selectbox('Selecione o Cliente para Editar', options=lista)
+    #
+    # if nome_antigo is not None:
 
-        mydb.connect()
-        cursor.execute(
-            f"select r.data, c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.altura, c.peso from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{nova_data}' and c.nome = '{nome_antigo}'")
-        reserva_selecionada = cursor.fetchall()
-        mydb.close()
-        reserva = str(reserva_selecionada).translate(str.maketrans('', '', chars2)).split(',')
-
-        ano = (reserva[0])[13:].strip()
-        mes = reserva[1].strip()
-        dia = reserva[2].strip()
-        data = f'{ano}{mes}{dia}'
-        data_f = date.fromisoformat(data)
-
-        st.subheader(f"Editar a reserva de {reserva[3]}")
-        data_nova = st.date_input('Insira a nova data', value=data_f, format='DD/MM/YYYY')
-        nome_novo = st.text_input('Nome do Cliente', value=reserva[3])
-        cpf_novo = st.text_input('Cpf do Cliente', value=reserva[4])
-        telefone_novo = st.text_input('Telefone do Cliente', value=reserva[5])
-        comissario_novo = st.text_input('Comissario', value=reserva[6])
-        tipo_novo = st.text_input('Tipo', value=reserva[7])
-        altura_novo = st.slider('Altura', 1.5, 2.10, value=float(reserva[9]))
-        peso_novo = st.slider('Peso', 40, 160, value=int(reserva[10]))
-
-        if st.button('Editar Reserva'):
-            mydb.connect()
-            cursor.execute(f"SELECT id FROM cliente WHERE nome = '{nome_antigo}'")
-            id_cliente_antigo = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
-            cursor.execute(f"SELECT id FROM vendedores WHERE apelido = '{comissario_novo}'")
-            id_vendedor_novo = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
-            st.write(id_vendedor_novo)
-            cursor.execute(
-                f"UPDATE reserva SET data = '{data_nova}', tipo = '{tipo_novo}', id_vendedor = '{id_vendedor_novo}' WHERE id_cliente = '{id_cliente_antigo}'")
-            cursor.execute(
-                f"UPDATE cliente set cpf = {cpf_novo}, nome = '{nome_novo}', telefone = '{telefone_novo}', peso = '{peso_novo}, altura = '{altura_novo}' WHERE id = {id_cliente_antigo}")
-            mydb.close()
-            st.success('Reserva editada com sucesso')
-
-    else:
-        pass
+    #     mydb.connect()
+    #     cursor.execute(
+    #         f"select r.data, c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.altura, c.peso from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{nova_data}' and c.nome = '{nome_antigo}'")
+    #     reserva_selecionada = cursor.fetchall()
+    #     mydb.close()
+    #     reserva = str(reserva_selecionada).translate(str.maketrans('', '', chars2)).split(',')
+    #
+    #     ano = (reserva[0])[13:].strip()
+    #     mes = reserva[1].strip()
+    #     dia = reserva[2].strip()
+    #     data = f'{ano}{mes}{dia}'
+    #     data_f = date.fromisoformat(data)
+    #
+    #     st.subheader(f"Editar a reserva de {reserva[3]}")
+    #     data_nova = st.date_input('Insira a nova data', value=data_f, format='DD/MM/YYYY')
+    #     nome_novo = st.text_input('Nome do Cliente', value=reserva[3])
+    #     cpf_novo = st.text_input('Cpf do Cliente', value=reserva[4])
+    #     telefone_novo = st.text_input('Telefone do Cliente', value=reserva[5])
+    #     comissario_novo = st.text_input('Comissario', value=reserva[6])
+    #     tipo_novo = st.text_input('Tipo', value=reserva[7])
+    #     altura_novo = st.slider('Altura', 1.5, 2.10, value=float(reserva[9]))
+    #     peso_novo = st.slider('Peso', 40, 160, value=int(reserva[10]))
+    #
+    #     if st.button('Editar Reserva'):
+    #         mydb.connect()
+    #         cursor.execute(f"SELECT id FROM cliente WHERE nome = '{nome_antigo}'")
+    #         id_cliente_antigo = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
+    #         cursor.execute(f"SELECT id FROM vendedores WHERE apelido = '{comissario_novo}'")
+    #         id_vendedor_novo = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
+    #         st.write(id_vendedor_novo)
+    #         cursor.execute(
+    #             f"UPDATE reserva SET data = '{data_nova}', tipo = '{tipo_novo}', id_vendedor = '{id_vendedor_novo}' WHERE id_cliente = '{id_cliente_antigo}'")
+    #         cursor.execute(
+    #             f"UPDATE cliente set cpf = {cpf_novo}, nome = '{nome_novo}', telefone = '{telefone_novo}', peso = '{peso_novo}, altura = '{altura_novo}' WHERE id = {id_cliente_antigo}")
+    #         mydb.close()
+    #         st.success('Reserva editada com sucesso')
+    #
+    # else:
+    #     pass
 
     st.write('---')
 
