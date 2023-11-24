@@ -145,7 +145,7 @@ if escolha == 'Editar':
         lista.append(nome_cli)
     novo_nome = st.selectbox('Selecione o Cliente para Editar', options=lista)
 
-    if novo_nome != '':
+    if novo_nome is not None:
 
         mydb.connect()
         cursor.execute(f"select r.data, c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.altura, c.peso from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{nova_data}' and c.nome = '{novo_nome}'")
@@ -174,7 +174,7 @@ if escolha == 'Editar':
             cursor.execute(f"SELECT id FROM cliente WHERE nome = '{novo_nome}'")
             id_cliente_novo = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
             st.write(id_cliente_novo)
-            
+
     else:
         pass
 
