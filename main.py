@@ -84,11 +84,11 @@ if escolha == 'Reservar':
         cursor.execute(f"SELECT * FROM restricao WHERE data = '{data}'")
         restricao = cursor.fetchone()
 
-        cursor.execute(f"SELECT COUNT(tipo) FROM reserva WHERE tipo = 'TUR2' or tipo = 'OWD' or tipo = 'ADV' or tipo = 'RESCUE' or tipo = 'REVIEW' and data = '{data}'")
+        cursor.execute(
+            f"SELECT COUNT(tipo) FROM reserva WHERE tipo = 'TUR2' or tipo = 'OWD' or tipo = 'ADV' or tipo = 'RESCUE' or tipo = 'REVIEW' and data = '{data}'")
         contagem_cred = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
 
         lista_cred = ['TUR2', 'OWD', 'ADV', 'RESCUE', 'REVIEW']
-
 
         if restricao is None:
             vaga_cred = 8
@@ -143,12 +143,13 @@ if escolha == 'Editar':
     for cliente in lista_clientes:
         nome_cli = str(cliente).translate(str.maketrans('', '', chars))
         lista.append(nome_cli)
-    novo_nome = st.selectbox('Selecione o Cliente para Editar', options=lista)
+    nome_antigo = st.selectbox('Selecione o Cliente para Editar', options=lista)
 
-    if novo_nome is not None:
+    if nome_antigo is not None:
 
         mydb.connect()
-        cursor.execute(f"select r.data, c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.altura, c.peso from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{nova_data}' and c.nome = '{novo_nome}'")
+        cursor.execute(
+            f"select r.data, c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.altura, c.peso from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{nova_data}' and c.nome = '{nome_antigo}'")
         reserva_selecionada = cursor.fetchall()
         mydb.close()
         reserva = str(reserva_selecionada).translate(str.maketrans('', '', chars2)).split(',')
@@ -171,14 +172,19 @@ if escolha == 'Editar':
 
         if st.button('Editar Reserva'):
             mydb.connect()
-            cursor.execute(f"SELECT id FROM cliente WHERE nome = '{novo_nome}'")
-            id_cliente_novo = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
-            st.write(id_cliente_novo)
+            cursor.execute(f"SELECT id FROM cliente WHERE nome = '{nome_antigo}'")
+            id_cliente_antigo = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
+            cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario_novo}'")
+            id_vendedor_novo = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
+            cursor.execute(
+                f"UPDATE reserva SET data = '{data_nova}', tipo = '{tipo_novo}', id_vendedor = '{id_vendedor_novo}' WHERE id_cliente = '{id_cliente_antigo}'")
+            cursor.execute(
+                f"UPDATE cliente set cpf = {cpf_novo}, nome = '{nome_novo}', telefone = '{telefone_novo}', peso = '{peso_novo}, altura = '{altura_novo}' WHERE id = '{id_cliente_antigo}'")
+            mydb.close()
+            st.success('Reserva editada com sucesso')
 
     else:
         pass
-
-
 
     st.write('---')
 
@@ -189,20 +195,20 @@ if escolha == 'Editar':
     limite_total = st.text_input('Limite de vagas totais')
     if st.button('Limitar Vagas'):
         mydb.connect()
-        cursor.execute("INSERT into restricao (data, vaga_bat, vaga_cred, vaga_total) values (%s, %s, %s, %s)", (data_lim, int(limite_bat), int(limite_cred), int(limite_total)))
+        cursor.execute("INSERT into restricao (data, vaga_bat, vaga_cred, vaga_total) values (%s, %s, %s, %s)",
+                       (data_lim, int(limite_bat), int(limite_cred), int(limite_total)))
         mydb.close()
         st.success('Limitação inserida no sistema')
 
     st.write('---')
 
-
 if escolha == 'Visualizar':
     st.subheader('Visualizar Planilha')
     data_vis = st.date_input('Data da Visualização', format='DD/MM/YYYY')
     mydb.connect()
-    cursor.execute(f"select c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.altura, c.peso from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{data_vis}'")
+    cursor.execute(
+        f"select c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.altura, c.peso from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{data_vis}'")
     planilha = cursor.fetchall()
 
     df = pd.DataFrame(planilha, columns=['Nome', 'Cpf', 'Telefone', 'Comissário', 'Cert', 'Fotos', 'Altura', 'Peso'])
     st.dataframe(df, hide_index=True)
-
