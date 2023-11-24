@@ -174,7 +174,7 @@ if escolha == 'Editar':
             mydb.connect()
             cursor.execute(f"SELECT id FROM cliente WHERE nome = '{nome_antigo}'")
             id_cliente_antigo = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
-            cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario_novo}'")
+            cursor.execute(f"SELECT id FROM vendedores WHERE apelido = '{comissario_novo}'")
             id_vendedor_novo = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
             st.write(id_vendedor_novo)
             cursor.execute(
