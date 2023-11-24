@@ -167,6 +167,12 @@ if escolha == 'Editar':
         altura_novo = st.slider('Altura', 1.5, 2.10, value=float(reserva[9]))
         peso_novo = st.slider('Peso', 40, 160, value=int(reserva[10]))
 
+        if st.button('Editar Reserva'):
+            mydb.connect()
+            cursor.execute(f"SELECT id FROM cliente WHERE nome = '{novo_nome}'")
+            id_cliente_novo = cursor.fetchone()
+            st.write(id_cliente_novo)
+
 
 
     st.write('---')
