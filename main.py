@@ -144,34 +144,34 @@ if escolha == 'Editar':
         nome_cli = str(cliente).translate(str.maketrans('', '', chars))
         lista.append(nome_cli)
     novo_nome = st.selectbox('Selecione o Cliente para Editar', options=lista)
-    if st.button('Pesquisar Reserva'):
+
+    mydb.connect()
+    cursor.execute(f"select r.data, c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.altura, c.peso from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{nova_data}' and c.nome = '{novo_nome}'")
+    reserva_selecionada = cursor.fetchall()
+    mydb.close()
+    reserva = str(reserva_selecionada).translate(str.maketrans('', '', chars2)).split(',')
+
+    ano = (reserva[0])[13:].strip()
+    mes = reserva[1].strip()
+    dia = reserva[2].strip()
+    data = f'{ano}{mes}{dia}'
+    data_f = date.fromisoformat(data)
+
+    st.subheader(f"Editar a reserva de {reserva[3]}")
+    data_nova = st.date_input('Insira a nova data', value=data_f, format='DD/MM/YYYY')
+    nome_novo = st.text_input('Nome do Cliente', value=reserva[3])
+    cpf_novo = st.text_input('Cpf do Cliente', value=reserva[4])
+    telefone_novo = st.text_input('Telefone do Cliente', value=reserva[5])
+    comissario_novo = st.text_input('Comissario', value=reserva[6])
+    tipo_novo = st.text_input('Tipo', value=reserva[7])
+    altura_novo = st.slider('Altura', 1.5, 2.10, value=float(reserva[9]))
+    peso_novo = st.slider('Peso', 40, 160, value=int(reserva[10]))
+
+    if st.button('Editar Reserva'):
         mydb.connect()
-        cursor.execute(f"select r.data, c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.altura, c.peso from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{nova_data}' and c.nome = '{novo_nome}'")
-        reserva_selecionada = cursor.fetchall()
-        mydb.close()
-        reserva = str(reserva_selecionada).translate(str.maketrans('', '', chars2)).split(',')
-
-        ano = (reserva[0])[13:].strip()
-        mes = reserva[1].strip()
-        dia = reserva[2].strip()
-        data = f'{ano}{mes}{dia}'
-        data_f = date.fromisoformat(data)
-
-        st.subheader(f"Editar a reserva de {reserva[3]}")
-        data_nova = st.date_input('Insira a nova data', value=data_f, format='DD/MM/YYYY')
-        nome_novo = st.text_input('Nome do Cliente', value=reserva[3])
-        cpf_novo = st.text_input('Cpf do Cliente', value=reserva[4])
-        telefone_novo = st.text_input('Telefone do Cliente', value=reserva[5])
-        comissario_novo = st.text_input('Comissario', value=reserva[6])
-        tipo_novo = st.text_input('Tipo', value=reserva[7])
-        altura_novo = st.slider('Altura', 1.5, 2.10, value=float(reserva[9]))
-        peso_novo = st.slider('Peso', 40, 160, value=int(reserva[10]))
-
-        if st.button('Editar Reserva'):
-            mydb.connect()
-            cursor.execute(f"SELECT id FROM cliente WHERE nome = '{novo_nome}'")
-            id_cliente_novo = cursor.fetchone()
-            st.write(id_cliente_novo)
+        cursor.execute(f"SELECT id FROM cliente WHERE nome = '{novo_nome}'")
+        id_cliente_novo = cursor.fetchone()
+        st.write(id_cliente_novo)
 
 
 
