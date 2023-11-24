@@ -176,6 +176,7 @@ if escolha == 'Editar':
             id_cliente_antigo = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
             cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario_novo}'")
             id_vendedor_novo = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
+            st.write(id_vendedor_novo)
             cursor.execute(
                 f"UPDATE reserva SET data = '{data_nova}', tipo = '{tipo_novo}', id_vendedor = '{id_vendedor_novo}' WHERE id_cliente = '{id_cliente_antigo}'")
             cursor.execute(
