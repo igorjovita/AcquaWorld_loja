@@ -179,7 +179,7 @@ if escolha == 'Editar':
             cursor.execute(
                 f"UPDATE reserva SET data = '{data_nova}', tipo = '{tipo_novo}', id_vendedor = '{id_vendedor_novo}' WHERE id_cliente = '{id_cliente_antigo}'")
             cursor.execute(
-                f"UPDATE cliente set cpf = {cpf_novo}, nome = '{nome_novo}', telefone = '{telefone_novo}', peso = '{peso_novo}, altura = '{altura_novo}' WHERE id = '{id_cliente_antigo}'")
+                f"UPDATE cliente set cpf = {cpf_novo}, nome = '{nome_novo}', telefone = '{telefone_novo}', peso = '{peso_novo}, altura = '{altura_novo}' WHERE id = {id_cliente_antigo}")
             mydb.close()
             st.success('Reserva editada com sucesso')
 
