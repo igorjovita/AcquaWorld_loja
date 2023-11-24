@@ -170,7 +170,7 @@ if escolha == 'Editar':
     if st.button('Editar Reserva'):
         mydb.connect()
         cursor.execute(f"SELECT id FROM cliente WHERE nome = '{novo_nome}'")
-        id_cliente_novo = cursor.fetchone()
+        id_cliente_novo = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
         st.write(id_cliente_novo)
 
 
