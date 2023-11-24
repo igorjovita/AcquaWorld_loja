@@ -140,6 +140,7 @@ if escolha == 'Editar':
     id_cliente_editar = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
     st.write(id_cliente_editar)
 
+
     # st.subheader('Editar Reserva')
     # nova_data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
     # mydb.connect()
