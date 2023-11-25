@@ -177,6 +177,8 @@ if escolha == 'Editar':
                 st.success('Reserva Atualizada')
         if escolha_editar == 'Vendedor':
             mydb.connect()
+            cursor.execute("SELECT apelido FROM vendedores")
+            lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
             cursor.execute(f"SELECT id_vendedor FROM reserva where id_cliente = '{id_cliente_selecionado}'")
             id_vendedor_antigo = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
             cursor.execute(f"SELECT apelido FROM vendedores WHERE id = '{id_vendedor_antigo}'")
