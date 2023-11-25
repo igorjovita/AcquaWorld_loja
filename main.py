@@ -205,7 +205,7 @@ if escolha == 'Editar':
             if st.button('Atualizar Reserva'):
                 mydb.connect()
                 cursor.execute(
-                    f"UPDATE reserva SET peso = '{peso_novo}', altura = '{altura_novo}' WHERE id_cliente = '{info_cliente[0]}'")
+                    f"UPDATE cliente SET peso = '{peso_novo}', altura = '{altura_novo}' WHERE id = '{info_cliente[0]}'")
                 mydb.close()
                 st.success('Reserva Atualizada')
 
