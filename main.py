@@ -144,8 +144,17 @@ if escolha == 'Editar':
         nome_cliente_editar = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
         lista.append(nome_cliente_editar)
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista)
-    st.radio('Escolha o que deseja editar', ['Data', 'Nome', 'CPF e Telefone', 'Certificação', 'Peso e Altura'])
+    cursor.execute(f"SELECT id FROM cliente WHERE nome = '{selectbox_cliente}'")
+    id_cliente_selecionado = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
+    escolha_editar = st.radio('Escolha o que deseja editar', ['Data', 'Nome', 'CPF e Telefone', 'Certificação', 'Peso e Altura'])
 
+    if escolha_editar == 'Data':
+        nova_data = st.date_input('Nova Data da reserva', format='DD/MM/YYYY')
+        if st.button('Atualizar Reserva'):
+            mydb.connect()
+            cursor.execute(f"UPDATE reserva SET data = '{nova_data}' WHERE id_cliente = '{id_cliente_selecionado}'")
+            mydb.close()
+            st.success('Reserva Atualizada')
 
 
     # st.subheader('Editar Reserva')
