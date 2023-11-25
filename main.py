@@ -155,7 +155,15 @@ if escolha == 'Editar':
             cursor.execute(f"UPDATE reserva SET data = '{nova_data}' WHERE id_cliente = '{id_cliente_selecionado}'")
             mydb.close()
             st.success('Reserva Atualizada')
-
+    if escolha_editar == 'Nome':
+        mydb.connect()
+        cursor.execute(f"SELECT nome FROM cliente where id = '{id_cliente_selecionado}'")
+        nome_antigo = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
+        nome_novo = st.text_input('Nome da Reserva', value=nome_antigo)
+        if st.button('Atualizar Reserva'):
+            cursor.execute(f"UPDATE reserva SET nome = '{nome_novo}' WHERE id_cliente = '{id_cliente_selecionado}'")
+            mydb.close()
+            st.success('Reserva Atualizada')
 
     # st.subheader('Editar Reserva')
     # nova_data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
