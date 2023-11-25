@@ -143,12 +143,13 @@ if escolha == 'Editar':
         nome_cliente_editar = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
         lista.append(nome_cliente_editar)
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista)
-    st.subheader(f'Editar a reserva de {selectbox_cliente}')
-    cursor.execute(f"SELECT id FROM cliente WHERE nome = '{selectbox_cliente}'")
-    id_cliente_selecionado = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
-    escolha_editar = st.radio('Escolha o que deseja editar', ['Data', 'Nome', 'CPF e Telefone', 'Vendedor', 'Certificação', 'Peso e Altura'])
 
     if selectbox_cliente is not None:
+        st.subheader(f'Editar a reserva de {selectbox_cliente}')
+        cursor.execute(f"SELECT id FROM cliente WHERE nome = '{selectbox_cliente}'")
+        id_cliente_selecionado = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
+        escolha_editar = st.radio('Escolha o que deseja editar', ['Data', 'Nome', 'CPF e Telefone', 'Vendedor', 'Certificação', 'Peso e Altura'])
+
         if escolha_editar == 'Data':
             nova_data = st.date_input('Nova Data da reserva', format='DD/MM/YYYY')
             if st.button('Atualizar Reserva'):
