@@ -138,7 +138,7 @@ if escolha == 'Editar':
     mydb.connect()
     cursor.execute(f"SELECT id_cliente FROM reserva WHERE data = '{data_editar}'")
     id_cliente_editar = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
-    st.write(id_cliente_editar)
+    st.subheader(id_cliente_editar)
 
 
     # st.subheader('Editar Reserva')
