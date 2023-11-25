@@ -133,7 +133,6 @@ if escolha == 'Reservar':
 
 if escolha == 'Editar':
 
-    st.subheader('Editar Reserva')
     data_editar = st.date_input('Data da Reserva', format='DD/MM/YYYY')
     mydb.connect()
     cursor.execute(f"SELECT id_cliente FROM reserva WHERE data = '{data_editar}'")
@@ -165,6 +164,18 @@ if escolha == 'Editar':
             cursor.execute(f"UPDATE cliente SET nome = '{nome_novo}' WHERE id = '{id_cliente_selecionado}'")
             mydb.close()
             st.success('Reserva Atualizada')
+    if escolha_editar == 'CPF e Telefone':
+        mydb.connect()
+        cursor.execute(f"SELECT cpf, telefone FROM cliente WHERE id = '{id_cliente_selecionado}'")
+        cpf_telefone = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+        cpf_novo = st.text_input('Cpf do Cliente', value=cpf_telefone[0])
+        telefone_novo = st.text_input('Telefone do Cliente', value=cpf_telefone[1])
+        if st.button('Atualizar Reserva'):
+            cursor.execute(f"UPDATE cliente SET cpf = '{cpf_novo}', telefone = '{telefone_novo}' WHERE id = '{id_cliente_selecionado}'")
+            mydb.close()
+            st.success('Reserva Atualizada')
+
+
 
     # st.subheader('Editar Reserva')
     # nova_data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
