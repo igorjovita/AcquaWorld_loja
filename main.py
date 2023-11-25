@@ -137,8 +137,14 @@ if escolha == 'Editar':
     data_editar = st.date_input('Data da Reserva', format='DD/MM/YYYY')
     mydb.connect()
     cursor.execute(f"SELECT id_cliente FROM reserva WHERE data = '{data_editar}'")
-    id_cliente_editar = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
-    st.subheader(id_cliente_editar)
+    id_cliente_editar = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
+    lista = []
+    for item in id_cliente_editar:
+        cursor.execute(f"SELECT nome FROM cliente WHERE id = {int(item)}")
+        nome_cliente_editar = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
+        lista.append(nome_cliente_editar)
+    selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista)
+
 
 
     # st.subheader('Editar Reserva')
