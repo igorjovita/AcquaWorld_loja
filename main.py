@@ -149,13 +149,6 @@ if escolha == 'Editar':
         info_cliente = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
         cursor.execute(f"SELECT tipo, id_vendedor from reserva where id_cliente = '{info_cliente[0]}'")
         info_reserva = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
-        id_editar = info_cliente[0]
-        cpf_editar = info_cliente[1]
-        telefone_editar = info_cliente[2]
-        peso_editar = info_cliente[3]
-        altura_editar = info_cliente[4]
-
-
 
         escolha_editar = st.radio('Escolha o que deseja editar', ['Data', 'Nome', 'CPF e Telefone', 'Vendedor', 'Certificação', 'Peso e Altura'])
 
@@ -206,8 +199,8 @@ if escolha == 'Editar':
                 mydb.close()
                 st.success('Reserva Atualizada')
         if escolha_editar == 'Peso e Altura':
-            peso_novo = st.slider('Peso do CLiente', value=info_cliente[3], 40, 160)
-            altura_novo = st.slider('Altura do CLiente', value=info_cliente[4], 1.50, 2.10)
+            peso_novo = st.slider('Peso do CLiente', value=info_cliente[3],min_value=40, max_value=160)
+            altura_novo = st.slider('Altura do CLiente', value=info_cliente[4], min_value=1.50, max_value=2.10)
 
 
 
