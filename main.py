@@ -201,8 +201,13 @@ if escolha == 'Editar':
                 st.success('Reserva Atualizada')
         if escolha_editar == 'Peso e Altura':
             peso_novo = st.slider('Peso do CLiente', value=int(info_cliente[3]), min_value=40, max_value=160)
-            altura_novo = st.slider('Altura do CLiente', value=int(info_cliente[4]), min_value=1.50, max_value=2.10)
-
+            altura_novo = st.slider('Altura do CLiente', value=float(info_cliente[4]), min_value=1.50, max_value=2.10)
+            if st.button('Atualizar Reserva'):
+                mydb.connect()
+                cursor.execute(
+                    f"UPDATE reserva SET peso = '{peso_novo}', altura = '{altura_novo}' WHERE id_cliente = '{info_cliente[0]}'")
+                mydb.close()
+                st.success('Reserva Atualizada')
 
 
 
