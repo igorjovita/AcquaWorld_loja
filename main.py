@@ -137,7 +137,7 @@ if escolha == 'Editar':
     data_editar = st.date_input('Data da Reserva', format='DD/MM/YYYY')
     mydb.connect()
     cursor.execute(f"SELECT id_cliente FROM reserva WHERE data = '{data_editar}'")
-    id_cliente_editar = cursor.fetchall()
+    id_cliente_editar = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
     lista = []
     for item in id_cliente_editar:
         st.write(item)
