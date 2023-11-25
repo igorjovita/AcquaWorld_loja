@@ -25,8 +25,7 @@ chars = "'),([]"
 chars2 = "')([]"
 if escolha == 'Reservar':
     cursor.execute("SELECT apelido FROM vendedores")
-    vendedores = cursor.fetchall()
-    lista = str(vendedores).translate(str.maketrans('', '', chars)).split()
+    lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
     st.subheader('Reservar Clientes')
 
     data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
@@ -35,7 +34,7 @@ if escolha == 'Reservar':
 
     with col1:
         nome_cliente = st.text_input('Nome do Cliente :')
-        comissario = st.selectbox('Vendedor :', lista)
+        comissario = st.selectbox('Vendedor :', lista_vendedor)
 
     with col2:
         cpf = st.text_input('Cpf do cliente', help='Apenas numeros')
@@ -176,6 +175,22 @@ if escolha == 'Editar':
                 cursor.execute(f"UPDATE cliente SET cpf = '{cpf_novo}', telefone = '{telefone_novo}' WHERE id = '{id_cliente_selecionado}'")
                 mydb.close()
                 st.success('Reserva Atualizada')
+        if escolha_editar == 'Vendedor':
+            mydb.connect()
+            cursor.execute(f"SELECT id_vendedor FROM reserva where id_cliente = '{id_cliente_selecionado}'")
+            id_vendedor_antigo = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
+            cursor.execute(f"SELECT apelido FROM vendedores WHERE id = '{id_vendedor_antigo}'")
+            comissario_antigo = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
+            st.subheader(f'Vendedor : {comissario_antigo}')
+            comissario_novo = st.selectbox('Selecione o novo vendedor', lista_vendedor)
+            cursor.execute(f"SELECT id FROM vendedores WHERE apelido = '{comissario_novo}'")
+            id_vendedor_editar = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
+            if st.button('Atualizar Reserva'):
+                cursor.execute(f"UPDATE reserva SET id_vendedor = '{id_vendedor_editar}' WHERE id_cliente = '{id_cliente_selecionado}'")
+                mydb.close()
+                st.success('Reserva Atualizada')
+
+
 
 
 
