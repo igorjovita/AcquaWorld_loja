@@ -144,7 +144,7 @@ if escolha == 'Editar':
         nome_cliente_editar = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
         lista.append(nome_cliente_editar)
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista)
-    st.radio('Escolha o que deseja editar', ['Data' 'Nome', 'CPF e Telefone', 'Certificação', 'Peso e Altura'])
+    st.radio('Escolha o que deseja editar', ['Data', 'Nome', 'CPF e Telefone', 'Certificação', 'Peso e Altura'])
 
 
 
