@@ -189,23 +189,26 @@ if escolha == 'Editar':
             comissario_antigo = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
             st.subheader(f'Vendedor : {comissario_antigo}')
             comissario_novo = st.selectbox('Selecione o novo vendedor', lista_vendedor)
-            cursor.execute(f"SELECT id FROM vendedores WHERE apelido = '{comissario_novo}'")
-            id_vendedor_editar = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
-            cursor.execute(
-                f"UPDATE reserva SET id_vendedor = '{id_vendedor_editar}' WHERE id_cliente = '{info_cliente[0]}'")
-            mydb.close()
-            st.success('Reserva Atualizada')
+            if st.button('Atualizar Reserva'):
+                cursor.execute(f"SELECT id FROM vendedores WHERE apelido = '{comissario_novo}'")
+                id_vendedor_editar = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
+                cursor.execute(
+                    f"UPDATE reserva SET id_vendedor = '{id_vendedor_editar}' WHERE id_cliente = '{info_cliente[0]}'")
+                mydb.close()
+                st.success('Reserva Atualizada')
 
         if escolha_editar == 'Certificação':
             tipo_novo = st.text_input('Certificação do Cliente', value=info_reserva[0])
-            mydb.connect()
-            cursor.execute(
-                f"UPDATE reserva SET tipo = '{tipo_novo}' WHERE id_cliente = '{info_cliente[0]}'")
-            mydb.close()
-            st.success('Reserva Atualizada')
+            if st.button('Atualizar Reserva'):
+                mydb.connect()
+                cursor.execute(
+                    f"UPDATE reserva SET tipo = '{tipo_novo}' WHERE id_cliente = '{info_cliente[0]}'")
+                mydb.close()
+                st.success('Reserva Atualizada')
         if escolha_editar == 'Peso e Altura':
             peso_novo = st.slider('Peso do CLiente', value=info_cliente[3], 40, 160)
             altura_novo = st.slider('Altura do CLiente', value=info_cliente[4], 1.50, 2.10)
+
 
 
 
