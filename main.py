@@ -145,52 +145,69 @@ if escolha == 'Editar':
 
     if selectbox_cliente is not None:
         st.subheader(f'Editar a reserva de {selectbox_cliente}')
-        cursor.execute(f"SELECT id FROM cliente WHERE nome = '{selectbox_cliente}'")
-        id_cliente_selecionado = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
-        escolha_editar = st.radio('Escolha o que deseja editar', ['Data', 'Nome', 'CPF e Telefone', 'Vendedor', 'Certificação', 'Peso e Altura'])
+        cursor.execute(f"SELECT id, cpf, telefone, peso, altura FROM cliente WHERE nome = '{selectbox_cliente}'")
+        info_cliente = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+        id_editar = info_cliente[0]
+        cpf_editar = info_cliente[1]
+        telefone_editar = info_cliente[2]
+        peso_editar = info_cliente[3]
+        altura_editar = info_cliente[4]
 
-        if escolha_editar == 'Data':
-            nova_data = st.date_input('Nova Data da reserva', format='DD/MM/YYYY')
-            if st.button('Atualizar Reserva'):
-                mydb.connect()
-                cursor.execute(f"UPDATE reserva SET data = '{nova_data}' WHERE id_cliente = '{id_cliente_selecionado}'")
-                mydb.close()
-                st.success('Reserva Atualizada')
-        if escolha_editar == 'Nome':
-            mydb.connect()
-            cursor.execute(f"SELECT nome FROM cliente where id = '{id_cliente_selecionado}'")
-            nome_antigo = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
-            nome_novo = st.text_input('Nome do Cliente', value=nome_antigo)
-            if st.button('Atualizar Reserva'):
-                cursor.execute(f"UPDATE cliente SET nome = '{nome_novo}' WHERE id = '{id_cliente_selecionado}'")
-                mydb.close()
-                st.success('Reserva Atualizada')
-        if escolha_editar == 'CPF e Telefone':
-            mydb.connect()
-            cursor.execute(f"SELECT cpf, telefone FROM cliente WHERE id = '{id_cliente_selecionado}'")
-            cpf_telefone = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
-            cpf_novo = st.text_input('Cpf do Cliente', value=cpf_telefone[0])
-            telefone_novo = st.text_input('Telefone do Cliente', value=cpf_telefone[1])
-            if st.button('Atualizar Reserva'):
-                cursor.execute(f"UPDATE cliente SET cpf = '{cpf_novo}', telefone = '{telefone_novo}' WHERE id = '{id_cliente_selecionado}'")
-                mydb.close()
-                st.success('Reserva Atualizada')
-        if escolha_editar == 'Vendedor':
-            mydb.connect()
-            cursor.execute("SELECT apelido FROM vendedores")
-            lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
-            cursor.execute(f"SELECT id_vendedor FROM reserva where id_cliente = '{id_cliente_selecionado}'")
-            id_vendedor_antigo = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
-            cursor.execute(f"SELECT apelido FROM vendedores WHERE id = '{id_vendedor_antigo}'")
-            comissario_antigo = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
-            st.subheader(f'Vendedor : {comissario_antigo}')
-            comissario_novo = st.selectbox('Selecione o novo vendedor', lista_vendedor)
-            cursor.execute(f"SELECT id FROM vendedores WHERE apelido = '{comissario_novo}'")
-            id_vendedor_editar = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
-            if st.button('Atualizar Reserva'):
-                cursor.execute(f"UPDATE reserva SET id_vendedor = '{id_vendedor_editar}' WHERE id_cliente = '{id_cliente_selecionado}'")
-                mydb.close()
-                st.success('Reserva Atualizada')
+        st.write(id_editar)
+        st.write(cpf_editar)
+        st.write(telefone_editar)
+        st.write(peso_editar)
+        st.write(altura_editar)
+        
+        # id_cliente_selecionado = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
+        # escolha_editar = st.radio('Escolha o que deseja editar', ['Data', 'Nome', 'CPF e Telefone', 'Vendedor', 'Certificação', 'Peso e Altura'])
+        #
+        # if escolha_editar == 'Data':
+        #     nova_data = st.date_input('Nova Data da reserva', format='DD/MM/YYYY')
+        #     if st.button('Atualizar Reserva'):
+        #         mydb.connect()
+        #         cursor.execute(f"UPDATE reserva SET data = '{nova_data}' WHERE id_cliente = '{id_cliente_selecionado}'")
+        #         mydb.close()
+        #         st.success('Reserva Atualizada')
+        # if escolha_editar == 'Nome':
+        #     mydb.connect()
+        #     cursor.execute(f"SELECT nome FROM cliente where id = '{id_cliente_selecionado}'")
+        #     nome_antigo = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
+        #     nome_novo = st.text_input('Nome do Cliente', value=nome_antigo)
+        #     if st.button('Atualizar Reserva'):
+        #         cursor.execute(f"UPDATE cliente SET nome = '{nome_novo}' WHERE id = '{id_cliente_selecionado}'")
+        #         mydb.close()
+        #         st.success('Reserva Atualizada')
+        # if escolha_editar == 'CPF e Telefone':
+        #     mydb.connect()
+        #     cursor.execute(f"SELECT cpf, telefone FROM cliente WHERE id = '{id_cliente_selecionado}'")
+        #     cpf_telefone = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+        #     cpf_novo = st.text_input('Cpf do Cliente', value=cpf_telefone[0])
+        #     telefone_novo = st.text_input('Telefone do Cliente', value=cpf_telefone[1])
+        #     if st.button('Atualizar Reserva'):
+        #         cursor.execute(f"UPDATE cliente SET cpf = '{cpf_novo}', telefone = '{telefone_novo}' WHERE id = '{id_cliente_selecionado}'")
+        #         mydb.close()
+        #         st.success('Reserva Atualizada')
+        # if escolha_editar == 'Vendedor':
+        #     mydb.connect()
+        #     cursor.execute("SELECT apelido FROM vendedores")
+        #     lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+        #     cursor.execute(f"SELECT id_vendedor FROM reserva where id_cliente = '{id_cliente_selecionado}'")
+        #     id_vendedor_antigo = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
+        #     cursor.execute(f"SELECT apelido FROM vendedores WHERE id = '{id_vendedor_antigo}'")
+        #     comissario_antigo = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
+        #     st.subheader(f'Vendedor : {comissario_antigo}')
+        #     comissario_novo = st.selectbox('Selecione o novo vendedor', lista_vendedor)
+        #     cursor.execute(f"SELECT id FROM vendedores WHERE apelido = '{comissario_novo}'")
+        #     id_vendedor_editar = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
+        #     if st.button('Atualizar Reserva'):
+        #         cursor.execute(f"UPDATE reserva SET id_vendedor = '{id_vendedor_editar}' WHERE id_cliente = '{id_cliente_selecionado}'")
+        #         mydb.close()
+        #         st.success('Reserva Atualizada')
+        #
+        # if escolha_editar == 'Certificação':
+        #     mydb.connect()
+        #     cursor.execute("SELECT ")
 
 
 
