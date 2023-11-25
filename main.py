@@ -140,9 +140,12 @@ if escolha == 'Editar':
     id_cliente_editar = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
     lista = []
     for item in id_cliente_editar:
+        st.write(item)
         cursor.execute(f"SELECT nome FROM cliente WHERE id = '{item}'")
         nome_cliente_editar = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
+        st.write(nome_cliente_editar)
         lista.append(nome_cliente_editar)
+        st.write(lista)
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista)
 
 
