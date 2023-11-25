@@ -191,7 +191,8 @@ if escolha == 'Editar':
                 st.success('Reserva Atualizada')
 
         if escolha_editar == 'Certificação':
-            tipo_novo = st.text_input('Certificação do Cliente', value=info_reserva[0])
+            st.subheader(f'Certificação: {info_reserva[0]}')
+            tipo_novo = st.selectbox('Nova Certificação', ['', 'BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'])
             if st.button('Atualizar Reserva'):
                 mydb.connect()
                 cursor.execute(
@@ -199,8 +200,8 @@ if escolha == 'Editar':
                 mydb.close()
                 st.success('Reserva Atualizada')
         if escolha_editar == 'Peso e Altura':
-            peso_novo = st.slider('Peso do CLiente', value=info_cliente[3],min_value=40, max_value=160)
-            altura_novo = st.slider('Altura do CLiente', value=info_cliente[4], min_value=1.50, max_value=2.10)
+            peso_novo = st.slider('Peso do CLiente', value=int(info_cliente[3]), min_value=40, max_value=160)
+            altura_novo = st.slider('Altura do CLiente', value=int(info_cliente[4]), min_value=1.50, max_value=2.10)
 
 
 
