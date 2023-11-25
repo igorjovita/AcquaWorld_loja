@@ -209,6 +209,17 @@ if escolha == 'Editar':
                 mydb.close()
                 st.success('Reserva Atualizada')
 
+if escolha == 'Visualizar':
+    st.subheader('Visualizar Planilha')
+    data_vis = st.date_input('Data da Visualização', format='DD/MM/YYYY')
+    mydb.connect()
+    cursor.execute(
+        f"select c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.altura, c.peso from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{data_vis}'")
+    planilha = cursor.fetchall()
+
+    df = pd.DataFrame(planilha, columns=['Nome', 'Cpf', 'Telefone', 'Comissário', 'Cert', 'Fotos', 'Altura', 'Peso'])
+    st.dataframe(df, hide_index=True)
+
 
 
 
@@ -230,7 +241,7 @@ if escolha == 'Editar':
 #
 #         mydb.connect()
 #         cursor.execute(
-#             f"select r.data, c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.altura, c.peso from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{nova_data}' and c.nome = '{nome_antigo}'")
+#             f"select r.data, c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.altura, c.peso from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{nova_data}'")
 #         reserva_selecionada = cursor.fetchall()
 #         mydb.close()
 #         reserva = str(reserva_selecionada).translate(str.maketrans('', '', chars2)).split(',')
@@ -284,13 +295,4 @@ if escolha == 'Editar':
 #
 #     st.write('---')
 #
-# if escolha == 'Visualizar':
-#     st.subheader('Visualizar Planilha')
-#     data_vis = st.date_input('Data da Visualização', format='DD/MM/YYYY')
-#     mydb.connect()
-#     cursor.execute(
-#         f"select c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.altura, c.peso from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{data_vis}'")
-#     planilha = cursor.fetchall()
-#
-#     df = pd.DataFrame(planilha, columns=['Nome', 'Cpf', 'Telefone', 'Comissário', 'Cert', 'Fotos', 'Altura', 'Peso'])
-#     st.dataframe(df, hide_index=True)
+
