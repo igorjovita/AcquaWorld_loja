@@ -218,7 +218,10 @@ if escolha == 'Visualizar':
     planilha = cursor.fetchall()
 
     df = pd.DataFrame(planilha, columns=['Nome', 'Cpf', 'Telefone', 'Comissário', 'Cert', 'Fotos', 'Altura', 'Peso'])
-    st.dataframe(df, hide_index=True)
+    st.dataframe(df, hide_index=True, width=10)
+
+if escolha == 'Pagamento':
+    data_pagamento = st.date_input('Data do pagamento', format='DD/MM/YYYY')
 
 
 
