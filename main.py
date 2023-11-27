@@ -234,6 +234,7 @@ if escolha == 'Pagamento':
         lista_pagamento.append(nome_cliente_pagamento)
 
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista_pagamento)
+    st.write(id_cliente_pagamento)
     cursor.execute(f"SELECT id, id_vendedor, pago_loja, pago_vendedor FROM reserva WHERE id_cliente = '{id_cliente_pagamento}' and data = '{data_pagamento}'")
     info_reserva_pg = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split()
     if info_reserva_pg[2] != 0.00 and info_reserva_pg[3] == 0.00:
