@@ -26,10 +26,10 @@ if escolha == 'Entrada':
     valor = st.text_input('Valor Pago')
     if st.button('Lançar no caixa'):
         cursor.execute(
-            'insert into caixa (id_conta,data, tipo, descrição, forma_pg, valor, tipo_movimento) values ('
+            'insert into caixa (id_conta,data, tipo, descricao, forma_pg, valor, tipo_movimento) values ('
             '%s,%s,%s,%s,%s,%s,%s)', (1, data, tipo, descrição, pagamento, valor, 'ENTRADA'))
         mydb.commit()
-    cursor.execute("select data,descrição,forma_pg, valor from caixa where tipo_movimento = 'ENTRADA'")
+    cursor.execute("select data,descricao,forma_pg, valor from caixa where tipo_movimento = 'ENTRADA'")
     dados = cursor.fetchall()
     st.dataframe(dados)
 
@@ -72,7 +72,7 @@ if escolha == 'Caixa Diario':
         entrada_final = str(entradas).replace('.', ',')
         st.subheader(f'    - Total de Entradas : R$ {entrada_final}')
         st.subheader(f'    - Total de Saidas : R$ {saida_final}')
-    
+
 if escolha == 'Saida':
     data = st.date_input('Selecione a data', format='DD/MM/YYYY')
     st.header(f'Caixa do dia {data}')
@@ -83,6 +83,6 @@ if escolha == 'Saida':
     valor = st.text_input('Valor Pago')
     if st.button('Lançar no caixa'):
         cursor.execute(
-            'insert into caixa (id_conta,data, tipo, descrição, forma_pg, valor, tipo_movimento) values ('
+            'insert into caixa (id_conta,data, tipo, descricao, forma_pg, valor, tipo_movimento) values ('
             '%s,%s,%s,%s,%s,%s,%s)', (1, data, tipo, descrição, pagamento, valor, 'SAIDA'))
 
