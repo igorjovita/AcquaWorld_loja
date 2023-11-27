@@ -268,6 +268,9 @@ if escolha == 'Pagamento':
 
         st.write(info_reserva_pg[2])
         st.write(info_reserva_pg[3])
+        st.write(nome_cliente_pagamento)
+        st.write(id_cliente_pagamento2)
+        st.write(id_cliente_pagamento)
 
         cursor.execute("INSERT INTO pagamentos (data, id_reserva, id_vendedor, sinal, recebedor_sinal, pagamento, forma_pg, parcela) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (data_pagamento, info_reserva_pg[0], info_reserva_pg[1], sinal_pg, recebedor_sinal_pg, pagamento, forma_pg, parcela))
         mydb.close()
