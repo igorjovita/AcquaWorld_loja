@@ -37,12 +37,12 @@ if escolha == 'Caixa Diario':
     st.header('Planilha do Caixa')
     cursor.execute(
 
-        """SELECT lct.id_conta,
-                SUM(CASE WHEN lct.tipo_movimento = 'ENTRADA' 
-                    THEN lct.valor 
-                    ELSE - lct.valor 
+        """SELECT id_conta,
+                SUM(CASE WHEN tipo_movimento = 'ENTRADA' 
+                    THEN valor 
+                    ELSE - valor 
                 END) AS saldo
-        FROM caixa lct""")
+        FROM caixa""")
 
     dados = cursor.fetchall()
 
@@ -85,4 +85,3 @@ if escolha == 'Saida':
             'insert into caixa (id_conta,data, tipo, descrição, forma_pg, valor, tipo_movimento) values ('
             '%s,%s,%s,%s,%s,%s,%s)', (1, data, tipo, descrição, pagamento, valor, 'SAIDA'))
 
-        
