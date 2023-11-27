@@ -216,6 +216,7 @@ if escolha == 'Visualizar':
     cursor.execute(
         f"select c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.altura, c.peso from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{data_vis}'")
     planilha = cursor.fetchall()
+    mydb.close()
 
     df = pd.DataFrame(planilha, columns=['Nome', 'Cpf', 'Telefone', 'Comissário', 'Cert', 'Fotos', 'Altura', 'Peso'])
     st.dataframe(df, hide_index=True, width=100)
@@ -231,7 +232,39 @@ if escolha == 'Pagamento':
         cursor.execute(f"SELECT nome FROM cliente WHERE id = '{item}'")
         nome_cliente_pagamento = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
         lista_pagamento.append(nome_cliente_pagamento)
+
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista_pagamento)
+    cursor.execute(f"SELECT id, id_vendedor, pago_loja, pago_vendedor FROM reserva WHERE id_cliente = {id_cliente_pagamento} and data = '{data_pagamento}'")
+    info_reserva_pg = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split()
+    if info_reserva_pg[2] != 0.00 and info_reserva_pg[3] == 0.00:
+        sinal_pg = info_reserva_pg[2]
+        recebedor_sinal_pg = 'AcquaWorld'
+
+    if info_reserva_pg[2] == 0.00 and info_reserva_pg[3] != 0.00:
+        sinal_pg = info_reserva_pg[3]
+        recebedor_sinal_pg = 'Vendedor'
+
+    if info_reserva_pg[2] == 0.00 and info_reserva_pg[3] == 0.00:
+        sinal_pg = 0
+        recebedor_sinal_pg = None
+    forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None, placeholder='Insira a forma de pagamento')
+
+    if forma_pg == 'Credito':
+        parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
+    else:
+        parcela = 0
+
+
+    pagamento = st.number_input('Valor pago')
+
+    mydb.connect()
+    cursor.execute("INSERT INTO pagamentos (data, id_reserva, id_vendedor, sinal, recebedor_sinal, pagamento, forma_pg, parcela) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (data_pagamento, info_reserva_pg[0], info_reserva_pg[1], sinal_pg, recebedor_sinal_pg, pagamento, forma_pg, parcela))
+    mydb.close()
+    st.success('Pagamento lançado no sistema!')
+
+
+
+
 
 
 
