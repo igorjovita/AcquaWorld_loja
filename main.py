@@ -247,7 +247,7 @@ if escolha == 'Pagamento':
 
     if st.button('Lançar Pagamento'):
         mydb.connect()
-        cursor.execute(f"SELECT id FROM cliente WHERE nome = '{nome_cliente_pagamento}'")
+        cursor.execute(f"SELECT id FROM cliente WHERE nome = '{selectbox_cliente}'")
         id_cliente_pagamento2 = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
 
         cursor.execute(
