@@ -52,17 +52,18 @@ if escolha == 'Caixa Diario':
     final = str(formatado).replace('.', ',')
     st.subheader(f'Saldo total do caixa : R$ {final}')
 
-    if final is not None:
-        cursor.execute(
+    cursor.execute(
 
-            """SELECT tipo_movimento,
-                    SUM(CASE WHEN tipo_movimento = 'ENTRADA' 
-                        THEN valor 
-                        ELSE  valor 
-                    END) AS saldo
-            FROM caixa 
-            GROUP BY tipo_movimento""")
-        controle = cursor.fetchall()
+        """SELECT tipo_movimento,
+                SUM(CASE WHEN tipo_movimento = 'ENTRADA' 
+                    THEN valor 
+                    ELSE  valor 
+                END) AS saldo
+        FROM caixa 
+        GROUP BY tipo_movimento""")
+    controle = cursor.fetchall()
+    st.write(controle)
+    if controle is not None:
 
         dividido = str(controle).split(',')
 
