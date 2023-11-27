@@ -35,14 +35,14 @@ if escolha == 'Entrada':
 
 if escolha == 'Caixa Diario':
     st.header('Planilha do Caixa')
+    data_caixa = st.date_input('Data', format='DD/MM/YYYY')
     cursor.execute(
-
-        """SELECT id_conta,
+        f"""SELECT id_conta,
                 SUM(CASE WHEN tipo_movimento = 'ENTRADA' 
                     THEN valor 
                     ELSE - valor 
                 END) AS saldo
-        FROM caixa""")
+        FROM caixa where data = '{data_caixa}'""")
 
     dados = cursor.fetchall()
 
@@ -53,26 +53,24 @@ if escolha == 'Caixa Diario':
     st.subheader(f'Saldo total do caixa : R$ {final}')
 
     cursor.execute(
-
-        """SELECT tipo_movimento,
+        f"""SELECT tipo_movimento,
                 SUM(CASE WHEN tipo_movimento = 'ENTRADA' 
                     THEN valor 
                     ELSE  valor 
                 END) AS saldo
-        FROM caixa 
+        FROM caixa where data = '{data_caixa}'
         GROUP BY tipo_movimento""")
     controle = cursor.fetchall()
-    st.write(controle)
-    if controle is not None:
 
-        dividido = str(controle).split(',')
+    dividido = str(controle).split(',')
+    st.write(dividido)
 
-        saidas = (str(dividido[3]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
-        entradas = (str(dividido[1]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
-        saida_final = str(saidas).replace('.', ',')
-        entrada_final = str(entradas).replace('.', ',')
-        st.subheader(f'    - Total de Entradas : R$ {entrada_final}')
-        st.subheader(f'    - Total de Saidas : R$ {saida_final}')
+    saidas = (str(dividido[3]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
+    entradas = (str(dividido[1]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
+    saida_final = str(saidas).replace('.', ',')
+    entrada_final = str(entradas).replace('.', ',')
+    st.subheader(f'    - Total de Entradas : R$ {entrada_final}')
+    st.subheader(f'    - Total de Saidas : R$ {saida_final}')
 
 if escolha == 'Saida':
     data = st.date_input('Selecione a data', format='DD/MM/YYYY')
