@@ -225,7 +225,7 @@ if escolha == 'Pagamento':
 
     lista_pagamento = []
     mydb.connect()
-    cursor.execute(f"SELECT id_cliente FROM reserva WHERE data = '{data_editar}'")
+    cursor.execute(f"SELECT id_cliente FROM reserva WHERE data = '{data_pagamento}'")
     id_cliente_pagamento = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
     for item in id_cliente_pagamento:
         cursor.execute(f"SELECT nome FROM cliente WHERE id = '{item}'")
