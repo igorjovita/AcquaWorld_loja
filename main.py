@@ -234,20 +234,7 @@ if escolha == 'Pagamento':
         lista_pagamento.append(nome_cliente_pagamento)
 
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista_pagamento)
-    st.write(id_cliente_pagamento)
-    cursor.execute(f"SELECT id, id_vendedor, pago_loja, pago_vendedor FROM reserva WHERE id_cliente = '{id_cliente_pagamento}' and data = '{data_pagamento}'")
-    info_reserva_pg = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split()
-    if info_reserva_pg[2] != 0.00 and info_reserva_pg[3] == 0.00:
-        sinal_pg = info_reserva_pg[2]
-        recebedor_sinal_pg = 'AcquaWorld'
 
-    if info_reserva_pg[2] == 0.00 and info_reserva_pg[3] != 0.00:
-        sinal_pg = info_reserva_pg[3]
-        recebedor_sinal_pg = 'Vendedor'
-
-    if info_reserva_pg[2] == 0.00 and info_reserva_pg[3] == 0.00:
-        sinal_pg = 0
-        recebedor_sinal_pg = None
     forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None, placeholder='Insira a forma de pagamento')
 
     if forma_pg == 'Credito':
@@ -260,6 +247,25 @@ if escolha == 'Pagamento':
 
     if st.button('Lançar Pagamento'):
         mydb.connect()
+        cursor.execute(f"SELECT id FROM cliente WHERE nome = '{nome_cliente_pagamento}'")
+        id_cliente_pagamento2 = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
+
+        cursor.execute(
+            f"SELECT id, id_vendedor, pago_loja, pago_vendedor FROM reserva WHERE id_cliente = '{id_cliente_pagamento2}' and data = '{data_pagamento}'")
+        info_reserva_pg = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split()
+
+        if info_reserva_pg[2] != 0.00 and info_reserva_pg[3] == 0.00:
+            sinal_pg = info_reserva_pg[2]
+            recebedor_sinal_pg = 'AcquaWorld'
+
+        if info_reserva_pg[2] == 0.00 and info_reserva_pg[3] != 0.00:
+            sinal_pg = info_reserva_pg[3]
+            recebedor_sinal_pg = 'Vendedor'
+
+        if info_reserva_pg[2] == 0.00 and info_reserva_pg[3] == 0.00:
+            sinal_pg = 0
+            recebedor_sinal_pg = None
+
         cursor.execute("INSERT INTO pagamentos (data, id_reserva, id_vendedor, sinal, recebedor_sinal, pagamento, forma_pg, parcela) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (data_pagamento, info_reserva_pg[0], info_reserva_pg[1], sinal_pg, recebedor_sinal_pg, pagamento, forma_pg, parcela))
         mydb.close()
         st.success('Pagamento lançado no sistema!')
