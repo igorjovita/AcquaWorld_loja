@@ -26,10 +26,10 @@ if escolha == 'Entrada':
     valor = st.text_input('Valor Pago')
     if st.button('Lançar no caixa'):
         cursor.execute(
-            'insert into lancamento (id_conta,data, tipo, descrição, forma_pg, valor, tipo_movimento) values ('
+            'insert into caixa (id_conta,data, tipo, descrição, forma_pg, valor, tipo_movimento) values ('
             '%s,%s,%s,%s,%s,%s,%s)', (1, data, tipo, descrição, pagamento, valor, 'ENTRADA'))
         mydb.commit()
-    cursor.execute("select data,descrição,forma_pg, valor from lancamento where tipo_movimento = 'ENTRADA'")
+    cursor.execute("select data,descrição,forma_pg, valor from caixa where tipo_movimento = 'ENTRADA'")
     dados = cursor.fetchall()
     st.dataframe(dados)
 
@@ -42,7 +42,7 @@ if escolha == 'Caixa Diario':
                     THEN lct.valor 
                     ELSE - lct.valor 
                 END) AS saldo
-        FROM lancamento lct""")
+        FROM caixa lct""")
 
     dados = cursor.fetchall()
 
@@ -59,7 +59,7 @@ if escolha == 'Caixa Diario':
                     THEN lct.valor 
                     ELSE  lct.valor 
                 END) AS saldo
-        FROM lancamento lct
+        FROM caixa lct
         GROUP BY lct.tipo_movimento""")
     controle = cursor.fetchall()
 
@@ -82,5 +82,5 @@ if escolha == 'Saida':
     valor = st.text_input('Valor Pago')
     if st.button('Lançar no caixa'):
         cursor.execute(
-            'insert into lancamento (id_conta,data, tipo, descrição, forma_pg, valor, tipo_movimento) values ('
+            'insert into caixa (id_conta,data, tipo, descrição, forma_pg, valor, tipo_movimento) values ('
             '%s,%s,%s,%s,%s,%s,%s)', (1, data, tipo, descrição, pagamento, valor, 'SAIDA'))
