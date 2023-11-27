@@ -84,3 +84,5 @@ if escolha == 'Saida':
         cursor.execute(
             'insert into caixa (id_conta,data, tipo, descrição, forma_pg, valor, tipo_movimento) values ('
             '%s,%s,%s,%s,%s,%s,%s)', (1, data, tipo, descrição, pagamento, valor, 'SAIDA'))
+
+        
