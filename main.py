@@ -223,6 +223,16 @@ if escolha == 'Visualizar':
 if escolha == 'Pagamento':
     data_pagamento = st.date_input('Data do pagamento', format='DD/MM/YYYY')
 
+    lista_pagamento = []
+    mydb.connect()
+    cursor.execute(f"SELECT id_cliente FROM reserva WHERE data = '{data_editar}'")
+    id_cliente_pagamento = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+    for item in id_cliente_pagamento:
+        cursor.execute(f"SELECT nome FROM cliente WHERE id = '{item}'")
+        nome_cliente_pagamento = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
+        lista_pagamento.append(nome_cliente_pagamento)
+    selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista_pagamento)
+
 
 
 
