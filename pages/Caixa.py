@@ -52,26 +52,27 @@ if escolha == 'Caixa Diario':
     final = str(formatado).replace('.', ',')
     st.subheader(f'Saldo total do caixa : R$ {final}')
 
-    cursor.execute(
+    if final is not None:
+        cursor.execute(
 
-        """SELECT lct.tipo_movimento,
-                SUM(CASE WHEN lct.tipo_movimento = 'ENTRADA' 
-                    THEN lct.valor 
-                    ELSE  lct.valor 
-                END) AS saldo
-        FROM caixa lct
-        GROUP BY lct.tipo_movimento""")
-    controle = cursor.fetchall()
+            """SELECT tipo_movimento,
+                    SUM(CASE WHEN tipo_movimento = 'ENTRADA' 
+                        THEN valor 
+                        ELSE  valor 
+                    END) AS saldo
+            FROM caixa 
+            GROUP BY tipo_movimento""")
+        controle = cursor.fetchall()
 
-    dividido = str(controle).split(',')
+        dividido = str(controle).split(',')
 
-    saidas = (str(dividido[3]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
-    entradas = (str(dividido[1]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
-    saida_final = str(saidas).replace('.', ',')
-    entrada_final = str(entradas).replace('.', ',')
-    st.subheader(f'    - Total de Entradas : R$ {entrada_final}')
-    st.subheader(f'    - Total de Saidas : R$ {saida_final}')
-
+        saidas = (str(dividido[3]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
+        entradas = (str(dividido[1]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
+        saida_final = str(saidas).replace('.', ',')
+        entrada_final = str(entradas).replace('.', ',')
+        st.subheader(f'    - Total de Entradas : R$ {entrada_final}')
+        st.subheader(f'    - Total de Saidas : R$ {saida_final}')
+    
 if escolha == 'Saida':
     data = st.date_input('Selecione a data', format='DD/MM/YYYY')
     st.header(f'Caixa do dia {data}')
