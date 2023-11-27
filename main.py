@@ -254,15 +254,15 @@ if escolha == 'Pagamento':
             f"SELECT id, id_vendedor, pago_loja, pago_vendedor FROM reserva WHERE id_cliente = '{id_cliente_pagamento2}' and data = '{data_pagamento}'")
         info_reserva_pg = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split()
 
-        if info_reserva_pg[2] != 0.00 and info_reserva_pg[3] == 0.00:
+        if info_reserva_pg[2] != 'Decimal0.00' and info_reserva_pg[3] == 'Decimal0.00':
             sinal_pg = info_reserva_pg[2]
             recebedor_sinal_pg = 'AcquaWorld'
 
-        if info_reserva_pg[2] == 0.00 and info_reserva_pg[3] != 0.00:
+        if info_reserva_pg[2] == 'Decimal0.00' and info_reserva_pg[3] != 'Decimal0.00':
             sinal_pg = info_reserva_pg[3]
             recebedor_sinal_pg = 'Vendedor'
 
-        if info_reserva_pg[2] == 0.00 and info_reserva_pg[3] == 0.00:
+        if info_reserva_pg[2] == 'Decimal0.00' and info_reserva_pg[3] == 'Decimal0.00':
             sinal_pg = 0
             recebedor_sinal_pg = None
 
