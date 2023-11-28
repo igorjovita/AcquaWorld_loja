@@ -251,7 +251,7 @@ if escolha == 'Pagamento':
         id_cliente_pagamento2 = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
 
         cursor.execute(
-            f"SELECT id, id_vendedor, pago_loja, pago_vendedor FROM reserva WHERE id_cliente = '{id_cliente_pagamento2}' and data = '{data_pagamento}'")
+            f"SELECT id, id_vendedor, pago_loja, pago_vendedor, tipo, data FROM reserva WHERE id_cliente = '{id_cliente_pagamento2}' and data = '{data_pagamento}'")
         info_reserva_pg = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split()
 
         if info_reserva_pg[2] != 'Decimal0.00' and info_reserva_pg[3] == 'Decimal0.00':
@@ -271,10 +271,15 @@ if escolha == 'Pagamento':
         st.write(nome_cliente_pagamento)
         st.write(id_cliente_pagamento2)
         st.write(id_cliente_pagamento)
+        descricao = f'Pagamento  1 {info_reserva_pg[4]} do dia {info_reserva_pg[5]}'
 
         cursor.execute("INSERT INTO pagamentos (data, id_reserva, id_vendedor, sinal, recebedor_sinal, pagamento, forma_pg, parcela) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (data_pagamento, info_reserva_pg[0], info_reserva_pg[1], sinal_pg, recebedor_sinal_pg, pagamento, forma_pg, parcela))
+        cursor.execute("INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s, %s, %s)", (1, data_pagamento, 'ENTRADA', info_reserva_pg[4], descricao, forma_pg, pagamento))
+
         mydb.close()
         st.success('Pagamento lançado no sistema!')
+
+
 
 
 
