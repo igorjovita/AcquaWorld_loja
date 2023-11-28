@@ -64,7 +64,7 @@ if escolha == 'Caixa Diario':
 
     dividido = str(controle).split(',')
     st.write(dividido)
-    contagem = st.write(len(dividido))
+    contagem = (len(dividido))
 
     if contagem > 1:
         entradas = (str(dividido[1]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
