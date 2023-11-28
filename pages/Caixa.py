@@ -2,6 +2,7 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 import mysql.connector
 import os
+from datetime import timedelta, date
 
 escolha = option_menu(menu_title=None, options=['Caixa Diario', 'Entrada', 'Saida'], orientation='horizontal')
 
