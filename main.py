@@ -275,11 +275,11 @@ if escolha == 'Pagamento':
         st.write(id_cliente_pagamento)
         st.write(data_reserva)
         descricao = f'{selectbox_cliente} do dia {data_reserva}'
-        
 
 
 
-        cursor.execute("INSERT INTO pagamentos (data, data_reserva id_reserva, id_vendedor, sinal, recebedor_sinal, pagamento, forma_pg, parcela) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (data_pagamento, data_reserva, info_reserva_pg[0], info_reserva_pg[1], sinal_pg, recebedor_sinal_pg, pagamento, forma_pg, parcela))
+
+        cursor.execute("INSERT INTO pagamentos (data, data_reserva id_reserva, id_vendedor, sinal, recebedor_sinal, pagamento, forma_pg, parcela) VALUES (%s, %s, %s, %s, %s, %s, %s, %s,%s)", (data_pagamento, data_reserva, info_reserva_pg[0], info_reserva_pg[1], sinal_pg, recebedor_sinal_pg, pagamento, forma_pg, parcela))
         cursor.execute("INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s, %s, %s)", (1, data_pagamento, 'ENTRADA', info_reserva_pg[4], descricao, forma_pg, pagamento))
 
         mydb.close()
