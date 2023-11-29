@@ -76,7 +76,7 @@ if escolha == 'Caixa Diario':
     if contagem > 3:
         saidas = (str(dividido[3]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
         saida_final = str(saidas).replace('.', ',')
-        st.subheader('- Total de Entradas : R$ 0')
+    
         st.subheader(f'    - Total de Saidas : R$ {saida_final}')
 
 if escolha == 'Saida':
