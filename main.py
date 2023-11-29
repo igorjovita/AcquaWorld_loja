@@ -255,7 +255,10 @@ if escolha == 'Pagamento':
         info_reserva_pg = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split()
 
         cursor.execute(f"SELECT data FROM reserva WHERE  id_cliente = '{id_cliente_pagamento2}' and data = '{data_pagamento}'")
-        data_reserva = datetime.date(cursor.fetchone())
+        data_reserva = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split()
+        ano_reserva = data_reserva[0]
+        mes_reserva = data_reserva[1]
+        dia_reserva = data_reserva[2]
 
         if info_reserva_pg[2] != 'Decimal0.00' and info_reserva_pg[3] == 'Decimal0.00':
             sinal_pg = info_reserva_pg[2]
@@ -274,7 +277,9 @@ if escolha == 'Pagamento':
         st.write(nome_cliente_pagamento)
         st.write(id_cliente_pagamento2)
         st.write(id_cliente_pagamento)
-        st.write(data_reserva)
+        st.write(data_reserva[0])
+        st.write(data_reserva[1])
+        st.write(data_reserva[2])
         descricao = f'{selectbox_cliente} do dia {info_reserva_pg[5]}'
 
 
