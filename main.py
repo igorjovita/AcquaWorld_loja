@@ -274,7 +274,8 @@ if escolha == 'Pagamento':
         st.write(id_cliente_pagamento2)
         st.write(id_cliente_pagamento)
         st.write(data_reserva)
-        descricao = f'{selectbox_cliente} do dia {data_reserva}'
+        data_completa = str(data_reserva).split('-')
+        descricao = f'{selectbox_cliente} do dia {data_completa[2]}/{data_completa[1]}/{data_completa[0]}'
 
 
 
