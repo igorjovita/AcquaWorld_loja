@@ -222,11 +222,12 @@ if escolha == 'Visualizar':
     st.dataframe(df, hide_index=True, width=100)
 
 if escolha == 'Pagamento':
-    data_pagamento = st.date_input('Data do pagamento', format='DD/MM/YYYY')
+    data_pagamento = date.today()
+    data_reserva = st.date_input('Data da reserva', format='DD/MM/YYYY')
 
     lista_pagamento = []
     mydb.connect()
-    cursor.execute(f"SELECT id_cliente FROM reserva WHERE data = '{data_pagamento}'")
+    cursor.execute(f"SELECT id_cliente FROM reserva WHERE data = '{data_reserva}'")
     id_cliente_pagamento = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
     for item in id_cliente_pagamento:
         cursor.execute(f"SELECT nome FROM cliente WHERE id = '{item}'")
@@ -251,12 +252,9 @@ if escolha == 'Pagamento':
         id_cliente_pagamento2 = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
 
         cursor.execute(
-            f"SELECT id, id_vendedor, pago_loja, pago_vendedor, tipo, data FROM reserva WHERE id_cliente = '{id_cliente_pagamento2}' and data = '{data_pagamento}'")
+            f"SELECT id, id_vendedor, pago_loja, pago_vendedor, tipo, data FROM reserva WHERE id_cliente = '{id_cliente_pagamento2}' and data = '{data_reserva}'")
         info_reserva_pg = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split()
 
-        cursor.execute(f"SELECT data FROM reserva WHERE  id_cliente = '{id_cliente_pagamento2}' and data = '{data_pagamento}'")
-        data_reserva = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split()
-        data_completa = f"{data_reserva[2]}/{data_reserva[1]}/{data_reserva[0][-4:]}"
 
         if info_reserva_pg[2] != 'Decimal0.00' and info_reserva_pg[3] == 'Decimal0.00':
             sinal_pg = info_reserva_pg[2]
@@ -275,12 +273,12 @@ if escolha == 'Pagamento':
         st.write(nome_cliente_pagamento)
         st.write(id_cliente_pagamento2)
         st.write(id_cliente_pagamento)
-        st.write(data_completa)
-        descricao = f'{selectbox_cliente} do dia {data_completa}'
+        st.write(data_reserva)
+        descricao = f'{selectbox_cliente} do dia {data_reserva}'
 
 
 
-        cursor.execute("INSERT INTO pagamentos (data, id_reserva, id_vendedor, sinal, recebedor_sinal, pagamento, forma_pg, parcela) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (data_pagamento, info_reserva_pg[0], info_reserva_pg[1], sinal_pg, recebedor_sinal_pg, pagamento, forma_pg, parcela))
+        cursor.execute("INSERT INTO pagamentos (data, data_reserva id_reserva, id_vendedor, sinal, recebedor_sinal, pagamento, forma_pg, parcela) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (data_pagamento, data_reserva, info_reserva_pg[0], info_reserva_pg[1], sinal_pg, recebedor_sinal_pg, pagamento, forma_pg, parcela))
         cursor.execute("INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s, %s, %s)", (1, data_pagamento, 'ENTRADA', info_reserva_pg[4], descricao, forma_pg, pagamento))
 
         mydb.close()

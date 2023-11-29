@@ -19,7 +19,7 @@ mydb = mysql.connector.connect(
 cursor = mydb.cursor(buffered=True)
 
 if escolha == 'Entrada':
-    data = st.date_input('Selecione a data', format='DD/MM/YYYY')
+    data = date.today()
     st.header(f'Caixa do dia {data}')
     tipo = st.selectbox('Tipo da Entrada', options=['ENTRADA', 'BAT', 'TUR', 'ACP', 'CURSO', 'PGT PARCEIRO', 'OUTROS'])
     descrição = st.text_input('Descrição do Lançamento')
@@ -78,7 +78,7 @@ if escolha == 'Caixa Diario':
         st.subheader(f'    - Total de Saidas : R$ {saida_final}')
 
 if escolha == 'Saida':
-    data = st.date_input('Selecione a data', format='DD/MM/YYYY')
+    data = date.today()
     st.header(f'Caixa do dia {data}')
     tipo = st.selectbox('Tipo da Saida',
                         options=['Despesa Operacional', 'Café da manhã', 'Combustivel', 'Conta', 'Salario'])
