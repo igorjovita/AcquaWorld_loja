@@ -67,7 +67,7 @@ if escolha == 'Caixa Diario':
     dividido = str(controle).split(',')
     contagem = (len(dividido))
 
-    if contagem > 1:
+    if contagem == 2:
         entradas = (str(dividido[1]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
         entrada_final = str(entradas).replace('.', ',')
         st.subheader(f'- Total de Entradas : R$ {entrada_final}')
@@ -76,7 +76,7 @@ if escolha == 'Caixa Diario':
     if contagem > 3:
         saidas = (str(dividido[3]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
         saida_final = str(saidas).replace('.', ',')
-    
+
         st.subheader(f'    - Total de Saidas : R$ {saida_final}')
 
 if escolha == 'Saida':
