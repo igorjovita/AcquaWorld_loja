@@ -256,6 +256,7 @@ if escolha == 'Pagamento':
 
         cursor.execute(f"SELECT data FROM reserva WHERE  id_cliente = '{id_cliente_pagamento2}' and data = '{data_pagamento}'")
         data_reserva = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split()
+        data_completa = [data_reserva[0][-4:0], data_reserva[1], data_reserva[2]]
         ano_reserva = data_reserva[0][-4:]
         mes_reserva = data_reserva[1]
         dia_reserva = data_reserva[2]
@@ -277,10 +278,11 @@ if escolha == 'Pagamento':
         st.write(nome_cliente_pagamento)
         st.write(id_cliente_pagamento2)
         st.write(id_cliente_pagamento)
-        st.write(ano_reserva)
+        st.write(data_completa)
         st.write(data_reserva[1])
         st.write(data_reserva[2])
         descricao = f'{selectbox_cliente} do dia {info_reserva_pg[5]}'
+        
 
 
         cursor.execute("INSERT INTO pagamentos (data, id_reserva, id_vendedor, sinal, recebedor_sinal, pagamento, forma_pg, parcela) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (data_pagamento, info_reserva_pg[0], info_reserva_pg[1], sinal_pg, recebedor_sinal_pg, pagamento, forma_pg, parcela))
