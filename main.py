@@ -275,6 +275,7 @@ if escolha == 'Pagamento':
         st.write(id_cliente_pagamento)
         st.write(data_reserva)
         descricao = f'{selectbox_cliente} do dia {data_reserva}'
+        
 
 
 
