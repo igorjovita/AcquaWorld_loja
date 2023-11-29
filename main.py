@@ -256,7 +256,7 @@ if escolha == 'Pagamento':
 
         cursor.execute(f"SELECT data FROM reserva WHERE  id_cliente = '{id_cliente_pagamento2}' and data = '{data_pagamento}'")
         data_reserva = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split()
-        ano_reserva = data_reserva[0]
+        ano_reserva = data_reserva[0][-4:]
         mes_reserva = data_reserva[1]
         dia_reserva = data_reserva[2]
 
