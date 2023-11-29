@@ -20,7 +20,8 @@ cursor = mydb.cursor(buffered=True)
 
 if escolha == 'Entrada':
     data = date.today()
-    st.header(f'Caixa do dia {data}')
+    data_caixa = str(data).split('-')
+    st.header(f'Caixa do dia {data_caixa[2]}/{data_caixa[1]}/{data_caixa[0]}')
     tipo = st.selectbox('Tipo da Entrada', options=['ENTRADA', 'BAT', 'TUR', 'ACP', 'CURSO', 'PGT PARCEIRO', 'OUTROS'])
     descrição = st.text_input('Descrição do Lançamento')
     pagamento = st.selectbox('Forma do pagamento', options=['PIX', 'DINHEIRO', 'DEBITO', 'CREDITO'])
@@ -79,7 +80,8 @@ if escolha == 'Caixa Diario':
 
 if escolha == 'Saida':
     data = date.today()
-    st.header(f'Caixa do dia {data}')
+    data_caixa = str(data).split('-')
+    st.header(f'Caixa do dia {data_caixa[2]}/{data_caixa[1]}/{data_caixa[0]}')
     tipo = st.selectbox('Tipo da Saida',
                         options=['Despesa Operacional', 'Café da manhã', 'Combustivel', 'Conta', 'Salario'])
     descrição = st.text_input('Descrição do Lançamento')
