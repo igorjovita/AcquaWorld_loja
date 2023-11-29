@@ -65,17 +65,18 @@ if escolha == 'Caixa Diario':
     controle = cursor.fetchall()
 
     dividido = str(controle).split(',')
-    st.write(dividido)
     contagem = (len(dividido))
 
     if contagem > 1:
         entradas = (str(dividido[1]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
         entrada_final = str(entradas).replace('.', ',')
-        st.subheader(f'    - Total de Entradas : R$ {entrada_final}')
+        st.subheader(f'- Total de Entradas : R$ {entrada_final}')
+        st.subheader('- Total de Saidas : R$ 0')
 
     if contagem > 3:
         saidas = (str(dividido[3]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
         saida_final = str(saidas).replace('.', ',')
+        st.subheader('- Total de Entradas : R$ 0')
         st.subheader(f'    - Total de Saidas : R$ {saida_final}')
 
 if escolha == 'Saida':
