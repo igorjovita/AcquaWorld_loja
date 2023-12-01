@@ -255,30 +255,22 @@ if escolha == 'Pagamento':
         valor_neto = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
 
 
-        pago_na_loja = float(str(info_reserva_pg[2]).strip('Decimal'))
-        pago_pro_vendedor = float(str(info_reserva_pg[3]).strip('Decimal'))
-        st.write(pago_na_loja)
-        st.write(pago_pro_vendedor)
-        valor_receber = valor_neto - pago_na_loja
-        st.write(valor_receber)
+        sinal_loja = float(str(info_reserva_pg[2]).strip('Decimal'))
+        sinal_vendedor = float(str(info_reserva_pg[3]).strip('Decimal'))
+        st.write(sinal_loja)
+        st.write(sinal_vendedor)
+        valor_receber = (pagamento + sinal_loja) - valor_neto
+        st.write(f'Valor Receber - R$ {valor_receber}')
+        valor_pagar = valor_receber + (-sinal_vendedor)
+        st.write(f'Valor a pagar - R$ {valor_pagar}')
 
-        if info_reserva_pg[2] != 'Decimal0.00' and info_reserva_pg[3] == 'Decimal0.00':
-            sinal_pg = info_reserva_pg[2]
-            recebedor_sinal_pg = 'AcquaWorld'
 
-        if info_reserva_pg[2] == 'Decimal0.00' and info_reserva_pg[3] != 'Decimal0.00':
-            sinal_pg = info_reserva_pg[3]
-            recebedor_sinal_pg = 'Vendedor'
-
-        if info_reserva_pg[2] == 'Decimal0.00' and info_reserva_pg[3] == 'Decimal0.00':
-            sinal_pg = 0
-            recebedor_sinal_pg = None
 
         data_completa = str(data_reserva).split('-')
         descricao = f'{selectbox_cliente} do dia {data_completa[2]}/{data_completa[1]}/{data_completa[0]}'
 
 
-        cursor.execute("INSERT INTO pagamentos (data, data_reserva ,id_reserva, id_vendedor, sinal, recebedor_sinal, pagamento, forma_pg, parcela) VALUES (%s, %s, %s, %s, %s, %s, %s, %s,%s)", (data_pagamento, data_reserva, info_reserva_pg[0], info_reserva_pg[1], sinal_pg, recebedor_sinal_pg, pagamento, forma_pg, parcela))
+        cursor.execute("INSERT INTO pagamentos (data, data_reserva ,id_reserva, id_vendedor, sinal_loja, sinal_vendedor, pagamento, forma_pg, parcela) VALUES (%s, %s, %s, %s, %s, %s, %s, %s,%s)", (data_pagamento, data_reserva, info_reserva_pg[0], info_reserva_pg[1], sinal_loja, sinal_vendedor, pagamento, forma_pg, parcela))
         cursor.execute("INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s, %s, %s)", (1, data_pagamento, 'ENTRADA', info_reserva_pg[4], descricao, forma_pg, pagamento))
         # cursor.execute(f"SELECT id FROM pagamentos WHERE id_reserva = {info_reserva_pg[0]}")
         # id_pagamento = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
