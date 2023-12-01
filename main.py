@@ -253,6 +253,8 @@ if escolha == 'Pagamento':
         st.write(info_reserva_pg)
         st.write(id_cliente_pagamento2)
         st.write(data_reserva)
+        pago_na_loja = float(str(info_reserva_pg).strip('Decimal'))
+        st.write(pago_na_loja)
 
         if info_reserva_pg[2] != 'Decimal0.00' and info_reserva_pg[3] == 'Decimal0.00':
             sinal_pg = info_reserva_pg[2]
