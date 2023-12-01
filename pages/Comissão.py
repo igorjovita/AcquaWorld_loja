@@ -16,3 +16,17 @@ mydb = mysql.connector.connect(
     ssl_ca=r"C:\users\acqua\downloads\cacert-2023-08-22.pem")
 
 cursor = mydb.cursor(buffered=True)
+
+
+# Comissario, Data da reserva, Nome cliente, Tipo, Pago comissario, Pago Loja
+
+st.subheader('Comissão')
+mydb.connect()
+cursor.execute("SELECT apelido FROM vendedores")
+lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+
+comissario = st.selectbox('Selecione o parceiro', lista_vendedor)
+situacao = st.selectbox('Situação do Pagamento', ['Pendente', 'Pago', 'Todos'], index=None, placeholder='Selecione o status do pagamento')
+
+
+

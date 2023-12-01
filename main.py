@@ -24,6 +24,7 @@ escolha = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visual
 chars = "'),([]"
 chars2 = "')([]"
 if escolha == 'Reservar':
+    mydb.connect()
     cursor.execute("SELECT apelido FROM vendedores")
     lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
     st.subheader('Reservar Clientes')
@@ -124,11 +125,7 @@ if escolha == 'Reservar':
                 (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor))
             mydb.close()
             st.success('Reserva realizada com sucesso!')
-            st.write(contagem)
 
-            st.write(vaga_bat)
-            st.write(vaga_cred)
-            st.write(vaga_total)
 
 if escolha == 'Editar':
 
@@ -251,7 +248,7 @@ if escolha == 'Pagamento':
         id_cliente_pagamento2 = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
 
         cursor.execute(
-            f"SELECT id, id_vendedor, pago_loja, pago_vendedor, tipo FROM reserva WHERE id_cliente = '{id_cliente_pagamento2}' and data = '{data_reserva}'")
+            f"SELECT id, id_vendedor, pago_loja, pago_vendedor, tipo  FROM reserva WHERE id_cliente = '{id_cliente_pagamento2}' and data = '{data_reserva}'")
         info_reserva_pg = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split()
 
         if info_reserva_pg[2] != 'Decimal0.00' and info_reserva_pg[3] == 'Decimal0.00':
@@ -269,8 +266,12 @@ if escolha == 'Pagamento':
         data_completa = str(data_reserva).split('-')
         descricao = f'{selectbox_cliente} do dia {data_completa[2]}/{data_completa[1]}/{data_completa[0]}'
 
+
         cursor.execute("INSERT INTO pagamentos (data, data_reserva ,id_reserva, id_vendedor, sinal, recebedor_sinal, pagamento, forma_pg, parcela) VALUES (%s, %s, %s, %s, %s, %s, %s, %s,%s)", (data_pagamento, data_reserva, info_reserva_pg[0], info_reserva_pg[1], sinal_pg, recebedor_sinal_pg, pagamento, forma_pg, parcela))
         cursor.execute("INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s, %s, %s)", (1, data_pagamento, 'ENTRADA', info_reserva_pg[4], descricao, forma_pg, pagamento))
+        # cursor.execute(f"SELECT id FROM pagamentos WHERE id_reserva = {info_reserva_pg[0]}")
+        # id_pagamento = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
+        # cursor.execute("INSERT INTO lancamento_comissao (id_reserva, id_vendedor, id_pagamento, valor_receber, valor_pagar, situacao) VALUES (%s, %s, %s, %s, %s, %s)", (info_reserva_pg[0], info_reserva_pg[1], id_pagamento,))
 
         mydb.close()
         st.success('Pagamento lançado no sistema!')
