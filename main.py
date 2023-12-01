@@ -259,6 +259,8 @@ if escolha == 'Pagamento':
         sinal_vendedor = float(str(info_reserva_pg[3]).strip('Decimal'))
         st.write(sinal_loja)
         st.write(sinal_vendedor)
+        st.write(pagamento)
+        st.write(valor_neto)
         valor_receber = (pagamento + sinal_loja) - valor_neto
         st.write(f'Valor Receber - R$ {valor_receber}')
         valor_pagar = valor_receber + (-sinal_vendedor)
