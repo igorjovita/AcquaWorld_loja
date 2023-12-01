@@ -254,7 +254,7 @@ if escolha == 'Pagamento':
         st.write(id_cliente_pagamento2)
         st.write(data_reserva)
         pago_na_loja = float(str(info_reserva_pg[2]).strip('Decimal'))
-        pago_pro_vendedor = str(info_reserva_pg[2]).strip('Decimal')
+        pago_pro_vendedor = float(str(info_reserva_pg[3]).strip('Decimal'))
         st.write(pago_na_loja)
         st.write(pago_pro_vendedor)
 
