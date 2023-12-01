@@ -262,13 +262,15 @@ if escolha == 'Pagamento':
         st.write(float(pagamento))
         st.write(valor_neto)
         pagoloja = float(pagamento) + sinal_loja
-        if pagoloja >= valor_neto:
+        if pagoloja > valor_neto:
             valor_receber = 0
+            valor_pagar = valor_neto - pagoloja
         else:
-
             valor_receber = (float(pagamento) + sinal_loja) - valor_neto
+            valor_pagar = valor_receber + (-sinal_vendedor)
+
         st.write(f'Valor Receber - R$ {valor_receber}')
-        valor_pagar = valor_receber + (-sinal_vendedor)
+
         st.write(f'Valor a pagar - R$ {valor_pagar}')
 
 
