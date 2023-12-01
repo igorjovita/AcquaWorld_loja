@@ -247,16 +247,20 @@ if escolha == 'Pagamento':
         cursor.execute(f"SELECT id FROM cliente WHERE nome = '{selectbox_cliente}'")
         id_cliente_pagamento2 = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
 
+
         cursor.execute(
             f"SELECT id, id_vendedor, pago_loja, pago_vendedor, tipo  FROM reserva WHERE id_cliente = '{id_cliente_pagamento2}' and data = '{data_reserva}'")
         info_reserva_pg = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
-        st.write(info_reserva_pg)
-        st.write(id_cliente_pagamento2)
-        st.write(data_reserva)
+        cursor.execute(f"SELECT valor_neto FROM vendedores WHERE id = {info_reserva_pg[1]}")
+        valor_neto = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
+
+
         pago_na_loja = float(str(info_reserva_pg[2]).strip('Decimal'))
         pago_pro_vendedor = float(str(info_reserva_pg[3]).strip('Decimal'))
         st.write(pago_na_loja)
         st.write(pago_pro_vendedor)
+        valor_receber = valor_neto - pago_na_loja
+        st.write(valor_receber)
 
         if info_reserva_pg[2] != 'Decimal0.00' and info_reserva_pg[3] == 'Decimal0.00':
             sinal_pg = info_reserva_pg[2]
