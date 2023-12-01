@@ -264,7 +264,7 @@ if escolha == 'Pagamento':
         pagoloja = float(pagamento) + sinal_loja
         if pagoloja > valor_neto:
             valor_receber = 0
-            valor_pagar = valor_neto - pagoloja
+            valor_pagar = pagoloja - valor_neto
         else:
             valor_receber = (float(pagamento) + sinal_loja) - valor_neto
             valor_pagar = valor_receber + (-sinal_vendedor)
