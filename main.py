@@ -246,6 +246,7 @@ if escolha == 'Pagamento':
         mydb.connect()
         cursor.execute(f"SELECT id FROM cliente WHERE nome = '{selectbox_cliente}'")
         id_cliente_pagamento2 = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
+        st.write(id_cliente_pagamento2)
 
 
         cursor.execute(
