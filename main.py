@@ -250,6 +250,7 @@ if escolha == 'Pagamento':
         cursor.execute(
             f"SELECT id, id_vendedor, pago_loja, pago_vendedor, tipo  FROM reserva WHERE id_cliente = '{id_cliente_pagamento2}' and data = '{data_reserva}'")
         info_reserva_pg = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+        st.write(info_reserva_pg)
 
         if info_reserva_pg[2] != 'Decimal0.00' and info_reserva_pg[3] == 'Decimal0.00':
             sinal_pg = info_reserva_pg[2]
