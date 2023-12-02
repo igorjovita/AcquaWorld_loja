@@ -246,13 +246,13 @@ if escolha == 'Pagamento':
         mydb.connect()
         cursor.execute(f"SELECT id FROM cliente WHERE nome = '{selectbox_cliente}'")
         id_cliente_pagamento2 = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
-        st.write(id_cliente_pagamento2)
+
 
 
         cursor.execute(
             f"SELECT id, id_vendedor, pago_loja, pago_vendedor, tipo, valor_total  FROM reserva WHERE id_cliente = '{id_cliente_pagamento2}' and data = '{data_reserva}'")
         info_reserva_pg = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
-        st.write(info_reserva_pg)
+
         cursor.execute(f"SELECT valor_neto FROM vendedores WHERE id = {info_reserva_pg[1]}")
         valor_neto = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
 
@@ -270,11 +270,19 @@ if escolha == 'Pagamento':
             valor_receber = 0
             valor_pagar = pagoloja - valor_neto
 
-        if pagoloja == valor_neto:
+        if pagoloja == valor_neto and sinal_vendedor == total_mergulho - valor_neto:
+            valor_receber = 0
+            valor_pagar = 0
+
+        if pagoloja == valor_neto and sinal_vendedor != total_mergulho - valor_neto:
             valor_receber = 0
             valor_pagar = total_mergulho - valor_neto
 
-        if pagoloja < valor_neto:
+        if pagoloja < valor_neto and sinal_vendedor == total_mergulho - valor_neto:
+            valor_receber = (float(pagamento) + sinal_loja) - valor_neto
+            valor_pagar = 0
+
+        if pagoloja < valor_neto and sinal_vendedor != total_mergulho - valor_neto:
             valor_receber = (float(pagamento) + sinal_loja) - valor_neto
             valor_pagar = valor_receber + (-sinal_vendedor)
 
