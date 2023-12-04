@@ -276,7 +276,7 @@ if escolha == 'Pagamento':
 
         if pagoloja == valor_neto and sinal_vendedor != total_mergulho - valor_neto:
             valor_receber = 0
-            valor_pagar = total_mergulho - valor_neto
+            valor_pagar = sinal_vendedor - (total_mergulho - valor_neto)
 
         if pagoloja < valor_neto and sinal_vendedor == total_mergulho - valor_neto:
             valor_receber = (float(pagamento) + sinal_loja) - valor_neto
