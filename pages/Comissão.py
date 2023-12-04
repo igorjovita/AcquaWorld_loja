@@ -6,6 +6,9 @@ import os
 import mysql.connector
 from datetime import date, datetime
 
+chars = "'),([]"
+chars2 = "')([]"
+
 mydb = mysql.connector.connect(
     host=os.getenv("DB_HOST"),
     user=os.getenv("DB_USERNAME"),
