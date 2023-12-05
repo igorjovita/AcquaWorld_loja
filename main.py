@@ -25,11 +25,8 @@ escolha = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visual
 pasta = os.path.dirname(__file__)
 
 
-def criar_pdf():
-    cnv = canvas.Canvas(pasta + '\\teste.pdf', pagesize=A4)
-    cnv.drawString(100, 100, 'AcquaWorld')
-    cnv.save()
-    st.success('Pdf criado com sucesso')
+
+
 
 
 chars = "'),([]"
@@ -230,7 +227,11 @@ if escolha == 'Visualizar':
     df = pd.DataFrame(planilha, columns=['Nome', 'Cpf', 'Telefone', 'Comissário', 'Cert', 'Fotos', 'Altura', 'Peso'])
     st.dataframe(df, hide_index=True, width=100)
 
-    st.button('Criar PDF', on_click=criar_pdf())
+    if st.button('Criar Pdf'):
+        cnv = canvas.Canvas(pasta + '\\teste.pdf', pagesize=A4)
+        cnv.drawString(100, 100, 'AcquaWorld')
+        cnv.save()
+        st.success('Pdf criado com sucesso')
 
 if escolha == 'Pagamento':
     data_pagamento = date.today()
