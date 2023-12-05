@@ -6,6 +6,7 @@ from reportlab.lib.pagesizes import A4
 import os
 import mysql.connector
 from datetime import date, datetime
+from fpdf import FPDF
 
 mydb = mysql.connector.connect(
     host=os.getenv("DB_HOST"),
@@ -227,11 +228,12 @@ if escolha == 'Visualizar':
     df = pd.DataFrame(planilha, columns=['Nome', 'Cpf', 'Telefone', 'Comissário', 'Cert', 'Fotos', 'Altura', 'Peso'])
     st.dataframe(df, hide_index=True, width=100)
 
+    pdf = FPDF('P', 'mm', 'Letter')
     if st.button('Criar Pdf'):
-        cnv = canvas.Canvas('teste.pdf', pagesize=A4)
-        cnv.drawString(100, 100, 'AcquaWorld')
-        cnv.save()
-        st.success('Pdf criado com sucesso')
+        pdf.add_page()
+        pdf.set_font('helvetica', '', 16)
+        pdf.cell(40, 10, 'Hello World')
+        pdf.output('pdf_1.pdf')
 
 if escolha == 'Pagamento':
     data_pagamento = date.today()

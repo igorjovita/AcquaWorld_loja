@@ -4,3 +4,4 @@ mysql-connector-python~=8.2.0
 streamlit-option-menu
 dotenv-python
 reportlab
+fpdf2
