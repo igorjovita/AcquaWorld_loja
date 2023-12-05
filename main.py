@@ -1,7 +1,8 @@
 import streamlit as st
 import pandas as pd
 from streamlit_option_menu import option_menu
-
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
 import os
 import mysql.connector
 from datetime import date, datetime
@@ -20,6 +21,16 @@ cursor = mydb.cursor(buffered=True)
 escolha = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visualizar', 'Editar', 'Pagamento'],
                       icons=['book', 'card-checklist', 'pencil-square', 'currency-dollar'],
                       orientation='horizontal')
+
+pasta = os.path.dirname(__file__)
+
+
+def criar_pdf():
+    cnv = canvas.Canvas(pasta + '\\teste.pdf', pagesize=A4)
+    cnv.drawString(100, 100, 'AcquaWorld')
+    cnv.save()
+    st.success('Pdf criado com sucesso')
+
 
 chars = "'),([]"
 chars2 = "')([]"
@@ -126,7 +137,6 @@ if escolha == 'Reservar':
             mydb.close()
             st.success('Reserva realizada com sucesso!')
 
-
 if escolha == 'Editar':
 
     data_editar = st.date_input('Data da Reserva', format='DD/MM/YYYY')
@@ -147,7 +157,8 @@ if escolha == 'Editar':
         cursor.execute(f"SELECT tipo, id_vendedor from reserva where id_cliente = '{info_cliente[0]}'")
         info_reserva = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
 
-        escolha_editar = st.radio('Escolha o que deseja editar', ['Data', 'Nome', 'CPF e Telefone', 'Vendedor', 'Certificação', 'Peso e Altura'])
+        escolha_editar = st.radio('Escolha o que deseja editar',
+                                  ['Data', 'Nome', 'CPF e Telefone', 'Vendedor', 'Certificação', 'Peso e Altura'])
 
         if escolha_editar == 'Data':
             nova_data = st.date_input('Nova Data da reserva', format='DD/MM/YYYY')
@@ -168,7 +179,8 @@ if escolha == 'Editar':
             telefone_novo = st.text_input('Telefone do Cliente', value=info_cliente[2])
             if st.button('Atualizar Reserva'):
                 mydb.connect()
-                cursor.execute(f"UPDATE cliente SET cpf = '{cpf_novo}', telefone = '{telefone_novo}' WHERE id = '{info_cliente[0]}'")
+                cursor.execute(
+                    f"UPDATE cliente SET cpf = '{cpf_novo}', telefone = '{telefone_novo}' WHERE id = '{info_cliente[0]}'")
                 mydb.close()
                 st.success('Reserva Atualizada')
         if escolha_editar == 'Vendedor':
@@ -218,6 +230,8 @@ if escolha == 'Visualizar':
     df = pd.DataFrame(planilha, columns=['Nome', 'Cpf', 'Telefone', 'Comissário', 'Cert', 'Fotos', 'Altura', 'Peso'])
     st.dataframe(df, hide_index=True, width=100)
 
+    st.button('Criar PDF', on_click=criar_pdf())
+
 if escolha == 'Pagamento':
     data_pagamento = date.today()
     data_reserva = st.date_input('Data da reserva', format='DD/MM/YYYY')
@@ -233,7 +247,8 @@ if escolha == 'Pagamento':
 
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista_pagamento)
 
-    forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None, placeholder='Insira a forma de pagamento')
+    forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None,
+                            placeholder='Insira a forma de pagamento')
 
     if forma_pg == 'Credito':
         parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
@@ -247,15 +262,12 @@ if escolha == 'Pagamento':
         cursor.execute(f"SELECT id FROM cliente WHERE nome = '{selectbox_cliente}'")
         id_cliente_pagamento2 = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
 
-
-
         cursor.execute(
             f"SELECT id, id_vendedor, pago_loja, pago_vendedor, tipo, valor_total  FROM reserva WHERE id_cliente = '{id_cliente_pagamento2}' and data = '{data_reserva}'")
         info_reserva_pg = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
 
         cursor.execute(f"SELECT valor_neto FROM vendedores WHERE id = {info_reserva_pg[1]}")
         valor_neto = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
-
 
         sinal_loja = float(str(info_reserva_pg[2]).strip('Decimal'))
         sinal_vendedor = float(str(info_reserva_pg[3]).strip('Decimal'))
@@ -290,33 +302,23 @@ if escolha == 'Pagamento':
 
         st.write(f'Valor a pagar - R$ {valor_pagar}')
 
-
-
         data_completa = str(data_reserva).split('-')
         descricao = f'{selectbox_cliente} do dia {data_completa[2]}/{data_completa[1]}/{data_completa[0]}'
 
-
-        cursor.execute("INSERT INTO pagamentos (data, data_reserva ,id_reserva, id_vendedor, sinal_loja, sinal_vendedor, pagamento, forma_pg, parcela) VALUES (%s, %s, %s, %s, %s, %s, %s, %s,%s)", (data_pagamento, data_reserva, info_reserva_pg[0], info_reserva_pg[1], sinal_loja, sinal_vendedor, pagamento, forma_pg, parcela))
-        cursor.execute("INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s, %s, %s)", (1, data_pagamento, 'ENTRADA', info_reserva_pg[4], descricao, forma_pg, pagamento))
+        cursor.execute(
+            "INSERT INTO pagamentos (data, data_reserva ,id_reserva, id_vendedor, sinal_loja, sinal_vendedor, pagamento, forma_pg, parcela) VALUES (%s, %s, %s, %s, %s, %s, %s, %s,%s)",
+            (
+            data_pagamento, data_reserva, info_reserva_pg[0], info_reserva_pg[1], sinal_loja, sinal_vendedor, pagamento,
+            forma_pg, parcela))
+        cursor.execute(
+            "INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+            (1, data_pagamento, 'ENTRADA', info_reserva_pg[4], descricao, forma_pg, pagamento))
         # cursor.execute(f"SELECT id FROM pagamentos WHERE id_reserva = {info_reserva_pg[0]}")
         # id_pagamento = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
         # cursor.execute("INSERT INTO lancamento_comissao (id_reserva, id_vendedor, id_pagamento, valor_receber, valor_pagar, situacao) VALUES (%s, %s, %s, %s, %s, %s)", (info_reserva_pg[0], info_reserva_pg[1], id_pagamento,))
 
         mydb.close()
         st.success('Pagamento lançado no sistema!')
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #
 #     st.write('---')
@@ -335,4 +337,3 @@ if escolha == 'Pagamento':
 #
 #     st.write('---')
 #
-
