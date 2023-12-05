@@ -9,7 +9,7 @@ import os
 import mysql.connector
 from datetime import date, datetime
 from fpdf import FPDF
-
+import base64
 mydb = mysql.connector.connect(
     host=os.getenv("DB_HOST"),
     user=os.getenv("DB_USERNAME"),
