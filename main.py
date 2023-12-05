@@ -228,7 +228,7 @@ if escolha == 'Visualizar':
     st.dataframe(df, hide_index=True, width=100)
 
     if st.button('Criar Pdf'):
-        cnv = canvas.Canvas(pasta + '\\teste.pdf', pagesize=A4)
+        cnv = canvas.Canvas('teste.pdf', pagesize=A4)
         cnv.drawString(100, 100, 'AcquaWorld')
         cnv.save()
         st.success('Pdf criado com sucesso')
