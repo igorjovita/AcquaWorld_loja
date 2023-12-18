@@ -236,8 +236,9 @@ if escolha == 'Reservar':
             st.error('Todas as vagas de credenciados foram preenchidas')
 
         else:
-            cursor.execute("INSERT INTO cliente (cpf, nome, telefone, peso, altura) VALUES (%s, %s, %s, %s, %s)",
-                           (cpf, nome_cliente, telefone_cliente, peso, altura))
+            roupa = f'{altura}/{peso}'
+            cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
+                           (cpf, nome_cliente, telefone_cliente, roupa))
 
             cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
             id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
