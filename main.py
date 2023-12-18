@@ -126,7 +126,7 @@ def gerar_pdf(self):
         background_colors = lista9
 
     # Processar a data
-    data_selecionada = str(data_reserva).split('-')
+    data_selecionada = str(data_para_pdf).split('-')
     dia, mes, ano = data_selecionada[2], data_selecionada[1], data_selecionada[0]
     data_completa = f'{dia}/{mes}/{ano}'
 
