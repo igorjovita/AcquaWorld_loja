@@ -46,7 +46,7 @@ def gerar_pdf(self):
 
     for nome in lista_2:
         cursor.execute(
-            f"SELECT cpf FROM cliente WHERE nome = {nome}")
+            f"SELECT cpf FROM cliente WHERE nome = '{nome}'")
         lista_cpf = cursor.fetchall()
         lista2 = []
         for item in lista_cpf:
@@ -56,7 +56,7 @@ def gerar_pdf(self):
 
     for nome in lista_2:
         cursor.execute(
-            f"SELECT telefone FROM cliente WHERE nome = {nome}")
+            f"SELECT telefone FROM cliente WHERE nome = '{nome}'")
         lista_telefone = cursor.fetchall()
         lista3 = []
         for item in lista_telefone:
@@ -73,7 +73,7 @@ def gerar_pdf(self):
         id_vend = str(item).translate(str.maketrans('', '', chars2))
         lista4.append(id_vend)
         for id_v in lista4:
-            cursor.execute(f"SELECT apelido from vendedores where id = {id_v}")
+            cursor.execute(f"SELECT apelido from vendedores where id = '{id_v}'")
             nome = str(cursor.fetchone()).translate(str.maketrans('', '', chars2))
             lista_vend.append(nome)
         comissario = lista_vend
