@@ -108,7 +108,7 @@ def gerar_pdf(self):
 
     for nome in lista_2:
         cursor.execute(
-            f"SELECT roupa FROM reservas2 WHERE nome = '{nome}'")
+            f"SELECT roupa FROM cliente WHERE nome = '{nome}'")
         lista_roupa = cursor.fetchall()
         lista8 = []
         for item in lista_roupa:
