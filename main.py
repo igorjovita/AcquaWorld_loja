@@ -91,7 +91,8 @@ def gerar_pdf(self):
     pdf_filename = f"reservas_{data_para_pdf}.pdf"
 
     # Gerar PDF
-    pdfkit.from_string(output_text, pdf_filename, options={'path': r'C:\\Program Files\\wkhtmltopdf\\bin'})
+    config = pdfkit.configuration(wkhtmltopdf=r"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe")
+    pdfkit.from_string(output_text, pdf_filename, configuration=config)
 
     # Fechar a conexão
     mydb.close()
