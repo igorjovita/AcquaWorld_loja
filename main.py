@@ -1,15 +1,13 @@
-import base64
+import pdfkit
+import jinja2
 
 import streamlit as st
 import pandas as pd
 from streamlit_option_menu import option_menu
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import A4
 import os
 import mysql.connector
 from datetime import date, datetime
-from fpdf import FPDF
-import base64
+
 mydb = mysql.connector.connect(
     host=os.getenv("DB_HOST"),
     user=os.getenv("DB_USERNAME"),
@@ -28,8 +26,125 @@ escolha = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visual
 pasta = os.path.dirname(__file__)
 
 
+def gerar_pdf(self):
+    mydb.connect()
 
+    # Consulta ao banco de dados para obter os dados
+    cursor.execute(
+        "SELECT id_cliente FROM reserva WHERE data_reserva = %s", (data,))
+    lista_cliente = cursor.fetchall()
+    lista1 = []
+    lista_2 = []
+    for item in lista_cliente:
+        id_cli = str(item).translate(str.maketrans('', '', chars2))
+        lista1.append(id_cli)
+        for ids in lista1:
+            cursor.execute(f"SELECT nome FROM cliente WHERE id = {ids}")
+            nome = str(cursor.fetchone).upper().translate(str.maketrans('', '', chars2))
+            lista_2.append(nome)
+            cliente = lista_2
 
+    for nome in lista_2:
+        cursor.execute(
+            f"SELECT cpf FROM cliente WHERE nome = {nome}")
+        lista_cpf = cursor.fetchall()
+        lista2 = []
+        for item in lista_cpf:
+            nome = str(item).translate(str.maketrans('', '', chars2))
+            lista2.append(nome)
+            cpf = lista2
+
+    for nome in lista_2:
+        cursor.execute(
+            f"SELECT telefone FROM cliente WHERE nome = {nome}")
+        lista_telefone = cursor.fetchall()
+        lista3 = []
+        for item in lista_telefone:
+            nome = str(item).translate(str.maketrans('', '', chars2))
+            lista3.append(nome)
+            telefone = lista3
+
+    cursor.execute(
+        "SELECT comissario FROM reservas2 WHERE data_reserva = %s", (data,))
+    lista_comissario = cursor.fetchall()
+    lista4 = []
+    for item in lista_comissario:
+        nome = str(item).upper().translate(str.maketrans('', '', chars2))
+        lista4.append(nome)
+        comissario = lista4
+    conn.close()
+    conn.connect()
+
+    cursor.execute(
+        "SELECT tipo FROM reserva WHERE data = %s", (data,))
+    lista_cert = cursor.fetchall()
+    lista5 = []
+    for item in lista_cert:
+        nome = str(item).upper().translate(str.maketrans('', '', chars2))
+        lista5.append(nome)
+        cert = lista5
+
+    cursor.execute(
+        "SELECT foto FROM reserva WHERE data = %s", (data,))
+    lista_foto = cursor.fetchall()
+    lista6 = []
+    for item in lista_foto:
+        nome = str(item).upper().translate(str.maketrans('', '', chars2))
+        lista6.append(nome)
+        foto = lista6
+    # cursor.execute(
+    #     "SELECT  dm FROM reservas2 WHERE data_reserva = %s", (data,))
+    # lista_dm = cursor.fetchall()
+    # lista7 = []
+    # for item in lista_dm:
+    #     nome = str(item).upper().translate(str.maketrans('', '', chars2))
+    #     lista7.append(nome)
+    #     dm = lista7
+
+    for nome in lista_2:
+        cursor.execute(
+            f"SELECT roupa FROM reservas2 WHERE nome = {nome}")
+        lista_roupa = cursor.fetchall()
+        lista8 = []
+        for item in lista_roupa:
+            nome = str(item).upper().translate(str.maketrans('', '', chars2))
+            lista8.append(nome)
+            roupa = lista8
+
+    cursor.execute(
+        "SELECT check_in FROM reserva WHERE data_reserva = %s", (data,))
+    lista_check_in = cursor.fetchall()
+    lista9 = []
+    for item in lista_check_in:
+        nome = str(item).translate(str.maketrans('', '', chars2))
+        lista9.append(nome)
+        background_colors = lista9
+
+    # Processar a data
+    data_selecionada = str(data_reserva).split('-')
+    dia, mes, ano = data_selecionada[2], data_selecionada[1], data_selecionada[0]
+    data_completa = f'{dia}/{mes}/{ano}'
+
+    # Criar o contexto
+    contexto = {'cliente': cliente, 'cpf': cpf, 'tel': telefone, 'comissario': comissario, 'c': cert, 'f': foto, 'r': roupa, 'data_reserva': data_completa, 'background_colors': background_colors}
+
+    # Renderizar o template HTML
+    planilha_loader = jinja2.FileSystemLoader('./')
+    planilha_env = jinja2.Environment(loader=planilha_loader)
+    planilha = planilha_env.get_template('planilha.html')
+    output_text = planilha.render(contexto)
+
+    # Nome do arquivo PDF
+    pdf_filename = f"reservas_{data}.pdf"
+
+    # Gerar PDF
+    config = pdfkit.configuration(wkhtmltopdf=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe")
+    pdfkit.from_string(output_text, pdf_filename, configuration=config)
+
+    # Fechar a conexão
+    conn.close()
+
+    return pdf_filename
 
 
 chars = "'),([]"
@@ -229,20 +344,13 @@ if escolha == 'Visualizar':
 
     df = pd.DataFrame(planilha, columns=['Nome', 'Cpf', 'Telefone', 'Comissário', 'Cert', 'Fotos', 'Altura', 'Peso'])
     st.dataframe(df, hide_index=True, width=100)
+    st.write('---')
 
-    pdf = FPDF('P', 'mm', 'Letter')
-
-
-    def create_download_link(val, filename):
-        b64 = base64.b64encode(val)  # val looks like b'...'
-        return f'<a href="data:application/octet-stream;base64,{b64.decode()}" download="{filename}.pdf">Download file</a>'
-    if st.button('Criar Pdf'):
-        pdf.add_page()
-        pdf.set_font('helvetica', '', 16)
-        pdf.cell(40, 10, 'Hello World')
-        html = create_download_link(pdf.output(dest="S").encode("latin-1"), "test")
-
-        st.markdown(html, unsafe_allow_html=True)
+    # Formulário para gerar PDF
+    data_para_pdf = st.date_input("Data para gerar PDF:")
+    if st.button("Gerar PDF"):
+        pdf_filename = gerar_pdf(data_para_pdf)
+        st.success(f"PDF gerado com sucesso: [{pdf_filename}]")
 
 if escolha == 'Pagamento':
     data_pagamento = date.today()
@@ -320,8 +428,9 @@ if escolha == 'Pagamento':
         cursor.execute(
             "INSERT INTO pagamentos (data, data_reserva ,id_reserva, id_vendedor, sinal_loja, sinal_vendedor, pagamento, forma_pg, parcela) VALUES (%s, %s, %s, %s, %s, %s, %s, %s,%s)",
             (
-            data_pagamento, data_reserva, info_reserva_pg[0], info_reserva_pg[1], sinal_loja, sinal_vendedor, pagamento,
-            forma_pg, parcela))
+                data_pagamento, data_reserva, info_reserva_pg[0], info_reserva_pg[1], sinal_loja, sinal_vendedor,
+                pagamento,
+                forma_pg, parcela))
         cursor.execute(
             "INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s, %s, %s)",
             (1, data_pagamento, 'ENTRADA', info_reserva_pg[4], descricao, forma_pg, pagamento))
