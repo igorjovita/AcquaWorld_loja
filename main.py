@@ -45,14 +45,15 @@ def gerar_pdf(self):
     for item in lista_cliente:
         id_cli = str(item).translate(str.maketrans('', '', chars2))
 
-        cursor.execute(f"SELECT nome, cpf, telefone FROM cliente WHERE id = '{id_cli}'")
+        cursor.execute(f"SELECT nome, cpf, telefone, roupa FROM cliente WHERE id = '{id_cli}'")
         cliente_data = str(cursor.fetchone()).translate(str.maketrans('', '', chars2))
 
         if cliente_data:
-            nome, cpf, telefone = cliente_data[:3]  # Ajuste para garantir que estamos extraindo apenas três valores
+            nome, cpf, telefone, roupa = cliente_data
             clientes.append(nome.upper())
             cpfs.append(cpf)
             telefones.append(telefone)
+            roupas.append(roupa.upper())  # Incluído o campo "roupa" aqui
 
         cursor.execute(f"SELECT apelido FROM vendedores WHERE id = (SELECT id_vendedor FROM reserva WHERE data = %s)",
                        (data_para_pdf,))
@@ -61,15 +62,13 @@ def gerar_pdf(self):
         if comissario_data:
             comissarios.append(comissario_data[0])
 
-        cursor.execute("SELECT tipo, fotos, roupa, check_in FROM reserva WHERE data = %s", (data_para_pdf,))
-        reserva_data = cursor.fetchone()
+        cursor.execute("SELECT tipo, fotos, check_in FROM reserva WHERE data = %s", (data_para_pdf,))
+        reserva_data = str(cursor.fetchone()).translate(str.maketrans('', '', chars2))
 
         if reserva_data:
-            cert, foto, roupa, check_in = reserva_data[
-                                          :4]  # Ajuste para garantir que estamos extraindo apenas quatro valores
+            cert, foto, check_in = reserva_data
             certs.append(cert.upper())
             fotos.append(foto.upper())
-            roupas.append(roupa.upper())
             background_colors.append(check_in)
 
     mydb.close()
