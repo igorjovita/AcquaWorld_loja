@@ -88,7 +88,7 @@ def gerar_pdf(self):
     output_text = planilha.render(contexto)
 
     # Nome do arquivo PDF
-    pdf_filename = f"reservas_{data}.pdf"
+    pdf_filename = f"reservas_{data_para_pdf}.pdf"
 
     # Gerar PDF
     config = pdfkit.configuration(wkhtmltopdf=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe")
