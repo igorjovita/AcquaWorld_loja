@@ -72,8 +72,8 @@ def gerar_pdf(self):
         nome = str(item).upper().translate(str.maketrans('', '', chars2))
         lista4.append(nome)
         comissario = lista4
-    conn.close()
-    conn.connect()
+    mydb.close()
+    mydb.connect()
 
     cursor.execute(
         "SELECT tipo FROM reserva WHERE data = %s", (data,))
@@ -142,7 +142,7 @@ def gerar_pdf(self):
     pdfkit.from_string(output_text, pdf_filename, configuration=config)
 
     # Fechar a conexão
-    conn.close()
+    mydb.close()
 
     return pdf_filename
 
