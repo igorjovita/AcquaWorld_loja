@@ -90,7 +90,7 @@ def gerar_pdf(self):
         cert = lista5
 
     cursor.execute(
-        "SELECT foto FROM reserva WHERE data = %s", (data_para_pdf,))
+        "SELECT fotos FROM reserva WHERE data = %s", (data_para_pdf,))
     lista_foto = cursor.fetchall()
     lista6 = []
     for item in lista_foto:
