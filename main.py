@@ -93,6 +93,8 @@ def gerar_pdf(self):
     # Gerar PDF
     config = pdfkit.configuration()
     pdfkit.from_string(output_text, pdf_filename, configuration=config)
+    caminho_absoluto = os.path.abspath(pdf_filename)
+    st.success(f'PDF gerado e salvo em: {caminho_absoluto}')
 
     # Fechar a conexão
     mydb.close()
