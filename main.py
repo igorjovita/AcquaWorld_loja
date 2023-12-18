@@ -66,7 +66,7 @@ def gerar_pdf(self):
         reserva_data = str(cursor.fetchone()).translate(str.maketrans('', '', chars2))
 
         if reserva_data:
-            cert, foto, check_in = reserva_data
+            cert, foto, check_in = reserva_data[:3]  # Ajuste para descompactar apenas 3 valores
             certs.append(cert.upper())
             fotos.append(foto.upper())
             background_colors.append(check_in)
@@ -81,7 +81,6 @@ def gerar_pdf(self):
     # Criar o contexto
     contexto = {'cliente': clientes, 'cpf': cpfs, 'tel': telefones, 'comissario': comissarios, 'c': certs, 'f': fotos,
                 'r': roupas, 'data_reserva': data_completa, 'background_colors': background_colors}
-
 
     # mydb.connect()
 
