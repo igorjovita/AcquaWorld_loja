@@ -49,7 +49,7 @@ def gerar_pdf(self):
         cliente_data = str(cursor.fetchone()).translate(str.maketrans('', '', chars2))
 
         if cliente_data:
-            nome, cpf, telefone = cliente_data
+            nome, cpf, telefone = cliente_data[:3]  # Ajuste para garantir que estamos extraindo apenas três valores
             clientes.append(nome.upper())
             cpfs.append(cpf)
             telefones.append(telefone)
@@ -62,10 +62,11 @@ def gerar_pdf(self):
             comissarios.append(comissario_data[0])
 
         cursor.execute("SELECT tipo, fotos, roupa, check_in FROM reserva WHERE data = %s", (data_para_pdf,))
-        reserva_data = str(cursor.fetchone()).translate(str.maketrans('', '', chars2))
+        reserva_data = cursor.fetchone()
 
         if reserva_data:
-            cert, foto, roupa, check_in = reserva_data
+            cert, foto, roupa, check_in = reserva_data[
+                                          :4]  # Ajuste para garantir que estamos extraindo apenas quatro valores
             certs.append(cert.upper())
             fotos.append(foto.upper())
             roupas.append(roupa.upper())
@@ -81,6 +82,8 @@ def gerar_pdf(self):
     # Criar o contexto
     contexto = {'cliente': clientes, 'cpf': cpfs, 'tel': telefones, 'comissario': comissarios, 'c': certs, 'f': fotos,
                 'r': roupas, 'data_reserva': data_completa, 'background_colors': background_colors}
+
+
     # mydb.connect()
 
     # # Consulta ao banco de dados para obter os dados
