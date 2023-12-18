@@ -343,7 +343,7 @@ if escolha == 'Visualizar':
     planilha = cursor.fetchall()
     mydb.close()
 
-    df = pd.DataFrame(planilha, columns=['Nome', 'Cpf', 'Telefone', 'Comissário', 'Cert', 'Fotos', 'Altura', 'Peso'])
+    df = pd.DataFrame(planilha, columns=['Nome', 'Cpf', 'Telefone', 'Comissário', 'Cert', 'Fotos', 'Roupa])
     st.dataframe(df, hide_index=True, width=100)
     st.write('---')
 
