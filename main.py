@@ -304,6 +304,7 @@ if escolha == 'Visualizar':
     data_para_pdf = st.date_input("Data para gerar PDF:")
     if st.button("Gerar PDF"):
         pdf_filename = gerar_pdf(data_para_pdf)
+        st.download_button('Planilha', pdf_filename)
         st.success(f"PDF gerado com sucesso: [{pdf_filename}]")
 
 if escolha == 'Pagamento':
