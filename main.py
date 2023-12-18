@@ -50,7 +50,7 @@ def gerar_pdf(self):
         cliente_data = str(cursor.fetchone()).translate(str.maketrans('', '', chars2))
 
         if cliente_data:
-            nome, cpf, telefone, roupa = cliente_data
+            nome, cpf, telefone, roupa = cliente_data[:4]
             clientes.append(nome.upper())
             cpfs.append(cpf)
             telefones.append(telefone)
@@ -67,7 +67,7 @@ def gerar_pdf(self):
         reserva_data = str(cursor.fetchone()).translate(str.maketrans('', '', chars2))
 
         if reserva_data:
-            cert, foto, check_in, dm = reserva_data[:4]  # Adicionado 'dm' aqui
+            cert, foto, check_in, dm = reserva_data # Adicionado 'dm' aqui
             certs.append(cert.upper())
             fotos.append(foto.upper())
             background_colors.append(check_in)
