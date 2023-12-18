@@ -29,101 +29,49 @@ pasta = os.path.dirname(__file__)
 def gerar_pdf(self):
     mydb.connect()
 
-    # Consulta ao banco de dados para obter os dados
     cursor.execute(
         "SELECT id_cliente FROM reserva WHERE data = %s", (data_para_pdf,))
-    lista_cliente = cursor.fetchall()
-    lista1 = []
-    lista_2 = []
+    lista_cliente = str(cursor.fetchall()).translate(str.maketrans('', '', chars2))
+
+    clientes = []
+    cpfs = []
+    telefones = []
+    comissarios = []
+    certs = []
+    fotos = []
+    roupas = []
+    background_colors = []
+
     for item in lista_cliente:
         id_cli = str(item).translate(str.maketrans('', '', chars2))
-        lista1.append(id_cli)
-        for ids in lista1:
-            cursor.execute(f"SELECT nome FROM cliente WHERE id = '{ids}'")
-            nome = str(cursor.fetchone).upper().translate(str.maketrans('', '', chars2))
-            lista_2.append(nome)
-            cliente = lista_2
 
-    for nome in lista_2:
-        cursor.execute(
-            f"SELECT cpf FROM cliente WHERE nome = '{nome}'")
-        lista_cpf = cursor.fetchall()
-        lista2 = []
-        for item in lista_cpf:
-            nome = str(item).translate(str.maketrans('', '', chars2))
-            lista2.append(nome)
-            cpf = lista2
+        cursor.execute(f"SELECT nome, cpf, telefone FROM cliente WHERE id = '{id_cli}'")
+        cliente_data = str(cursor.fetchone()).translate(str.maketrans('', '', chars2))
 
-    for nome in lista_2:
-        cursor.execute(
-            f"SELECT telefone FROM cliente WHERE nome = '{nome}'")
-        lista_telefone = cursor.fetchall()
-        lista3 = []
-        for item in lista_telefone:
-            nome = str(item).translate(str.maketrans('', '', chars2))
-            lista3.append(nome)
-            telefone = lista3
+        if cliente_data:
+            nome, cpf, telefone = cliente_data
+            clientes.append(nome.upper())
+            cpfs.append(cpf)
+            telefones.append(telefone)
 
-    cursor.execute(
-        "SELECT id_vendedor FROM reserva WHERE data = %s", (data_para_pdf,))
-    lista_comissario = cursor.fetchall()
-    lista4 = []
-    lista_vend = []
-    for item in lista_comissario:
-        id_vend = str(item).translate(str.maketrans('', '', chars2))
-        lista4.append(id_vend)
-        for id_v in lista4:
-            cursor.execute(f"SELECT apelido from vendedores where id = '{id_v}'")
-            nome = str(cursor.fetchone()).translate(str.maketrans('', '', chars2))
-            lista_vend.append(nome)
-        comissario = lista_vend
+        cursor.execute(f"SELECT apelido FROM vendedores WHERE id = (SELECT id_vendedor FROM reserva WHERE data = %s)",
+                       (data_para_pdf,))
+        comissario_data = str(cursor.fetchone()).translate(str.maketrans('', '', chars2))
+
+        if comissario_data:
+            comissarios.append(comissario_data[0])
+
+        cursor.execute("SELECT tipo, fotos, roupa, check_in FROM reserva WHERE data = %s", (data_para_pdf,))
+        reserva_data = str(cursor.fetchone()).translate(str.maketrans('', '', chars2))
+
+        if reserva_data:
+            cert, foto, roupa, check_in = reserva_data
+            certs.append(cert.upper())
+            fotos.append(foto.upper())
+            roupas.append(roupa.upper())
+            background_colors.append(check_in)
+
     mydb.close()
-    mydb.connect()
-
-    cursor.execute(
-        "SELECT tipo FROM reserva WHERE data = %s", (data_para_pdf,))
-    lista_cert = cursor.fetchall()
-    lista5 = []
-    for item in lista_cert:
-        nome = str(item).upper().translate(str.maketrans('', '', chars2))
-        lista5.append(nome)
-        cert = lista5
-
-    cursor.execute(
-        "SELECT fotos FROM reserva WHERE data = %s", (data_para_pdf,))
-    lista_foto = cursor.fetchall()
-    lista6 = []
-    for item in lista_foto:
-        nome = str(item).upper().translate(str.maketrans('', '', chars2))
-        lista6.append(nome)
-        foto = lista6
-    # cursor.execute(
-    #     "SELECT  dm FROM reservas2 WHERE data_reserva = %s", (data,))
-    # lista_dm = cursor.fetchall()
-    # lista7 = []
-    # for item in lista_dm:
-    #     nome = str(item).upper().translate(str.maketrans('', '', chars2))
-    #     lista7.append(nome)
-    #     dm = lista7
-
-    for nome in lista_2:
-        cursor.execute(
-            f"SELECT roupa FROM cliente WHERE nome = '{nome}'")
-        lista_roupa = cursor.fetchall()
-        lista8 = []
-        for item in lista_roupa:
-            nome = str(item).upper().translate(str.maketrans('', '', chars2))
-            lista8.append(nome)
-            roupa = lista8
-
-    cursor.execute(
-        "SELECT check_in FROM reserva WHERE data = %s", (data_para_pdf,))
-    lista_check_in = cursor.fetchall()
-    lista9 = []
-    for item in lista_check_in:
-        nome = str(item).translate(str.maketrans('', '', chars2))
-        lista9.append(nome)
-        background_colors = lista9
 
     # Processar a data
     data_selecionada = str(data_para_pdf).split('-')
@@ -131,7 +79,113 @@ def gerar_pdf(self):
     data_completa = f'{dia}/{mes}/{ano}'
 
     # Criar o contexto
-    contexto = {'cliente': cliente, 'cpf': cpf, 'tel': telefone, 'comissario': comissario, 'c': cert, 'f': foto, 'r': roupa, 'data_reserva': data_completa, 'background_colors': background_colors}
+    contexto = {'cliente': clientes, 'cpf': cpfs, 'tel': telefones, 'comissario': comissarios, 'c': certs, 'f': fotos,
+                'r': roupas, 'data_reserva': data_completa, 'background_colors': background_colors}
+    # mydb.connect()
+
+    # # Consulta ao banco de dados para obter os dados
+    # cursor.execute(
+    #     "SELECT id_cliente FROM reserva WHERE data = %s", (data_para_pdf,))
+    # lista_cliente = cursor.fetchall()
+    # lista1 = []
+    # lista_2 = []
+    # for item in lista_cliente:
+    #     id_cli = str(item).translate(str.maketrans('', '', chars2))
+    #     lista1.append(id_cli)
+    #     for ids in lista1:
+    #         cursor.execute(f"SELECT nome FROM cliente WHERE id = '{ids}'")
+    #         nome = str(cursor.fetchone).upper().translate(str.maketrans('', '', chars2))
+    #         lista_2.append(nome)
+    #         cliente = lista_2
+    #
+    # for nome in lista_2:
+    #     cursor.execute(
+    #         f"SELECT cpf FROM cliente WHERE nome = '{nome}'")
+    #     lista_cpf = cursor.fetchall()
+    #     lista2 = []
+    #     for item in lista_cpf:
+    #         nome = str(item).translate(str.maketrans('', '', chars2))
+    #         lista2.append(nome)
+    #         cpf = lista2
+    #
+    # for nome in lista_2:
+    #     cursor.execute(
+    #         f"SELECT telefone FROM cliente WHERE nome = '{nome}'")
+    #     lista_telefone = cursor.fetchall()
+    #     lista3 = []
+    #     for item in lista_telefone:
+    #         nome = str(item).translate(str.maketrans('', '', chars2))
+    #         lista3.append(nome)
+    #         telefone = lista3
+    #
+    # cursor.execute(
+    #     "SELECT id_vendedor FROM reserva WHERE data = %s", (data_para_pdf,))
+    # lista_comissario = cursor.fetchall()
+    # lista4 = []
+    # lista_vend = []
+    # for item in lista_comissario:
+    #     id_vend = str(item).translate(str.maketrans('', '', chars2))
+    #     lista4.append(id_vend)
+    #     for id_v in lista4:
+    #         cursor.execute(f"SELECT apelido from vendedores where id = '{id_v}'")
+    #         nome = str(cursor.fetchone()).translate(str.maketrans('', '', chars2))
+    #         lista_vend.append(nome)
+    #     comissario = lista_vend
+    # mydb.close()
+    # mydb.connect()
+    #
+    # cursor.execute(
+    #     "SELECT tipo FROM reserva WHERE data = %s", (data_para_pdf,))
+    # lista_cert = cursor.fetchall()
+    # lista5 = []
+    # for item in lista_cert:
+    #     nome = str(item).upper().translate(str.maketrans('', '', chars2))
+    #     lista5.append(nome)
+    #     cert = lista5
+    #
+    # cursor.execute(
+    #     "SELECT fotos FROM reserva WHERE data = %s", (data_para_pdf,))
+    # lista_foto = cursor.fetchall()
+    # lista6 = []
+    # for item in lista_foto:
+    #     nome = str(item).upper().translate(str.maketrans('', '', chars2))
+    #     lista6.append(nome)
+    #     foto = lista6
+    # # cursor.execute(
+    # #     "SELECT  dm FROM reservas2 WHERE data_reserva = %s", (data,))
+    # # lista_dm = cursor.fetchall()
+    # # lista7 = []
+    # # for item in lista_dm:
+    # #     nome = str(item).upper().translate(str.maketrans('', '', chars2))
+    # #     lista7.append(nome)
+    # #     dm = lista7
+    #
+    # for nome in lista_2:
+    #     cursor.execute(
+    #         f"SELECT roupa FROM cliente WHERE nome = '{nome}'")
+    #     lista_roupa = cursor.fetchall()
+    #     lista8 = []
+    #     for item in lista_roupa:
+    #         nome = str(item).upper().translate(str.maketrans('', '', chars2))
+    #         lista8.append(nome)
+    #         roupa = lista8
+    #
+    # cursor.execute(
+    #     "SELECT check_in FROM reserva WHERE data = %s", (data_para_pdf,))
+    # lista_check_in = cursor.fetchall()
+    # lista9 = []
+    # for item in lista_check_in:
+    #     nome = str(item).translate(str.maketrans('', '', chars2))
+    #     lista9.append(nome)
+    #     background_colors = lista9
+    #
+    # # Processar a data
+    # data_selecionada = str(data_para_pdf).split('-')
+    # dia, mes, ano = data_selecionada[2], data_selecionada[1], data_selecionada[0]
+    # data_completa = f'{dia}/{mes}/{ano}'
+    #
+    # # Criar o contexto
+    # contexto = {'cliente': cliente, 'cpf': cpf, 'tel': telefone, 'comissario': comissario, 'c': cert, 'f': foto, 'r': roupa, 'data_reserva': data_completa, 'background_colors': background_colors}
 
     # Renderizar o template HTML
     planilha_loader = jinja2.FileSystemLoader('./')
