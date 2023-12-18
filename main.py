@@ -117,7 +117,7 @@ def gerar_pdf(self):
             roupa = lista8
 
     cursor.execute(
-        "SELECT check_in FROM reserva WHERE data_reserva = %s", (data_para_pdf,))
+        "SELECT check_in FROM reserva WHERE data = %s", (data_para_pdf,))
     lista_check_in = cursor.fetchall()
     lista9 = []
     for item in lista_check_in:
