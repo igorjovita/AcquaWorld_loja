@@ -1,3 +1,5 @@
+import base64
+
 import pdfkit
 import jinja2
 
@@ -95,7 +97,8 @@ def gerar_pdf(self):
     pdfkit.from_string(output_text, pdf_filename, configuration=config)
     caminho_absoluto = os.path.abspath(pdf_filename)
     st.success(f'PDF gerado e salvo em: {caminho_absoluto}')
-    st.markdown(f'**Baixar PDF:** [Clique aqui para baixar]({caminho_absoluto})')
+    download_link = f'<a href="data:application/pdf;base64,{base64.b64encode(open(pdf_filename, "rb").read()).decode()}" download="{pdf_filename}">Clique aqui para baixar</a>'
+    st.markdown(download_link, unsafe_allow_html=True)
 
     # Fechar a conexão
     mydb.close()
