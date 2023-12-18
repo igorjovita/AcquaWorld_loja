@@ -31,7 +31,7 @@ def gerar_pdf(self):
 
     # Consulta ao banco de dados para obter os dados
     cursor.execute(
-        "SELECT id_cliente FROM reserva WHERE data_reserva = %s", (data,))
+        "SELECT id_cliente FROM reserva WHERE data_reserva = %s", (data_para_pdf,))
     lista_cliente = cursor.fetchall()
     lista1 = []
     lista_2 = []
@@ -65,7 +65,7 @@ def gerar_pdf(self):
             telefone = lista3
 
     cursor.execute(
-        "SELECT comissario FROM reservas2 WHERE data_reserva = %s", (data,))
+        "SELECT comissario FROM reservas2 WHERE data_reserva = %s", (data_para_pdf,))
     lista_comissario = cursor.fetchall()
     lista4 = []
     for item in lista_comissario:
@@ -76,7 +76,7 @@ def gerar_pdf(self):
     mydb.connect()
 
     cursor.execute(
-        "SELECT tipo FROM reserva WHERE data = %s", (data,))
+        "SELECT tipo FROM reserva WHERE data = %s", (data_para_pdf,))
     lista_cert = cursor.fetchall()
     lista5 = []
     for item in lista_cert:
@@ -85,7 +85,7 @@ def gerar_pdf(self):
         cert = lista5
 
     cursor.execute(
-        "SELECT foto FROM reserva WHERE data = %s", (data,))
+        "SELECT foto FROM reserva WHERE data = %s", (data_para_pdf,))
     lista_foto = cursor.fetchall()
     lista6 = []
     for item in lista_foto:
@@ -112,7 +112,7 @@ def gerar_pdf(self):
             roupa = lista8
 
     cursor.execute(
-        "SELECT check_in FROM reserva WHERE data_reserva = %s", (data,))
+        "SELECT check_in FROM reserva WHERE data_reserva = %s", (data_para_pdf,))
     lista_check_in = cursor.fetchall()
     lista9 = []
     for item in lista_check_in:
