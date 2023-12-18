@@ -338,7 +338,7 @@ if escolha == 'Visualizar':
     data_vis = st.date_input('Data da Visualização', format='DD/MM/YYYY')
     mydb.connect()
     cursor.execute(
-        f"select c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.altura, c.peso from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{data_vis}'")
+        f"select c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.roupa from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{data_vis}'")
     planilha = cursor.fetchall()
     mydb.close()
 
