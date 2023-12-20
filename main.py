@@ -100,7 +100,7 @@ def gerar_pdf(self):
         lista6.append(nome)
         foto = lista6
     cursor.execute(
-        "SELECT  dm FROM reserva WHERE data_reserva = %s", (data,))
+        "SELECT  dm FROM reserva WHERE data_reserva = %s", (data_para_pdf,))
     lista_dm = cursor.fetchall()
     lista7 = []
     for item in lista_dm:
