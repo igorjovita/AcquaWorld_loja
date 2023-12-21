@@ -57,7 +57,7 @@ def gerar_pdf(self):
         lista_id_cliente.append(id_cli)
     for ids in lista_id_cliente:
         cursor.execute(f"SELECT nome FROM cliente WHERE id = '{ids}'")
-        nome_cliente = str(cursor.fetchone).upper().translate(str.maketrans('', '', chars2))
+        nome_cliente = str(cursor.fetchall).upper().translate(str.maketrans('', '', chars2))
         cliente.append(nome_cliente)
 
 
