@@ -149,7 +149,7 @@ def gerar_pdf(self):
 
     # Verificar se o arquivo já existe
     if os.path.exists(pdf_path):
-        # Se existir, remova-o antes de salvar o novo
+        # Se existir, remova-o antes de salvar o no vo
         os.remove(pdf_path)
 
     # Gerar PDF
@@ -164,17 +164,31 @@ def gerar_pdf(self):
     return pdf_filename  # ou gcs_pdf_filename se preferir
 
 
+
 if escolha == 'Visualizar':
+    def get_color(value):
+        colors = {'Azul': 'background-color: #00B0F0', 'Amarelo': 'background-color: #FFFF00',
+                  'Branco': 'background-color: #FFFFFF'}
+        return colors.get(value, '')
     st.subheader('Visualizar Planilha')
     data_vis = st.date_input('Data da Visualização', format='DD/MM/YYYY')
     mydb.connect()
+
+    # Consulta ao banco de dados
+    cursor = mydb.cursor(dictionary=True)
     cursor.execute(
-        f"select c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.roupa from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{data_vis}'")
+        f"select c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.roupa, r.check_in from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{data_vis}'")
     planilha = cursor.fetchall()
     mydb.close()
 
-    df = pd.DataFrame(planilha, columns=['Nome', 'Cpf', 'Telefone', 'Comissário', 'Cert', 'Fotos', 'Roupa'])
-    st.dataframe(df, hide_index=True, width=100)
+    # Criar DataFrame
+    df = pd.DataFrame(planilha, columns=['Nome', 'Cpf', 'Telefone', 'Comissário', 'Cert', 'Fotos', 'Roupa', 'Check_in'])
+
+    # Aplicar estilos condicionais
+    styled_df = df.style.applymap(get_color, subset=['Check_in'])
+
+    # Exibir DataFrame estilizado
+    st.dataframe(styled_df, hide_index=True)
     st.write('---')
 
     # Formulário para gerar PDF
@@ -281,9 +295,9 @@ if escolha == 'Reservar':
             id_cliente = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
 
             cursor.execute(
-                "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor,pago_loja, pago_vendedor, valor_total,nome_cliente) values (%s, %s, %s, "
+                "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor,pago_loja, pago_vendedor, valor_total,nome_cliente,check_in) values (%s, %s, %s, %s, "
                 "%s, %s, %s, %s, %s)",
-                (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_mergulho, nome_cliente))
+                (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_mergulho, nome_cliente, 'Branco'))
             mydb.close()
             st.success('Reserva realizada com sucesso!')
 
@@ -392,6 +406,11 @@ if escolha == 'Pagamento':
         parcela = 0
 
     pagamento = st.text_input('Valor pago')
+    check_in_entry = st.selectbox('Cliente vai pra onde?', ['Loja', 'Para o pier'], index=None)
+    if check_in_entry == 'Loja':
+        check_in = 'Azul'
+    if check_in_entry == 'Para o pier':
+        check_in = 'Amarelo'
 
     if st.button('Lançar Pagamento'):
         mydb.connect()
