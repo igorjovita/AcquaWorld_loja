@@ -1,5 +1,5 @@
 import base64
-
+import google.cloud
 import pdfkit
 import jinja2
 from google.cloud import storage
