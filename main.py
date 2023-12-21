@@ -48,17 +48,12 @@ def gerar_pdf(self):
 
     # Consulta ao banco de dados para obter os dados
     cursor.execute(
-        f"SELECT id_cliente FROM reserva WHERE data = '{data_para_pdf}'")
+        f"SELECT nome_cliente FROM reserva WHERE data = '{data_para_pdf}'")
     lista_cliente = cursor.fetchall()
-    lista_id_cliente = []
     cliente = []
     for item1 in lista_cliente:
         id_cli = str(item1).translate(str.maketrans('', '', chars))
-        lista_id_cliente.append(id_cli)
-    for ids in lista_id_cliente:
-        cursor.execute(f"SELECT nome FROM cliente WHERE id = {ids}")
-        nome_cliente = str(cursor.fetchall).upper().translate(str.maketrans('', '', chars))
-        cliente.append(nome_cliente)
+        cliente.append(id_cli)
 
 
     for nome in cliente:
