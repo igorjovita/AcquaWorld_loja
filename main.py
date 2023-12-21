@@ -161,63 +161,16 @@ def gerar_pdf(self):
 
     # Fechar a conexão
     mydb.close()
-    return pdf_filename  # ou gcs_pdf_filename se preferir
+    return pdf_filename, output_text  # ou gcs_pdf_filename se preferir
 
 
 
 if escolha == 'Visualizar':
     # Função para obter cores com base no valor da coluna 'check_in'
-    def get_color(check_in):
 
-        if check_in == 'branco':
-            return 'background-color: white'
-        elif check_in == 'azul':
-            return 'background-color: blue'
-        elif check_in == 'amarelo':
-            return 'background-color: yellow'
-        else:
-            return ''
-
-
-
-    # Visualizar Planilha
-    st.subheader('Visualizar Planilha')
-    data_vis = st.date_input('Data da Visualização', format='DD/MM/YYYY')
-    mydb.connect()
-
-    # Consulta ao banco de dados
-    cursor = mydb.cursor(dictionary=True)
-    cursor.execute(
-        f"select c.nome as Nome, c.cpf as Cpf, c.telefone as Telefone, v.nome as Comissário, r.tipo as Cert, r.fotos as Fotos, c.roupa as Roupa, r.check_in as Check_in from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{data_vis}'")
-    planilha = cursor.fetchall()
-    mydb.close()
-
-    # Criar DataFrame
-    df = pd.DataFrame(planilha)
-
-    # Criar HTML para a tabela estilizada
-    html_table = f"<table style='border-collapse: collapse;'>"
-
-    # Adicionar cabeçalho
-    html_table += "<tr>"
-    for col in df.columns:
-        html_table += f"<th style='border: 1px solid black; padding: 8px;'>{col}</th>"
-    html_table += "</tr>"
-
-    # Adicionar linhas de dados
-    for index, row in df.iterrows():
-        html_table += "<tr>"
-        for col in df.columns:
-            if col == 'Check_in':
-                html_table += f"<td style='border: 1px solid black; padding: 8px; background-color: {get_color(row[col])};'>{row[col]}</td>"
-            else:
-                html_table += f"<td style='border: 1px solid black; padding: 8px;'>{row[col]}</td>"
-        html_table += "</tr>"
-
-    html_table += "</table>"
-
+    data_planilha = st.date_input('Data da Planilha')
     # Exibir tabela estilizada no Streamlit
-    st.markdown(html_table, unsafe_allow_html=True)
+    st.markdown(gerar_pdf(data_planilha), unsafe_allow_html=True)
     st.write('---')
 
     # Formulário para gerar PDF
