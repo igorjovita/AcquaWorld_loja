@@ -31,6 +31,17 @@ pasta = os.path.dirname(__file__)
 def gerar_pdf(self):
     mydb.connect()
 
+    # Inicializar listas
+    cliente = []
+    cpf = []
+    telefone = []
+    comissario = []
+    cert = []
+    foto = []
+    dm = []
+    roupa = []
+    background_colors = []
+
     # Consulta ao banco de dados para obter os dados
     cursor.execute(
         "SELECT id_cliente FROM reserva WHERE data = %s", (data_para_pdf,))
