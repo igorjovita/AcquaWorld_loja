@@ -187,7 +187,7 @@ if escolha == 'Visualizar':
         st.download_button('Planilha', gerar_pdf(data_para_pdf))
 
 
-    if st.button('teste'):
+   
 
 
 
