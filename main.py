@@ -200,13 +200,14 @@ if escolha == 'Visualizar':
     mydb.close()
 
     # Criar DataFrame
-    df = pd.DataFrame(planilha)
+    df = pd.DataFrame(data)
 
     # Aplicar estilo ao DataFrame
-    styled_df = df.style.apply(lambda col: [f'background-color: {get_color(x)}' for x in col], axis=0, subset=['Nome'])
+    styled_df = df.style.apply(lambda row: [f'background-color: {get_color(row["Check_in"])}' for _ in row], axis=1,
+                               subset=['Nome'])
 
     # Exibir o DataFrame estilizado
-    st.write(styled_df)
+    st.dataframe(styled_df, unsafe_allow_html=True)
     st.write('---')
 
     # Formulário para gerar PDF
