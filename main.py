@@ -177,7 +177,7 @@ if escolha == 'Visualizar':
     # Consulta ao banco de dados
     cursor = mydb.cursor(dictionary=True)
     cursor.execute(
-        f"select c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.roupa, r.check_in from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{data_vis}'")
+        f"select c.nome as Nome, c.cpf as Cpf, c.telefone as Telefone, v.nome as Comissário, r.tipo as Cert, r.fotos as Fotos, c.roupa as Roupa, r.check_in as Check_in from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{data_vis}'")
     planilha = cursor.fetchall()
     mydb.close()
 
