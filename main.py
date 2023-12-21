@@ -26,12 +26,7 @@ escolha = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visual
                       orientation='horizontal')
 
 pasta = os.path.dirname(__file__)
-
-
-def gerar_pdf(self):
-    mydb.connect()
-
-    # Inicializar listas
+# Inicializar listas
     lista_id_cliente = []
     lista_id_vendedor = []
     cliente = []
@@ -43,6 +38,11 @@ def gerar_pdf(self):
     dm = []
     roupa = []
     background_colors = []
+
+def gerar_pdf(self):
+    mydb.connect()
+
+
 
     # Consulta ao banco de dados para obter os dados
     cursor.execute(
@@ -372,6 +372,9 @@ if escolha == 'Visualizar':
         pdf_filename = gerar_pdf(data_para_pdf)
         st.download_button('Planilha', gerar_pdf(data_para_pdf))
         st.success(f"PDF gerado com sucesso: [{pdf_filename}]")
+
+    if st.button('teste'):
+        st.write(cliente)
 
 if escolha == 'Pagamento':
     data_pagamento = date.today()
