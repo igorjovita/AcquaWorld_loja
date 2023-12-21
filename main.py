@@ -195,7 +195,8 @@ if escolha == 'Visualizar':
     df = pd.DataFrame(planilha, columns=['Nome', 'Cpf', 'Telefone', 'Comissário', 'Cert', 'Fotos', 'Roupa', 'Check_in'])
 
     # Criar DataFrame estilizado
-    styled_df = df.style.applymap(lambda x: get_color(df['Check_in'].iloc[x]) if x == 'Nome' else '')
+    styled_df = df.style.apply(lambda row: [get_color(row['Check_in'])] * len(row.index),
+                               subset=pd.IndexSlice[:, ['Nome']])
 
     # Exibir DataFrame estilizado
     st.dataframe(styled_df, hide_index=True)
