@@ -149,10 +149,6 @@ def gerar_pdf(self):
     pdfkit.from_string(output_text, pdf_filename, configuration=config)
     local_pdf_filename = f"reservas_{data_para_pdf}.pdf"
 
-    # Gerar PDF
-    config = pdfkit.configuration(wkhtmltopdf=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe")
-    pdfkit.from_string(output_text, local_pdf_filename, configuration=config)
-    gcs_pdf_filename = f"reservas_{data_para_pdf}.pdf"
 
     # Conectar ao Google Cloud Storage
     credentials_path = r'C:\Users\Igorj\Downloads\acquaworld.json'
