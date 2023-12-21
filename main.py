@@ -32,6 +32,8 @@ def gerar_pdf(self):
     mydb.connect()
 
     # Inicializar listas
+    lista_id_cliente = []
+    lista_id_vendedor = []
     cliente = []
     cpf = []
     telefone = []
@@ -46,97 +48,92 @@ def gerar_pdf(self):
     cursor.execute(
         "SELECT id_cliente FROM reserva WHERE data = %s", (data_para_pdf,))
     lista_cliente = cursor.fetchall()
-    lista1 = []
-    lista_2 = []
+
     for item in lista_cliente:
         id_cli = str(item).translate(str.maketrans('', '', chars2))
-        lista1.append(id_cli)
-        for ids in lista1:
+        lista_id_cliente.append(id_cli)
+        for ids in lista_id_cliente:
             cursor.execute(f"SELECT nome FROM cliente WHERE id = '{ids}'")
             nome = str(cursor.fetchone).upper().translate(str.maketrans('', '', chars2))
-            lista_2.append(nome)
-            cliente = lista_2
+            cliente.append(nome)
 
-    for nome in lista_2:
+
+    for nome in cliente:
         cursor.execute(
             f"SELECT cpf FROM cliente WHERE nome = '{nome}'")
         lista_cpf = cursor.fetchall()
-        lista2 = []
+
         for item in lista_cpf:
             nome = str(item).translate(str.maketrans('', '', chars2))
-            lista2.append(nome)
-            cpf = lista2
+            cpf.append(nome)
 
-    for nome in lista_2:
+
+    for nome in cliente:
         cursor.execute(
             f"SELECT telefone FROM cliente WHERE nome = '{nome}'")
         lista_telefone = cursor.fetchall()
-        lista3 = []
         for item in lista_telefone:
             nome = str(item).translate(str.maketrans('', '', chars2))
-            lista3.append(nome)
-            telefone = lista3
+            telefone.append(nome)
+
 
     cursor.execute(
         "SELECT id_vendedor FROM reserva WHERE data = %s", (data_para_pdf,))
     lista_comissario = cursor.fetchall()
-    lista4 = []
-    lista_vend = []
+
     for item in lista_comissario:
         id_vend = str(item).translate(str.maketrans('', '', chars2))
-        lista4.append(id_vend)
-        for id_v in lista4:
+        lista_id_vendedor.append(id_vend)
+        for id_v in lista_id_vendedor:
             cursor.execute(f"SELECT apelido from vendedores where id = '{id_v}'")
             nome = str(cursor.fetchone()).translate(str.maketrans('', '', chars2))
-            lista_vend.append(nome)
-        comissario = lista_vend
+            comissario.append(nome)
+
     mydb.close()
     mydb.connect()
 
     cursor.execute(
         "SELECT tipo FROM reserva WHERE data = %s", (data_para_pdf,))
     lista_cert = cursor.fetchall()
-    lista5 = []
     for item in lista_cert:
         nome = str(item).upper().translate(str.maketrans('', '', chars2))
-        lista5.append(nome)
-        cert = lista5
+        cert.append(nome)
+
 
     cursor.execute(
         "SELECT fotos FROM reserva WHERE data = %s", (data_para_pdf,))
     lista_foto = cursor.fetchall()
-    lista6 = []
+
     for item in lista_foto:
         nome = str(item).upper().translate(str.maketrans('', '', chars2))
-        lista6.append(nome)
-        foto = lista6
+        foto.append(nome)
+
     cursor.execute(
         "SELECT  dm FROM reserva WHERE data = %s", (data_para_pdf,))
     lista_dm = cursor.fetchall()
-    lista7 = []
+
     for item in lista_dm:
         nome = str(item).upper().translate(str.maketrans('', '', chars2))
-        lista7.append(nome)
-        dm = lista7
+        dm.append(nome)
 
-    for nome in lista_2:
+
+    for nome in cliente:
         cursor.execute(
             f"SELECT roupa FROM cliente WHERE nome = '{nome}'")
         lista_roupa = cursor.fetchall()
-        lista8 = []
+
         for item in lista_roupa:
             nome = str(item).upper().translate(str.maketrans('', '', chars2))
-            lista8.append(nome)
-            roupa = lista8
+            roupa.append(nome)
+
 
     cursor.execute(
         "SELECT check_in FROM reserva WHERE data = %s", (data_para_pdf,))
     lista_check_in = cursor.fetchall()
-    lista9 = []
+
     for item in lista_check_in:
         nome = str(item).translate(str.maketrans('', '', chars2))
-        lista9.append(nome)
-        background_colors = lista9
+        background_colors.append(nome)
 
     # Processar a data
     data_selecionada = str(data_para_pdf).split('-')
