@@ -27,9 +27,8 @@ escolha = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visual
 
 pasta = os.path.dirname(__file__)
 # Inicializar listas
-lista_id_cliente = []
+
 lista_id_vendedor = []
-cliente = []
 cpf = []
 telefone = []
 comissario = []
@@ -48,7 +47,8 @@ def gerar_pdf(self):
     cursor.execute(
         f"SELECT id_cliente FROM reserva WHERE data = '{data_para_pdf}'")
     lista_cliente = cursor.fetchall()
-
+    lista_id_cliente = []
+    cliente = []
     for item1 in lista_cliente:
         id_cli = str(item1).translate(str.maketrans('', '', chars2))
         lista_id_cliente.append(id_cli)
