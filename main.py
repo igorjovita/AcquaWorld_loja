@@ -54,8 +54,8 @@ def gerar_pdf(self):
         lista_id_cliente.append(id_cli)
     for ids in lista_id_cliente:
         cursor.execute(f"SELECT nome FROM cliente WHERE id = '{ids}'")
-        nome = str(cursor.fetchone).upper().translate(str.maketrans('', '', chars2))
-        cliente.append(nome)
+        nome_cliente = str(cursor.fetchone).upper().translate(str.maketrans('', '', chars2))
+        cliente.append(nome_cliente)
 
 
     for nome in cliente:
@@ -375,6 +375,8 @@ if escolha == 'Visualizar':
 
     if st.button('teste'):
         st.write(cliente)
+        st.write(lista_id_cliente)
+
 
 if escolha == 'Pagamento':
     data_pagamento = date.today()
