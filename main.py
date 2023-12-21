@@ -30,8 +30,9 @@ escolha = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visual
                       orientation='horizontal')
 
 pasta = os.path.dirname(__file__)
-# Inicializar listas
 
+
+# Inicializar listas
 
 
 def gerar_pdf(self):
@@ -51,7 +52,6 @@ def gerar_pdf(self):
         cursor.execute(
             f"SELECT cpf FROM cliente WHERE nome = '{nome}'")
         lista_cpf = cursor.fetchall()
-
 
         for item in lista_cpf:
             nome = str(item).translate(str.maketrans('', '', chars2))
@@ -133,7 +133,8 @@ def gerar_pdf(self):
     data_completa = f'{dia}/{mes}/{ano}'
 
     # Criar o contexto
-    contexto = {'cliente': cliente, 'cpf': cpf, 'tel': telefone, 'comissario': comissario, 'c': cert, 'f': foto, 'r': roupa, 'data_reserva': data_completa, 'background_colors': background_colors, 'dm': dm}
+    contexto = {'cliente': cliente, 'cpf': cpf, 'tel': telefone, 'comissario': comissario, 'c': cert, 'f': foto,
+                'r': roupa, 'data_reserva': data_completa, 'background_colors': background_colors, 'dm': dm}
 
     # Renderizar o template HTML
     planilha_loader = jinja2.FileSystemLoader('./')
@@ -148,7 +149,6 @@ def gerar_pdf(self):
     config = pdfkit.configuration()
     pdfkit.from_string(output_text, pdf_filename, configuration=config)
     local_pdf_filename = f"reservas_{data_para_pdf}.pdf"
-
 
     # Conectar ao Google Cloud Storage
 
@@ -166,12 +166,11 @@ def gerar_pdf(self):
         # Upload do arquivo PDF para o Google Cloud Storage
         blob = bucket.blob(local_pdf_filename)
         blob.upload_from_filename(local_pdf_filename)
-        print(f"Upload bem-sucedido para o Google Cloud Storage. Caminho no GCS: gs://{bucket_name}/{local_pdf_filename}")
+        print(
+            f"Upload bem-sucedido para o Google Cloud Storage. Caminho no GCS: gs://{bucket_name}/{local_pdf_filename}")
 
     except FileNotFoundError:
         print(f"Arquivo '{local_pdf_filename}' não encontrado.")
-
-    return local_pdf_filename  # ou gcs_pdf_filename se preferir
 
     download_link = f'<a href="data:application/pdf;base64,{base64.b64encode(open(pdf_filename, "rb").read()).decode()}" download="{pdf_filename}">Clique aqui para baixar</a>'
     st.markdown(download_link, unsafe_allow_html=True)
@@ -201,12 +200,6 @@ if escolha == 'Visualizar':
     if st.button("Gerar PDF"):
         pdf_filename = gerar_pdf(data_para_pdf)
         st.download_button('Planilha', gerar_pdf(data_para_pdf))
-
-
-
-
-
-
 
 if escolha == 'Reservar':
     mydb.connect()
@@ -392,10 +385,6 @@ if escolha == 'Editar':
                     f"UPDATE cliente SET peso = '{peso_novo}', altura = '{altura_novo}' WHERE id = '{info_cliente[0]}'")
                 mydb.close()
                 st.success('Reserva Atualizada')
-
-
-
-
 
 if escolha == 'Pagamento':
     data_pagamento = date.today()
