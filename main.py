@@ -169,14 +169,14 @@ if escolha == 'Visualizar':
     # Função para obter cores com base no valor da coluna 'check_in'
     def get_color(check_in):
 
-        if check_in == 'Branco':
-            return 'background-color: #FFFFFF'
-        elif check_in == 'Amarelo':
-            return 'background-color: #FFFF00'
-        elif check_in == 'Azul':
-            return 'background-color: #00B0F0'
+        if check_in == 'branco':
+            return 'background-color: white'
+        elif check_in == 'azul':
+            return 'background-color: blue'
+        elif check_in == 'amarelo':
+            return 'background-color: yellow'
         else:
-            return ''  # Sem cor para outros casos
+            return ''
 
 
     # Visualizar Planilha
