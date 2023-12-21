@@ -424,6 +424,8 @@ if escolha == 'Pagamento':
         cursor.execute(f"SELECT valor_neto FROM vendedores WHERE id = {info_reserva_pg[1]}")
         valor_neto = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
 
+        cursor.execute(f"UPDATE reserva set check_in = '{check_in}' where nome_cliente = '{selectbox_cliente}'")
+
         sinal_loja = float(str(info_reserva_pg[2]).strip('Decimal'))
         sinal_vendedor = float(str(info_reserva_pg[3]).strip('Decimal'))
         total_mergulho = float(str(info_reserva_pg[5]).strip('Decimal'))
