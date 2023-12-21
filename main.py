@@ -293,9 +293,9 @@ if escolha == 'Reservar':
             id_cliente = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
 
             cursor.execute(
-                "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor,pago_loja, pago_vendedor, valor_total) values (%s, %s, "
+                "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor,pago_loja, pago_vendedor, valor_total,nome_cliente) values (%s, %s, %s, "
                 "%s, %s, %s, %s, %s)",
-                (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_mergulho))
+                (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_mergulho, nome_cliente))
             mydb.close()
             st.success('Reserva realizada com sucesso!')
 
