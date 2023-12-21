@@ -179,13 +179,6 @@ if escolha == 'Visualizar':
             return ''
 
 
-    # Função para aplicar o estilo às células
-    def apply_color(row):
-        if 'Check_in' in row.index:
-            return ['background-color: {}'.format(get_color(row['Check_in']))] * len(row.index)
-        else:
-            return [''] * len(row.index)
-
 
     # Visualizar Planilha
     st.subheader('Visualizar Planilha')
@@ -200,7 +193,7 @@ if escolha == 'Visualizar':
     mydb.close()
 
     # Criar DataFrame
-    df = pd.DataFrame(data)
+    df = pd.DataFrame(planilha)
 
     # Aplicar estilo ao DataFrame
     styled_df = df.style.apply(lambda row: [f'background-color: {get_color(row["Check_in"])}' for _ in row], axis=1,
