@@ -170,7 +170,7 @@ if escolha == 'Visualizar':
 
     data_para_pdf = st.date_input('Data da Planilha')
     # Exibir tabela estilizada no Streamlit
-    st.markdown(gerar_pdf(data_para_pdf), unsafe_allow_html=True)
+    st.dataframe(gerar_pdf(data_para_pdf), unsafe_allow_html=True)
     st.write('---')
 
     # Formulário para gerar PDF
