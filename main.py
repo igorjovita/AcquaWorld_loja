@@ -151,9 +151,10 @@ def gerar_pdf(self):
 
 
     # Conectar ao Google Cloud Storage
-    credentials_path = r'C:\Users\Igorj\Downloads\acquaworld.json'
+
     try:
-        client = client = storage.Client.from_service_account_json(credentials_path)
+        credentials_path = r'C:\Users\Igorj\Downloads\acquaworld.json'
+        client = storage.Client.from_service_account_json(credentials_path)
     except DefaultCredentialsError:
         print("Credenciais padrão do Google Cloud não disponíveis.")
 
@@ -163,9 +164,9 @@ def gerar_pdf(self):
 
     try:
         # Upload do arquivo PDF para o Google Cloud Storage
-        blob = bucket.blob(gcs_pdf_filename)
+        blob = bucket.blob(local_pdf_filename)
         blob.upload_from_filename(local_pdf_filename)
-        print(f"Upload bem-sucedido para o Google Cloud Storage. Caminho no GCS: gs://{bucket_name}/{gcs_pdf_filename}")
+        print(f"Upload bem-sucedido para o Google Cloud Storage. Caminho no GCS: gs://{bucket_name}/{local_pdf_filename}")
 
     except FileNotFoundError:
         print(f"Arquivo '{local_pdf_filename}' não encontrado.")
