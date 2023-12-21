@@ -199,11 +199,10 @@ if escolha == 'Visualizar':
     planilha = cursor.fetchall()
     mydb.close()
 
-    # Criar DataFrame
     df = pd.DataFrame(planilha)
 
     # Aplicar estilo ao DataFrame
-    styled_df = df.style.apply(apply_color, subset=pd.IndexSlice[:, ['Nome']])
+    styled_df = df.style.applymap(lambda x: f'background-color: {get_color(x)}' if x.name == 'Nome' else '')
 
     # Exibir o DataFrame estilizado
     st.write(styled_df)
