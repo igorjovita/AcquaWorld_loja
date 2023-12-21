@@ -194,8 +194,7 @@ if escolha == 'Visualizar':
     df = pd.DataFrame(planilha).drop(columns=['Check_in'])
 
     # Aplicar estilos condicionais à célula do nome do cliente
-    styled_df = df.style.apply(lambda row: row.map(lambda x: get_color(x) if row.name == 'Nome' else ''), axis=1,
-                               subset=['Nome'])
+    styled_df = df.style.applymap(lambda x: get_color(x) if df.columns[x] == 'Nome' else '')
 
     # Exibir DataFrame estilizado
     st.dataframe(styled_df, hide_index=True)
