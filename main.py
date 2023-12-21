@@ -49,8 +49,8 @@ def gerar_pdf(self):
         "SELECT id_cliente FROM reserva WHERE data = %s", (data_para_pdf,))
     lista_cliente = cursor.fetchall()
 
-    for item in lista_cliente:
-        id_cli = str(item).translate(str.maketrans('', '', chars2))
+    for item1 in lista_cliente:
+        id_cli = str(item1).translate(str.maketrans('', '', chars2))
         lista_id_cliente.append(id_cli)
     for ids in lista_id_cliente:
         cursor.execute(f"SELECT nome FROM cliente WHERE id = '{ids}'")
