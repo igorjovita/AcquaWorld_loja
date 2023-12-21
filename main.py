@@ -1,5 +1,5 @@
 import base64
-import google.cloud
+
 import pdfkit
 import jinja2
 from google.cloud import storage
@@ -46,17 +46,18 @@ def gerar_pdf(self):
         id_cli = str(item1).translate(str.maketrans('', '', chars))
         cliente.append(id_cli)
 
-
+    cpf = []
     for nome in cliente:
         cursor.execute(
             f"SELECT cpf FROM cliente WHERE nome = '{nome}'")
         lista_cpf = cursor.fetchall()
 
+
         for item in lista_cpf:
             nome = str(item).translate(str.maketrans('', '', chars2))
             cpf.append(nome)
 
-
+    telefone = []
     for nome in cliente:
         cursor.execute(
             f"SELECT telefone FROM cliente WHERE nome = '{nome}'")
@@ -65,7 +66,7 @@ def gerar_pdf(self):
             nome = str(item).translate(str.maketrans('', '', chars2))
             telefone.append(nome)
 
-
+    comissario = []
     cursor.execute(
         "SELECT id_vendedor FROM reserva WHERE data = %s", (data_para_pdf,))
     lista_comissario = cursor.fetchall()
@@ -81,6 +82,7 @@ def gerar_pdf(self):
     mydb.close()
     mydb.connect()
 
+    cert = []
     cursor.execute(
         "SELECT tipo FROM reserva WHERE data = %s", (data_para_pdf,))
     lista_cert = cursor.fetchall()
@@ -88,7 +90,7 @@ def gerar_pdf(self):
         nome = str(item).upper().translate(str.maketrans('', '', chars2))
         cert.append(nome)
 
-
+    foto = []
     cursor.execute(
         "SELECT fotos FROM reserva WHERE data = %s", (data_para_pdf,))
     lista_foto = cursor.fetchall()
@@ -100,12 +102,12 @@ def gerar_pdf(self):
     cursor.execute(
         "SELECT  dm FROM reserva WHERE data = %s", (data_para_pdf,))
     lista_dm = cursor.fetchall()
-
+    dm = []
     for item in lista_dm:
         nome = str(item).upper().translate(str.maketrans('', '', chars2))
         dm.append(nome)
 
-
+    roupa = []
     for nome in cliente:
         cursor.execute(
             f"SELECT roupa FROM cliente WHERE nome = '{nome}'")
@@ -115,7 +117,7 @@ def gerar_pdf(self):
             nome = str(item).upper().translate(str.maketrans('', '', chars2))
             roupa.append(nome)
 
-
+    background_colors = []
     cursor.execute(
         "SELECT check_in FROM reserva WHERE data = %s", (data_para_pdf,))
     lista_check_in = cursor.fetchall()
