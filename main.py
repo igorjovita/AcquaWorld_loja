@@ -179,6 +179,14 @@ if escolha == 'Visualizar':
             return ''
 
 
+    # Função para aplicar o estilo às células
+    def apply_color(row):
+        if 'Check_in' in row.index:
+            return ['background-color: {}'.format(get_color(row['Check_in']))] * len(row.index)
+        else:
+            return [''] * len(row.index)
+
+
     # Visualizar Planilha
     st.subheader('Visualizar Planilha')
     data_vis = st.date_input('Data da Visualização', format='DD/MM/YYYY')
@@ -192,14 +200,13 @@ if escolha == 'Visualizar':
     mydb.close()
 
     # Criar DataFrame
-    df = pd.DataFrame(planilha, columns=['Nome', 'Cpf', 'Telefone', 'Comissário', 'Cert', 'Fotos', 'Roupa', 'Check_in'])
+    df = pd.DataFrame(planilha)
 
-    # Criar DataFrame estilizado
-    styled_df = df.style.apply(lambda row: [get_color(row['Check_in'])] * len(row.index) if 'Check_in' in row.index else '', subset=pd.IndexSlice[:, ['Nome']])
+    # Aplicar estilo ao DataFrame
+    styled_df = df.style.apply(apply_color, subset=pd.IndexSlice[:, ['Nome']])
 
-
-    # Exibir DataFrame estilizado
-    st.dataframe(styled_df, hide_index=True)
+    # Exibir o DataFrame estilizado
+    st.write(styled_df)
     st.write('---')
 
     # Formulário para gerar PDF
