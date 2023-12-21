@@ -168,6 +168,7 @@ def gerar_pdf(self):
 if escolha == 'Visualizar':
     # Função para obter cores com base no valor da coluna 'check_in'
     def get_color(check_in):
+
         if check_in == 'Branco':
             return 'background-color: #FFFFFF'
         elif check_in == 'Amarelo':
@@ -190,11 +191,11 @@ if escolha == 'Visualizar':
     planilha = cursor.fetchall()
     mydb.close()
 
-    # Criar DataFrame sem a coluna 'Check_in'
-    df = pd.DataFrame(planilha).drop(columns=['Check_in'])
+    # Criar DataFrame
+    df = pd.DataFrame(planilha, columns=['Nome', 'Cpf', 'Telefone', 'Comissário', 'Cert', 'Fotos', 'Roupa', 'Check_in'])
 
-    # Aplicar estilos condicionais à célula do nome do cliente
-    styled_df = df.style.applymap(lambda x: get_color(x) if df.columns[x] == 'Nome' else '')
+    # Criar DataFrame estilizado
+    styled_df = df.style.applymap(lambda x: get_color(df['Check_in'].loc[x.name]) if x.name == 'Nome' else '')
 
     # Exibir DataFrame estilizado
     st.dataframe(styled_df, hide_index=True)
