@@ -195,12 +195,18 @@ if escolha == 'Visualizar':
     # Criar DataFrame
     df = pd.DataFrame(planilha)
 
-    # Aplicar estilo ao DataFrame
-    styled_df = df.style.apply(lambda row: [f'background-color: {get_color(row["Check_in"])}' for _ in row], axis=1,
-                               subset=['Nome'])
+    # Criar tabela HTML personalizada com estilos
+    table_html = '<table style="border-collapse: collapse; width: 100%;">'
+    for index, row in df.iterrows():
+        color = get_color(row['Check_in'])
+        table_html += f'<tr style="background-color: {color};">'
+        for column in df.columns:
+            table_html += f'<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">{row[column]}</td>'
+        table_html += '</tr>'
+    table_html += '</table>'
 
-    # Exibir o DataFrame estilizado
-    st.dataframe(styled_df, unsafe_allow_html=True)
+    # Exibir a tabela HTML no Streamlit
+    st.markdown(table_html, unsafe_allow_html=True)
     st.write('---')
 
     # Formulário para gerar PDF
