@@ -27,17 +27,17 @@ escolha = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visual
 
 pasta = os.path.dirname(__file__)
 # Inicializar listas
-    lista_id_cliente = []
-    lista_id_vendedor = []
-    cliente = []
-    cpf = []
-    telefone = []
-    comissario = []
-    cert = []
-    foto = []
-    dm = []
-    roupa = []
-    background_colors = []
+lista_id_cliente = []
+lista_id_vendedor = []
+cliente = []
+cpf = []
+telefone = []
+comissario = []
+cert = []
+foto = []
+dm = []
+roupa = []
+background_colors = []
 
 def gerar_pdf(self):
     mydb.connect()
