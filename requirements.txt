@@ -3,5 +3,9 @@ pandas~=2.1.2
 mysql-connector-python~=8.2.0
 streamlit-option-menu
 dotenv-python
-pdfkit
-jinja2
+pdfkit~=1.0.0
+jinja2~=3.1.2
+google-auth
+google-cloud
+google-cloud-storage
+google

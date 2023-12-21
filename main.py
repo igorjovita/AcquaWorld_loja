@@ -2,7 +2,8 @@ import base64
 
 import pdfkit
 import jinja2
-
+from google.cloud import storage
+from google.auth.exceptions import DefaultCredentialsError
 import streamlit as st
 import pandas as pd
 from streamlit_option_menu import option_menu
@@ -31,20 +32,10 @@ escolha = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visual
 pasta = os.path.dirname(__file__)
 # Inicializar listas
 
-lista_id_vendedor = []
-cpf = []
-telefone = []
-comissario = []
-cert = []
-foto = []
-dm = []
-roupa = []
-background_colors = []
+
 
 def gerar_pdf(self):
     mydb.connect()
-
-
 
     # Consulta ao banco de dados para obter os dados
     cursor.execute(
@@ -153,8 +144,35 @@ def gerar_pdf(self):
     # Gerar PDF
     config = pdfkit.configuration()
     pdfkit.from_string(output_text, pdf_filename, configuration=config)
-    caminho_absoluto = os.path.abspath(pdf_filename)
-    st.success(f'PDF gerado e salvo em: {caminho_absoluto}')
+    local_pdf_filename = f"reservas_{data}.pdf"
+
+    # Gerar PDF
+    config = pdfkit.configuration(wkhtmltopdf=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe")
+    pdfkit.from_string(output_text, local_pdf_filename, configuration=config)
+    gcs_pdf_filename = f"reservas_{data}.pdf"
+
+    # Conectar ao Google Cloud Storage
+    credentials_path = 'C:\Users\Igorj\Downloads\acquaworld.json'
+    try:
+        client = client = storage.Client.from_service_account_json(credentials_path)
+    except DefaultCredentialsError:
+        print("Credenciais padrão do Google Cloud não disponíveis.")
+
+    bucket_name = 'acquaworld'  # Substitua pelo nome do seu bucket
+
+    bucket = client.bucket(bucket_name)
+
+    try:
+        # Upload do arquivo PDF para o Google Cloud Storage
+        blob = bucket.blob(gcs_pdf_filename)
+        blob.upload_from_filename(local_pdf_filename)
+        print(f"Upload bem-sucedido para o Google Cloud Storage. Caminho no GCS: gs://{bucket_name}/{gcs_pdf_filename}")
+
+    except FileNotFoundError:
+        print(f"Arquivo '{local_pdf_filename}' não encontrado.")
+
+    return local_pdf_filename  # ou gcs_pdf_filename se preferir
+
     download_link = f'<a href="data:application/pdf;base64,{base64.b64encode(open(pdf_filename, "rb").read()).decode()}" download="{pdf_filename}">Clique aqui para baixar</a>'
     st.markdown(download_link, unsafe_allow_html=True)
 
@@ -162,7 +180,7 @@ def gerar_pdf(self):
     mydb.close()
     st.write(cliente)
     st.write(lista_id_cliente)
-    return pdf_filename
+    return local_pdf_filename  # ou gcs_pdf_filename se preferir
 
 
 if escolha == 'Visualizar':
