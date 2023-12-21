@@ -52,10 +52,10 @@ def gerar_pdf(self):
     for item in lista_cliente:
         id_cli = str(item).translate(str.maketrans('', '', chars2))
         lista_id_cliente.append(id_cli)
-        for ids in lista_id_cliente:
-            cursor.execute(f"SELECT nome FROM cliente WHERE id = '{ids}'")
-            nome = str(cursor.fetchone).upper().translate(str.maketrans('', '', chars2))
-            cliente.append(nome)
+    for ids in lista_id_cliente:
+        cursor.execute(f"SELECT nome FROM cliente WHERE id = '{ids}'")
+        nome = str(cursor.fetchone).upper().translate(str.maketrans('', '', chars2))
+        cliente.append(nome)
 
 
     for nome in cliente:
