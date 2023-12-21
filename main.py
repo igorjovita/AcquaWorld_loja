@@ -166,10 +166,19 @@ def gerar_pdf(self):
 
 
 if escolha == 'Visualizar':
-    def get_color(value):
-        colors = {'Azul': 'background-color: #00B0F0', 'Amarelo': 'background-color: #FFFF00',
-                  'Branco': 'background-color: #FFFFFF'}
-        return colors.get(value, '')
+    # Função para obter cores com base no valor da coluna 'check_in'
+    def get_color(check_in):
+        if check_in == 'Branco':
+            return 'background-color: #FFFFFF'
+        elif check_in == 'Amarelo':
+            return 'background-color: #FFFF00'
+        elif check_in == 'Azul':
+            return 'background-color: #00B0F0'
+        else:
+            return ''  # Sem cor para outros casos
+
+
+    # Visualizar Planilha
     st.subheader('Visualizar Planilha')
     data_vis = st.date_input('Data da Visualização', format='DD/MM/YYYY')
     mydb.connect()
@@ -181,11 +190,11 @@ if escolha == 'Visualizar':
     planilha = cursor.fetchall()
     mydb.close()
 
-    # Criar DataFrame
-    df = pd.DataFrame(planilha, columns=['Nome', 'Cpf', 'Telefone', 'Comissário', 'Cert', 'Fotos', 'Roupa', 'Check_in'])
+    # Criar DataFrame sem a coluna 'Check_in'
+    df = pd.DataFrame(planilha).drop(columns=['Check_in'])
 
-    # Aplicar estilos condicionais
-    styled_df = df.style.applymap(get_color, subset=['Check_in'])
+    # Aplicar estilos condicionais à célula do nome do cliente
+    styled_df = df.style.applymap(lambda x: get_color(x) if x.name == 'Nome' else '', subset=['Nome'])
 
     # Exibir DataFrame estilizado
     st.dataframe(styled_df, hide_index=True)
