@@ -162,8 +162,33 @@ def gerar_pdf(self):
 
     # Fechar a conexão
     mydb.close()
-
+    st.write(cliente)
+    st.write(lista_id_cliente)
     return pdf_filename
+
+
+if escolha == 'Visualizar':
+    st.subheader('Visualizar Planilha')
+    data_vis = st.date_input('Data da Visualização', format='DD/MM/YYYY')
+    mydb.connect()
+    cursor.execute(
+        f"select c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.roupa from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{data_vis}'")
+    planilha = cursor.fetchall()
+    mydb.close()
+
+    df = pd.DataFrame(planilha, columns=['Nome', 'Cpf', 'Telefone', 'Comissário', 'Cert', 'Fotos', 'Roupa'])
+    st.dataframe(df, hide_index=True, width=100)
+    st.write('---')
+
+    # Formulário para gerar PDF
+    data_para_pdf = st.date_input("Data para gerar PDF:")
+    if st.button("Gerar PDF"):
+        pdf_filename = gerar_pdf(data_para_pdf)
+        st.download_button('Planilha', gerar_pdf(data_para_pdf))
+
+
+    if st.button('teste'):
+
 
 
 chars = "'),([]"
@@ -353,29 +378,8 @@ if escolha == 'Editar':
                 mydb.close()
                 st.success('Reserva Atualizada')
 
-if escolha == 'Visualizar':
-    st.subheader('Visualizar Planilha')
-    data_vis = st.date_input('Data da Visualização', format='DD/MM/YYYY')
-    mydb.connect()
-    cursor.execute(
-        f"select c.nome, c.cpf, c.telefone, v.nome , r.tipo, r.fotos, c.roupa from reserva as r join cliente as c on c.id = r.id_cliente join vendedores as v on v.id = r.id_vendedor where data = '{data_vis}'")
-    planilha = cursor.fetchall()
-    mydb.close()
 
-    df = pd.DataFrame(planilha, columns=['Nome', 'Cpf', 'Telefone', 'Comissário', 'Cert', 'Fotos', 'Roupa'])
-    st.dataframe(df, hide_index=True, width=100)
-    st.write('---')
 
-    # Formulário para gerar PDF
-    data_para_pdf = st.date_input("Data para gerar PDF:")
-    if st.button("Gerar PDF"):
-        pdf_filename = gerar_pdf(data_para_pdf)
-        st.download_button('Planilha', gerar_pdf(data_para_pdf))
-        st.success(f"PDF gerado com sucesso: [{pdf_filename}]")
-
-    if st.button('teste'):
-        st.write(cliente)
-        st.write(lista_id_cliente)
 
 
 if escolha == 'Pagamento':
