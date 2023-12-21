@@ -152,7 +152,7 @@ def gerar_pdf(self):
     gcs_pdf_filename = f"reservas_{data}.pdf"
 
     # Conectar ao Google Cloud Storage
-    credentials_path = 'C:\Users\Igorj\Downloads\acquaworld.json'
+    credentials_path = r'C:\Users\Igorj\Downloads\acquaworld.json'
     try:
         client = client = storage.Client.from_service_account_json(credentials_path)
     except DefaultCredentialsError:
