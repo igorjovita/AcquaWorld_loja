@@ -10,6 +10,9 @@ import os
 import mysql.connector
 from datetime import date, datetime
 
+chars = "'),([]"
+chars2 = "')([]"
+
 mydb = mysql.connector.connect(
     host=os.getenv("DB_HOST"),
     user=os.getenv("DB_USERNAME"),
@@ -187,12 +190,11 @@ if escolha == 'Visualizar':
         st.download_button('Planilha', gerar_pdf(data_para_pdf))
 
 
-   
 
 
 
-chars = "'),([]"
-chars2 = "')([]"
+
+
 if escolha == 'Reservar':
     mydb.connect()
     cursor.execute("SELECT apelido FROM vendedores")
