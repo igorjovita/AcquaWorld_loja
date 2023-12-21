@@ -67,6 +67,7 @@ def gerar_pdf(self):
             telefone.append(nome)
 
     comissario = []
+    lista_id_vendedor = []
     cursor.execute(
         "SELECT id_vendedor FROM reserva WHERE data = %s", (data_para_pdf,))
     lista_comissario = cursor.fetchall()
