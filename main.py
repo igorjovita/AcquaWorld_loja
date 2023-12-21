@@ -195,18 +195,29 @@ if escolha == 'Visualizar':
     # Criar DataFrame
     df = pd.DataFrame(planilha)
 
-    # Criar tabela HTML personalizada com estilos
-    table_html = '<table style="border-collapse: collapse; width: 100%;">'
-    for index, row in df.iterrows():
-        color = get_color(row['Check_in'])
-        table_html += f'<tr style="background-color: {color};">'
-        for column in df.columns:
-            table_html += f'<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">{row[column]}</td>'
-        table_html += '</tr>'
-    table_html += '</table>'
+    # Criar HTML para a tabela estilizada
+    html_table = f"<table style='border-collapse: collapse;'>"
 
-    # Exibir a tabela HTML no Streamlit
-    st.markdown(table_html, unsafe_allow_html=True)
+    # Adicionar cabeçalho
+    html_table += "<tr>"
+    for col in df.columns:
+        html_table += f"<th style='border: 1px solid black; padding: 8px;'>{col}</th>"
+    html_table += "</tr>"
+
+    # Adicionar linhas de dados
+    for index, row in df.iterrows():
+        html_table += "<tr>"
+        for col in df.columns:
+            if col == 'Check_in':
+                html_table += f"<td style='border: 1px solid black; padding: 8px; background-color: {get_color(row[col])};'>{row[col]}</td>"
+            else:
+                html_table += f"<td style='border: 1px solid black; padding: 8px;'>{row[col]}</td>"
+        html_table += "</tr>"
+
+    html_table += "</table>"
+
+    # Exibir tabela estilizada no Streamlit
+    st.markdown(html_table, unsafe_allow_html=True)
     st.write('---')
 
     # Formulário para gerar PDF
