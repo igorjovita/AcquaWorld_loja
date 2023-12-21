@@ -144,42 +144,24 @@ def gerar_pdf(self):
 
     # Nome do arquivo PDF
     pdf_filename = f"reservas_{data_para_pdf}.pdf"
+    # Caminho completo do arquivo
+    pdf_path = os.path.join(os.getcwd(), pdf_filename)
+
+    # Verificar se o arquivo já existe
+    if os.path.exists(pdf_path):
+        # Se existir, remova-o antes de salvar o novo
+        os.remove(pdf_path)
 
     # Gerar PDF
     config = pdfkit.configuration()
     pdfkit.from_string(output_text, pdf_filename, configuration=config)
-    local_pdf_filename = f"reservas_{data_para_pdf}.pdf"
-
-    # Conectar ao Google Cloud Storage
-
-    try:
-        credentials_path = r'C:\Users\Igorj\Downloads\acquaworld.json'
-        client = storage.Client.from_service_account_json(credentials_path)
-    except DefaultCredentialsError:
-        print("Credenciais padrão do Google Cloud não disponíveis.")
-
-    bucket_name = 'acquaworld'  # Substitua pelo nome do seu bucket
-
-    bucket = client.bucket(bucket_name)
-
-    try:
-        # Upload do arquivo PDF para o Google Cloud Storage
-        blob = bucket.blob(local_pdf_filename)
-        blob.upload_from_filename(local_pdf_filename)
-        print(
-            f"Upload bem-sucedido para o Google Cloud Storage. Caminho no GCS: gs://{bucket_name}/{local_pdf_filename}")
-
-    except FileNotFoundError:
-        print(f"Arquivo '{local_pdf_filename}' não encontrado.")
 
     download_link = f'<a href="data:application/pdf;base64,{base64.b64encode(open(pdf_filename, "rb").read()).decode()}" download="{pdf_filename}">Clique aqui para baixar</a>'
     st.markdown(download_link, unsafe_allow_html=True)
 
     # Fechar a conexão
     mydb.close()
-    st.write(cliente)
-    st.write(lista_id_cliente)
-    return local_pdf_filename  # ou gcs_pdf_filename se preferir
+    return pdf_filename  # ou gcs_pdf_filename se preferir
 
 
 if escolha == 'Visualizar':
