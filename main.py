@@ -134,7 +134,7 @@ def gerar_pdf(self):
 
     # Criar o contexto
     contexto = {'cliente': cliente, 'cpf': cpf, 'tel': telefone, 'comissario': comissario, 'c': cert, 'f': foto,
-                'r': roupa, 'data_reserva': data_completa, 'background_color': background_colors, 'dm': dm}
+                'r': roupa, 'data_reserva': data_completa, 'background_colors': background_colors, 'dm': dm}
 
     # Renderizar o template HTML
     planilha_loader = jinja2.FileSystemLoader('./')
