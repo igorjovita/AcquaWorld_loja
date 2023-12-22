@@ -396,7 +396,7 @@ if escolha == 'Reservar':
             cursor.execute(
                 "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor,pago_loja, pago_vendedor, valor_total,nome_cliente,check_in) values (%s, %s, %s, %s, "
                 "%s, %s, %s, %s, %s)",
-                (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_mergulho, nome_cliente, 'Branco'))
+                (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_mergulho, nome_cliente, '#FFFFFF'))
             mydb.close()
             st.success('Reserva realizada com sucesso!')
 
@@ -507,9 +507,9 @@ if escolha == 'Pagamento':
     pagamento = st.text_input('Valor pago')
     check_in_entry = st.selectbox('Cliente vai pra onde?', ['Loja', 'Para o pier'], index=None)
     if check_in_entry == 'Loja':
-        check_in = 'Azul'
+        check_in = '00B0F0'
     if check_in_entry == 'Para o pier':
-        check_in = 'Amarelo'
+        check_in = 'FFFF00'
 
     if st.button('Lançar Pagamento'):
         mydb.connect()
