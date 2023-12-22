@@ -252,7 +252,7 @@ def gerar_html(self):
     dia, mes, ano = data_selecionada[2], data_selecionada[1], data_selecionada[0]
     data_completa = f'{dia}/{mes}/{ano}'
 
-    
+
 
     # Criar o contexto
     contexto = {'cliente': cliente, 'cpf': cpf, 'tel': telefone, 'comissario': comissario, 'c': cert, 'f': foto,
