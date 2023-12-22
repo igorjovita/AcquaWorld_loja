@@ -10,6 +10,7 @@ from streamlit_option_menu import option_menu
 import os
 import mysql.connector
 from datetime import date, datetime
+import streamlit.components.v1
 
 chars = "'),([]"
 chars2 = "')([]"
@@ -281,7 +282,7 @@ if escolha == 'Visualizar':
     data_para_pdf = st.date_input("Data para gerar PDF:")
     if st.button('Gerar Html'):
         tabela_html = gerar_html(data_para_pdf)
-        st.write(tabela_html, unsafe_allow_html=True)
+        st.components.v1.html(tabela_html, height=1000, width=1000, scrolling=True)
     st.write('---')
 
     # Formulário para gerar PDF
