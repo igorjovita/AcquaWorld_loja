@@ -54,7 +54,7 @@ def gerar_pdf(self):
         lista_cpf = cursor.fetchall()
 
         for item in lista_cpf:
-            nome = str(item).translate(str.maketrans('', '', chars2))
+            nome = str(item).translate(str.maketrans('', '', chars))
             cpf.append(nome)
 
     telefone = []
@@ -63,7 +63,7 @@ def gerar_pdf(self):
             f"SELECT telefone FROM cliente WHERE nome = '{nome}'")
         lista_telefone = cursor.fetchall()
         for item in lista_telefone:
-            nome = str(item).translate(str.maketrans('', '', chars2))
+            nome = str(item).translate(str.maketrans('', '', chars))
             telefone.append(nome)
 
     comissario = []
@@ -73,12 +73,12 @@ def gerar_pdf(self):
     lista_comissario = cursor.fetchall()
 
     for item in lista_comissario:
-        id_vend = str(item).translate(str.maketrans('', '', chars2))
+        id_vend = str(item).translate(str.maketrans('', '', chars))
         lista_id_vendedor.append(id_vend)
-        for id_v in lista_id_vendedor:
-            cursor.execute(f"SELECT apelido from vendedores where id = '{id_v}'")
-            nome = str(cursor.fetchone()).translate(str.maketrans('', '', chars2))
-            comissario.append(nome)
+    for id_v in lista_id_vendedor:
+        cursor.execute(f"SELECT apelido from vendedores where id = '{id_v}'")
+        nome = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
+        comissario.append(nome)
 
     mydb.close()
     mydb.connect()
@@ -88,7 +88,7 @@ def gerar_pdf(self):
         "SELECT tipo FROM reserva WHERE data = %s", (data_para_pdf,))
     lista_cert = cursor.fetchall()
     for item in lista_cert:
-        nome = str(item).upper().translate(str.maketrans('', '', chars2))
+        nome = str(item).upper().translate(str.maketrans('', '', chars))
         cert.append(nome)
 
     foto = []
@@ -97,7 +97,7 @@ def gerar_pdf(self):
     lista_foto = cursor.fetchall()
 
     for item in lista_foto:
-        nome = str(item).upper().translate(str.maketrans('', '', chars2))
+        nome = str(item).upper().translate(str.maketrans('', '', chars))
         foto.append(nome)
 
     cursor.execute(
@@ -105,7 +105,7 @@ def gerar_pdf(self):
     lista_dm = cursor.fetchall()
     dm = []
     for item in lista_dm:
-        nome = str(item).upper().translate(str.maketrans('', '', chars2))
+        nome = str(item).upper().translate(str.maketrans('', '', chars))
         dm.append(nome)
 
     roupa = []
@@ -115,7 +115,7 @@ def gerar_pdf(self):
         lista_roupa = cursor.fetchall()
 
         for item in lista_roupa:
-            nome = str(item).upper().translate(str.maketrans('', '', chars2))
+            nome = str(item).upper().translate(str.maketrans('', '', chars))
             roupa.append(nome)
 
     background_colors = []
@@ -124,7 +124,7 @@ def gerar_pdf(self):
     lista_check_in = cursor.fetchall()
 
     for item in lista_check_in:
-        nome = str(item).translate(str.maketrans('', '', chars2))
+        nome = str(item).translate(str.maketrans('', '', chars))
         background_colors.append(nome)
 
     # Processar a data
@@ -179,7 +179,7 @@ def gerar_html(self):
         lista_cpf = cursor.fetchall()
 
         for item in lista_cpf:
-            nome = str(item).translate(str.maketrans('', '', chars2))
+            nome = str(item).translate(str.maketrans('', '', chars))
             cpf.append(nome)
 
     telefone = []
@@ -188,7 +188,7 @@ def gerar_html(self):
             f"SELECT telefone FROM cliente WHERE nome = '{nome}'")
         lista_telefone = cursor.fetchall()
         for item in lista_telefone:
-            nome = str(item).translate(str.maketrans('', '', chars2))
+            nome = str(item).translate(str.maketrans('', '', chars))
             telefone.append(nome)
 
     comissario = []
@@ -198,11 +198,11 @@ def gerar_html(self):
     lista_comissario = cursor.fetchall()
 
     for item in lista_comissario:
-        id_vend = str(item).translate(str.maketrans('', '', chars2))
+        id_vend = str(item).translate(str.maketrans('', '', chars))
         lista_id_vendedor.append(id_vend)
     for id_v in lista_id_vendedor:
         cursor.execute(f"SELECT apelido from vendedores where id = '{id_v}'")
-        nome = str(cursor.fetchone()).translate(str.maketrans('', '', chars2))
+        nome = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
         comissario.append(nome)
 
     mydb.close()
@@ -213,7 +213,7 @@ def gerar_html(self):
         "SELECT tipo FROM reserva WHERE data = %s", (data_para_pdf,))
     lista_cert = cursor.fetchall()
     for item in lista_cert:
-        nome = str(item).upper().translate(str.maketrans('', '', chars2))
+        nome = str(item).upper().translate(str.maketrans('', '', chars))
         cert.append(nome)
 
     foto = []
@@ -222,7 +222,7 @@ def gerar_html(self):
     lista_foto = cursor.fetchall()
 
     for item in lista_foto:
-        nome = str(item).upper().translate(str.maketrans('', '', chars2))
+        nome = str(item).upper().translate(str.maketrans('', '', chars))
         foto.append(nome)
 
     cursor.execute(
@@ -230,7 +230,7 @@ def gerar_html(self):
     lista_dm = cursor.fetchall()
     dm = []
     for item in lista_dm:
-        nome = str(item).upper().translate(str.maketrans('', '', chars2))
+        nome = str(item).upper().translate(str.maketrans('', '', chars))
         dm.append(nome)
 
     roupa = []
@@ -240,7 +240,7 @@ def gerar_html(self):
         lista_roupa = cursor.fetchall()
 
         for item in lista_roupa:
-            nome = str(item).translate(str.maketrans('', '', chars2))
+            nome = str(item).translate(str.maketrans('', '', chars))
             roupa.append(nome)
 
     background_colors = []
@@ -249,7 +249,7 @@ def gerar_html(self):
     lista_check_in = cursor.fetchall()
 
     for item in lista_check_in:
-        nome = str(item).translate(str.maketrans('', '', chars2))
+        nome = str(item).translate(str.maketrans('', '', chars))
         background_colors.append(nome)
 
     # Processar a data
