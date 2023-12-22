@@ -144,13 +144,6 @@ def gerar_pdf(self):
 
     # Nome do arquivo PDF
     pdf_filename = f"reservas_{data_para_pdf}.pdf"
-    # Caminho completo do arquivo
-    pdf_path = os.path.join(os.getcwd(), pdf_filename)
-
-    # Verificar se o arquivo já existe
-    if os.path.exists(pdf_path):
-        # Se existir, remova-o antes de salvar o no vo
-        os.remove(pdf_path)
 
     # Gerar PDF
     config = pdfkit.configuration()
