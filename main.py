@@ -503,7 +503,7 @@ if escolha == 'Pagamento':
     if check_in_entry == 'Loja':
         check_in = '#00B0F0'
     if check_in_entry == 'Para o pier':
-        check_in = '#FFFF00'
+        check_in = 'yellow'
 
     if st.button('Lançar Pagamento'):
         mydb.connect()
