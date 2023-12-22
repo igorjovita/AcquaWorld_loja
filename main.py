@@ -256,7 +256,7 @@ def gerar_html(self):
 
     # Criar o contexto
     contexto = {'cliente': cliente, 'cpf': cpf, 'tel': telefone, 'comissario': comissario, 'c': cert,
-                'r': roupa, 'data_reserva': data_completa, 'background_colors': background_colors, 'dm': dm}
+                'r': roupa, 'data_reserva': data_completa, 'background_colors': background_colors, 'dm': dm, 'f': foto}
 
     # Renderizar o template HTML
     planilha_loader = jinja2.FileSystemLoader('./')
@@ -264,7 +264,7 @@ def gerar_html(self):
     planilha = planilha_env.get_template('planilha2.html')
     output_text = planilha.render(contexto)
 
-    
+
 
     # Nome do arquivo PDF
     pdf_filename = f"reservas_{data_para_pdf}.pdf"
