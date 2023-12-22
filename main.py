@@ -255,7 +255,7 @@ def gerar_html(self):
 
 
     # Criar o contexto
-    contexto = {'cliente': cliente, 'cpf': cpf, 'tel': telefone, 'comissario': comissario, 'c': cert, 'f': foto,
+    contexto = {'cliente': cliente, 'cpf': cpf, 'tel': telefone, 'comissario': comissario, 'c': cert,
                 'r': roupa, 'data_reserva': data_completa, 'background_colors': background_colors, 'dm': dm}
 
     # Renderizar o template HTML
