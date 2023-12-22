@@ -264,6 +264,8 @@ def gerar_html(self):
     planilha = planilha_env.get_template('planilha2.html')
     output_text = planilha.render(contexto)
 
+    
+
     # Nome do arquivo PDF
     pdf_filename = f"reservas_{data_para_pdf}.pdf"
 
