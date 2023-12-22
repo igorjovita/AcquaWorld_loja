@@ -200,10 +200,10 @@ def gerar_html(self):
     for item in lista_comissario:
         id_vend = str(item).translate(str.maketrans('', '', chars2))
         lista_id_vendedor.append(id_vend)
-        for id_v in lista_id_vendedor:
-            cursor.execute(f"SELECT apelido from vendedores where id = '{id_v}'")
-            nome = str(cursor.fetchone()).translate(str.maketrans('', '', chars2))
-            comissario.append(nome)
+    for id_v in lista_id_vendedor:
+        cursor.execute(f"SELECT apelido from vendedores where id = '{id_v}'")
+        nome = str(cursor.fetchone()).translate(str.maketrans('', '', chars2))
+        comissario.append(nome)
 
     mydb.close()
     mydb.connect()
