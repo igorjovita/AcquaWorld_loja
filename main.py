@@ -164,7 +164,7 @@ def gerar_html(self):
     lista_cliente = cursor.fetchall()
     cliente = []
     for item1 in lista_cliente:
-        id_cli = str(item1).translate(str.maketrans('', '', chars))
+        id_cli = str(item1).upper().translate(str.maketrans('', '', chars))
         cliente.append(id_cli)
 
     cpf = []
@@ -197,7 +197,7 @@ def gerar_html(self):
         lista_id_vendedor.append(id_vend)
     for id_v in lista_id_vendedor:
         cursor.execute(f"SELECT apelido from vendedores where id = '{id_v}'")
-        nome = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
+        nome = str(cursor.fetchone()).upper().translate(str.maketrans('', '', chars))
         comissario.append(nome)
 
     mydb.close()
@@ -217,7 +217,7 @@ def gerar_html(self):
     lista_foto = cursor.fetchall()
 
     for item in lista_foto:
-        nome = str(item).upper().translate(str.maketrans('', '', chars))
+        nome = str(item).translate(str.maketrans('', '', chars))
         foto.append(nome)
 
     cursor.execute(
