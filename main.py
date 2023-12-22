@@ -296,8 +296,8 @@ def gerar_html(self):
 
 if escolha == 'Visualizar':
     # Função para obter cores com base no valor da coluna 'check_in'
+    data_para_pdf = st.date_input("Data para gerar PDF:")
     if st.button('Gerar Html'):
-        data_para_pdf = st.date_input("Data para gerar PDF:")
         tabela_html = gerar_html(data_para_pdf)
         st.markdown(tabela_html, unsafe_allow_html=True)
     st.write('---')
