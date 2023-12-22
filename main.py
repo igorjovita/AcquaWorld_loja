@@ -115,7 +115,7 @@ def gerar_pdf(self):
         lista_roupa = cursor.fetchall()
 
         for item in lista_roupa:
-            nome = str(item).upper().translate(str.maketrans('', '', chars))
+            nome = str(item).translate(str.maketrans('', '', chars))
             roupa.append(nome)
 
     background_colors = []
@@ -158,6 +158,7 @@ def gerar_pdf(self):
 
     # Fechar a conexão
     mydb.close()
+    print(background_colors)
     return pdf_filename
 
 def gerar_html(self):
