@@ -158,7 +158,7 @@ def gerar_pdf(self):
 
     # Fechar a conexão
     mydb.close()
-    print(background_colors)
+    st.write(background_colors)
     return pdf_filename
 
 def gerar_html(self):
