@@ -280,7 +280,7 @@ if escolha == 'Visualizar':
     data_para_pdf = st.date_input("Data para gerar PDF:")
     if st.button('Gerar Html'):
         tabela_html = gerar_html(data_para_pdf)
-        st.markdown(tabela_html, unsafe_allow_html=True)
+        st.dataframe(tabela_html)
     st.write('---')
 
     # Formulário para gerar PDF
