@@ -501,9 +501,9 @@ if escolha == 'Pagamento':
     pagamento = st.text_input('Valor pago')
     check_in_entry = st.selectbox('Cliente vai pra onde?', ['Loja', 'Para o pier'], index=None)
     if check_in_entry == 'Loja':
-        check_in = '00B0F0'
+        check_in = '#00B0F0'
     if check_in_entry == 'Para o pier':
-        check_in = 'FFFF00'
+        check_in = '#FFFF00'
 
     if st.button('Lançar Pagamento'):
         mydb.connect()
