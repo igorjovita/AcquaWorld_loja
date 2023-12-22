@@ -271,8 +271,6 @@ def gerar_html(self):
     config = pdfkit.configuration()
     pdfkit.from_string(output_text, pdf_filename, configuration=config)
 
-
-
     # Fechar a conexão
     mydb.close()
     return output_text
