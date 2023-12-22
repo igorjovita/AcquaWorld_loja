@@ -168,14 +168,13 @@ def gerar_pdf(self):
 if escolha == 'Visualizar':
     # Função para obter cores com base no valor da coluna 'check_in'
 
-    data_planilha = st.date_input('Data da Planilha')
-    # Exibir tabela estilizada no Streamlit
-    tabela_html = gerar_pdf(data_planilha)
+    data_para_pdf = st.date_input("Data para gerar PDF:")
+    tabela_html = gerar_pdf(data_para_pdf)
     st.markdown(tabela_html, unsafe_allow_html=True)
     st.write('---')
 
     # Formulário para gerar PDF
-    data_para_pdf = st.date_input("Data para gerar PDF:")
+
     if st.button("Gerar PDF"):
         pdf_filename = gerar_pdf(data_para_pdf)
         st.download_button('Planilha', gerar_pdf(data_para_pdf))
