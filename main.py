@@ -164,12 +164,141 @@ def gerar_pdf(self):
     return pdf_filename, output_text  # ou gcs_pdf_filename se preferir
 
 
+def gerar_html(self):
+    mydb.connect()
+
+    # Consulta ao banco de dados para obter os dados
+    cursor.execute(
+        f"SELECT nome_cliente FROM reserva WHERE data = '{data_para_pdf}'")
+    lista_cliente = cursor.fetchall()
+    cliente = []
+    for item1 in lista_cliente:
+        id_cli = str(item1).translate(str.maketrans('', '', chars))
+        cliente.append(id_cli)
+
+    cpf = []
+    for nome in cliente:
+        cursor.execute(
+            f"SELECT cpf FROM cliente WHERE nome = '{nome}'")
+        lista_cpf = cursor.fetchall()
+
+        for item in lista_cpf:
+            nome = str(item).translate(str.maketrans('', '', chars2))
+            cpf.append(nome)
+
+    telefone = []
+    for nome in cliente:
+        cursor.execute(
+            f"SELECT telefone FROM cliente WHERE nome = '{nome}'")
+        lista_telefone = cursor.fetchall()
+        for item in lista_telefone:
+            nome = str(item).translate(str.maketrans('', '', chars2))
+            telefone.append(nome)
+
+    comissario = []
+    lista_id_vendedor = []
+    cursor.execute(
+        "SELECT id_vendedor FROM reserva WHERE data = %s", (data_para_pdf,))
+    lista_comissario = cursor.fetchall()
+
+    for item in lista_comissario:
+        id_vend = str(item).translate(str.maketrans('', '', chars2))
+        lista_id_vendedor.append(id_vend)
+        for id_v in lista_id_vendedor:
+            cursor.execute(f"SELECT apelido from vendedores where id = '{id_v}'")
+            nome = str(cursor.fetchone()).translate(str.maketrans('', '', chars2))
+            comissario.append(nome)
+
+    mydb.close()
+    mydb.connect()
+
+    cert = []
+    cursor.execute(
+        "SELECT tipo FROM reserva WHERE data = %s", (data_para_pdf,))
+    lista_cert = cursor.fetchall()
+    for item in lista_cert:
+        nome = str(item).upper().translate(str.maketrans('', '', chars2))
+        cert.append(nome)
+
+    foto = []
+    cursor.execute(
+        "SELECT fotos FROM reserva WHERE data = %s", (data_para_pdf,))
+    lista_foto = cursor.fetchall()
+
+    for item in lista_foto:
+        nome = str(item).upper().translate(str.maketrans('', '', chars2))
+        foto.append(nome)
+
+    cursor.execute(
+        "SELECT  dm FROM reserva WHERE data = %s", (data_para_pdf,))
+    lista_dm = cursor.fetchall()
+    dm = []
+    for item in lista_dm:
+        nome = str(item).upper().translate(str.maketrans('', '', chars2))
+        dm.append(nome)
+
+    roupa = []
+    for nome in cliente:
+        cursor.execute(
+            f"SELECT roupa FROM cliente WHERE nome = '{nome}'")
+        lista_roupa = cursor.fetchall()
+
+        for item in lista_roupa:
+            nome = str(item).upper().translate(str.maketrans('', '', chars2))
+            roupa.append(nome)
+
+    background_colors = []
+    cursor.execute(
+        "SELECT check_in FROM reserva WHERE data = %s", (data_para_pdf,))
+    lista_check_in = cursor.fetchall()
+
+    for item in lista_check_in:
+        nome = str(item).translate(str.maketrans('', '', chars2))
+        background_colors.append(nome)
+
+    # Processar a data
+    data_selecionada = str(data_para_pdf).split('-')
+    dia, mes, ano = data_selecionada[2], data_selecionada[1], data_selecionada[0]
+    data_completa = f'{dia}/{mes}/{ano}'
+
+    # Criar o contexto
+    contexto = {'cliente': cliente, 'cpf': cpf, 'tel': telefone, 'comissario': comissario, 'c': cert, 'f': foto,
+                'r': roupa, 'data_reserva': data_completa, 'background_colors': background_colors, 'dm': dm}
+
+    # Renderizar o template HTML
+    planilha_loader = jinja2.FileSystemLoader('./')
+    planilha_env = jinja2.Environment(loader=planilha_loader)
+    planilha = planilha_env.get_template('planilha2.html')
+    output_text = planilha.render(contexto)
+
+    # Nome do arquivo PDF
+    pdf_filename = f"reservas_{data_para_pdf}.pdf"
+    # Caminho completo do arquivo
+    pdf_path = os.path.join(os.getcwd(), pdf_filename)
+
+    # Verificar se o arquivo já existe
+    if os.path.exists(pdf_path):
+        # Se existir, remova-o antes de salvar o no vo
+        os.remove(pdf_path)
+
+    # Gerar PDF
+    config = pdfkit.configuration()
+    pdfkit.from_string(output_text, pdf_filename, configuration=config)
+
+    download_link = f'<a href="data:application/pdf;base64,{base64.b64encode(open(pdf_filename, "rb").read()).decode()}" download="{pdf_filename}">Clique aqui para baixar</a>'
+    st.markdown(download_link, unsafe_allow_html=True)
+
+    # Fechar a conexão
+    mydb.close()
+    return pdf_filename
+
+
 
 if escolha == 'Visualizar':
     # Função para obter cores com base no valor da coluna 'check_in'
 
     data_para_pdf = st.date_input("Data para gerar PDF:")
-    tabela_html = gerar_pdf(data_para_pdf)
+    tabela_html = gerar_html(data_para_pdf)
     st.markdown(tabela_html, unsafe_allow_html=True)
     st.write('---')
 
