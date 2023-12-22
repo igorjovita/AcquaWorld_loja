@@ -156,13 +156,9 @@ def gerar_pdf(self):
     config = pdfkit.configuration()
     pdfkit.from_string(output_text, pdf_filename, configuration=config)
 
-    download_link = f'<a href="data:application/pdf;base64,{base64.b64encode(open(pdf_filename, "rb").read()).decode()}" download="{pdf_filename}">Clique aqui para baixar</a>'
-    st.markdown(download_link, unsafe_allow_html=True)
-
     # Fechar a conexão
     mydb.close()
-    return pdf_filename, output_text  # ou gcs_pdf_filename se preferir
-
+    return pdf_filename
 
 def gerar_html(self):
     mydb.connect()
@@ -244,7 +240,7 @@ def gerar_html(self):
         lista_roupa = cursor.fetchall()
 
         for item in lista_roupa:
-            nome = str(item).upper().translate(str.maketrans('', '', chars2))
+            nome = str(item).translate(str.maketrans('', '', chars2))
             roupa.append(nome)
 
     background_colors = []
@@ -279,8 +275,6 @@ def gerar_html(self):
     config = pdfkit.configuration()
     pdfkit.from_string(output_text, pdf_filename, configuration=config)
 
-
-
     # Fechar a conexão
     mydb.close()
     return output_text
@@ -299,7 +293,8 @@ if escolha == 'Visualizar':
 
     if st.button("Gerar PDF"):
         pdf_filename = gerar_pdf(data_para_pdf)
-        st.download_button('Planilha', gerar_pdf(data_para_pdf))
+        download_link = f'<a href="data:application/pdf;base64,{base64.b64encode(open(pdf_filename, "rb").read()).decode()}" download="{pdf_filename}">Clique aqui para baixar</a>'
+        st.markdown(download_link, unsafe_allow_html=True)
 
 if escolha == 'Reservar':
     mydb.connect()
