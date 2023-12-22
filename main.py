@@ -252,18 +252,11 @@ def gerar_html(self):
     dia, mes, ano = data_selecionada[2], data_selecionada[1], data_selecionada[0]
     data_completa = f'{dia}/{mes}/{ano}'
 
-    cores_processadas = []
-    for cor in background_colors:
-        if cor == '#00B0F0':
-            cores_processadas.append('background-color: #00B0F0;')
-        elif cor == 'yellow':
-            cores_processadas.append('background-color: yellow;')
-        elif cor == 'white':
-            cores_processadas.append('background-color: white;')
+    
 
     # Criar o contexto
     contexto = {'cliente': cliente, 'cpf': cpf, 'tel': telefone, 'comissario': comissario, 'c': cert, 'f': foto,
-                'r': roupa, 'data_reserva': data_completa, 'background_colors': background_colors, 'dm': dm, 'cores_processadas': cores_processadas}
+                'r': roupa, 'data_reserva': data_completa, 'background_colors': background_colors, 'dm': dm}
 
     # Renderizar o template HTML
     planilha_loader = jinja2.FileSystemLoader('./')
