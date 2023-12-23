@@ -219,7 +219,7 @@ def gerar_html(self):
 
     for item in lista_foto:
         if item is None:
-            nome = ''
+            nome = '.'
             foto.append(nome)
         else:
             nome = str(item).translate(str.maketrans('', '', chars))
