@@ -164,7 +164,7 @@ def gerar_html(self):
     roupa = []
     id_vendedor = []
     cert = []
-    fotos = []
+    foto = []
     dm = []
     background_colors = []
     lista_id_vendedor = []
@@ -178,7 +178,7 @@ def gerar_html(self):
         cliente.append(str(dados[0]).upper().translate(str.maketrans('', '', chars)))
         id_vendedor.append(str(dados[1]).upper().translate(str.maketrans('', '', chars)))
         cert.append(str(dados[2]).upper().translate(str.maketrans('', '', chars)))
-        fotos.append(str(dados[3]).upper().translate(str.maketrans('', '', chars)))
+        foto.append(str(dados[3]).upper().translate(str.maketrans('', '', chars)))
         dm.append(str(dados[4]).upper().translate(str.maketrans('', '', chars)))
         background_colors.append(str(dados[5]).upper().translate(str.maketrans('', '', chars)))
     for nome in cliente:
