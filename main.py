@@ -175,10 +175,16 @@ def gerar_html(self):
     lista_dados_reserva = cursor.fetchall()
 
     for dados in lista_dados_reserva:
-        cliente.append(str(dados[0]).upper().translate(str.maketrans('', '', chars)))
+        if dados[0] is None:
+            cliente.append('')
+        else:
+            cliente.append(str(dados[0]).upper().translate(str.maketrans('', '', chars)))
         id_vendedor.append(str(dados[1]).translate(str.maketrans('', '', chars)))
         cert.append(str(dados[2]).upper().translate(str.maketrans('', '', chars)))
-        foto.append(str(dados[3]).upper().translate(str.maketrans('', '', chars)))
+        if dados[3] is None:
+            foto.append('')
+        else:
+            foto.append(str(dados[3]).upper().translate(str.maketrans('', '', chars)))
         dm.append(str(dados[4]).upper().translate(str.maketrans('', '', chars)))
         background_colors.append(str(dados[5]).translate(str.maketrans('', '', chars)))
     for nome in cliente:
