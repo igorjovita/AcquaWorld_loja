@@ -80,7 +80,7 @@ def gerar_pdf(self):
 
         for item in lista_dados_cliente:
             cpf.append(str(item[0]).translate(str.maketrans('', '', chars)))
-            roupa.append(str(item[2]).translate(str.maketrans('', '', chars)))
+            roupa.append(str(item[1]).translate(str.maketrans('', '', chars)))
 
     mydb.close()
 
