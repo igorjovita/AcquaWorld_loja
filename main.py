@@ -59,7 +59,7 @@ def gerar_pdf(self):
         if dados[0] is None:
             cliente.append('')
         else:
-            cliente.append(str(dados[0].decode('utf-8')).upper().translate(str.maketrans('', '', chars)))
+            cliente.append(str(dados[0].encode('utf-8').decode('utf-8')).upper().translate(str.maketrans('', '', chars)))
 
         id_vendedor.append(str(dados[1]).translate(str.maketrans('', '', chars)))
 
