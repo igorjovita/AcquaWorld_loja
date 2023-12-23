@@ -280,7 +280,6 @@ def gerar_html(self):
     mydb.close()
     return output_text
 
-
 if escolha == 'Visualizar':
     # Função para obter cores com base no valor da coluna 'check_in'
     data_para_pdf = st.date_input("Data para gerar PDF:")
