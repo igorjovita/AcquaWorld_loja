@@ -218,8 +218,12 @@ def gerar_html(self):
     lista_foto = cursor.fetchall()
 
     for item in lista_foto:
-        nome = str(item).translate(str.maketrans('', '', chars))
-        foto.append(nome)
+        if item is None:
+            nome = ''
+            foto.append(nome)
+        else:
+            nome = str(item).translate(str.maketrans('', '', chars))
+            foto.append(nome)
 
     cursor.execute(
         "SELECT  dm FROM reserva WHERE data = %s", (data_para_pdf,))
