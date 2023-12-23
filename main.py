@@ -168,6 +168,7 @@ def gerar_html(self):
     dm = []
     background_colors = []
     lista_id_vendedor = []
+    comissario = []
     # Consulta ao banco de dados para obter os dados
     cursor.execute(
         f"SELECT nome_cliente,id_vendedor, tipo, fotos, dm, check_in FROM reserva WHERE data = '{data_para_pdf}'")
