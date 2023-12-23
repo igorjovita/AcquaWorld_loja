@@ -118,7 +118,12 @@ def gerar_pdf(self):
 
     # Gerar PDF
     config = pdfkit.configuration()
-    pdfkit.from_string(output_text, pdf_filename, configuration=config)
+    options = {
+    'encoding': 'utf-8',
+    'no-images': None,
+    'quiet': '',
+    }
+    pdfkit.from_string(output_text, pdf_filename, configuration=config, options= options)
 
     return pdf_filename
 
