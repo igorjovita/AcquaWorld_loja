@@ -176,11 +176,11 @@ def gerar_html(self):
 
     for dados in lista_dados_reserva:
         cliente.append(str(dados[0]).upper().translate(str.maketrans('', '', chars)))
-        id_vendedor.append(str(dados[1]).upper().translate(str.maketrans('', '', chars)))
+        id_vendedor.append(str(dados[1]).translate(str.maketrans('', '', chars)))
         cert.append(str(dados[2]).upper().translate(str.maketrans('', '', chars)))
         foto.append(str(dados[3]).upper().translate(str.maketrans('', '', chars)))
         dm.append(str(dados[4]).upper().translate(str.maketrans('', '', chars)))
-        background_colors.append(str(dados[5]).upper().translate(str.maketrans('', '', chars)))
+        background_colors.append(str(dados[5]).translate(str.maketrans('', '', chars)))
     for nome in cliente:
         cursor.execute(
             f"SELECT cpf, telefone, roupa FROM cliente WHERE nome = '{nome}'")
@@ -191,21 +191,6 @@ def gerar_html(self):
             telefone.append(str(item[1]).translate(str.maketrans('', '', chars)))
             roupa.append(str(item[2]).translate(str.maketrans('', '', chars)))
 
-    # telefone = []
-    # for nome in cliente:
-    #     cursor.execute(
-    #         f"SELECT telefone FROM cliente WHERE nome = '{nome}'")
-    #     lista_telefone = cursor.fetchall()
-    #     for item in lista_telefone:
-    #         nome = str(item).translate(str.maketrans('', '', chars))
-    #         telefone.append(nome)
-
-    # comissario = []
-    # lista_id_vendedor = []
-    # cursor.execute(
-    #     "SELECT id_vendedor FROM reserva WHERE data = %s", (data_para_pdf,))
-    # lista_comissario = cursor.fetchall()
-
     for item in id_vendedor:
         lista_id_vendedor.append(str(item).translate(str.maketrans('', '', chars)))
 
@@ -213,56 +198,7 @@ def gerar_html(self):
         cursor.execute(f"SELECT apelido from vendedores where id = '{id_v}'")
         comissario.append(str(cursor.fetchone()).upper().translate(str.maketrans('', '', chars)))
 
-
     mydb.close()
-    mydb.connect()
-
-    # cert = []
-    # cursor.execute(
-    #     "SELECT tipo FROM reserva WHERE data = %s", (data_para_pdf,))
-    # lista_cert = cursor.fetchall()
-    # for item in lista_cert:
-    #     nome = str(item).upper().translate(str.maketrans('', '', chars))
-    #     cert.append(nome)
-
-    # foto = []
-    # cursor.execute(
-    #     "SELECT fotos FROM reserva WHERE data = %s", (data_para_pdf,))
-    # lista_foto = cursor.fetchall()
-    #
-    # for item in lista_foto:
-    #     if item[0] is None:
-    #         nome = ''
-    #     else:
-    #         nome = str(item).translate(str.maketrans('', '', chars))
-    #     foto.append(nome)
-    #
-    # cursor.execute(
-    #     "SELECT  dm FROM reserva WHERE data = %s", (data_para_pdf,))
-    # lista_dm = cursor.fetchall()
-    # dm = []
-    # for item in lista_dm:
-    #     nome = str(item).upper().translate(str.maketrans('', '', chars))
-    #     dm.append(nome)
-
-    # roupa = []
-    # for nome in cliente:
-    #     cursor.execute(
-    #         f"SELECT roupa FROM cliente WHERE nome = '{nome}'")
-    #     lista_roupa = cursor.fetchall()
-    #
-    #     for item in lista_roupa:
-    #         nome = str(item).translate(str.maketrans('', '', chars))
-    #         roupa.append(nome)
-
-    # background_colors = []
-    # cursor.execute(
-    #     "SELECT check_in FROM reserva WHERE data = %s", (data_para_pdf,))
-    # lista_check_in = cursor.fetchall()
-    #
-    # for item in lista_check_in:
-    #     nome = str(item).translate(str.maketrans('', '', chars))
-    #     background_colors.append(nome)
 
     # Processar a data
     data_selecionada = str(data_para_pdf).split('-')
@@ -288,8 +224,6 @@ def gerar_html(self):
     config = pdfkit.configuration()
     pdfkit.from_string(output_text, pdf_filename, configuration=config)
 
-    # Fechar a conexão
-    mydb.close()
     return output_text
 
 if escolha == 'Visualizar':
