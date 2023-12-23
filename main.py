@@ -109,8 +109,7 @@ def gerar_pdf(self):
 
     # Renderizar o template HTML
     planilha_loader = jinja2.FileSystemLoader('./')
-    planilha_env = jinja2.Environment(loader=planilha_loader,autoescape=True, auto_reload=True)
-    planilha_env.filters['decode'] = lambda value: value.encode('utf-8').decode('utf-8') if value else ''
+    planilha_env = jinja2.Environment(loader=planilha_loader)
     planilha = planilha_env.get_template('planilha.html')
     output_text = planilha.render(contexto)
 
