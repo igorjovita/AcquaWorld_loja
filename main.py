@@ -41,18 +41,14 @@ def gerar_pdf(self):
     mydb.connect()
     cliente = []
     cpf = []
-    telefone = []
     roupa = []
-    id_vendedor = []
     cert = []
     foto = []
     dm = []
     background_colors = []
-    lista_id_vendedor = []
-    comissario = []
     # Consulta ao banco de dados para obter os dados
     cursor.execute(
-        f"SELECT nome_cliente,id_vendedor, tipo, fotos, dm, check_in FROM reserva WHERE data = '{data_para_pdf}'")
+        f"SELECT nome_cliente, tipo, fotos, dm, check_in FROM reserva WHERE data = '{data_para_pdf}'")
     lista_dados_reserva = cursor.fetchall()
 
     for dados in lista_dados_reserva:
@@ -61,40 +57,30 @@ def gerar_pdf(self):
         else:
             cliente.append(str(dados[0].encode('utf-8').decode('utf-8')).upper().translate(str.maketrans('', '', chars)))
 
-        id_vendedor.append(str(dados[1]).translate(str.maketrans('', '', chars)))
-
-        if dados[2] is None:
+        if dados[1] is None:
             cert.append('')
         else:
-            cert.append(str(dados[2]).upper().translate(str.maketrans('', '', chars)))
-        if dados[3] is None:
+            cert.append(str(dados[1]).upper().translate(str.maketrans('', '', chars)))
+        if dados[2] is None:
             foto.append('')
         else:
-            foto.append(str(dados[3]).upper().translate(str.maketrans('', '', chars)))
+            foto.append(str(dados[2]).upper().translate(str.maketrans('', '', chars)))
 
-        if dados[4] is None:
+        if dados[3] is None:
             dm.append('')
         else:
-            dm.append(str(dados[4]).upper().translate(str.maketrans('', '', chars)))
+            dm.append(str(dados[3]).upper().translate(str.maketrans('', '', chars)))
 
-        background_colors.append(str(dados[5]).translate(str.maketrans('', '', chars)))
+        background_colors.append(str(dados[4]).translate(str.maketrans('', '', chars)))
 
     for nome in cliente:
         cursor.execute(
-            f"SELECT cpf, telefone, roupa FROM cliente WHERE nome = '{nome}'")
+            f"SELECT cpf, roupa FROM cliente WHERE nome = '{nome}'")
         lista_dados_cliente = cursor.fetchall()
 
         for item in lista_dados_cliente:
             cpf.append(str(item[0]).translate(str.maketrans('', '', chars)))
-            telefone.append(str(item[1]).translate(str.maketrans('', '', chars)))
             roupa.append(str(item[2]).translate(str.maketrans('', '', chars)))
-
-    for item in id_vendedor:
-        lista_id_vendedor.append(str(item).translate(str.maketrans('', '', chars)))
-
-    for id_v in lista_id_vendedor:
-        cursor.execute(f"SELECT apelido from vendedores where id = '{id_v}'")
-        comissario.append(str(cursor.fetchone()).upper().translate(str.maketrans('', '', chars)))
 
     mydb.close()
 
@@ -104,7 +90,7 @@ def gerar_pdf(self):
     data_completa = f'{dia}/{mes}/{ano}'
 
     # Criar o contexto
-    contexto = {'cliente': cliente, 'cpf': cpf, 'tel': telefone, 'comissario': comissario, 'c': cert, 'f': foto,
+    contexto = {'cliente': cliente, 'cpf': cpf, 'c': cert, 'f': foto,
                 'r': roupa, 'data_reserva': data_completa, 'background_colors': background_colors, 'dm': dm}
 
     # Renderizar o template HTML
@@ -123,7 +109,7 @@ def gerar_pdf(self):
     'no-images': None,
     'quiet': '',
     }
-    pdfkit.from_string(output_text, pdf_filename, configuration=config, options= options)
+    pdfkit.from_string(output_text, pdf_filename, configuration=config, options=options)
 
     return pdf_filename
 
