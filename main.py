@@ -121,9 +121,6 @@ def gerar_pdf(self):
     config = pdfkit.configuration()
     pdfkit.from_string(output_text, pdf_filename, configuration=config)
 
-    # Fechar a conexão
-    mydb.close()
-    st.write(background_colors)
     return pdf_filename
 
 
