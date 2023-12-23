@@ -169,23 +169,26 @@ def gerar_html(self):
         cliente.append(id_cli)
 
     cpf = []
-    for nome in cliente:
-        cursor.execute(
-            f"SELECT cpf FROM cliente WHERE nome = '{nome}'")
-        lista_cpf = cursor.fetchall()
-
-        for item in lista_cpf:
-            nome = str(item).translate(str.maketrans('', '', chars))
-            cpf.append(nome)
-
     telefone = []
+    roupa = []
     for nome in cliente:
         cursor.execute(
-            f"SELECT telefone FROM cliente WHERE nome = '{nome}'")
-        lista_telefone = cursor.fetchall()
-        for item in lista_telefone:
-            nome = str(item).translate(str.maketrans('', '', chars))
-            telefone.append(nome)
+            f"SELECT cpf, telefone, roupa FROM cliente WHERE nome = '{nome}'")
+        lista_dados_cliente = cursor.fetchall()
+
+        for item in lista_dados_cliente:
+            cpf.append(str(item[0]).translate(str.maketrans('', '', chars)))
+            telefone.append(str(item[1]).translate(str.maketrans('', '', chars)))
+            roupa.append(str(item[2]).translate(str.maketrans('', '', chars)))
+
+    # telefone = []
+    # for nome in cliente:
+    #     cursor.execute(
+    #         f"SELECT telefone FROM cliente WHERE nome = '{nome}'")
+    #     lista_telefone = cursor.fetchall()
+    #     for item in lista_telefone:
+    #         nome = str(item).translate(str.maketrans('', '', chars))
+    #         telefone.append(nome)
 
     comissario = []
     lista_id_vendedor = []
@@ -232,15 +235,15 @@ def gerar_html(self):
         nome = str(item).upper().translate(str.maketrans('', '', chars))
         dm.append(nome)
 
-    roupa = []
-    for nome in cliente:
-        cursor.execute(
-            f"SELECT roupa FROM cliente WHERE nome = '{nome}'")
-        lista_roupa = cursor.fetchall()
-
-        for item in lista_roupa:
-            nome = str(item).translate(str.maketrans('', '', chars))
-            roupa.append(nome)
+    # roupa = []
+    # for nome in cliente:
+    #     cursor.execute(
+    #         f"SELECT roupa FROM cliente WHERE nome = '{nome}'")
+    #     lista_roupa = cursor.fetchall()
+    #
+    #     for item in lista_roupa:
+    #         nome = str(item).translate(str.maketrans('', '', chars))
+    #         roupa.append(nome)
 
     background_colors = []
     cursor.execute(
