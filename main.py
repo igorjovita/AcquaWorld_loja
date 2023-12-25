@@ -162,9 +162,20 @@ def gerar_html(self):
         lista_dados_cliente = cursor.fetchall()
 
         for item in lista_dados_cliente:
-            cpf.append(str(item[0]).translate(str.maketrans('', '', chars)))
-            telefone.append(str(item[1]).translate(str.maketrans('', '', chars)))
-            roupa.append(str(item[2]).translate(str.maketrans('', '', chars)))
+            if item[0] is None:
+                cpf.append('')
+            else:
+                cpf.append(str(item[0]).translate(str.maketrans('', '', chars)))
+
+            if item[1] is None:
+                telefone.append('')
+            else:
+                telefone.append(str(item[1]).translate(str.maketrans('', '', chars)))
+
+            if item[2] is None:
+                roupa.append('')
+            else:
+                roupa.append(str(item[2]).translate(str.maketrans('', '', chars)))
 
     for item in id_vendedor:
         lista_id_vendedor.append(str(item).translate(str.maketrans('', '', chars)))
