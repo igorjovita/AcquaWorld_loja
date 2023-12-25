@@ -298,7 +298,7 @@ if escolha == 'Reservar':
                 vaga_cred = 8
                 vaga_total = 40
                 vaga_bat = vaga_total - contagem_cred
-                
+
         if contagem >= vaga_total:
             st.error('Planilha está lotada nessa data!')
 
@@ -311,16 +311,14 @@ if escolha == 'Reservar':
             roupa = f'{altura}/{peso}'
             cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
                            (cpf, nome_cliente, telefone_cliente, roupa))
-
+            id_cliente = cursor.lastrowid
             cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
             id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
 
-            id_cliente = cursor.lastrowid
-
             cursor.execute(
-                "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor,pago_loja, pago_vendedor, valor_total,"
-                "nome_cliente,check_in) values (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_mergulho, nome_cliente, '#FFFFFF'))
+                 "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor,pago_loja, pago_vendedor, valor_total,"
+                 "nome_cliente,check_in) values (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                 (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_mergulho, nome_cliente, '#FFFFFF'))
             mydb.close()
             st.success('Reserva realizada com sucesso!')
 
