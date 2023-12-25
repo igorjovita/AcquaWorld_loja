@@ -323,6 +323,7 @@ if escolha == 'Reservar':
                 st.error('Cliente já reservado para esta data')
 
             else:
+                st.write(verifica_cpf)
                 roupa = f'{altura}/{peso}'
                 cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
                                (cpf, nome_cliente, telefone_cliente, roupa))
