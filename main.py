@@ -290,7 +290,7 @@ if escolha == 'Reservar':
         restricao = cursor.fetchone()
 
         cursor.execute(
-            f"SELECT COUNT(tipo) FROM reserva WHERE tipo = 'TUR2' or tipo = 'OWD' or tipo = 'ADV' or tipo = 'RESCUE' or tipo = 'REVIEW' and data = '{data}'")
+            f"SELECT COUNT(*) FROM reserva WHERE (tipo = 'TUR2' or tipo = 'OWD' or tipo = 'ADV' or tipo = 'RESCUE' or tipo = 'REVIEW') and data = '{data}'")
         contagem_cred = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
 
         lista_cred = ['TUR2', 'OWD', 'ADV', 'RESCUE', 'REVIEW']
