@@ -55,7 +55,8 @@ def gerar_pdf(self):
         if dados[0] is None:
             cliente.append('')
         else:
-            cliente.append(str(dados[0].encode('utf-8').decode('utf-8')).upper().translate(str.maketrans('', '', chars)))
+            cliente.append(
+                str(dados[0].encode('utf-8').decode('utf-8')).upper().translate(str.maketrans('', '', chars)))
 
         if dados[1] is None:
             cert.append('')
@@ -105,9 +106,9 @@ def gerar_pdf(self):
     # Gerar PDF
     config = pdfkit.configuration()
     options = {
-    'encoding': 'utf-8',
-    'no-images': None,
-    'quiet': '',
+        'encoding': 'utf-8',
+        'no-images': None,
+        'quiet': '',
     }
     pdfkit.from_string(output_text, pdf_filename, configuration=config, options=options)
 
@@ -191,8 +192,6 @@ def gerar_html(self):
     dia, mes, ano = data_selecionada[2], data_selecionada[1], data_selecionada[0]
     data_completa = f'{dia}/{mes}/{ano}'
 
-
-
     # Criar o contexto
     contexto = {'cliente': cliente, 'cpf': cpf, 'tel': telefone, 'comissario': comissario, 'c': cert, 'f': foto,
                 'r': roupa, 'data_reserva': data_completa, 'background_colors': background_colors, 'dm': dm}
@@ -210,8 +209,8 @@ def gerar_html(self):
     config = pdfkit.configuration()
     pdfkit.from_string(output_text, pdf_filename, configuration=config)
 
-
     return output_text
+
 
 if escolha == 'Visualizar':
     # Função para obter cores com base no valor da coluna 'check_in'
@@ -316,27 +315,34 @@ if escolha == 'Reservar':
             st.error('Todas as vagas de credenciados foram preenchidas')
 
         else:
-            cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE (cpf = '{cpf}' and nome = '{nome_cliente}') and data = '{data}'")
+
+            roupa = f'{altura}/{peso}'
+
+            cursor.execute(f"SELECT id, count(*) as cont_cpf FROM cliente WHERE cpf = {cpf} group by id")
+            verifica = cursor.fetchall()
+
+            cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
+                           (cpf, nome_cliente, telefone_cliente, roupa))
+
+            id_cliente = cursor.lastrowid
+
+            cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE id_cliente = '{id_cliente}' and data = '{data}'")
             verifica_cpf = cursor.fetchone()[0]
+            st.write(verifica_cpf)
 
             if verifica_cpf > 0:
                 st.error('Cliente já reservado para esta data')
 
             else:
-                st.write(verifica_cpf)
-                roupa = f'{altura}/{peso}'
-                cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
-                               (cpf, nome_cliente, telefone_cliente, roupa))
-
-                id_cliente = cursor.lastrowid
 
                 cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
                 id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
 
                 cursor.execute(
-                     "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor,pago_loja, pago_vendedor, valor_total,"
-                     "nome_cliente,check_in) values (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                     (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_mergulho, nome_cliente, '#FFFFFF'))
+                    "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor,pago_loja, pago_vendedor, valor_total,"
+                    "nome_cliente,check_in) values (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_mergulho, nome_cliente,
+                     '#FFFFFF'))
                 mydb.close()
                 st.success('Reserva realizada com sucesso!')
 
