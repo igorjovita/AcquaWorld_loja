@@ -274,11 +274,12 @@ if escolha == 'Reservar':
         cursor.execute(f"SELECT COUNT(*) FROM reserva where data = '{data}'")
         contagem = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
 
-        cursor.execute(f"SELECT * FROM restricao WHERE data = '{data}'")
-        restricao = cursor.fetchone()
+        cursor.execute(f"SELECT vaga_bat, vaga_cred, vaga_total FROM restricao WHERE data = '{data}'")
+        restricao = cursor.fetchall()
 
         cursor.execute(
-            f"SELECT COUNT(tipo) FROM reserva WHERE tipo = 'TUR2' or tipo = 'OWD' or tipo = 'ADV' or tipo = 'RESCUE' or tipo = 'REVIEW' and data = '{data}'")
+            f"SELECT COUNT(tipo) FROM reserva WHERE tipo = 'TUR2' or tipo = 'OWD' or tipo = 'ADV' or tipo = 'RESCUE' "
+            f"or tipo = 'REVIEW' and data = '{data}'")
         contagem_cred = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
 
         lista_cred = ['TUR2', 'OWD', 'ADV', 'RESCUE', 'REVIEW']
@@ -288,8 +289,7 @@ if escolha == 'Reservar':
             vaga_total = 40
             vaga_bat = vaga_total - contagem_cred
         else:
-            cursor.execute(f"SELECT vaga_bat, vaga_cred, vaga_total FROM restricao WHERE data = '{data}'")
-            restricoes = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+            restricoes = str(restricao).translate(str.maketrans('', '', chars)).split()
             vaga_bat = int(restricoes[0])
             vaga_cred = int(restricoes[1])
             vaga_total = int(restricoes[2])
@@ -310,14 +310,12 @@ if escolha == 'Reservar':
             cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
             id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
 
-            cursor.execute(f"SELECT id FROM cliente WHERE cpf = {cpf}")
-            id_cliente = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
+            id_cliente = cursor.lastrowid
 
             cursor.execute(
-                "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor,pago_loja, pago_vendedor, valor_total,nome_cliente,check_in) values (%s, %s, %s, %s, "
-                "%s, %s, %s, %s, %s)",
-                (
-                data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_mergulho, nome_cliente, '#FFFFFF'))
+                "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor,pago_loja, pago_vendedor, valor_total,"
+                "nome_cliente,check_in) values (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_mergulho, nome_cliente, '#FFFFFF'))
             mydb.close()
             st.success('Reserva realizada com sucesso!')
 
