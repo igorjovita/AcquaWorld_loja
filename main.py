@@ -2,8 +2,7 @@ import base64
 
 import pdfkit
 import jinja2
-from google.cloud import storage
-from google.auth.exceptions import DefaultCredentialsError
+from mysql.connector import IntegrityError
 import streamlit as st
 import pandas as pd
 from streamlit_option_menu import option_menu
@@ -318,33 +317,36 @@ if escolha == 'Reservar':
 
             roupa = f'{altura}/{peso}'
 
-            cursor.execute(f"SELECT count(*) FROM cliente WHERE cpf = {cpf}")
-            verifica = cursor.fetchone()
+            try:
+                cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
+                               (cpf, nome_cliente, telefone_cliente, roupa))
+                id_cliente = cursor.lastrowid
 
-            cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
-                           (cpf, nome_cliente, telefone_cliente, roupa))
+            except IntegrityError:
+                cursor.execute(f"SELECT id from cliente where cpf = {cpf}")
+                id_cliente = cursor.fetchone()[0]
 
-            id_cliente = cursor.lastrowid
+            finally:
+                cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE id_cliente = '{id_cliente}' and data = '{data}'")
+                verifica_cpf = cursor.fetchone()[0]
+                st.write(id_cliente)
+                st.write(verifica_cpf)
 
-            cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE id_cliente = '{id_cliente}' and data = '{data}'")
-            verifica_cpf = cursor.fetchone()[0]
-            st.write(verifica_cpf)
+                if verifica_cpf > 0:
+                    st.error('Cliente já reservado para esta data')
 
-            if verifica_cpf > 0:
-                st.error('Cliente já reservado para esta data')
+                else:
 
-            else:
+                    cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
+                    id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
 
-                cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
-                id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
-
-                cursor.execute(
-                    "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor,pago_loja, pago_vendedor, valor_total,"
-                    "nome_cliente,check_in) values (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                    (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_mergulho, nome_cliente,
-                     '#FFFFFF'))
-                mydb.close()
-                st.success('Reserva realizada com sucesso!')
+                    cursor.execute(
+                        "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor,pago_loja, pago_vendedor, valor_total,"
+                        "nome_cliente,check_in) values (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                        (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_mergulho, nome_cliente,
+                         '#FFFFFF'))
+                    mydb.close()
+                    st.success('Reserva realizada com sucesso!')
 
 if escolha == 'Editar':
 
