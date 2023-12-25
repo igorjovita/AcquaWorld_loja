@@ -316,21 +316,28 @@ if escolha == 'Reservar':
             st.error('Todas as vagas de credenciados foram preenchidas')
 
         else:
-            roupa = f'{altura}/{peso}'
-            cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
-                           (cpf, nome_cliente, telefone_cliente, roupa))
+            cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE (cpf = '{cpf}' and nome = '{nome_cliente}') and data = '{data}'")
+            verifica_cpf = cursor.fetchone()[0]
 
-            id_cliente = cursor.lastrowid
+            if verifica_cpf > 0:
+                st.error('Cliente já reservado para esta data')
 
-            cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
-            id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
+            else:
+                roupa = f'{altura}/{peso}'
+                cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
+                               (cpf, nome_cliente, telefone_cliente, roupa))
 
-            cursor.execute(
-                 "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor,pago_loja, pago_vendedor, valor_total,"
-                 "nome_cliente,check_in) values (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                 (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_mergulho, nome_cliente, '#FFFFFF'))
-            mydb.close()
-            st.success('Reserva realizada com sucesso!')
+                id_cliente = cursor.lastrowid
+
+                cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
+                id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
+
+                cursor.execute(
+                     "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor,pago_loja, pago_vendedor, valor_total,"
+                     "nome_cliente,check_in) values (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                     (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_mergulho, nome_cliente, '#FFFFFF'))
+                mydb.close()
+                st.success('Reserva realizada com sucesso!')
 
 if escolha == 'Editar':
 
