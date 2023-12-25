@@ -313,7 +313,6 @@ if escolha == 'Reservar':
         elif tipo in lista_cred and contagem_cred >= vaga_cred:
             st.write(contagem_cred)
             st.write(vaga_cred)
-            st.write(restricoes)
             st.write(restricao)
             st.error('Todas as vagas de credenciados foram preenchidas')
 
