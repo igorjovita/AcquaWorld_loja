@@ -274,7 +274,7 @@ if escolha == 'Reservar':
         cursor.execute(f"SELECT COUNT(*) FROM reserva where data = '{data}'")
         contagem = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
 
-        cursor.execute(f"SELECT vaga_bat, vaga_cred, vaga_total FROM restricao WHERE data = '{data}'")
+        cursor.execute(f"SELECT * FROM restricao WHERE data = '{data}'")
         restricao = cursor.fetchone()
 
         cursor.execute(
@@ -289,15 +289,8 @@ if escolha == 'Reservar':
             vaga_total = 40
             vaga_bat = vaga_total - contagem_cred
         else:
-            restricoes = str(restricao).translate(str.maketrans('', '', chars)).split()
-            if restricoes:
-                vaga_bat = int(restricoes[0])
-                vaga_cred = int(restricoes[1])
-                vaga_total = int(restricoes[2])
-            else:
-                vaga_cred = 8
-                vaga_total = 40
-                vaga_bat = vaga_total - contagem_cred
+            cursor.execute(f"SELECT vaga_bat, vaga_cred, vaga_total FROM restricao WHERE data = '{data}'")
+            restricoes = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
 
         if contagem >= vaga_total:
             st.error('Planilha está lotada nessa data!')
@@ -311,7 +304,9 @@ if escolha == 'Reservar':
             roupa = f'{altura}/{peso}'
             cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
                            (cpf, nome_cliente, telefone_cliente, roupa))
+
             id_cliente = cursor.lastrowid
+
             cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
             id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
 
