@@ -210,6 +210,7 @@ def gerar_html(self):
     config = pdfkit.configuration()
     pdfkit.from_string(output_text, pdf_filename, configuration=config)
 
+
     return output_text
 
 if escolha == 'Visualizar':
@@ -301,7 +302,7 @@ if escolha == 'Reservar':
             vaga_bat = vaga_total - contagem_cred
         else:
             cursor.execute(f"SELECT vaga_bat, vaga_cred, vaga_total FROM restricao WHERE data = '{data}'")
-            restricoes = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+            restricoes = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split()
 
         if contagem >= vaga_total:
             st.error('Planilha está lotada nessa data!')
