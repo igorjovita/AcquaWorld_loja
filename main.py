@@ -303,7 +303,10 @@ if escolha == 'Reservar':
         else:
             cursor.execute(f"SELECT vaga_bat, vaga_cred, vaga_total FROM restricao WHERE data = '{data}'")
             restricoes = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split()
-
+            vaga_bat = int(restricoes[0])
+            vaga_cred = int(restricoes[1])
+            vaga_total = int(restricoes[2])
+            
         if contagem >= vaga_total:
             st.error('Planilha está lotada nessa data!')
 
