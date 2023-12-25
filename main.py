@@ -306,13 +306,15 @@ if escolha == 'Reservar':
             vaga_bat = int(restricoes[0])
             vaga_cred = int(restricoes[1])
             vaga_total = int(restricoes[2])
-            
+
         if contagem >= vaga_total:
             st.error('Planilha está lotada nessa data!')
 
         elif tipo in lista_cred and contagem_cred >= vaga_cred:
             st.write(contagem_cred)
             st.write(vaga_cred)
+            st.write(restricoes)
+            st.write(restricao)
             st.error('Todas as vagas de credenciados foram preenchidas')
 
         else:
