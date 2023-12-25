@@ -275,7 +275,7 @@ if escolha == 'Reservar':
         contagem = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
 
         cursor.execute(f"SELECT vaga_bat, vaga_cred, vaga_total FROM restricao WHERE data = '{data}'")
-        restricao = cursor.fetchall()
+        restricao = cursor.fetchone()
 
         cursor.execute(
             f"SELECT COUNT(tipo) FROM reserva WHERE tipo = 'TUR2' or tipo = 'OWD' or tipo = 'ADV' or tipo = 'RESCUE' "
