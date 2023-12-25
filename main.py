@@ -290,10 +290,15 @@ if escolha == 'Reservar':
             vaga_bat = vaga_total - contagem_cred
         else:
             restricoes = str(restricao).translate(str.maketrans('', '', chars)).split()
-            vaga_bat = int(restricoes[0])
-            vaga_cred = int(restricoes[1])
-            vaga_total = int(restricoes[2])
-
+            if restricoes:
+                vaga_bat = int(restricoes[0])
+                vaga_cred = int(restricoes[1])
+                vaga_total = int(restricoes[2])
+            else:
+                vaga_cred = 8
+                vaga_total = 40
+                vaga_bat = vaga_total - contagem_cred
+                
         if contagem >= vaga_total:
             st.error('Planilha está lotada nessa data!')
 
