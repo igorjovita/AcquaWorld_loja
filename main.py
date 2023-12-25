@@ -318,7 +318,7 @@ if escolha == 'Reservar':
 
             roupa = f'{altura}/{peso}'
 
-            cursor.execute(f"SELECT id, count(*) FROM cliente WHERE cpf = '{cpf}' group by id")
+            cursor.execute(f"SELECT count(*) FROM cliente WHERE cpf = {cpf}")
             verifica = cursor.fetchone()
 
             cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
