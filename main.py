@@ -328,13 +328,7 @@ if escolha == 'Reservar':
                 nome_registro = info_registro[1]
                 id_cliente = info_registro[0]
 
-                if nome_cadatro == nome_cliente:
-                    id_cliente = info_registro[0]
-
-                else:
-                    st.error('Cpf associado a outro cliente')
-                    st.write(nome_registro)
-                    st.write(nome_cliente)
+                
             finally:
                 cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE id_cliente = '{id_cliente}' and data = '{data}'")
                 verifica_cpf = cursor.fetchone()[0]
