@@ -326,6 +326,7 @@ if escolha == 'Reservar':
                 cursor.execute(f"SELECT id, nome from cliente where cpf = {cpf}")
                 info_registro = cursor.fetchall()
                 nome_registro = info_registro[1]
+                id_cliente = info_registro[0]
 
                 if nome_cadatro == nome_cliente:
                     id_cliente = info_registro[0]
