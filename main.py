@@ -323,9 +323,17 @@ if escolha == 'Reservar':
                 id_cliente = cursor.lastrowid
 
             except IntegrityError:
-                cursor.execute(f"SELECT id from cliente where cpf = {cpf}")
-                id_cliente = cursor.fetchone()[0]
+                cursor.execute(f"SELECT id, nome from cliente where cpf = {cpf}")
+                info_registro = cursor.fetchall()
+                nome_registro = info_registro[1]
 
+                if nome_cadatro == nome_cliente:
+                    id_cliente = info_registro[0]
+
+                else:
+                    st.error('Cpf associado a outro cliente')
+                    st.write(nome_registro)
+                    st.write(nome_cliente)
             finally:
                 cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE id_cliente = '{id_cliente}' and data = '{data}'")
                 verifica_cpf = cursor.fetchone()[0]
