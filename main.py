@@ -207,6 +207,7 @@ def gerar_html(self):
     # Gerar PDF
     config = pdfkit.configuration()
     pdfkit.from_string(output_text, pdf_filename, configuration=config)
+    st.write(cpf)
 
     return output_text
 
