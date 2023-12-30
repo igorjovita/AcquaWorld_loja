@@ -247,7 +247,7 @@ if escolha == 'Reservar':
 
     for i in range(quantidade_reservas):
         # Campo de entrada para o nome do cliente
-        nome_cliente = st.text_input(f'Nome do Cliente {i + 1}:')
+        nome_cliente = st.text_input(f'Nome do Cliente {i + 1}:').upper()
         nomes_clientes.append(nome_cliente)
 
     # Exibir os campos adicionais para cada reserva
