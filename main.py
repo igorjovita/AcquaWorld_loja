@@ -327,8 +327,8 @@ if escolha == 'Reservar':
                 info_registro = cursor.fetchall()
                 nome_registro = info_registro[1]
                 id_cliente = info_registro[0]
+                st.write(id_cliente)
 
-                
             finally:
                 cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE id_cliente = '{id_cliente}' and data = '{data}'")
                 verifica_cpf = cursor.fetchone()[0]
