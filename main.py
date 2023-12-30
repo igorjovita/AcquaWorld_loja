@@ -241,21 +241,17 @@ if escolha == 'Reservar':
     nomes_clientes = []
 
     for i in range(quantidade_reservas):
-        st.subheader(f'Reserva {i + 1}')
-
         # Campo de entrada para o nome do cliente
         nome_cliente = st.text_input(f'Nome do Cliente {i + 1}:')
         nomes_clientes.append(nome_cliente)
 
     # Exibir os campos adicionais para cada reserva
     for i, nome_cliente in enumerate(nomes_clientes):
-        st.subheader(f'Reserva {i + 1} - Cliente: {nome_cliente}')
-
-        cpf = st.text_input(f'Cpf do cliente {i + 1}', help='Apenas números')
-        telefone = st.text_input(f'Telefone do Cliente {i + 1} :')
-        tipo = st.selectbox(f'Certificação do cliente {i + 1} : ', ('BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'), index=None, placeholder='Certificação')
-        altura = st.slider(f'Altura do Cliente {i + 1}', 1.50, 2.10)
-        peso = st.slider(f'Peso do Cliente {i + 1}', 40, 160)
+        cpf = st.text_input(f'Cpf do cliente {nome_cliente}', help='Apenas números')
+        telefone = st.text_input(f'Telefone do Cliente {nome_cliente} :')
+        tipo = st.selectbox(f'Certificação do cliente {nome_cliente} : ', ('BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'), index=None, placeholder='Certificação')
+        altura = st.slider(f'Altura do Cliente {nome_cliente}', 1.50, 2.10)
+        peso = st.slider(f'Peso do Cliente {nome_cliente}', 40, 160)
     # data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
     #
     # col1, col2, col3 = st.columns(3)
