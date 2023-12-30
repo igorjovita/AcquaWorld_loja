@@ -231,54 +231,73 @@ if escolha == 'Reservar':
     mydb.connect()
     cursor.execute("SELECT apelido FROM vendedores")
     lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
-    st.subheader('Reservar Clientes')
 
-    data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
 
-    col1, col2, col3 = st.columns(3)
+    def realizar_reservas():
+        st.subheader('Reservar Clientes')
 
-    with col1:
-        nome_cliente = st.text_input('Nome do Cliente :')
-        comissario = st.selectbox('Vendedor :', lista_vendedor, index=None, placeholder='Escolha o vendedor')
+        quantidade_reservas = st.number_input('Quantidade de Reservas', min_value=1, value=1)
 
-    with col2:
-        cpf = st.text_input('Cpf do cliente', help='Apenas numeros')
-        tipo = st.selectbox('Modalidade : ', ('BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'), index=None, placeholder='Certificação')
+        for i in range(quantidade_reservas):
+            st.write(f"Reserva {i + 1}")
 
-    with col3:
-        telefone_cliente = st.text_input('Telefone do Cliente :')
-        valor_mergulho = st.text_input('Valor do Mergulho')
+            with st.form(key=f"form_reserva_{i}"):
+                data = st.date_input('Data da Reserva', format='DD/MM/YYYY', key=f"data_{i}")
 
-    colu1, colu2 = st.columns(2)
+                col1, col2, col3 = st.columns(3)
 
-    with colu1:
-        altura = st.slider('Altura do Cliente', 1.50, 2.10)
+                with col1:
+                    nome_cliente = st.text_input('Nome do Cliente :', key=f"nome_{i}")
+                    comissario = st.selectbox('Vendedor :', lista_vendedor, index=None,
+                                              placeholder='Escolha o vendedor', key=f"comissario_{i}")
 
-    with colu2:
-        peso = st.slider('Peso do Cliente', 40, 160)
+                with col2:
+                    cpf = st.text_input('Cpf do cliente', help='Apenas numeros', key=f"cpf_{i}")
+                    tipo = st.selectbox('Modalidade : ', ('BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'), index=None,
+                                        placeholder='Certificação', key=f"tipo_{i}")
 
-    colun1, colun2, colun3 = st.columns(3)
+                with col3:
+                    telefone_cliente = st.text_input('Telefone do Cliente :', key=f"telefone_{i}")
+                    valor_mergulho = st.text_input('Valor do Mergulho', key=f"valor_{i}")
 
-    with colun1:
-        sinal = st.text_input('Valor do Sinal')
+                colu1, colu2 = st.columns(2)
 
-    with colun2:
-        recebedor_sinal = st.selectbox('Quem recebeu o sinal?', ['AcquaWorld', 'Vendedor'], index=None, placeholder='Recebedor do Sinal')
+                with colu1:
+                    altura = st.slider('Altura do Cliente', 1.50, 2.10, key=f"altura_{i}")
 
-    with colun3:
-        valor_loja = st.number_input('Receber na Loja :', format='%d', step=10)
+                with colu2:
+                    peso = st.slider('Peso do Cliente', 40, 160, key=f"peso_{i}")
 
-    if recebedor_sinal == 'AcquaWorld':
-        pago_loja = sinal
-        pago_vendedor = 0
+                colun1, colun2, colun3 = st.columns(3)
 
-    if recebedor_sinal == 'Vendedor':
-        pago_loja = 0
-        pago_vendedor = sinal
+                with colun1:
+                    sinal = st.text_input('Valor do Sinal', key=f"sinal_{i}")
 
-    if recebedor_sinal == '':
-        pago_loja = 0
-        pago_vendedor = 0
+                with colun2:
+                    recebedor_sinal = st.selectbox('Quem recebeu o sinal?', ['AcquaWorld', 'Vendedor'], index=None,
+                                                   placeholder='Recebedor do Sinal', key=f"recebedor_{i}")
+
+                with colun3:
+                    valor_loja = st.number_input('Receber na Loja :', format='%d', step=10, key=f"valor_loja_{i}")
+
+                if recebedor_sinal == 'AcquaWorld':
+                    pago_loja = sinal
+                    pago_vendedor = 0
+                elif recebedor_sinal == 'Vendedor':
+                    pago_loja = 0
+                    pago_vendedor = sinal
+                else:
+                    pago_loja = 0
+                    pago_vendedor = 0
+
+                if st.form_submit_button(f'Reservar {i + 1}'):
+                    # Lógica para processar a reserva
+                    # Inclua a lógica de inserção no banco de dados aqui
+                    st.success(f'Reserva {i + 1} realizada com sucesso!')
+
+
+    # Chame a função para iniciar o processo de reservas
+    realizar_reservas()
 
     if st.button('Reservar'):
         mydb.connect()
