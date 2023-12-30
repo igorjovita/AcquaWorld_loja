@@ -317,6 +317,7 @@ if escolha == 'Reservar':
 
             roupa = f'{altura}/{peso}'
 
+            id_cliente = None
             try:
                 cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
                                (cpf, nome_cliente, telefone_cliente, roupa))
@@ -325,8 +326,9 @@ if escolha == 'Reservar':
             except IntegrityError:
                 cursor.execute(f"SELECT id from cliente where cpf = %s and nome = %s", (cpf, nome_cliente))
                 info_registro = cursor.fetchone()
-                id_cliente = info_registro[0]
-                st.write(id_cliente)
+                if info_registro:
+                    id_cliente = info_registro[0]
+                    st.write(id_cliente)
 
             finally:
                 if id_cliente is None:
