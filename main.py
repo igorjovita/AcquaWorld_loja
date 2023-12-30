@@ -231,73 +231,77 @@ if escolha == 'Reservar':
     mydb.connect()
     cursor.execute("SELECT apelido FROM vendedores")
     lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+    st.subheader('Reservar Clientes')
 
+    data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
+    quantidade_reservas = st.number_input('Quantidade de Reservas', min_value=1, value=1, step=1)
+    vendedor = st.selectbox('Vendedor:', lista_vendedor, index=None, placeholder='Escolha o vendedor')
 
-    def realizar_reservas():
-        st.subheader('Reservar Clientes')
+    # Lista para armazenar os nomes dos clientes
+    nomes_clientes = []
 
-        quantidade_reservas = st.number_input('Quantidade de Reservas', min_value=1, value=1)
+    for i in range(quantidade_reservas):
+        st.subheader(f'Reserva {i + 1}')
 
-        for i in range(quantidade_reservas):
-            st.write(f"Reserva {i + 1}")
+        # Campo de entrada para o nome do cliente
+        nome_cliente = st.text_input(f'Nome do Cliente {i + 1}:')
+        nomes_clientes.append(nome_cliente)
 
-            with st.form(key=f"form_reserva_{i}"):
-                data = st.date_input('Data da Reserva', format='DD/MM/YYYY', key=f"data_{i}")
+    # Exibir os campos adicionais para cada reserva
+    for i, nome_cliente in enumerate(nomes_clientes):
+        st.subheader(f'Reserva {i + 1} - Cliente: {nome_cliente}')
 
-                col1, col2, col3 = st.columns(3)
-
-                with col1:
-                    nome_cliente = st.text_input('Nome do Cliente :', key=f"nome_{i}")
-                    comissario = st.selectbox('Vendedor :', lista_vendedor, index=None,
-                                              placeholder='Escolha o vendedor', key=f"comissario_{i}")
-
-                with col2:
-                    cpf = st.text_input('Cpf do cliente', help='Apenas numeros', key=f"cpf_{i}")
-                    tipo = st.selectbox('Modalidade : ', ('BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'), index=None,
-                                        placeholder='Certificação', key=f"tipo_{i}")
-
-                with col3:
-                    telefone_cliente = st.text_input('Telefone do Cliente :', key=f"telefone_{i}")
-                    valor_mergulho = st.text_input('Valor do Mergulho', key=f"valor_{i}")
-
-                colu1, colu2 = st.columns(2)
-
-                with colu1:
-                    altura = st.slider('Altura do Cliente', 1.50, 2.10, key=f"altura_{i}")
-
-                with colu2:
-                    peso = st.slider('Peso do Cliente', 40, 160, key=f"peso_{i}")
-
-                colun1, colun2, colun3 = st.columns(3)
-
-                with colun1:
-                    sinal = st.text_input('Valor do Sinal', key=f"sinal_{i}")
-
-                with colun2:
-                    recebedor_sinal = st.selectbox('Quem recebeu o sinal?', ['AcquaWorld', 'Vendedor'], index=None,
-                                                   placeholder='Recebedor do Sinal', key=f"recebedor_{i}")
-
-                with colun3:
-                    valor_loja = st.number_input('Receber na Loja :', format='%d', step=10, key=f"valor_loja_{i}")
-
-                if recebedor_sinal == 'AcquaWorld':
-                    pago_loja = sinal
-                    pago_vendedor = 0
-                elif recebedor_sinal == 'Vendedor':
-                    pago_loja = 0
-                    pago_vendedor = sinal
-                else:
-                    pago_loja = 0
-                    pago_vendedor = 0
-
-                if st.form_submit_button(f'Reservar {i + 1}'):
-                    # Lógica para processar a reserva
-                    # Inclua a lógica de inserção no banco de dados aqui
-                    st.success(f'Reserva {i + 1} realizada com sucesso!')
-
-
-    # Chame a função para iniciar o processo de reservas
-    realizar_reservas()
+        cpf = st.text_input(f'Cpf do cliente {i + 1}', help='Apenas números')
+        telefone = st.text_input(f'Telefone do Cliente {i + 1} :')
+        tipo = st.selectbox(f'Certificação do cliente {i + 1} : ', ('BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'), index=None, placeholder='Certificação')
+        altura = st.slider(f'Altura do Cliente {i + 1}', 1.50, 2.10)
+        peso = st.slider(f'Peso do Cliente {i + 1}', 40, 160)
+    # data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
+    #
+    # col1, col2, col3 = st.columns(3)
+    #
+    # with col1:
+    #     nome_cliente = st.text_input('Nome do Cliente :')
+    #     comissario = st.selectbox('Vendedor :', lista_vendedor, index=None, placeholder='Escolha o vendedor')
+    #
+    # with col2:
+    #     cpf = st.text_input('Cpf do cliente', help='Apenas numeros')
+    #     tipo = st.selectbox('Modalidade : ', ('BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'), index=None, placeholder='Certificação')
+    #
+    # with col3:
+    #     telefone_cliente = st.text_input('Telefone do Cliente :')
+    #     valor_mergulho = st.text_input('Valor do Mergulho')
+    #
+    # colu1, colu2 = st.columns(2)
+    #
+    # with colu1:
+    #     altura = st.slider('Altura do Cliente', 1.50, 2.10)
+    #
+    # with colu2:
+    #     peso = st.slider('Peso do Cliente', 40, 160)
+    #
+    # colun1, colun2, colun3 = st.columns(3)
+    #
+    # with colun1:
+    #     sinal = st.text_input('Valor do Sinal')
+    #
+    # with colun2:
+    #     recebedor_sinal = st.selectbox('Quem recebeu o sinal?', ['AcquaWorld', 'Vendedor'], index=None, placeholder='Recebedor do Sinal')
+    #
+    # with colun3:
+    #     valor_loja = st.number_input('Receber na Loja :', format='%d', step=10)
+    #
+    # if recebedor_sinal == 'AcquaWorld':
+    #     pago_loja = sinal
+    #     pago_vendedor = 0
+    #
+    # if recebedor_sinal == 'Vendedor':
+    #     pago_loja = 0
+    #     pago_vendedor = sinal
+    #
+    # if recebedor_sinal == '':
+    #     pago_loja = 0
+    #     pago_vendedor = 0
 
     if st.button('Reservar'):
         mydb.connect()
