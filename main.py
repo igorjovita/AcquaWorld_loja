@@ -247,6 +247,8 @@ if escolha == 'Reservar':
 
     # Exibir os campos adicionais para cada reserva
     for i, nome_cliente in enumerate(nomes_clientes):
+        st.subheader(f'Reserva do Cliente: {nome_cliente}')
+
         cpf = st.text_input(f'Cpf do cliente {nome_cliente}', help='Apenas números')
         telefone = st.text_input(f'Telefone do Cliente {nome_cliente} :')
         tipo = st.selectbox(f'Certificação do cliente {nome_cliente} : ', ('BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'), index=None, placeholder='Certificação')
