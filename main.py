@@ -238,11 +238,11 @@ if escolha == 'Reservar':
 
     with col1:
         nome_cliente = st.text_input('Nome do Cliente :')
-        comissario = st.selectbox('Vendedor :', lista_vendedor)
+        comissario = st.selectbox('Vendedor :', lista_vendedor, index=False, placeholder='Escolha o vendedor')
 
     with col2:
         cpf = st.text_input('Cpf do cliente', help='Apenas numeros')
-        tipo = st.selectbox('Modalidade : ', ('', 'BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'), placeholder='Vendedor')
+        tipo = st.selectbox('Modalidade : ', ('', 'BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'),index=False, placeholder='Certificação')
 
     with col3:
         telefone_cliente = st.text_input('Telefone do Cliente :')
@@ -262,7 +262,7 @@ if escolha == 'Reservar':
         sinal = st.text_input('Valor do Sinal')
 
     with colun2:
-        recebedor_sinal = st.selectbox('Quem recebeu o sinal?', ['', 'AcquaWorld', 'Vendedor'])
+        recebedor_sinal = st.selectbox('Quem recebeu o sinal?', ['AcquaWorld', 'Vendedor'], index=False, placeholder='Recebedor do Sinal')
 
     with colun3:
         valor_loja = st.number_input('Receber na Loja :', format='%d', step=10)
