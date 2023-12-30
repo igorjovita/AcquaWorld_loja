@@ -262,7 +262,7 @@ if escolha == 'Reservar':
             peso = st.slider(f'Peso do Cliente {nome_cliente}', 40, 160)
         with colu3:
             tipo = st.selectbox(f'Certificação do cliente {nome_cliente} : ', ('BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'), index=None, placeholder='Certificação')
-
+            valor_mergulho = st.text_input(f'Valor do Mergulho do cliente {nome_cliente}')
 
 
     # data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
