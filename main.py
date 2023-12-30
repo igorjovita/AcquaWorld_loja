@@ -257,17 +257,17 @@ if escolha == 'Reservar':
         with colu1:
             cpf = st.text_input(f'Cpf do cliente {nome_cliente}', help='Apenas números')
             altura = st.slider(f'Altura do Cliente {nome_cliente}', 1.50, 2.10)
-            sinal = st.text_input('Valor do Sinal')
+            sinal = st.text_input(f'Valor do Sinal de {nome_cliente}')
         with colu2:
             telefone = st.text_input(f'Telefone do Cliente {nome_cliente} :')
             peso = st.slider(f'Peso do Cliente {nome_cliente}', 40, 160)
-            recebedor_sinal = st.selectbox('Quem recebeu o sinal?', ['AcquaWorld', 'Vendedor'], index=None,
+            recebedor_sinal = st.selectbox(f'Quem recebeu o sinal de {nome_cliente}?', ['AcquaWorld', 'Vendedor'], index=None,
                                            placeholder='Recebedor do Sinal')
 
         with colu3:
             tipo = st.selectbox(f'Certificação do cliente {nome_cliente} : ', ('BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'), index=None, placeholder='Certificação')
             valor_mergulho = st.text_input(f'Valor do Mergulho do cliente {nome_cliente}')
-            valor_loja = st.number_input('Receber na Loja :', format='%d', step=10)
+            valor_loja = st.number_input(f'Valor a receber de {nome_cliente} :', format='%d', step=10)
         st.write('---')
 
 
