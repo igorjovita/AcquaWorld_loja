@@ -233,9 +233,14 @@ if escolha == 'Reservar':
     lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
     st.subheader('Reservar Clientes')
 
-    data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
-    quantidade_reservas = st.number_input('Quantidade de Reservas', min_value=1, value=1, step=1)
-    vendedor = st.selectbox('Vendedor:', lista_vendedor, index=None, placeholder='Escolha o vendedor')
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
+    with col2:
+        quantidade_reservas = st.number_input('Quantidade de Reservas', min_value=1, value=1, step=1)
+    with col3:
+        vendedor = st.selectbox('Vendedor:', lista_vendedor, index=None, placeholder='Escolha o vendedor')
 
     # Lista para armazenar os nomes dos clientes
     nomes_clientes = []
