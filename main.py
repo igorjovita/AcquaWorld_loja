@@ -329,26 +329,30 @@ if escolha == 'Reservar':
                 st.write(id_cliente)
 
             finally:
-                cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE id_cliente = '{id_cliente}' and data = '{data}'")
-                verifica_cpf = cursor.fetchone()[0]
-                st.write(id_cliente)
-                st.write(verifica_cpf)
-
-                if verifica_cpf > 0:
-                    st.error('Cliente já reservado para esta data')
+                if id_cliente is None:
+                    st.error('CPF associado a outro cliente')
 
                 else:
+                    cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE id_cliente = '{id_cliente}' and data = '{data}'")
+                    verifica_cpf = cursor.fetchone()[0]
+                    st.write(id_cliente)
+                    st.write(verifica_cpf)
 
-                    cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
-                    id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
+                    if verifica_cpf > 0:
+                        st.error('Cliente já reservado para esta data')
 
-                    cursor.execute(
-                        "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor,pago_loja, pago_vendedor, valor_total,"
-                        "nome_cliente,check_in) values (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                        (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_mergulho, nome_cliente,
-                         '#FFFFFF'))
-                    mydb.close()
-                    st.success('Reserva realizada com sucesso!')
+                    else:
+
+                        cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
+                        id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
+
+                        cursor.execute(
+                            "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor,pago_loja, pago_vendedor, valor_total,"
+                            "nome_cliente,check_in) values (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                            (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_mergulho, nome_cliente,
+                             '#FFFFFF'))
+                        mydb.close()
+                        st.success('Reserva realizada com sucesso!')
 
 if escolha == 'Editar':
 
