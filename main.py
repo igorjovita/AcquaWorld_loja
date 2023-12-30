@@ -323,9 +323,8 @@ if escolha == 'Reservar':
                 id_cliente = cursor.lastrowid
 
             except IntegrityError:
-                cursor.execute(f"SELECT id, nome from cliente where cpf = %s",(cpf,))
+                cursor.execute(f"SELECT id from cliente where cpf = %s and nome = %s", (cpf, nome_cliente))
                 info_registro = cursor.fetchone()
-                nome_registro = info_registro[1]
                 id_cliente = info_registro[0]
                 st.write(id_cliente)
 
