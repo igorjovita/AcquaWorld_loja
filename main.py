@@ -361,7 +361,7 @@ if escolha == 'Reservar':
                 cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE id_cliente = %s and data = %s",
                                (id_cliente, data))
                 verifica_cpf = cursor.fetchone()[0]
-            st.write(st.session_state.id_cliente)
+            st.write(st.session_state.ids_clientes)
             st.write(verifica_cpf)
             st.write(lista_telefone)
 
