@@ -229,8 +229,8 @@ if escolha == 'Visualizar':
 
 if escolha == 'Reservar':
     if 'ids_clientes' not in st.session_state:
-        st.session_state.ids_clientes = []
-        
+        st.session_state['ids_clientes'] = []
+
     mydb.connect()
     cursor.execute("SELECT apelido FROM vendedores")
     lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
@@ -313,7 +313,7 @@ if escolha == 'Reservar':
             pago_loja = 0
             pago_vendedor = 0
 
-        id_cliente = st.session_state.ids_clientes[i]
+        id_cliente = st.session_state['ids_clientes'][i]
         cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
         id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
 
