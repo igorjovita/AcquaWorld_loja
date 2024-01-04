@@ -302,9 +302,6 @@ if escolha == 'Reservar':
                         id_cliente = info_registro[0]
                         st.session_state.ids_clientes.append(id_cliente)
 
-                finally:
-                    mydb.close()
-
         pago_loja = 0
         pago_vendedor = 0
 
@@ -375,7 +372,8 @@ if escolha == 'Reservar':
                 mydb.connect()
                 sql = "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_total, nome_cliente, check_in) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
                 # Executar a inserção de múltiplos valores
-                cursor.executemany(sql, reservas)
+                with mydb.cursor() as cursor:
+                    cursor.executemany(sql, reservas)
                 mydb.close()
                 st.success('Reserva realizada com sucesso!')
 
