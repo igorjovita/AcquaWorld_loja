@@ -291,20 +291,20 @@ if escolha == 'Reservar':
                 finally:
                     mydb.close()
 
-            if recebedor_sinal == 'AcquaWorld':
-                pago_loja = sinal
-                pago_vendedor = 0
+                if recebedor_sinal == 'AcquaWorld':
+                    pago_loja = sinal
+                    pago_vendedor = 0
 
-            if recebedor_sinal == 'Vendedor':
-                pago_loja = 0
-                pago_vendedor = sinal
+                if recebedor_sinal == 'Vendedor':
+                    pago_loja = 0
+                    pago_vendedor = sinal
 
-            if recebedor_sinal == '':
-                pago_loja = 0
-                pago_vendedor = 0
+                if recebedor_sinal == '':
+                    pago_loja = 0
+                    pago_vendedor = 0
 
-            reservas.append((data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_mergulho, nome_cliente,
-                             '#FFFFFF'))
+                reservas.append((data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_mergulho, nome_cliente,
+                                 '#FFFFFF'))
         st.write('---')
 
 
