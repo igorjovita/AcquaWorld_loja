@@ -255,6 +255,7 @@ if escolha == 'Reservar':
 
 
     reservas = []
+    lista_telefone = []
     # Exibir os campos adicionais para cada reserva
     for i, nome_cliente in enumerate(nomes_clientes):
         st.subheader(f'Reserva do Cliente: {nome_cliente}')
@@ -284,7 +285,7 @@ if escolha == 'Reservar':
                                    (cpf, nome_cliente, telefone, roupa))
                     id_cliente = cursor.lastrowid
                     mydb.commit()
-                    st.write(telefone)
+                    lista_telefone.append(telefone)
                 except IntegrityError:
                     cursor.execute(f"SELECT id from cliente where cpf = %s and nome = %s", (cpf, nome_cliente))
                     info_registro = cursor.fetchone()
@@ -370,6 +371,7 @@ if escolha == 'Reservar':
                 verifica_cpf = cursor.fetchone()[0]
                 st.write(id_cliente)
                 st.write(verifica_cpf)
+                st.write(lista_telefone)
 
                 if verifica_cpf > 0:
                     st.error('Cliente já reservado para esta data')
