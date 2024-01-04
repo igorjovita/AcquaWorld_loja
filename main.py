@@ -264,7 +264,7 @@ if escolha == 'Reservar':
             altura = st.slider(f'Altura do Cliente {nome_cliente}', 1.50, 2.10, key=f'{nome_cliente}2')
             sinal = st.text_input(f'Valor do Sinal de {nome_cliente}', key=f'{nome_cliente}3')
         with colu2:
-            telefone_cliente = st.text_input(f'Telefone do Cliente {nome_cliente} :', key=f'{nome_cliente}4')
+            telefone = st.text_input(f'Telefone do Cliente {nome_cliente} :', key=f'{nome_cliente}4')
             peso = st.slider(f'Peso do Cliente {nome_cliente}', 40, 160, key=f'{nome_cliente}5')
             recebedor_sinal = st.selectbox(f'Quem recebeu o sinal de {nome_cliente}?', ['AcquaWorld', 'Vendedor'], index=None,
                                            placeholder='Recebedor do Sinal', key=f'{nome_cliente}6')
@@ -281,7 +281,7 @@ if escolha == 'Reservar':
                 try:
                     mydb.connect()
                     cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
-                                   (cpf, nome_cliente, telefone_cliente, roupa))
+                                   (cpf, nome_cliente, telefone, roupa))
                     id_cliente = cursor.lastrowid
                     mydb.commit()
                 except IntegrityError:
