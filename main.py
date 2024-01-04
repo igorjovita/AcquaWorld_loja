@@ -347,41 +347,21 @@ if escolha == 'Reservar':
             st.error('Todas as vagas de credenciados foram preenchidas')
 
         else:
+            cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE id_cliente = '{id_cliente}' and data = '{data}'")
+            verifica_cpf = cursor.fetchone()[0]
+            st.write(id_cliente)
+            st.write(verifica_cpf)
+            st.write(lista_telefone)
 
-            # roupa = f'{altura}/{peso}'
-            #
-            # id_cliente = None
-            # try:
-            #     cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
-            #                    (cpf, nome_cliente, telefone_cliente, roupa))
-            #     id_cliente = cursor.lastrowid
-            #
-            # except IntegrityError:
-            #     cursor.execute(f"SELECT id from cliente where cpf = %s and nome = %s", (cpf, nome_cliente))
-            #     info_registro = cursor.fetchone()
-            #     if info_registro:
-            #         id_cliente = info_registro[0]
-            #         st.write(id_cliente)
-
-            if id_cliente is None:
-                st.error('CPF associado a outro cliente')
+            if verifica_cpf > 0:
+                st.error('Cliente já reservado para esta data')
 
             else:
-                cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE id_cliente = '{id_cliente}' and data = '{data}'")
-                verifica_cpf = cursor.fetchone()[0]
-                st.write(id_cliente)
-                st.write(verifica_cpf)
-                st.write(lista_telefone)
-
-                if verifica_cpf > 0:
-                    st.error('Cliente já reservado para esta data')
-
-                else:
-                    sql = "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_total, nome_cliente, check_in) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-                    # Executar a inserção de múltiplos valores
-                    cursor.executemany(sql, reservas)
-                    mydb.close()
-                    st.success('Reserva realizada com sucesso!')
+                sql = "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_total, nome_cliente, check_in) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                # Executar a inserção de múltiplos valores
+                cursor.executemany(sql, reservas)
+                mydb.close()
+                st.success('Reserva realizada com sucesso!')
 
 if escolha == 'Editar':
 
