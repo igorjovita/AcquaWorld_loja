@@ -278,7 +278,7 @@ if escolha == 'Reservar':
             id_cliente = None
             pago_loja = 0
             pago_vendedor = 0
-            if st.button('Cadastrar Cliente'):
+            if st.button('Cadastrar Cliente', key=f'{nome_cliente}btn'):
                 try:
                     mydb.connect()
                     cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
