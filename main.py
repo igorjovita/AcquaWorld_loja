@@ -242,9 +242,6 @@ if escolha == 'Reservar':
     with col3:
         comissario = st.selectbox('Vendedor:', lista_vendedor, index=None, placeholder='Escolha o vendedor')
 
-        cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
-        id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
-
     if 'ids_clientes' not in st.session_state:
         st.session_state.ids_clientes = []
     # Lista para armazenar os nomes dos clientes
@@ -285,9 +282,6 @@ if escolha == 'Reservar':
             if st.button(f'Cadastrar {nome_cliente}'):
 
                 try:
-
-                    mydb.connect()
-
                     cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
                                    (cpf, nome_cliente, telefone, roupa))
                     id_cliente = cursor.lastrowid
@@ -317,68 +311,66 @@ if escolha == 'Reservar':
             pago_loja = 0
             pago_vendedor = 0
 
-            id_cliente = st.session_state[i]
+        id_cliente = st.session_state.ids_clientes[i]
+        cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
+        id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
 
         reservas.append((data, id_cliente, tipo, id_vendedor, pago_loja,
                          pago_vendedor, valor_mergulho, nome_cliente, '#FFFFFF'))
-        st.session_state = {}
+        st.session_state.ids_clientes = {}
         st.write('---')
 
     if st.button('Reservar'):
-        mydb.connect()
-        cursor.execute(f"SELECT COUNT(*) FROM reserva where data = '{data}'")
-        contagem = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
+        with mydb.cursor() as cursor:
+            cursor.execute(f"SELECT COUNT(*) FROM reserva where data = '{data}'")
+            contagem = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
 
-        cursor.execute(f"SELECT * FROM restricao WHERE data = '{data}'")
-        restricao = cursor.fetchone()
+            cursor.execute(f"SELECT * FROM restricao WHERE data = '{data}'")
+            restricao = cursor.fetchone()
 
-        cursor.execute(
-            f"SELECT COUNT(*) FROM reserva WHERE (tipo = 'TUR2' or tipo = 'OWD' or tipo = 'ADV' or tipo = 'RESCUE' or tipo = 'REVIEW') and data = '{data}'")
-        contagem_cred = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
+            cursor.execute(
+                f"SELECT COUNT(*) FROM reserva WHERE (tipo = 'TUR2' or tipo = 'OWD' or tipo = 'ADV' or tipo = 'RESCUE' or tipo = 'REVIEW') and data = '{data}'")
+            contagem_cred = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
 
-        lista_cred = ['TUR2', 'OWD', 'ADV', 'RESCUE', 'REVIEW']
+            lista_cred = ['TUR2', 'OWD', 'ADV', 'RESCUE', 'REVIEW']
 
-        if restricao is None:
-            vaga_cred = 8
-            vaga_total = 40
-            vaga_bat = vaga_total - contagem_cred
-        else:
-            cursor.execute(f"SELECT vaga_bat, vaga_cred, vaga_total FROM restricao WHERE data = '{data}'")
-            restricoes = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split()
-            vaga_bat = int(restricoes[0])
-            vaga_cred = int(restricoes[1])
-            vaga_total = int(restricoes[2])
+            if restricao is None:
+                vaga_cred = 8
+                vaga_total = 40
+                vaga_bat = vaga_total - contagem_cred
+            else:
+                cursor.execute(f"SELECT vaga_bat, vaga_cred, vaga_total FROM restricao WHERE data = '{data}'")
+                restricoes = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split()
+                vaga_bat = int(restricoes[0])
+                vaga_cred = int(restricoes[1])
+                vaga_total = int(restricoes[2])
 
-        if contagem >= vaga_total:
-            st.error('Planilha está lotada nessa data!')
+            if contagem >= vaga_total:
+                st.error('Planilha está lotada nessa data!')
 
-        elif tipo in lista_cred and contagem_cred >= vaga_cred:
-            st.write(contagem_cred)
-            st.write(vaga_cred)
-            st.write(restricao)
-            st.error('Todas as vagas de credenciados foram preenchidas')
+            elif tipo in lista_cred and contagem_cred >= vaga_cred:
+                st.write(contagem_cred)
+                st.write(vaga_cred)
+                st.write(restricao)
+                st.error('Todas as vagas de credenciados foram preenchidas')
 
-        else:
-
-            with mydb.cursor() as cursor:
+            else:
                 cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE id_cliente = %s and data = %s",
                                (id_cliente, data))
                 verifica_cpf = cursor.fetchone()[0]
-            st.write(st.session_state.ids_clientes)
-            st.write(verifica_cpf)
-            st.write(lista_telefone)
+                st.write(st.session_state.ids_clientes)
+                st.write(verifica_cpf)
+                st.write(lista_telefone)
 
-            if verifica_cpf > 0:
-                st.error('Cliente já reservado para esta data')
+                if verifica_cpf > 0:
+                    st.error('Cliente já reservado para esta data')
 
-            else:
-                mydb.connect()
-                sql = "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_total, nome_cliente, check_in) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-                # Executar a inserção de múltiplos valores
-                with mydb.cursor() as cursor:
+                else:
+                    sql = "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_total, nome_cliente, check_in) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                    # Executar a inserção de múltiplos valores
+
                     cursor.executemany(sql, reservas)
-                mydb.close()
-                st.success('Reserva realizada com sucesso!')
+                    st.success('Reserva realizada com sucesso!')
 
 
 if escolha == 'Editar':
