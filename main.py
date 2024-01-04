@@ -240,7 +240,7 @@ if escolha == 'Reservar':
     with col2:
         quantidade_reservas = st.number_input('Quantidade de Reservas', min_value=1, value=1, step=1)
     with col3:
-        vendedor = st.selectbox('Vendedor:', lista_vendedor, index=None, placeholder='Escolha o vendedor')
+        comissario = st.selectbox('Vendedor:', lista_vendedor, index=None, placeholder='Escolha o vendedor')
 
     # Lista para armazenar os nomes dos clientes
     nomes_clientes = []
