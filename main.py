@@ -306,17 +306,17 @@ if escolha == 'Reservar':
     # with colun3:
     #     valor_loja = st.number_input('Receber na Loja :', format='%d', step=10)
     #
-    # if recebedor_sinal == 'AcquaWorld':
-    #     pago_loja = sinal
-    #     pago_vendedor = 0
-    #
-    # if recebedor_sinal == 'Vendedor':
-    #     pago_loja = 0
-    #     pago_vendedor = sinal
-    #
-    # if recebedor_sinal == '':
-    #     pago_loja = 0
-    #     pago_vendedor = 0
+    if recebedor_sinal == 'AcquaWorld':
+        pago_loja = sinal
+        pago_vendedor = 0
+
+    if recebedor_sinal == 'Vendedor':
+        pago_loja = 0
+        pago_vendedor = sinal
+
+    if recebedor_sinal == '':
+        pago_loja = 0
+        pago_vendedor = 0
 
     if st.button('Reservar'):
         mydb.connect()
