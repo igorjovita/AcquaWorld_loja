@@ -369,6 +369,7 @@ if escolha == 'Reservar':
                 st.error('Cliente já reservado para esta data')
 
             else:
+                mydb.connect()
                 sql = "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_total, nome_cliente, check_in) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
                 # Executar a inserção de múltiplos valores
                 cursor.executemany(sql, reservas)
