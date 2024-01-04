@@ -242,7 +242,7 @@ if escolha == 'Reservar':
     with col3:
         comissario = st.selectbox('Vendedor:', lista_vendedor, index=None, placeholder='Escolha o vendedor')
 
-    if comissario:
+    if comissario != '':
         cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
         id_vendedor = cursor.fetchone()[0]
     if 'ids_clientes' not in st.session_state:
