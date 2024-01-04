@@ -269,7 +269,6 @@ if escolha == 'Reservar':
             peso = st.slider(f'Peso do Cliente {nome_cliente}', 40, 160, key=f'{nome_cliente}5')
             recebedor_sinal = st.selectbox(f'Quem recebeu o sinal de {nome_cliente}?', ['AcquaWorld', 'Vendedor'], index=None,
                                            placeholder='Recebedor do Sinal', key=f'{nome_cliente}6')
-
         with colu3:
             tipo = st.selectbox(f'Certificação do cliente {nome_cliente} : ', ('BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'), index=None, placeholder='Certificação', key=f'{nome_cliente}7')
             valor_mergulho = st.text_input(f'Valor do Mergulho do cliente {nome_cliente}', key=f'{nome_cliente}8')
@@ -378,7 +377,7 @@ if escolha == 'Editar':
 
     if selectbox_cliente is not None:
         st.subheader(f'Editar a reserva de {selectbox_cliente}')
-        cursor.execute(f"SELECT id, cpf, telefone, peso, altura FROM cliente WHERE nome = '{selectbox_cliente}'")
+        cursor.execute(f"SELECT id, cpf, telefone, roupa FROM cliente WHERE nome = '{selectbox_cliente}'")
         info_cliente = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
         cursor.execute(f"SELECT tipo, id_vendedor from reserva where id_cliente = '{info_cliente[0]}'")
         info_reserva = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
