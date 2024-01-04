@@ -300,6 +300,7 @@ if escolha == 'Reservar':
                     if info_registro:
                         id_cliente = info_registro[0]
                         st.session_state.ids_clientes.append(id_cliente)
+                        
                 finally:
                     mydb.close()
 
