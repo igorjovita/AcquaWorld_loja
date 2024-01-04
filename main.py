@@ -259,7 +259,7 @@ if escolha == 'Reservar':
             altura = st.slider(f'Altura do Cliente {nome_cliente}', 1.50, 2.10)
             sinal = st.text_input(f'Valor do Sinal de {nome_cliente}')
         with colu2:
-            telefone = st.text_input(f'Telefone do Cliente {nome_cliente} :')
+            telefone_cliente = st.text_input(f'Telefone do Cliente {nome_cliente} :')
             peso = st.slider(f'Peso do Cliente {nome_cliente}', 40, 160)
             recebedor_sinal = st.selectbox(f'Quem recebeu o sinal de {nome_cliente}?', ['AcquaWorld', 'Vendedor'], index=None,
                                            placeholder='Recebedor do Sinal')
