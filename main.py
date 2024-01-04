@@ -275,9 +275,10 @@ if escolha == 'Reservar':
             valor_mergulho = st.text_input(f'Valor do Mergulho do cliente {nome_cliente}', key=f'{nome_cliente}8')
             valor_loja = st.number_input(f'Valor a receber de {nome_cliente} :', format='%d', step=10, key=f'{nome_cliente}9')
         roupa = f'{altura}/{peso}'
+        id_cliente = None
         pago_loja = 0
         pago_vendedor = 0
-        if st.button(f'Cadastrar {nome_cliente}'):
+        if id_cliente is None:
             try:
                 mydb.connect()
                 cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
