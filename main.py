@@ -256,18 +256,18 @@ if escolha == 'Reservar':
         colu1, colu2, colu3 = st.columns(3)
         with colu1:
             cpf = st.text_input(f'Cpf do cliente {nome_cliente}', help='Apenas números', key=f'{nome_cliente}1')
-            altura = st.slider(f'Altura do Cliente {nome_cliente}', 1.50, 2.10, key=f'{nome_cliente}1')
-            sinal = st.text_input(f'Valor do Sinal de {nome_cliente}', key=f'{nome_cliente}1')
+            altura = st.slider(f'Altura do Cliente {nome_cliente}', 1.50, 2.10, key=f'{nome_cliente}2')
+            sinal = st.text_input(f'Valor do Sinal de {nome_cliente}', key=f'{nome_cliente}3')
         with colu2:
-            telefone_cliente = st.text_input(f'Telefone do Cliente {nome_cliente} :', key=f'{nome_cliente}1')
-            peso = st.slider(f'Peso do Cliente {nome_cliente}', 40, 160, key=f'{nome_cliente}1')
+            telefone_cliente = st.text_input(f'Telefone do Cliente {nome_cliente} :', key=f'{nome_cliente}4')
+            peso = st.slider(f'Peso do Cliente {nome_cliente}', 40, 160, key=f'{nome_cliente}5')
             recebedor_sinal = st.selectbox(f'Quem recebeu o sinal de {nome_cliente}?', ['AcquaWorld', 'Vendedor'], index=None,
-                                           placeholder='Recebedor do Sinal', key=f'{nome_cliente}1')
+                                           placeholder='Recebedor do Sinal', key=f'{nome_cliente}6')
 
         with colu3:
-            tipo = st.selectbox(f'Certificação do cliente {nome_cliente} : ', ('BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'), index=None, placeholder='Certificação', key=f'{nome_cliente}1')
-            valor_mergulho = st.text_input(f'Valor do Mergulho do cliente {nome_cliente}', key=f'{nome_cliente}1')
-            valor_loja = st.number_input(f'Valor a receber de {nome_cliente} :', format='%d', step=10, key=f'{nome_cliente}1')
+            tipo = st.selectbox(f'Certificação do cliente {nome_cliente} : ', ('BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'), index=None, placeholder='Certificação', key=f'{nome_cliente}7')
+            valor_mergulho = st.text_input(f'Valor do Mergulho do cliente {nome_cliente}', key=f'{nome_cliente}8')
+            valor_loja = st.number_input(f'Valor a receber de {nome_cliente} :', format='%d', step=10, key=f'{nome_cliente}9')
         st.write('---')
 
 
