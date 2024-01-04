@@ -255,19 +255,19 @@ if escolha == 'Reservar':
         st.subheader(f'Reserva do Cliente: {nome_cliente}')
         colu1, colu2, colu3 = st.columns(3)
         with colu1:
-            cpf = st.text_input(f'Cpf do cliente {nome_cliente}', help='Apenas números')
-            altura = st.slider(f'Altura do Cliente {nome_cliente}', 1.50, 2.10)
-            sinal = st.text_input(f'Valor do Sinal de {nome_cliente}')
+            cpf = st.text_input(f'Cpf do cliente {nome_cliente}', help='Apenas números', key=f'{nome_cliente}1')
+            altura = st.slider(f'Altura do Cliente {nome_cliente}', 1.50, 2.10, key=f'{nome_cliente}1')
+            sinal = st.text_input(f'Valor do Sinal de {nome_cliente}', key=f'{nome_cliente}1')
         with colu2:
-            telefone_cliente = st.text_input(f'Telefone do Cliente {nome_cliente} :')
-            peso = st.slider(f'Peso do Cliente {nome_cliente}', 40, 160)
+            telefone_cliente = st.text_input(f'Telefone do Cliente {nome_cliente} :', key=f'{nome_cliente}1')
+            peso = st.slider(f'Peso do Cliente {nome_cliente}', 40, 160, key=f'{nome_cliente}1')
             recebedor_sinal = st.selectbox(f'Quem recebeu o sinal de {nome_cliente}?', ['AcquaWorld', 'Vendedor'], index=None,
-                                           placeholder='Recebedor do Sinal')
+                                           placeholder='Recebedor do Sinal', key=f'{nome_cliente}1')
 
         with colu3:
-            tipo = st.selectbox(f'Certificação do cliente {nome_cliente} : ', ('BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'), index=None, placeholder='Certificação')
-            valor_mergulho = st.text_input(f'Valor do Mergulho do cliente {nome_cliente}')
-            valor_loja = st.number_input(f'Valor a receber de {nome_cliente} :', format='%d', step=10)
+            tipo = st.selectbox(f'Certificação do cliente {nome_cliente} : ', ('BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'), index=None, placeholder='Certificação', key=f'{nome_cliente}1')
+            valor_mergulho = st.text_input(f'Valor do Mergulho do cliente {nome_cliente}', key=f'{nome_cliente}1')
+            valor_loja = st.number_input(f'Valor a receber de {nome_cliente} :', format='%d', step=10, key=f'{nome_cliente}1')
         st.write('---')
 
 
