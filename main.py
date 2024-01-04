@@ -275,7 +275,8 @@ if escolha == 'Reservar':
             valor_loja = st.number_input(f'Valor a receber de {nome_cliente} :', format='%d', step=10, key=f'{nome_cliente}9')
             roupa = f'{altura}/{peso}'
             id_cliente = None
-
+            pago_loja = 0
+            pago_vendedor = 0
             if id_cliente is None:
                 try:
                     mydb.connect()
@@ -291,20 +292,20 @@ if escolha == 'Reservar':
                 finally:
                     mydb.close()
 
-                if recebedor_sinal == 'AcquaWorld':
-                    pago_loja = sinal
-                    pago_vendedor = 0
+            if recebedor_sinal == 'AcquaWorld':
+                pago_loja = sinal
+                pago_vendedor = 0
 
-                if recebedor_sinal == 'Vendedor':
-                    pago_loja = 0
-                    pago_vendedor = sinal
+            if recebedor_sinal == 'Vendedor':
+                pago_loja = 0
+                pago_vendedor = sinal
 
-                if recebedor_sinal == '':
-                    pago_loja = 0
-                    pago_vendedor = 0
+            if recebedor_sinal == '':
+                pago_loja = 0
+                pago_vendedor = 0
 
-                reservas.append((data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_mergulho, nome_cliente,
-                                 '#FFFFFF'))
+            reservas.append((data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_mergulho, nome_cliente,
+                             '#FFFFFF'))
         st.write('---')
 
 
