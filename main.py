@@ -242,8 +242,9 @@ if escolha == 'Reservar':
     with col3:
         comissario = st.selectbox('Vendedor:', lista_vendedor, index=None, placeholder='Escolha o vendedor')
 
-    cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
-    id_vendedor = cursor.fetchone()[0]
+    if comissario:
+        cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
+        id_vendedor = cursor.fetchone()[0]
     if 'ids_clientes' not in st.session_state:
         st.session_state.ids_clientes = []
     # Lista para armazenar os nomes dos clientes
@@ -283,7 +284,7 @@ if escolha == 'Reservar':
 
             if st.button(f'Cadastrar {nome_cliente}'):
                 try:
-                    
+
                     mydb.connect()
                     cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
                                    (cpf, nome_cliente, telefone, roupa))
