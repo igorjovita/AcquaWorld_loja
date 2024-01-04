@@ -306,7 +306,7 @@ if escolha == 'Reservar':
                 pago_loja = 0
                 pago_vendedor = 0
 
-            reservas.append((data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_mergulho, nome_cliente,
+        reservas.append((data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_mergulho, nome_cliente,
                              '#FFFFFF'))
         st.write('---')
 
