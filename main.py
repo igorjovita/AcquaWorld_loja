@@ -230,6 +230,7 @@ if escolha == 'Visualizar':
 if escolha == 'Reservar':
     if 'ids_clientes' not in st.session_state:
         st.session_state.ids_clientes = []
+        
     mydb.connect()
     cursor.execute("SELECT apelido FROM vendedores")
     lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
