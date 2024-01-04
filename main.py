@@ -233,22 +233,31 @@ if escolha == 'Reservar':
     lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
     st.subheader('Reservar Clientes')
 
+    # Criar o estado da sessão
+    if 'state' not in st.session_state:
+        st.session_state.state = {
+            'data': None,
+            'quantidade_reservas': None,
+            'comissario': None,
+            'reservas': [],
+        }
+
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
+        st.session_state.state['data'] = st.date_input('Data da Reserva', format='DD/MM/YYYY')
     with col2:
-        quantidade_reservas = st.number_input('Quantidade de Reservas', min_value=1, value=1, step=1)
+        st.session_state.state['quantidade_reservas'] = st.number_input('Quantidade de Reservas', min_value=1, value=1, step=1)
     with col3:
-        comissario = st.selectbox('Vendedor:', lista_vendedor, index=None, placeholder='Escolha o vendedor')
+        st.session_state.state['comissario'] = st.selectbox('Vendedor:', lista_vendedor, index=None, placeholder='Escolha o vendedor')
 
-    cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
+    cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{st.session_state.state['comissario']}'")
     id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
 
     # Lista para armazenar os nomes dos clientes
     nomes_clientes = []
 
-    for i in range(quantidade_reservas):
+    for i in range(st.session_state.state['quantidade_reservas']):
         # Campo de entrada para o nome do cliente
         nome_cliente = st.text_input(f'Nome do Cliente {i + 1}:').capitalize()
         nomes_clientes.append(nome_cliente)
@@ -273,10 +282,12 @@ if escolha == 'Reservar':
             tipo = st.selectbox(f'Certificação do cliente {nome_cliente} : ', ('BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'), index=None, placeholder='Certificação', key=f'{nome_cliente}7')
             valor_mergulho = st.text_input(f'Valor do Mergulho do cliente {nome_cliente}', key=f'{nome_cliente}8')
             valor_loja = st.number_input(f'Valor a receber de {nome_cliente} :', format='%d', step=10, key=f'{nome_cliente}9')
-        roupa = f'{altura}/{peso}'
-        id_cliente = None
+
         pago_loja = 0
         pago_vendedor = 0
+        roupa = f'{altura}/{peso}'
+        id_cliente = None
+
         if id_cliente is None:
             try:
                 mydb.connect()
@@ -293,34 +304,35 @@ if escolha == 'Reservar':
             finally:
                 mydb.close()
 
-            if recebedor_sinal == 'AcquaWorld':
-                pago_loja = sinal
-                pago_vendedor = 0
 
-            if recebedor_sinal == 'Vendedor':
-                pago_loja = 0
-                pago_vendedor = sinal
+        if recebedor_sinal == 'AcquaWorld':
+            pago_loja = sinal
+            pago_vendedor = 0
 
-            if recebedor_sinal == '':
-                pago_loja = 0
-                pago_vendedor = 0
+        if recebedor_sinal == 'Vendedor':
+            pago_loja = 0
+            pago_vendedor = sinal
 
-        reservas.append((data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_mergulho, nome_cliente,
-                             '#FFFFFF'))
+        if recebedor_sinal == '':
+            pago_loja = 0
+            pago_vendedor = 0
+
+        st.session_state.state['reservas'].append((st.session_state.state['data'], id_cliente, tipo, id_vendedor, pago_loja,
+                                                   pago_vendedor, valor_mergulho, nome_cliente, '#FFFFFF'))
         st.write('---')
 
 
 
     if st.button('Reservar'):
         mydb.connect()
-        cursor.execute(f"SELECT COUNT(*) FROM reserva where data = '{data}'")
+        cursor.execute(f"SELECT COUNT(*) FROM reserva where data = '{st.session_state.state['data']}'")
         contagem = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
 
-        cursor.execute(f"SELECT * FROM restricao WHERE data = '{data}'")
+        cursor.execute(f"SELECT * FROM restricao WHERE data = '{st.session_state.state['data']}'")
         restricao = cursor.fetchone()
 
         cursor.execute(
-            f"SELECT COUNT(*) FROM reserva WHERE (tipo = 'TUR2' or tipo = 'OWD' or tipo = 'ADV' or tipo = 'RESCUE' or tipo = 'REVIEW') and data = '{data}'")
+            f"SELECT COUNT(*) FROM reserva WHERE (tipo = 'TUR2' or tipo = 'OWD' or tipo = 'ADV' or tipo = 'RESCUE' or tipo = 'REVIEW') and data = '{st.session_state.state['data']}'")
         contagem_cred = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
 
         lista_cred = ['TUR2', 'OWD', 'ADV', 'RESCUE', 'REVIEW']
@@ -330,7 +342,7 @@ if escolha == 'Reservar':
             vaga_total = 40
             vaga_bat = vaga_total - contagem_cred
         else:
-            cursor.execute(f"SELECT vaga_bat, vaga_cred, vaga_total FROM restricao WHERE data = '{data}'")
+            cursor.execute(f"SELECT vaga_bat, vaga_cred, vaga_total FROM restricao WHERE data = '{st.session_state.state['data']}'")
             restricoes = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split()
             vaga_bat = int(restricoes[0])
             vaga_cred = int(restricoes[1])
@@ -346,7 +358,7 @@ if escolha == 'Reservar':
             st.error('Todas as vagas de credenciados foram preenchidas')
 
         else:
-            cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE id_cliente = '{id_cliente}' and data = '{data}'")
+            cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE id_cliente = '{id_cliente}' and data = '{st.session_state.state['data']}'")
             verifica_cpf = cursor.fetchone()[0]
             st.write(id_cliente)
             st.write(verifica_cpf)
@@ -358,7 +370,7 @@ if escolha == 'Reservar':
             else:
                 sql = "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_total, nome_cliente, check_in) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
                 # Executar a inserção de múltiplos valores
-                cursor.executemany(sql, reservas)
+                cursor.executemany(sql, st.session_state.state['reservas'])
                 mydb.close()
                 st.success('Reserva realizada com sucesso!')
 
