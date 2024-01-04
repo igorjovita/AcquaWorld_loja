@@ -277,22 +277,22 @@ if escolha == 'Reservar':
             roupa = f'{altura}/{peso}'
             id_cliente = None
             pago_loja = 0
-            pago_vendedor = 0
-            if st.button('Cadastrar Cliente', key=f'{nome_cliente}btn'):
-                try:
-                    mydb.connect()
-                    cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
-                                   (cpf, nome_cliente, telefone, roupa))
-                    id_cliente = cursor.lastrowid
-                    mydb.commit()
-                    lista_telefone.append(telefone)
-                except IntegrityError:
-                    cursor.execute(f"SELECT id from cliente where cpf = %s and nome = %s", (cpf, nome_cliente))
-                    info_registro = cursor.fetchone()
-                    if info_registro:
-                        id_cliente = info_registro[0]
-                finally:
-                    mydb.close()
+        pago_vendedor = 0
+        if id_cliente is None:
+            try:
+                mydb.connect()
+                cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
+                               (cpf, nome_cliente, telefone, roupa))
+                id_cliente = cursor.lastrowid
+                mydb.commit()
+                lista_telefone.append(telefone)
+            except IntegrityError:
+                cursor.execute(f"SELECT id from cliente where cpf = %s and nome = %s", (cpf, nome_cliente))
+                info_registro = cursor.fetchone()
+                if info_registro:
+                    id_cliente = info_registro[0]
+            finally:
+                mydb.close()
 
             if recebedor_sinal == 'AcquaWorld':
                 pago_loja = sinal
