@@ -271,7 +271,7 @@ if escolha == 'Reservar':
             altura = st.slider(f'Altura do Cliente {nome_cliente}', 1.50, 2.10, key=f'{nome_cliente}2')
             sinal = st.text_input(f'Valor do Sinal de {nome_cliente}', key=f'{nome_cliente}3')
         with colu2:
-            telefone = st.text_input(f'Telefone do Cliente {nome_cliente} :', key=f'{nome_cliente}4')
+            telefone_entry = st.text_input(f'Telefone do Cliente {nome_cliente} :', key=f'{nome_cliente}4')
             peso = st.slider(f'Peso do Cliente {nome_cliente}', 40, 160, key=f'{nome_cliente}5')
             recebedor_sinal = st.selectbox(f'Quem recebeu o sinal de {nome_cliente}?', ['AcquaWorld', 'Vendedor'], index=None,
                                            placeholder='Recebedor do Sinal', key=f'{nome_cliente}6')
@@ -288,6 +288,7 @@ if escolha == 'Reservar':
         if id_cliente is None:
             try:
                 mydb.connect()
+                telefone = telefone_entry
                 cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
                                (cpf, nome_cliente, telefone, roupa))
                 id_cliente = cursor.lastrowid
@@ -314,7 +315,7 @@ if escolha == 'Reservar':
             pago_loja = 0
             pago_vendedor = 0
 
-        st.session_state.state['reservas'].append((data, id_cliente, tipo, id_vendedor, pago_loja,
+        reservas.append((data, id_cliente, tipo, id_vendedor, pago_loja,
                                                    pago_vendedor, valor_mergulho, nome_cliente, '#FFFFFF'))
         st.write('---')
 
@@ -367,7 +368,7 @@ if escolha == 'Reservar':
             else:
                 sql = "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_total, nome_cliente, check_in) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
                 # Executar a inserção de múltiplos valores
-                cursor.executemany(sql, st.session_state.state['reservas'])
+                cursor.executemany(sql, reservas)
                 mydb.close()
                 st.success('Reserva realizada com sucesso!')
 
