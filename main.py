@@ -317,11 +317,11 @@ if escolha == 'Reservar':
             pago_loja = 0
             pago_vendedor = 0
 
-        for id_cli in st.session_state.ids_clientes:
-            id_cliente = id_cli
+            id_cliente = st.session_state[i]
 
-        reservas.append((data, id_cli, tipo, id_vendedor, pago_loja,
+        reservas.append((data, id_cliente, tipo, id_vendedor, pago_loja,
                          pago_vendedor, valor_mergulho, nome_cliente, '#FFFFFF'))
+        st.session_state = {}
         st.write('---')
 
     if st.button('Reservar'):
@@ -379,6 +379,7 @@ if escolha == 'Reservar':
                     cursor.executemany(sql, reservas)
                 mydb.close()
                 st.success('Reserva realizada com sucesso!')
+
 
 if escolha == 'Editar':
 
