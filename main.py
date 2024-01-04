@@ -274,6 +274,7 @@ if escolha == 'Reservar':
             valor_mergulho = st.text_input(f'Valor do Mergulho do cliente {nome_cliente}', key=f'{nome_cliente}8')
             valor_loja = st.number_input(f'Valor a receber de {nome_cliente} :', format='%d', step=10, key=f'{nome_cliente}9')
             roupa = f'{altura}/{peso}'
+            id_cliente = None
 
             if id_cliente is None:
                 try:
