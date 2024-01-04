@@ -317,7 +317,7 @@ if escolha == 'Reservar':
 
         reservas.append((data, id_cliente, tipo, id_vendedor, pago_loja,
                          pago_vendedor, valor_mergulho, nome_cliente, '#FFFFFF'))
-        st.session_state.ids_clientes = {}
+        st.session_state.ids_clientes = []
         st.write('---')
 
     if st.button('Reservar'):
