@@ -228,6 +228,8 @@ if escolha == 'Visualizar':
         st.markdown(download_link, unsafe_allow_html=True)
 
 if escolha == 'Reservar':
+    if 'ids_clientes' not in st.session_state:
+        st.session_state.ids_clientes = []
     mydb.connect()
     cursor.execute("SELECT apelido FROM vendedores")
     lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
@@ -242,8 +244,7 @@ if escolha == 'Reservar':
     with col3:
         comissario = st.selectbox('Vendedor:', lista_vendedor, index=None, placeholder='Escolha o vendedor')
 
-    if 'ids_clientes' not in st.session_state:
-        st.session_state.ids_clientes = []
+
     # Lista para armazenar os nomes dos clientes
     nomes_clientes = []
 
