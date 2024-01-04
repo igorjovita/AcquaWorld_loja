@@ -317,7 +317,10 @@ if escolha == 'Reservar':
             pago_loja = 0
             pago_vendedor = 0
 
-        reservas.append((data, id_cliente, tipo, id_vendedor, pago_loja,
+        for id_cli in st.session_state.ids_clientes:
+            id_cliente = id_cli
+
+        reservas.append((data, id_cli, tipo, id_vendedor, pago_loja,
                          pago_vendedor, valor_mergulho, nome_cliente, '#FFFFFF'))
         st.write('---')
 
