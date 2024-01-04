@@ -243,7 +243,7 @@ if escolha == 'Reservar':
         comissario = st.selectbox('Vendedor:', lista_vendedor, index=None, placeholder='Escolha o vendedor')
 
     if 'ids_clientes' not in st.session_state:
-        st.session_state.ids_clientes = []
+        st.session_state.ids_clientes = {}
     # Lista para armazenar os nomes dos clientes
     nomes_clientes = []
 
@@ -317,7 +317,7 @@ if escolha == 'Reservar':
 
         reservas.append((data, id_cliente, tipo, id_vendedor, pago_loja,
                          pago_vendedor, valor_mergulho, nome_cliente, '#FFFFFF'))
-        st.session_state.ids_clientes = []
+        st.session_state.ids_clientes = {}
         st.write('---')
 
     if st.button('Reservar'):
