@@ -242,6 +242,9 @@ if escolha == 'Reservar':
     with col3:
         comissario = st.selectbox('Vendedor:', lista_vendedor, index=None, placeholder='Escolha o vendedor')
 
+    cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
+    id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
+
     # Lista para armazenar os nomes dos clientes
     nomes_clientes = []
 
@@ -250,6 +253,8 @@ if escolha == 'Reservar':
         nome_cliente = st.text_input(f'Nome do Cliente {i + 1}:').capitalize()
         nomes_clientes.append(nome_cliente)
 
+
+    reservas = []
     # Exibir os campos adicionais para cada reserva
     for i, nome_cliente in enumerate(nomes_clientes):
         st.subheader(f'Reserva do Cliente: {nome_cliente}')
@@ -268,55 +273,40 @@ if escolha == 'Reservar':
             tipo = st.selectbox(f'Certificação do cliente {nome_cliente} : ', ('BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'), index=None, placeholder='Certificação', key=f'{nome_cliente}7')
             valor_mergulho = st.text_input(f'Valor do Mergulho do cliente {nome_cliente}', key=f'{nome_cliente}8')
             valor_loja = st.number_input(f'Valor a receber de {nome_cliente} :', format='%d', step=10, key=f'{nome_cliente}9')
+            roupa = f'{altura}/{peso}'
+
+            if id_cliente is None:
+                try:
+                    mydb.connect()
+                    cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
+                                   (cpf, nome_cliente, telefone_cliente, roupa))
+                    id_cliente = cursor.lastrowid
+                    mydb.commit()
+                except IntegrityError:
+                    cursor.execute(f"SELECT id from cliente where cpf = %s and nome = %s", (cpf, nome_cliente))
+                    info_registro = cursor.fetchone()
+                    if info_registro:
+                        id_cliente = info_registro[0]
+                finally:
+                    mydb.close()
+
+            if recebedor_sinal == 'AcquaWorld':
+                pago_loja = sinal
+                pago_vendedor = 0
+
+            if recebedor_sinal == 'Vendedor':
+                pago_loja = 0
+                pago_vendedor = sinal
+
+            if recebedor_sinal == '':
+                pago_loja = 0
+                pago_vendedor = 0
+
+            reservas.append((data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_mergulho, nome_cliente,
+                             '#FFFFFF'))
         st.write('---')
 
 
-    # data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
-    #
-    # col1, col2, col3 = st.columns(3)
-    #
-    # with col1:
-    #     nome_cliente = st.text_input('Nome do Cliente :')
-    #     comissario = st.selectbox('Vendedor :', lista_vendedor, index=None, placeholder='Escolha o vendedor')
-    #
-    # with col2:
-    #     cpf = st.text_input('Cpf do cliente', help='Apenas numeros')
-    #     tipo = st.selectbox('Modalidade : ', ('BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'), index=None, placeholder='Certificação')
-    #
-    # with col3:
-    #     telefone_cliente = st.text_input('Telefone do Cliente :')
-    #     valor_mergulho = st.text_input('Valor do Mergulho')
-    #
-    # colu1, colu2 = st.columns(2)
-    #
-    # with colu1:
-    #     altura = st.slider('Altura do Cliente', 1.50, 2.10)
-    #
-    # with colu2:
-    #     peso = st.slider('Peso do Cliente', 40, 160)
-    #
-    # colun1, colun2, colun3 = st.columns(3)
-    #
-    # with colun1:
-    #     sinal = st.text_input('Valor do Sinal')
-    #
-    # with colun2:
-    #     recebedor_sinal = st.selectbox('Quem recebeu o sinal?', ['AcquaWorld', 'Vendedor'], index=None, placeholder='Recebedor do Sinal')
-    #
-    # with colun3:
-    #     valor_loja = st.number_input('Receber na Loja :', format='%d', step=10)
-    #
-    if recebedor_sinal == 'AcquaWorld':
-        pago_loja = sinal
-        pago_vendedor = 0
-
-    if recebedor_sinal == 'Vendedor':
-        pago_loja = 0
-        pago_vendedor = sinal
-
-    if recebedor_sinal == '':
-        pago_loja = 0
-        pago_vendedor = 0
 
     if st.button('Reservar'):
         mydb.connect()
@@ -354,46 +344,39 @@ if escolha == 'Reservar':
 
         else:
 
-            roupa = f'{altura}/{peso}'
+            # roupa = f'{altura}/{peso}'
+            #
+            # id_cliente = None
+            # try:
+            #     cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
+            #                    (cpf, nome_cliente, telefone_cliente, roupa))
+            #     id_cliente = cursor.lastrowid
+            #
+            # except IntegrityError:
+            #     cursor.execute(f"SELECT id from cliente where cpf = %s and nome = %s", (cpf, nome_cliente))
+            #     info_registro = cursor.fetchone()
+            #     if info_registro:
+            #         id_cliente = info_registro[0]
+            #         st.write(id_cliente)
 
-            id_cliente = None
-            try:
-                cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
-                               (cpf, nome_cliente, telefone_cliente, roupa))
-                id_cliente = cursor.lastrowid
+            if id_cliente is None:
+                st.error('CPF associado a outro cliente')
 
-            except IntegrityError:
-                cursor.execute(f"SELECT id from cliente where cpf = %s and nome = %s", (cpf, nome_cliente))
-                info_registro = cursor.fetchone()
-                if info_registro:
-                    id_cliente = info_registro[0]
-                    st.write(id_cliente)
+            else:
+                cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE id_cliente = '{id_cliente}' and data = '{data}'")
+                verifica_cpf = cursor.fetchone()[0]
+                st.write(id_cliente)
+                st.write(verifica_cpf)
 
-            finally:
-                if id_cliente is None:
-                    st.error('CPF associado a outro cliente')
+                if verifica_cpf > 0:
+                    st.error('Cliente já reservado para esta data')
 
                 else:
-                    cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE id_cliente = '{id_cliente}' and data = '{data}'")
-                    verifica_cpf = cursor.fetchone()[0]
-                    st.write(id_cliente)
-                    st.write(verifica_cpf)
-
-                    if verifica_cpf > 0:
-                        st.error('Cliente já reservado para esta data')
-
-                    else:
-
-                        cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
-                        id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
-
-                        cursor.execute(
-                            "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor,pago_loja, pago_vendedor, valor_total,"
-                            "nome_cliente,check_in) values (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                            (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_mergulho, nome_cliente,
-                             '#FFFFFF'))
-                        mydb.close()
-                        st.success('Reserva realizada com sucesso!')
+                    sql = "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_total, nome_cliente, check_in, id_pessoa_principal) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                    # Executar a inserção de múltiplos valores
+                    cursor.executemany(sql, reservas)
+                    mydb.close()
+                    st.success('Reserva realizada com sucesso!')
 
 if escolha == 'Editar':
 
