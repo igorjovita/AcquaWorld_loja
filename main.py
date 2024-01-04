@@ -359,7 +359,7 @@ if escolha == 'Reservar':
 
             with mydb.cursor() as cursor:
                 cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE id_cliente = %s and data = %s",
-                               (st.session_state.ids_clientes, data))
+                               (id_cliente, data))
                 verifica_cpf = cursor.fetchone()[0]
             st.write(st.session_state.id_cliente)
             st.write(verifica_cpf)
