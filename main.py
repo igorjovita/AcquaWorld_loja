@@ -352,18 +352,18 @@ if escolha == 'Reservar':
                 id_cliente = st.session_state['ids_clientes'][i]
             else:
                 pass
+            with mydb.cursor() as cursor:
+                cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
+                id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
 
-            cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
-            id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
+                if reserva_conjunta == 'Sim':
 
-            if reserva_conjunta == 'Sim':
-                with mydb.cursor() as cursor:
                     cursor.execute(f"SELECT id_cliente from reserva where nome_cliente = '{titular}'")
                     id_titular = cursor.fetchone()[0]
-                    
-            else:
-                if id_titular is None:
-                    id_titular = id_cliente
+
+                else:
+                    if id_titular is None:
+                        id_titular = id_cliente
 
             reservas.append((data, id_cliente, tipo, id_vendedor, pago_loja,
                              pago_vendedor, valor_mergulho, nome_cliente, '#FFFFFF', id_titular))
