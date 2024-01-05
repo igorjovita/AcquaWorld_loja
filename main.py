@@ -502,7 +502,7 @@ if escolha == 'Pagamento':
 
         if len(nome_cliente_pagamento) > 1:
             st.text(f"""Titular : {nome_cliente_pagamento[0]}
-                        Dependentes : {nome_cliente_pagamento[1:]}'""")
+            Dependentes : {nome_cliente_pagamento[1:]}'""")
 
 
 
