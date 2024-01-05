@@ -237,18 +237,22 @@ if escolha == 'Reservar':
     st.subheader('Reservar Clientes')
 
     col1, col2, col3 = st.columns(3)
-    lista_reserva_conjunta = []
+    ids_clientes = []
+    nomes_clientes = []
     with col1:
         data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
         reserva_conjunta = st.selectbox('Agrupar reserva a Titular já reservado?', ['Não', 'Sim'])
         if reserva_conjunta == 'Sim':
             with mydb.cursor() as cursor:
                 cursor.execute(f"SELECT id_cliente, nome_cliente FROM reserva where id_titular = id_cliente and data = '{data}'")
-                nome_reserva_conjunta = cursor.fetchall()
-                st.write(nome_reserva_conjunta)
-                for i, nome in enumerate(nome_reserva_conjunta):
-                    lista_reserva_conjunta.append(f'{nome[i]}')
-                st.write(lista_reserva_conjunta)
+                resultados = cursor.fetchall()
+                for resultado in resultados:
+                    id_cliente_conjunto, nome_cliente_conjunto = resultado
+
+                    ids_clientes.append(id_cliente_conjunto)
+                    nomes_clientes.append(nome_cliente_conjunto)
+                st.write(id_cliente_conjunto)
+                st.write(nome_cliente_conjunto)
 
                 st.selectbox('Esolha o titular', options=lista_reserva_conjunta)
     with col2:
