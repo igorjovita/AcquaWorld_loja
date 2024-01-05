@@ -501,8 +501,8 @@ if escolha == 'Pagamento':
             lista_nome_pagamento.append(nome_formatado)
 
         if len(nome_cliente_pagamento) > 1:
-            st.text(f"""Titular : {nome_cliente_pagamento[0]}
-Dependentes : {nome_cliente_pagamento[1:]}'""")
+            st.text(f"""Titular : {lista_nome_pagamento[0]}
+Dependentes : {lista_nome_pagamento[1:]}'""")
 
 
 
