@@ -502,7 +502,7 @@ if escolha == 'Pagamento':
 
         if len(nome_cliente_pagamento) > 1:
             st.text(f"""Titular : {lista_nome_pagamento[0]}
-Dependentes : {lista_nome_pagamento[1:]}'""")
+Dependentes : {str(lista_nome_pagamento[1:]).translate(str.maketrans('', '', chars2)).split(',')}'""")
 
 
 
