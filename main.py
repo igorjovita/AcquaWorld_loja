@@ -247,7 +247,7 @@ if escolha == 'Reservar':
     with col3:
         comissario = st.selectbox('Vendedor:', lista_vendedor, index=None, placeholder='Escolha o vendedor')
 
-    colu1, colu2 = st.columns(2)
+    colu1, colu2, colu3 = st.columns(3)
 
     with colu1:
         reserva_conjunta = st.selectbox('Agrupar reserva a Titular já reservado?', ['Não', 'Sim'])
