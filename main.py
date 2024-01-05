@@ -244,9 +244,11 @@ if escolha == 'Reservar':
         if reserva_conjunta == 'Sim':
             with mydb.cursor() as cursor:
                 cursor.execute(f"SELECT id_cliente, nome_cliente FROM reserva where id_titular = id_cliente and data = '{data}'")
-                nome_reserva_conjunta = cursor.fetchall()
+                info_reserva_conjunta = cursor.fetchall()
+                id_reserva_conjunta = str(info_reserva_conjunta[0]).translate(str.maketrans('', '', chars2)).split(',')
+                nome_reserva_conjunta = str(info_reserva_conjunta[1]).translate(str.maketrans('', '', chars2)).split(',')
+                st.write(id_reserva_conjunta)
                 st.write(nome_reserva_conjunta)
-
     with col2:
         quantidade_reserva = st.number_input('Quantidade de Reservas', min_value=0, value=0, step=1)
     with col3:
