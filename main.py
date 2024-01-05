@@ -508,7 +508,8 @@ if escolha == 'Pagamento':
             with coluna3:
                 st.text('Receber - R$ X')
 
-        st.radio('Opções de pagamento', ['Pagamento Junto', 'Pagamento Individual'])
+        if len(lista_nome_pagamento) > 1:
+            st.radio('Opções de pagamento', ['Pagamento Junto', 'Pagamento Individual'])
 
 
 
