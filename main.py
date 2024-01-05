@@ -382,6 +382,7 @@ if escolha == 'Reservar':
                     # Executar a inserção de múltiplos valores
 
                     cursor.executemany(sql, reservas)
+                    st.session_state['ids_clientes'] = []
                     st.success('Reserva realizada com sucesso!')
 
 
