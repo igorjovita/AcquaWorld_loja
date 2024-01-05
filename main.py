@@ -265,7 +265,7 @@ if escolha == 'Reservar':
                 st.write(nome_cliente_conjunto)
 
                 with colu2:
-                    titular = st.selectbox('Esolha o titular', options=[nomes_clientes])
+                    titular = st.selectbox('Esolha o titular', options=nomes_clientes)
 
     # Lista para armazenar os nomes dos clientes
     nomes_clientes = []
