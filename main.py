@@ -254,7 +254,7 @@ if escolha == 'Reservar':
                 st.write(id_cliente_conjunto)
                 st.write(nome_cliente_conjunto)
 
-                st.selectbox('Esolha o titular', options=nome_cliente_conjunto)
+                st.selectbox('Esolha o titular', options=[nome_cliente_conjunto])
     with col2:
         quantidade_reserva = st.number_input('Quantidade de Reservas', min_value=0, value=0, step=1)
     with col3:
