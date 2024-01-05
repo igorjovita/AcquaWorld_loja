@@ -248,8 +248,8 @@ if escolha == 'Reservar':
                 nome_reserva_conjunta = str(cursor.fetchall())[1].translate(str.maketrans('', '', chars2)).split(',')
                 st.write(id_reserva_conjunta)
                 st.write(nome_reserva_conjunta)
-                for nome in nome_reserva_conjunta:
-                    lista_reserva_conjunta.append(nome)
+                for i, nome in enumerate(nome_reserva_conjunta):
+                    lista_reserva_conjunta.append(nome[i][1])
 
                 st.selectbox('Esolha o titular', options=lista_reserva_conjunta)
     with col2:
