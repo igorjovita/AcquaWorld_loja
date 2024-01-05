@@ -281,7 +281,7 @@ if escolha == 'Reservar':
 
             roupa = f'{altura}/{peso}'
 
-            if st.button(f'Cadastrar {nome_cliente}'):
+            if st.button(f'Cadastrar {nome_cliente}{i}'):
 
                 try:
                     cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
