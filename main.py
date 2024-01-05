@@ -281,22 +281,22 @@ if escolha == 'Reservar':
 
             roupa = f'{altura}/{peso}'
 
-            if st.button(f'Cadastrar {nome_cliente}', key=f'button{i}'):
+        if st.button(f'Cadastrar {nome_cliente}', key=f'button{i}'):
 
-                try:
-                    cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
-                                   (cpf, nome_cliente, telefone, roupa))
-                    id_cliente = cursor.lastrowid
+            try:
+                cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
+                               (cpf, nome_cliente, telefone, roupa))
+                id_cliente = cursor.lastrowid
+                st.session_state.ids_clientes.append(id_cliente)
+
+                mydb.commit()
+                lista_telefone.append(telefone)
+            except IntegrityError:
+                cursor.execute(f"SELECT id from cliente where cpf = %s and nome = %s", (cpf, nome_cliente))
+                info_registro = cursor.fetchone()
+                if info_registro:
+                    id_cliente = info_registro[0]
                     st.session_state.ids_clientes.append(id_cliente)
-
-                    mydb.commit()
-                    lista_telefone.append(telefone)
-                except IntegrityError:
-                    cursor.execute(f"SELECT id from cliente where cpf = %s and nome = %s", (cpf, nome_cliente))
-                    info_registro = cursor.fetchone()
-                    if info_registro:
-                        id_cliente = info_registro[0]
-                        st.session_state.ids_clientes.append(id_cliente)
 
         pago_loja = 0
         pago_vendedor = 0
