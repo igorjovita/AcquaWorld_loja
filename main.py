@@ -237,7 +237,7 @@ if escolha == 'Reservar':
     st.subheader('Reservar Clientes')
 
     col1, col2, col3 = st.columns(3)
-
+    lista_reserva_conjunta = []
     with col1:
         data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
         reserva_conjunta = st.selectbox('Agrupar reserva a Titular já reservado?', ['Não', 'Sim'])
@@ -249,6 +249,10 @@ if escolha == 'Reservar':
                 nome_reserva_conjunta = str(info_reserva_conjunta[1]).translate(str.maketrans('', '', chars2)).split(',')
                 st.write(id_reserva_conjunta)
                 st.write(nome_reserva_conjunta)
+                for nome in nome_reserva_conjunta:
+                    lista_reserva_conjunta.append(nome)
+
+                st.selectbox('Esolha o titular', options=lista_reserva_conjunta)
     with col2:
         quantidade_reserva = st.number_input('Quantidade de Reservas', min_value=0, value=0, step=1)
     with col3:
