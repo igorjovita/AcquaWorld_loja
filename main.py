@@ -265,7 +265,7 @@ if escolha == 'Reservar':
                 st.write(nome_cliente_conjunto)
 
                 with colu2:
-                    st.selectbox('Esolha o titular', options=[nome_cliente_conjunto])
+                    titular = st.selectbox('Esolha o titular', options=[nome_cliente_conjunto])
 
     # Lista para armazenar os nomes dos clientes
     nomes_clientes = []
@@ -356,9 +356,14 @@ if escolha == 'Reservar':
             cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
             id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
 
-
-            if id_titular is None:
-                id_titular = id_cliente
+            if reserva_conjunta == 'Sim':
+                with mydb.cursor() as cursor:
+                    cursor.execute(f"SELECT id_cliente from reserva where nome_cliente = '{titular}'")
+                    id_titular = cursor.fetchone()[0]
+                    
+            else:
+                if id_titular is None:
+                    id_titular = id_cliente
 
             reservas.append((data, id_cliente, tipo, id_vendedor, pago_loja,
                              pago_vendedor, valor_mergulho, nome_cliente, '#FFFFFF', id_titular))
