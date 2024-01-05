@@ -499,10 +499,8 @@ if escolha == 'Pagamento':
         for nome in nome_cliente_pagamento:
             nome_formatado = str(nome).translate(str.maketrans('', '', chars))
             lista_nome_pagamento.append(nome_formatado)
+            st.text(f'{nome_formatado} - Sinal = R$ X - Receber = R$ X')
 
-        if len(nome_cliente_pagamento) > 1:
-            st.text(f"""Titular : {lista_nome_pagamento[0]}
-Dependentes : {str(lista_nome_pagamento[1:]).translate(str.maketrans('', '', chars2)).split(',')}'""")
 
 
 
