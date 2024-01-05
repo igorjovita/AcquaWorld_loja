@@ -491,7 +491,9 @@ if escolha == 'Pagamento':
     if st.button('Selecionar Titular'):
         lista_nome_pagamento = []
         with mydb.cursor() as cursor:
-            cursor.execute(f"SELECT nome_cliente from reserva where id_titular = '{id_cliente_pagamento}'")
+            cursor.execute(f"SELECT id_cliente from reserva where nome_cliente = '{selectbox_cliente}")
+            id_titular_pagamento = cursor.fetchone()[0]
+            cursor.execute(f'SELECT nome_cliente from reserva where id_titular = {id_titular_pagamento}')
             nome_cliente_pagamento = str(cursor.fetchall()).translate(str.maketrans('', '', chars2)).split(',')
 
         for nome in nome_cliente_pagamento:
