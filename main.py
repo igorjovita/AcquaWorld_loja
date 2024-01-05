@@ -494,14 +494,14 @@ if escolha == 'Pagamento':
             cursor.execute(f"SELECT id_cliente from reserva where nome_cliente = '{selectbox_cliente}'")
             id_titular_pagamento = cursor.fetchone()[0]
             cursor.execute(f'SELECT nome_cliente from reserva where id_titular = {id_titular_pagamento}')
-            nome_cliente_pagamento = str(cursor.fetchall()).translate(str.maketrans('', '', chars2)).split(',')
+            nome_cliente_pagamento = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split(',')
 
         for nome in nome_cliente_pagamento:
             lista_nome_pagamento.append(nome)
 
         if len(nome_cliente_pagamento) > 1:
             st.text(f"""Titular : {nome_cliente_pagamento[0]}
-                        Dependentes : {nome_cliente_pagamento[0:]}'""")
+                        Dependentes : {nome_cliente_pagamento[1:]}'""")
 
 
 
