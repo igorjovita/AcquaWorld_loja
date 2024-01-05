@@ -317,7 +317,7 @@ if escolha == 'Reservar':
         if i < len(st.session_state['ids_clientes']):
             id_cliente = st.session_state['ids_clientes'][i]
         else:
-            st.error('Erro ao acessar a lista de ids_clientes')
+            pass
 
         cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
         id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
