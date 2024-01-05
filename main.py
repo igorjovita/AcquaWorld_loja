@@ -500,7 +500,8 @@ if escolha == 'Pagamento':
             lista_nome_pagamento.append(nome)
 
         if len(nome_cliente_pagamento) > 1:
-            st.text(f'Titular : {nome_cliente_pagamento[0]}/nDependentes : {nome_cliente_pagamento[1:]}')
+            st.text(f"""Titular : {nome_cliente_pagamento[0]}
+                        Dependentes : {nome_cliente_pagamento[0:]}'""")
 
 
 
