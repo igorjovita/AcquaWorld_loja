@@ -231,7 +231,6 @@ if escolha == 'Reservar':
     if 'ids_clientes' not in st.session_state:
         st.session_state['ids_clientes'] = []
 
-
     mydb.connect()
     cursor.execute("SELECT apelido FROM vendedores")
     lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
@@ -245,7 +244,6 @@ if escolha == 'Reservar':
         quantidade_reserva = st.number_input('Quantidade de Reservas', min_value=0, value=0, step=1)
     with col3:
         comissario = st.selectbox('Vendedor:', lista_vendedor, index=None, placeholder='Escolha o vendedor')
-
 
     # Lista para armazenar os nomes dos clientes
     nomes_clientes = []
@@ -273,7 +271,8 @@ if escolha == 'Reservar':
                     st.subheader(f'Reserva  Cliente: {nome_cliente}')
             colu1, colu2, colu3 = st.columns(3)
             with colu1:
-                cpf = st.text_input(f'Cpf do cliente {nome_cliente}', help='Apenas números', key=f'cpf{nome_cliente}{i}')
+                cpf = st.text_input(f'Cpf do cliente {nome_cliente}', help='Apenas números',
+                                    key=f'cpf{nome_cliente}{i}')
                 altura = st.slider(f'Altura do Cliente {nome_cliente}', 1.50, 2.10, key=f'altura{nome_cliente}{i}')
                 sinal = st.text_input(f'Valor do Sinal de {nome_cliente}', key=f'sinal{nome_cliente}{i}')
             with colu2:
@@ -285,7 +284,8 @@ if escolha == 'Reservar':
             with colu3:
                 tipo = st.selectbox(f'Certificação do cliente {nome_cliente} : ', ('BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'),
                                     index=None, placeholder='Certificação', key=f'tipo{nome_cliente}{i}')
-                valor_mergulho = st.text_input(f'Valor do Mergulho do cliente {nome_cliente}', key=f'valor{nome_cliente}{i}')
+                valor_mergulho = st.text_input(f'Valor do Mergulho do cliente {nome_cliente}',
+                                               key=f'valor{nome_cliente}{i}')
                 valor_loja = st.number_input(f'Valor a receber de {nome_cliente} :', format='%d', step=10,
                                              key=f'loja{nome_cliente}{i}')
 
@@ -393,7 +393,6 @@ if escolha == 'Reservar':
                         st.session_state['ids_clientes'] = []
                         st.success('Reserva realizada com sucesso!')
 
-
 if escolha == 'Editar':
 
     data_editar = st.date_input('Data da Reserva', format='DD/MM/YYYY')
@@ -479,17 +478,31 @@ if escolha == 'Pagamento':
     data_reserva = st.date_input('Data da reserva', format='DD/MM/YYYY')
 
     lista_pagamento = []
-    mydb.connect()
-    cursor.execute(f"SELECT id_cliente FROM reserva WHERE data = '{data_reserva}' and id_titular = id_cliente")
-    id_cliente_pagamento = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
-    for item in id_cliente_pagamento:
-        cursor.execute(f"SELECT nome FROM cliente WHERE id = '{item}'")
-        nome_cliente_pagamento = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
-        lista_pagamento.append(nome_cliente_pagamento)
+    with mydb.cursor() as cursor:
+        cursor.execute(f"SELECT id_cliente FROM reserva WHERE data = '{data_reserva}' and id_titular = id_cliente")
+        id_cliente_pagamento = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+        for item in id_cliente_pagamento:
+            cursor.execute(f"SELECT nome FROM cliente WHERE id = '{item}'")
+            nome_cliente_pagamento = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
+            lista_pagamento.append(nome_cliente_pagamento)
 
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista_pagamento)
 
     if st.button('Selecionar Titular'):
+        lista_nome_pagamento = []
+        with mydb.cursor() as cursor:
+            cursor.execute(f'SELECT nome_cliente from reserva where id_titular = {id_cliente_pagamento}')
+            nome_cliente_pagamento = str(cursor.fetchall()).translate(str.maketrans('', '', chars2)).split(',')
+
+        for nome in nome_cliente_pagamento:
+            lista_nome_pagamento.append(nome)
+
+        if len(nome_cliente_pagamento) > 1:
+            st.text(f'Titular : {nome_cliente_pagamento[0]}/nDependentes : {nome_cliente_pagamento[1:]}')
+            
+
+
+
 
         forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None,
                                 placeholder='Insira a forma de pagamento')
