@@ -261,21 +261,21 @@ if escolha == 'Reservar':
         st.subheader(f'Reserva do Cliente: {nome_cliente}')
         colu1, colu2, colu3 = st.columns(3)
         with colu1:
-            cpf = st.text_input(f'Cpf do cliente {nome_cliente}', help='Apenas números', key=f'{nome_cliente}1')
-            altura = st.slider(f'Altura do Cliente {nome_cliente}', 1.50, 2.10, key=f'{nome_cliente}2')
-            sinal = st.text_input(f'Valor do Sinal de {nome_cliente}', key=f'{nome_cliente}3')
+            cpf = st.text_input(f'Cpf do cliente {nome_cliente}', help='Apenas números', key=f'cpf{nome_cliente}{i}')
+            altura = st.slider(f'Altura do Cliente {nome_cliente}', 1.50, 2.10, key=f'altura{nome_cliente}{i}')
+            sinal = st.text_input(f'Valor do Sinal de {nome_cliente}', key=f'sinal{nome_cliente}{i}')
         with colu2:
-            telefone = st.text_input(f'Telefone do Cliente {nome_cliente} :', key=f'{nome_cliente}4')
-            peso = st.slider(f'Peso do Cliente {nome_cliente}', 40, 160, key=f'{nome_cliente}5')
+            telefone = st.text_input(f'Telefone do Cliente {nome_cliente} :', key=f'telefone{nome_cliente}{i}')
+            peso = st.slider(f'Peso do Cliente {nome_cliente}', 40, 160, key=f'peso{nome_cliente}{i}')
             recebedor_sinal = st.selectbox(f'Quem recebeu o sinal de {nome_cliente}?', ['AcquaWorld', 'Vendedor'],
                                            index=None,
-                                           placeholder='Recebedor do Sinal', key=f'{nome_cliente}6')
+                                           placeholder='Recebedor do Sinal', key=f'recebedor{nome_cliente}{i}')
         with colu3:
             tipo = st.selectbox(f'Certificação do cliente {nome_cliente} : ', ('BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'),
-                                index=None, placeholder='Certificação', key=f'{nome_cliente}7')
-            valor_mergulho = st.text_input(f'Valor do Mergulho do cliente {nome_cliente}', key=f'{nome_cliente}8')
+                                index=None, placeholder='Certificação', key=f'tipo{nome_cliente}{i}')
+            valor_mergulho = st.text_input(f'Valor do Mergulho do cliente {nome_cliente}', key=f'valor{nome_cliente}{i}')
             valor_loja = st.number_input(f'Valor a receber de {nome_cliente} :', format='%d', step=10,
-                                         key=f'{nome_cliente}9')
+                                         key=f'loja{nome_cliente}{i}')
 
             id_cliente = None
 
@@ -318,7 +318,7 @@ if escolha == 'Reservar':
             id_cliente = st.session_state['ids_clientes'][i]
         else:
             st.error('Erro ao acessar a lista de ids_clientes')
-        
+
         cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
         id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
 
