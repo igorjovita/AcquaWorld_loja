@@ -491,7 +491,7 @@ if escolha == 'Pagamento':
     if st.button('Selecionar Titular'):
         lista_nome_pagamento = []
         with mydb.cursor() as cursor:
-            cursor.execute(f'SELECT nome_cliente from reserva where id_titular = {id_cliente_pagamento}')
+            cursor.execute(f"SELECT nome_cliente from reserva where id_titular = '{id_cliente_pagamento}'")
             nome_cliente_pagamento = str(cursor.fetchall()).translate(str.maketrans('', '', chars2)).split(',')
 
         for nome in nome_cliente_pagamento:
@@ -499,7 +499,7 @@ if escolha == 'Pagamento':
 
         if len(nome_cliente_pagamento) > 1:
             st.text(f'Titular : {nome_cliente_pagamento[0]}/nDependentes : {nome_cliente_pagamento[1:]}')
-            
+
 
 
 
