@@ -242,7 +242,7 @@ if escolha == 'Reservar':
     with col1:
         data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
     with col2:
-        quantidade_reserva = st.number_input('Quantidade de Reservas', min_value=1, value=1, step=1)
+        quantidade_reserva = st.number_input('Quantidade de Reservas', min_value=0, value=0, step=1)
     with col3:
         comissario = st.selectbox('Vendedor:', lista_vendedor, index=None, placeholder='Escolha o vendedor')
 
@@ -250,90 +250,94 @@ if escolha == 'Reservar':
     # Lista para armazenar os nomes dos clientes
     nomes_clientes = []
 
-    for i in range(quantidade_reserva):
-        # Campo de entrada para o nome do cliente
-        nome_cliente = st.text_input(f'Nome do Cliente {i + 1}:').capitalize()
-        nomes_clientes.append(nome_cliente)
+    if quantidade_reserva == 0:
+        pass
+    else:
 
-    reservas = []
-    lista_telefone = []
-    id_titular = None
-    # Exibir os campos adicionais para cada reserva
-    for i, nome_cliente in enumerate(nomes_clientes):
-        if i < len(st.session_state['ids_clientes']):
-            if i == 0:
-                st.subheader(f'Reserva Titular: {nome_cliente}')
-                st.text('Para acessar essa reserva posteriormente use o nome do titular!')
-            else:
-                st.subheader(f'Reserva  Cliente: {nome_cliente}')
-        colu1, colu2, colu3 = st.columns(3)
-        with colu1:
-            cpf = st.text_input(f'Cpf do cliente {nome_cliente}', help='Apenas números', key=f'cpf{nome_cliente}{i}')
-            altura = st.slider(f'Altura do Cliente {nome_cliente}', 1.50, 2.10, key=f'altura{nome_cliente}{i}')
-            sinal = st.text_input(f'Valor do Sinal de {nome_cliente}', key=f'sinal{nome_cliente}{i}')
-        with colu2:
-            telefone = st.text_input(f'Telefone do Cliente {nome_cliente} :', key=f'telefone{nome_cliente}{i}')
-            peso = st.slider(f'Peso do Cliente {nome_cliente}', 40, 160, key=f'peso{nome_cliente}{i}')
-            recebedor_sinal = st.selectbox(f'Quem recebeu o sinal de {nome_cliente}?', ['AcquaWorld', 'Vendedor'],
-                                           index=None,
-                                           placeholder='Recebedor do Sinal', key=f'recebedor{nome_cliente}{i}')
-        with colu3:
-            tipo = st.selectbox(f'Certificação do cliente {nome_cliente} : ', ('BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'),
-                                index=None, placeholder='Certificação', key=f'tipo{nome_cliente}{i}')
-            valor_mergulho = st.text_input(f'Valor do Mergulho do cliente {nome_cliente}', key=f'valor{nome_cliente}{i}')
-            valor_loja = st.number_input(f'Valor a receber de {nome_cliente} :', format='%d', step=10,
-                                         key=f'loja{nome_cliente}{i}')
+        for i in range(quantidade_reserva):
+            # Campo de entrada para o nome do cliente
+            nome_cliente = st.text_input(f'Nome do Cliente {i + 1}:').capitalize()
+            nomes_clientes.append(nome_cliente)
 
-            id_cliente = None
+        reservas = []
+        lista_telefone = []
+        id_titular = None
+        # Exibir os campos adicionais para cada reserva
+        for i, nome_cliente in enumerate(nomes_clientes):
+            if i < len(st.session_state['ids_clientes']):
+                if i == 0:
+                    st.subheader(f'Reserva Titular: {nome_cliente}')
+                    st.text('Para acessar essa reserva posteriormente use o nome do titular!')
+                else:
+                    st.subheader(f'Reserva  Cliente: {nome_cliente}')
+            colu1, colu2, colu3 = st.columns(3)
+            with colu1:
+                cpf = st.text_input(f'Cpf do cliente {nome_cliente}', help='Apenas números', key=f'cpf{nome_cliente}{i}')
+                altura = st.slider(f'Altura do Cliente {nome_cliente}', 1.50, 2.10, key=f'altura{nome_cliente}{i}')
+                sinal = st.text_input(f'Valor do Sinal de {nome_cliente}', key=f'sinal{nome_cliente}{i}')
+            with colu2:
+                telefone = st.text_input(f'Telefone do Cliente {nome_cliente} :', key=f'telefone{nome_cliente}{i}')
+                peso = st.slider(f'Peso do Cliente {nome_cliente}', 40, 160, key=f'peso{nome_cliente}{i}')
+                recebedor_sinal = st.selectbox(f'Quem recebeu o sinal de {nome_cliente}?', ['AcquaWorld', 'Vendedor'],
+                                               index=None,
+                                               placeholder='Recebedor do Sinal', key=f'recebedor{nome_cliente}{i}')
+            with colu3:
+                tipo = st.selectbox(f'Certificação do cliente {nome_cliente} : ', ('BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'),
+                                    index=None, placeholder='Certificação', key=f'tipo{nome_cliente}{i}')
+                valor_mergulho = st.text_input(f'Valor do Mergulho do cliente {nome_cliente}', key=f'valor{nome_cliente}{i}')
+                valor_loja = st.number_input(f'Valor a receber de {nome_cliente} :', format='%d', step=10,
+                                             key=f'loja{nome_cliente}{i}')
 
-            roupa = f'{altura}/{peso}'
+                id_cliente = None
 
-        if st.button(f'Cadastrar {nome_cliente}', key=f'button{i}'):
+                roupa = f'{altura}/{peso}'
 
-            try:
-                cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
-                               (cpf, nome_cliente, telefone, roupa))
-                id_cliente = cursor.lastrowid
-                st.session_state.ids_clientes.append(id_cliente)
+            if st.button(f'Cadastrar {nome_cliente}', key=f'button{i}'):
 
-                mydb.commit()
-                lista_telefone.append(telefone)
-            except IntegrityError:
-                cursor.execute(f"SELECT id from cliente where cpf = %s and nome = %s", (cpf, nome_cliente))
-                info_registro = cursor.fetchone()
-                if info_registro:
-                    id_cliente = info_registro[0]
+                try:
+                    cursor.execute("INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
+                                   (cpf, nome_cliente, telefone, roupa))
+                    id_cliente = cursor.lastrowid
                     st.session_state.ids_clientes.append(id_cliente)
 
-        pago_loja = 0
-        pago_vendedor = 0
+                    mydb.commit()
+                    lista_telefone.append(telefone)
+                except IntegrityError:
+                    cursor.execute(f"SELECT id from cliente where cpf = %s and nome = %s", (cpf, nome_cliente))
+                    info_registro = cursor.fetchone()
+                    if info_registro:
+                        id_cliente = info_registro[0]
+                        st.session_state.ids_clientes.append(id_cliente)
 
-        if recebedor_sinal == 'AcquaWorld':
-            pago_loja = sinal
-            pago_vendedor = 0
-
-        if recebedor_sinal == 'Vendedor':
-            pago_loja = 0
-            pago_vendedor = sinal
-
-        if recebedor_sinal == '':
             pago_loja = 0
             pago_vendedor = 0
 
-        # Adicione esta verificação antes de tentar acessar a lista
-        if i < len(st.session_state['ids_clientes']):
-            id_cliente = st.session_state['ids_clientes'][i]
-        else:
-            pass
+            if recebedor_sinal == 'AcquaWorld':
+                pago_loja = sinal
+                pago_vendedor = 0
 
-        cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
-        id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
-        if id_titular is None:
-            id_titular = id_cliente
+            if recebedor_sinal == 'Vendedor':
+                pago_loja = 0
+                pago_vendedor = sinal
 
-        reservas.append((data, id_cliente, tipo, id_vendedor, pago_loja,
-                         pago_vendedor, valor_mergulho, nome_cliente, '#FFFFFF', id_titular))
-        st.write('---')
+            if recebedor_sinal == '':
+                pago_loja = 0
+                pago_vendedor = 0
+
+            # Adicione esta verificação antes de tentar acessar a lista
+            if i < len(st.session_state['ids_clientes']):
+                id_cliente = st.session_state['ids_clientes'][i]
+            else:
+                pass
+
+            cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
+            id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
+            if id_titular is None:
+                id_titular = id_cliente
+
+            reservas.append((data, id_cliente, tipo, id_vendedor, pago_loja,
+                             pago_vendedor, valor_mergulho, nome_cliente, '#FFFFFF', id_titular))
+            st.write('---')
 
     if st.button('Reservar'):
         with mydb.cursor() as cursor:
