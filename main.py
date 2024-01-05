@@ -231,6 +231,7 @@ if escolha == 'Reservar':
     if 'ids_clientes' not in st.session_state:
         st.session_state['ids_clientes'] = []
 
+
     mydb.connect()
     cursor.execute("SELECT apelido FROM vendedores")
     lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
@@ -258,7 +259,11 @@ if escolha == 'Reservar':
     lista_telefone = []
     # Exibir os campos adicionais para cada reserva
     for i, nome_cliente in enumerate(nomes_clientes):
-        st.subheader(f'Reserva do Cliente: {nome_cliente}')
+        if i < len(st.session_state['ids_clientes']):
+            if i == 0:
+                st.subheader(f'Reserva do Titular: {nome_cliente}')
+            else:
+                st.subheader(f'Reserva do Cliente: {nome_cliente}')
         colu1, colu2, colu3 = st.columns(3)
         with colu1:
             cpf = st.text_input(f'Cpf do cliente {nome_cliente}', help='Apenas números', key=f'cpf{nome_cliente}{i}')
