@@ -261,9 +261,10 @@ if escolha == 'Reservar':
     for i, nome_cliente in enumerate(nomes_clientes):
         if i < len(st.session_state['ids_clientes']):
             if i == 0:
-                st.subheader(f'Reserva do Titular: {nome_cliente}')
+                st.header(f'Reserva Titular: {nome_cliente}')
+                st.subheader('Para acessar essa reserva posteriormente use o nome do titular!')
             else:
-                st.subheader(f'Reserva do Cliente: {nome_cliente}')
+                st.header(f'Reserva  Cliente: {nome_cliente}')
         colu1, colu2, colu3 = st.columns(3)
         with colu1:
             cpf = st.text_input(f'Cpf do cliente {nome_cliente}', help='Apenas números', key=f'cpf{nome_cliente}{i}')
