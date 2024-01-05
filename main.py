@@ -257,6 +257,7 @@ if escolha == 'Reservar':
 
     reservas = []
     lista_telefone = []
+    id_titular = None
     # Exibir os campos adicionais para cada reserva
     for i, nome_cliente in enumerate(nomes_clientes):
         if i < len(st.session_state['ids_clientes']):
@@ -327,9 +328,13 @@ if escolha == 'Reservar':
 
         cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
         id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
+        if id_titular is None:
+            id_titular = id_cliente
+        else:
+            id_titular = st.session_state[0]
 
         reservas.append((data, id_cliente, tipo, id_vendedor, pago_loja,
-                         pago_vendedor, valor_mergulho, nome_cliente, '#FFFFFF'))
+                         pago_vendedor, valor_mergulho, nome_cliente, '#FFFFFF', id_titular))
         st.write('---')
 
     if st.button('Reservar'):
@@ -378,7 +383,7 @@ if escolha == 'Reservar':
                     st.error('Cliente já reservado para esta data')
 
                 else:
-                    sql = "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_total, nome_cliente, check_in) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                    sql = "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_total, nome_cliente, check_in, id_titular) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s, %s)"
                     # Executar a inserção de múltiplos valores
 
                     cursor.executemany(sql, reservas)
