@@ -499,7 +499,14 @@ if escolha == 'Pagamento':
         for nome in nome_cliente_pagamento:
             nome_formatado = str(nome).translate(str.maketrans('', '', chars))
             lista_nome_pagamento.append(nome_formatado)
-            st.text(f'{nome_formatado} - Sinal = R$ X - Receber = R$ X')
+            coluna1, coluna2, coluna3 = st.columns(3)
+
+            with coluna1:
+                st.text(f'{nome_formatado}')
+            with coluna2:
+                st.text(f'Sinal AcquaWorld - R$ X')
+            with coluna3:
+                st.text('Receber - R$ X')
 
 
 
