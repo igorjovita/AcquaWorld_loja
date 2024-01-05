@@ -330,8 +330,6 @@ if escolha == 'Reservar':
         id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
         if id_titular is None:
             id_titular = id_cliente
-        else:
-            id_titular = st.session_state[0]
 
         reservas.append((data, id_cliente, tipo, id_vendedor, pago_loja,
                          pago_vendedor, valor_mergulho, nome_cliente, '#FFFFFF', id_titular))
