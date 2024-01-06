@@ -38,10 +38,6 @@ def lista_vendedores():
     return dados
 
 
-def vendas(data, id_cli, id_vend, pago_loja, pago_vendedor):
-    cursor.execute(
-        f"INSERT INTO vendas (data, id_cliente, id_vendedor, pago_loja, pago_vendedor) VALUES (%s, %s, %s, %s, %s)",(data, id_cli, id_vend, pago_loja, pago_vendedor))
-
 
 def id_vendedor(vendedor):
     cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{vendedor}'")
