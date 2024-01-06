@@ -332,20 +332,7 @@ if escolha == 'Reservar':
                             id_cliente = info_registro[0]
                             st.session_state.ids_clientes.append(id_cliente)
 
-            pago_loja = 0
-            pago_vendedor = 0
 
-            if recebedor_sinal == 'AcquaWorld':
-                pago_loja = sinal
-                pago_vendedor = 0
-
-            if recebedor_sinal == 'Vendedor':
-                pago_loja = 0
-                pago_vendedor = sinal
-
-            if recebedor_sinal == '':
-                pago_loja = 0
-                pago_vendedor = 0
 
             # Adicione esta verificação antes de tentar acessar a lista
             if i < len(st.session_state['ids_clientes']):
@@ -365,8 +352,7 @@ if escolha == 'Reservar':
                     if id_titular is None:
                         id_titular = id_cliente
 
-            reservas.append((data, id_cliente, tipo, id_vendedor, pago_loja,
-                             pago_vendedor, valor_mergulho, nome_cliente, '#FFFFFF', id_titular))
+            reservas.append((data, id_cliente, tipo, id_vendedor, valor_mergulho, nome_cliente, '#FFFFFF', id_titular))
             st.write('---')
 
         if st.button('Reservar'):
@@ -415,11 +401,20 @@ if escolha == 'Reservar':
                         st.error('Cliente já reservado para esta data')
 
                     else:
-                        sql = "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, pago_loja, pago_vendedor, valor_total, nome_cliente, check_in, id_titular) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-                        # Executar a inserção de múltiplos valores
+                        sql = ("INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, "
+                               "check_in, id_titular) VALUES (%s,%s, %s, %s, %s, %s, %s, %s)")
 
+                        # Executar a inserção de múltiplos valores
                         cursor.executemany(sql, reservas)
-                        st.session_state['ids_clientes'] = []
+
+                        if recebedor_sinal != '':
+                            id_reserva = cursor.lastrowid
+                            forma_pg = 'Pix'
+                            cursor.execute(
+                                "INSERT INTO pagamentos (data, id_reserva, recebedor, pagamento, forma_pg) VALUES (%s, "
+                                "%s, %s, %s, %s)",
+                                (data, id_reserva, recebedor_sinal, int(sinal), forma_pg))
+                            st.session_state['ids_clientes'] = []
                         st.success('Reserva realizada com sucesso!')
 
 if escolha == 'Editar':
@@ -510,6 +505,8 @@ if escolha == 'Pagamento':
     with mydb.cursor() as cursor:
         cursor.execute(f"SELECT id_cliente FROM reserva WHERE data = '{data_reserva}' and id_titular = id_cliente")
         id_cliente_pagamento = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+
+
         for item in id_cliente_pagamento:
             cursor.execute(f"SELECT nome FROM cliente WHERE id = '{item}'")
             nome_cliente_pagamento = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
@@ -525,6 +522,8 @@ if escolha == 'Pagamento':
             cursor.execute(f'SELECT nome_cliente from reserva where id_titular = {id_titular_pagamento}')
             nome_cliente_pagamento = cursor.fetchall()
 
+
+
         for nome in nome_cliente_pagamento:
             nome_formatado = str(nome).translate(str.maketrans('', '', chars))
             lista_nome_pagamento.append(nome_formatado)
@@ -533,17 +532,12 @@ if escolha == 'Pagamento':
             with coluna1:
                 st.text(f'{nome_formatado}')
             with coluna2:
-                st.text(f'Sinal AcquaWorld - R$ X')
+                st.text(f'Sinal {recebedor_sinal} - R$ X')
             with coluna3:
                 st.text('Receber - R$ X')
 
         if len(lista_nome_pagamento) > 1:
             st.radio('Opções de pagamento', ['Pagamento Junto', 'Pagamento Individual'])
-
-
-
-
-
 
         forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None,
                                 placeholder='Insira a forma de pagamento')
@@ -611,7 +605,7 @@ if escolha == 'Pagamento':
             descricao = f'{selectbox_cliente} do dia {data_completa[2]}/{data_completa[1]}/{data_completa[0]}'
 
             cursor.execute(
-                "INSERT INTO pagamentos (data, data_reserva ,id_reserva, id_vendedor, sinal_loja, sinal_vendedor, pagamento, forma_pg, parcela) VALUES (%s, %s, %s, %s, %s, %s, %s, %s,%s)",
+                "INSERT INTO pagamentos (data, data_reserva ,id_reserva, id_vendedor, pagamento, forma_pg, parcela) VALUES (%s, %s, %s, %s, %s, %s,%s)",
                 (
                     data_pagamento, data_reserva, info_reserva_pg[0], info_reserva_pg[1], sinal_loja, sinal_vendedor,
                     pagamento,
