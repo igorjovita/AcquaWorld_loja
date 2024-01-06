@@ -536,7 +536,7 @@ if escolha == 'Pagamento':
                 nome_formatado = str(nome).translate(str.maketrans('', '', chars))
                 id_formatado = int(str(id_pg).translate(str.maketrans('', '', chars)))
 
-                cursor.execute(f"SELECT recebedor FROM pagamento WHERE id_reserva = {id_formatado}")
+                cursor.execute(f"SELECT recebedor FROM pagamentos WHERE id_reserva = {id_formatado}")
                 recebedor = cursor.fetchone()[0]
                 lista_nome_pagamento.append(nome_formatado)
                 coluna1, coluna2, coluna3 = st.columns(3)
