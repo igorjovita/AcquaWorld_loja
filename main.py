@@ -536,11 +536,12 @@ if escolha == 'Pagamento':
                 nome_formatado = str(nome).translate(str.maketrans('', '', chars))
                 id_formatado = int(str(id_pg).translate(str.maketrans('', '', chars)))
 
-                cursor.execute(f"SELECT recebedor FROM pagamentos WHERE id_reserva = {id_formatado}")
+                cursor.execute(f"SELECT recebedor, pagamento FROM pagamentos WHERE id_reserva = {id_formatado}")
                 result = cursor.fetchone()
 
                 if result is not None:
                     recebedor = result[0]
+                    pagamento = result[1]
                 else:
                     recebedor = None
                 lista_nome_pagamento.append(nome_formatado)
@@ -550,7 +551,7 @@ if escolha == 'Pagamento':
                     st.text(f'{nome_formatado}')
                 if recebedor is not None:
                     with coluna2:
-                        st.text(f'Sinal {recebedor} - R$ X')
+                        st.text(f'Sinal {recebedor} - R$ {pagamento}')
                 else:
                     with coluna2:
                         st.text('Nenhum sinal foi pago')
