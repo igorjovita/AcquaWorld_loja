@@ -551,7 +551,7 @@ if escolha == 'Pagamento':
                     st.text(f'{nome_formatado}')
                 if recebedor is not None:
                     with coluna2:
-                        st.text(f'Sinal {recebedor} - R$ {pagamento}')
+                        st.text(f'Sinal {recebedor} R$ {pagamento}')
                 else:
                     with coluna2:
                         st.text('Nenhum sinal foi pago')
