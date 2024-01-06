@@ -519,21 +519,36 @@ if escolha == 'Pagamento':
         st.session_state.botao = True
     if st.session_state.botao:
         lista_nome_pagamento = []
+        nome_cliente_reserva = []
+        id_cliente_reserva = []
         with mydb.cursor() as cursor:
             cursor.execute(f"SELECT id_cliente from reserva where nome_cliente = '{selectbox_cliente}'")
             id_titular_pagamento = cursor.fetchone()[0]
-            cursor.execute(f'SELECT nome_cliente from reserva where id_titular = {id_titular_pagamento}')
-            nome_cliente_pagamento = cursor.fetchall()
+            cursor.execute(f'SELECT id_reserva, nome_cliente from reserva where id_titular = {id_titular_pagamento}')
+            resultado_pg = cursor.fetchall()
+            for item in resultado_pg:
+                id_reserva_pg, nome_reserva_pg = item
 
-        for nome in nome_cliente_pagamento:
+                nome_cliente_reserva.append(nome_reserva_pg)
+                id_cliente_reserva.append(id_reserva_pg)
+
+        for nome, id_pg in nome_cliente_reserva, id_cliente_reserva:
             nome_formatado = str(nome).translate(str.maketrans('', '', chars))
+            id_formatado = int(str(nome).translate(str.maketrans('', '', chars)))
+            with mydb.cursor as cursor:
+                cursor.execute(f"SELECT recebedor FROM reserva WHERE id = {id_formatado}")
+                recebedor = cursor.fetchone()[0]
             lista_nome_pagamento.append(nome_formatado)
             coluna1, coluna2, coluna3 = st.columns(3)
 
             with coluna1:
                 st.text(f'{nome_formatado}')
-            with coluna2:
-                st.text(f'Sinal AcquaWorld - R$ X')
+            if recebedor != '':
+                with coluna2:
+                    st.text(f'Sinal {recebedor} - R$ X')
+            else:
+                with coluna2:
+                    st.text('Nenhum sinal foi pago')
             with coluna3:
                 st.text('Receber - R$ X')
 
@@ -620,6 +635,7 @@ if escolha == 'Pagamento':
 
             mydb.close()
             st.success('Pagamento lançado no sistema!')
+            st.session_state.botao = False
 
 #
 #     st.write('---')
