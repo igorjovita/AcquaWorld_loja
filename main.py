@@ -350,7 +350,7 @@ if escolha == 'Reservar':
                     if id_titular is None:
                         id_titular = id_cliente
 
-            reservas.append((data, id_cliente, tipo, id_vendedor, valor_mergulho, nome_cliente, '#FFFFFF', id_titular))
+            reservas.append((data, id_cliente, tipo, id_vendedor, valor_mergulho, nome_cliente, '#FFFFFF', id_titular, valor_loja))
             st.write('---')
 
         if st.button('Reservar'):
@@ -400,7 +400,7 @@ if escolha == 'Reservar':
 
                     else:
                         sql = ("INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, "
-                               "check_in, id_titular) VALUES (%s,%s, %s, %s, %s, %s, %s, %s)")
+                               "check_in, id_titular, receber_loja) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s)")
 
                         # Executar a inserção de múltiplos valores
                         cursor.executemany(sql, reservas)
