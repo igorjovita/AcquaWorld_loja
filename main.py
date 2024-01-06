@@ -537,8 +537,10 @@ if escolha == 'Pagamento':
             for nome, id_pg, receber_loja in zip(nome_cliente_reserva, id_cliente_reserva, receber_loja_reserva):
                 nome_formatado = str(nome).translate(str.maketrans('', '', chars))
                 id_formatado = int(str(id_pg).translate(str.maketrans('', '', chars)))
-                receber_formatado = int(str(receber_loja).translate(str.maketrans('', '', chars)))
-
+                if receber_loja is not None:
+                    receber_formatado = int(str(receber_loja).translate(str.maketrans('', '', chars)))
+                else:
+                    receber_formatado = ''
                 cursor.execute(f"SELECT recebedor, pagamento FROM pagamentos WHERE id_reserva = {id_formatado}")
                 result = cursor.fetchone()
 
