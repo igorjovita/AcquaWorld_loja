@@ -532,7 +532,7 @@ if escolha == 'Pagamento':
                 nome_cliente_reserva.append(nome_reserva_pg)
                 id_cliente_reserva.append(id_reserva_pg)
 
-        for nome, id_pg in nome_cliente_reserva, id_cliente_reserva:
+        for nome, id_pg in zip(nome_cliente_reserva, id_cliente_reserva):
             nome_formatado = str(nome).translate(str.maketrans('', '', chars))
             id_formatado = int(str(id_pg).translate(str.maketrans('', '', chars)))
             with mydb.cursor as cursor:
