@@ -350,7 +350,8 @@ if escolha == 'Reservar':
                     if id_titular is None:
                         id_titular = id_cliente
 
-            reservas.append((data, id_cliente, tipo, id_vendedor, valor_mergulho, nome_cliente, '#FFFFFF', id_titular, valor_loja))
+            reservas.append(
+                (data, id_cliente, tipo, id_vendedor, valor_mergulho, nome_cliente, '#FFFFFF', id_titular, valor_loja))
             st.write('---')
 
         if st.button('Reservar'):
@@ -525,9 +526,10 @@ if escolha == 'Pagamento':
         with mydb.cursor() as cursor:
             cursor.execute(f"SELECT id_cliente,id_vendedor from reserva where nome_cliente = '{selectbox_cliente}'")
             resultado2 = cursor.fetchone()
-            id_titular_pagamento= resultado2[0]
+            id_titular_pagamento = resultado2[0]
             id_vendedor_pg = resultado2[1]
-            cursor.execute(f'SELECT id, nome_cliente, receber_loja from reserva where id_titular = {id_titular_pagamento}')
+            cursor.execute(
+                f'SELECT id, nome_cliente, receber_loja from reserva where id_titular = {id_titular_pagamento}')
             resultado_pg = cursor.fetchall()
             for item in resultado_pg:
                 id_reserva_pg, nome_reserva_pg, receber_loja_pg = item
@@ -545,7 +547,6 @@ if escolha == 'Pagamento':
                     receber_formatado = ''
                 cursor.execute(f"SELECT recebedor, pagamento FROM pagamentos WHERE id_reserva = {id_formatado}")
                 result = cursor.fetchone()
-
 
                 if result is not None:
                     recebedor = result[0]
@@ -600,42 +601,10 @@ if escolha == 'Pagamento':
                         tipo_reserva = info_reserva_pg[1]
                         valor_total_reserva = info_reserva_pg[2]
 
-                        cursor.execute(f"SELECT recebedor, sum(pagamento) from pagamentos where id_reserva = {id_reserva_cliente} group by recebedor")
+                        cursor.execute(
+                            f"SELECT recebedor, sum(pagamento) from pagamentos where id_reserva = {id_reserva_cliente} group by recebedor")
                         resultado_soma = cursor.fetchone()
                         st.write(resultado_soma)
-
-                        sinal_loja = float(str(info_reserva_pg[2]).strip('Decimal'))
-                        sinal_vendedor = float(str(info_reserva_pg[3]).strip('Decimal'))
-                        total_mergulho = float(str(info_reserva_pg[5]).strip('Decimal'))
-                        st.write(sinal_loja)
-                        st.write(sinal_vendedor)
-                        st.write(float(pagamento))
-                        st.write(valor_neto)
-                        pagoloja = float(pagamento) + sinal_loja
-
-                        if pagoloja > valor_neto:
-                            valor_receber = 0
-                            valor_pagar = pagoloja - valor_neto
-
-                        if pagoloja == valor_neto and sinal_vendedor == total_mergulho - valor_neto:
-                            valor_receber = 0
-                            valor_pagar = 0
-
-                        if pagoloja == valor_neto and sinal_vendedor != total_mergulho - valor_neto:
-                            valor_receber = 0
-                            valor_pagar = sinal_vendedor - (total_mergulho - valor_neto)
-
-                        if pagoloja < valor_neto and sinal_vendedor == total_mergulho - valor_neto:
-                            valor_receber = (float(pagamento) + sinal_loja) - valor_neto
-                            valor_pagar = 0
-
-                        if pagoloja < valor_neto and sinal_vendedor != total_mergulho - valor_neto:
-                            valor_receber = (float(pagamento) + sinal_loja) - valor_neto
-                            valor_pagar = valor_receber + (-sinal_vendedor)
-
-                        st.write(f'Valor Receber - R$ {valor_receber}')
-
-                        st.write(f'Valor a pagar - R$ {valor_pagar}')
 
                         data_completa = str(data_reserva).split('-')
                         descricao = f'{nome} do dia {data_completa[2]}/{data_completa[1]}/{data_completa[0]}'
@@ -670,4 +639,37 @@ if escolha == 'Pagamento':
 #         st.success('Limitação inserida no sistema')
 #
 #     st.write('---')
+
+# sinal_loja = float(str(info_reserva_pg[2]).strip('Decimal'))
+# sinal_vendedor = float(str(info_reserva_pg[3]).strip('Decimal'))
+# total_mergulho = float(str(info_reserva_pg[5]).strip('Decimal'))
+# st.write(sinal_loja)
+# st.write(sinal_vendedor)
+# st.write(float(pagamento))
+# st.write(valor_neto)
+# pagoloja = float(pagamento) + sinal_loja
+#
+# if pagoloja > valor_neto:
+#     valor_receber = 0
+#     valor_pagar = pagoloja - valor_neto
+#
+# if pagoloja == valor_neto and sinal_vendedor == total_mergulho - valor_neto:
+#     valor_receber = 0
+#     valor_pagar = 0
+#
+# if pagoloja == valor_neto and sinal_vendedor != total_mergulho - valor_neto:
+#     valor_receber = 0
+#     valor_pagar = sinal_vendedor - (total_mergulho - valor_neto)
+#
+# if pagoloja < valor_neto and sinal_vendedor == total_mergulho - valor_neto:
+#     valor_receber = (float(pagamento) + sinal_loja) - valor_neto
+#     valor_pagar = 0
+#
+# if pagoloja < valor_neto and sinal_vendedor != total_mergulho - valor_neto:
+#     valor_receber = (float(pagamento) + sinal_loja) - valor_neto
+#     valor_pagar = valor_receber + (-sinal_vendedor)
+#
+# st.write(f'Valor Receber - R$ {valor_receber}')
+#
+# st.write(f'Valor a pagar - R$ {valor_pagar}')
 #
