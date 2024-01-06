@@ -531,13 +531,13 @@ if escolha == 'Pagamento':
 
                 nome_cliente_reserva.append(nome_reserva_pg)
                 id_cliente_reserva.append(id_reserva_pg)
-
+        mydb.connect()
         for nome, id_pg in zip(nome_cliente_reserva, id_cliente_reserva):
             nome_formatado = str(nome).translate(str.maketrans('', '', chars))
             id_formatado = int(str(id_pg).translate(str.maketrans('', '', chars)))
-            with mydb.cursor as cursor:
-                cursor.execute(f"SELECT recebedor FROM reserva WHERE id = {id_formatado}")
-                recebedor = cursor.fetchone()[0]
+
+            cursor.execute(f"SELECT recebedor FROM reserva WHERE id = {id_formatado}")
+            recebedor = cursor.fetchone()[0]
             lista_nome_pagamento.append(nome_formatado)
             coluna1, coluna2, coluna3 = st.columns(3)
 
@@ -636,7 +636,7 @@ if escolha == 'Pagamento':
             mydb.close()
             st.success('Pagamento lançado no sistema!')
             st.session_state.botao = False
-
+            mydb.close()
 #
 #     st.write('---')
 #
