@@ -533,7 +533,7 @@ if escolha == 'Pagamento':
                 with coluna1:
                     st.text(f'{nome_formatado}')
                 with coluna2:
-                    st.text(f'Sinal {recebedor_sinal} - R$ X')
+                    st.text(f'Sinal AcquaWorld - R$ X')
                 with coluna3:
                     st.text('Receber - R$ X')
 
