@@ -534,7 +534,7 @@ if escolha == 'Pagamento':
 
         for nome, id_pg in nome_cliente_reserva, id_cliente_reserva:
             nome_formatado = str(nome).translate(str.maketrans('', '', chars))
-            id_formatado = int(str(nome).translate(str.maketrans('', '', chars)))
+            id_formatado = int(str(id_pg).translate(str.maketrans('', '', chars)))
             with mydb.cursor as cursor:
                 cursor.execute(f"SELECT recebedor FROM reserva WHERE id = {id_formatado}")
                 recebedor = cursor.fetchone()[0]
