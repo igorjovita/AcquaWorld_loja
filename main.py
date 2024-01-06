@@ -521,20 +521,23 @@ if escolha == 'Pagamento':
         lista_nome_pagamento = []
         nome_cliente_reserva = []
         id_cliente_reserva = []
+        receber_loja_reserva = []
         with mydb.cursor() as cursor:
             cursor.execute(f"SELECT id_cliente from reserva where nome_cliente = '{selectbox_cliente}'")
             id_titular_pagamento = cursor.fetchone()[0]
-            cursor.execute(f'SELECT id, nome_cliente from reserva where id_titular = {id_titular_pagamento}')
+            cursor.execute(f'SELECT id, nome_cliente, receber_loja from reserva where id_titular = {id_titular_pagamento}')
             resultado_pg = cursor.fetchall()
             for item in resultado_pg:
-                id_reserva_pg, nome_reserva_pg = item
+                id_reserva_pg, nome_reserva_pg, receber_loja_pg = item
 
                 nome_cliente_reserva.append(nome_reserva_pg)
                 id_cliente_reserva.append(id_reserva_pg)
+                receber_loja_reserva.append(receber_loja_pg)
 
-            for nome, id_pg in zip(nome_cliente_reserva, id_cliente_reserva):
+            for nome, id_pg, receber_loja in zip(nome_cliente_reserva, id_cliente_reserva, receber_loja_reserva):
                 nome_formatado = str(nome).translate(str.maketrans('', '', chars))
                 id_formatado = int(str(id_pg).translate(str.maketrans('', '', chars)))
+                receber_formatado = int(str(receber_loja).translate(str.maketrans('', '', chars)))
 
                 cursor.execute(f"SELECT recebedor, pagamento FROM pagamentos WHERE id_reserva = {id_formatado}")
                 result = cursor.fetchone()
@@ -556,7 +559,7 @@ if escolha == 'Pagamento':
                     with coluna2:
                         st.text('Nenhum sinal foi pago')
                 with coluna3:
-                    st.text('Receber - R$ X')
+                    st.text(f'Receber - R$ {receber_formatado}')
 
             if len(lista_nome_pagamento) > 1:
                 st.radio('Opções de pagamento', ['Pagamento Junto', 'Pagamento Individual'])
