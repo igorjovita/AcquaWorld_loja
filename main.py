@@ -600,10 +600,10 @@ if escolha == 'Pagamento':
                     tipo_reserva = info_reserva_pg[1]
                     valor_total_reserva = info_reserva_pg[2]
 
-                    # cursor.execute(
-                    #     f"SELECT recebedor, sum(pagamento) from pagamentos where id_reserva = {id_reserva_cliente} group by recebedor")
-                    # resultado_soma = cursor.fetchone()
-                    # st.write(resultado_soma)
+                    cursor.execute(
+                        f"SELECT recebedor, sum(pagamento) from pagamentos where id_reserva = {id_reserva_cliente} group by recebedor")
+                    resultado_soma = cursor.fetchone()
+                    st.write(resultado_soma)
 
                     data_completa = str(data_reserva).split('-')
                     descricao = f'{nome} do dia {data_completa[2]}/{data_completa[1]}/{data_completa[0]}'
