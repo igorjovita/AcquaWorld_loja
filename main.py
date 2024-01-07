@@ -505,14 +505,14 @@ if escolha == 'Pagamento':
     data_reserva = st.date_input('Data da reserva', format='DD/MM/YYYY')
 
     lista_pagamento = []
-    mydb.connect()
-    cursor.execute(f"SELECT id_cliente FROM reserva WHERE data = '{data_reserva}' and id_titular = id_cliente")
-    id_cliente_pagamento = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+    with mydb.cursor() as cursor:
+        cursor.execute(f"SELECT id_cliente FROM reserva WHERE data = '{data_reserva}' and id_titular = id_cliente")
+        id_cliente_pagamento = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
 
-    for item in id_cliente_pagamento:
-        cursor.execute(f"SELECT nome FROM cliente WHERE id = '{item}'")
-        nome_cliente_pagamento = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
-        lista_pagamento.append(nome_cliente_pagamento)
+        for item in id_cliente_pagamento:
+            cursor.execute(f"SELECT nome FROM cliente WHERE id = '{item}'")
+            nome_cliente_pagamento = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
+            lista_pagamento.append(nome_cliente_pagamento)
 
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista_pagamento)
 
@@ -587,43 +587,42 @@ if escolha == 'Pagamento':
 
             if st.button('Lançar Pagamento'):
 
-                with mydb.cursor() as cursor:
-                    cursor.execute(f"SELECT valor_neto FROM vendedores WHERE id = {id_vendedor_pg}")
-                    valor_neto = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
-                    for nome in lista_nome_pagamento:
-                        cursor.execute(
-                            f"SELECT id, tipo, valor_total  FROM reserva WHERE nome_cliente = '{nome}' and data = '{data_reserva}'")
-                        info_reserva_pg = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split()
+                cursor.execute(f"SELECT valor_neto FROM vendedores WHERE id = {id_vendedor_pg}")
+                valor_neto = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
+                for nome in lista_nome_pagamento:
+                    cursor.execute(
+                        f"SELECT id, tipo, valor_total  FROM reserva WHERE nome_cliente = '{nome}' and data = '{data_reserva}'")
+                    info_reserva_pg = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split()
 
-                        cursor.execute(f"UPDATE reserva set check_in = '{check_in}' where nome_cliente = '{nome}'")
+                    cursor.execute(f"UPDATE reserva set check_in = '{check_in}' where nome_cliente = '{nome}'")
 
-                        id_reserva_cliente = info_reserva_pg[0]
-                        tipo_reserva = info_reserva_pg[1]
-                        valor_total_reserva = info_reserva_pg[2]
+                    id_reserva_cliente = info_reserva_pg[0]
+                    tipo_reserva = info_reserva_pg[1]
+                    valor_total_reserva = info_reserva_pg[2]
 
-                        cursor.execute(
-                            f"SELECT recebedor, sum(pagamento) from pagamentos where id_reserva = {id_reserva_cliente} group by recebedor")
-                        resultado_soma = cursor.fetchone()
-                        st.write(resultado_soma)
+                    cursor.execute(
+                        f"SELECT recebedor, sum(pagamento) from pagamentos where id_reserva = {id_reserva_cliente} group by recebedor")
+                    resultado_soma = cursor.fetchone()
+                    st.write(resultado_soma)
 
-                        data_completa = str(data_reserva).split('-')
-                        descricao = f'{nome} do dia {data_completa[2]}/{data_completa[1]}/{data_completa[0]}'
+                    data_completa = str(data_reserva).split('-')
+                    descricao = f'{nome} do dia {data_completa[2]}/{data_completa[1]}/{data_completa[0]}'
 
-                        cursor.execute(
-                            "INSERT INTO pagamentos (data ,id_reserva, recebedor, pagamento, forma_pg, parcela) VALUES (%s, %s, %s, %s, %s, %s)",
-                            (
-                                data_pagamento, id_reserva_cliente, 'AcquaWorld', pagamento, forma_pg, parcela))
-                        cursor.execute(
-                            "INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-                            (1, data_pagamento, 'ENTRADA', tipo_reserva, descricao, forma_pg, pagamento))
-                        # cursor.execute(f"SELECT id FROM pagamentos WHERE id_reserva = {info_reserva_pg[0]}")
-                        # id_pagamento = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
-                        # cursor.execute("INSERT INTO lancamento_comissao (id_reserva, id_vendedor, id_pagamento, valor_receber, valor_pagar, situacao) VALUES (%s, %s, %s, %s, %s, %s)", (info_reserva_pg[0], info_reserva_pg[1], id_pagamento,))
+                    cursor.execute(
+                        "INSERT INTO pagamentos (data ,id_reserva, recebedor, pagamento, forma_pg, parcela) VALUES (%s, %s, %s, %s, %s, %s)",
+                        (
+                            data_pagamento, id_reserva_cliente, 'AcquaWorld', pagamento, forma_pg, parcela))
+                    cursor.execute(
+                        "INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                        (1, data_pagamento, 'ENTRADA', tipo_reserva, descricao, forma_pg, pagamento))
+                    # cursor.execute(f"SELECT id FROM pagamentos WHERE id_reserva = {info_reserva_pg[0]}")
+                    # id_pagamento = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
+                    # cursor.execute("INSERT INTO lancamento_comissao (id_reserva, id_vendedor, id_pagamento, valor_receber, valor_pagar, situacao) VALUES (%s, %s, %s, %s, %s, %s)", (info_reserva_pg[0], info_reserva_pg[1], id_pagamento,))
 
-                        mydb.close()
-                        st.success('Pagamento lançado no sistema!')
-                        st.session_state.botao = False
-        #
+                    mydb.close()
+                    st.success('Pagamento lançado no sistema!')
+                    st.session_state.botao = False
+    #
 #     st.write('---')
 #
 #     st.subheader('Limitar Vagas')
