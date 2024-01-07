@@ -592,7 +592,7 @@ if escolha == 'Pagamento':
                 for nome in lista_nome_pagamento:
                     cursor.execute(
                         f"SELECT id, tipo, valor_total  FROM reserva WHERE nome_cliente = '{nome}' and data = '{data_reserva}'")
-                    info_reserva_pg = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split()
+                    info_reserva_pg = cursor.fetchone()
 
                     cursor.execute(f"UPDATE reserva set check_in = '{check_in}' where nome_cliente = '{nome}'")
 
@@ -616,7 +616,8 @@ if escolha == 'Pagamento':
 
 
                     cursor.execute(
-                        "INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                        "INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES "
+                        "(%s, %s, %s, %s, %s, %s, %s)",
                         (1, data_pagamento, 'ENTRADA', tipo_reserva, descricao, forma_pg, pagamento))
 
                     # cursor.execute("INSERT INTO lancamento_comissao (id_reserva, id_vendedor, id_pagamento, valor_receber, valor_pagar, situacao) VALUES (%s, %s, %s, %s, %s, %s)", (info_reserva_pg[0], info_reserva_pg[1], id_pagamento,))
