@@ -30,6 +30,9 @@ lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).
 
 comissario = st.selectbox('Selecione o parceiro', lista_vendedor)
 situacao = st.selectbox('Situação do Pagamento', ['Pendente', 'Pago', 'Todos'], index=None, placeholder='Selecione o status do pagamento')
+data_inicio = st.date_input('Data inicial', format='DD/MM/YYYY', value=None)
+data_final = st.date_input('Data final', format='DD/MM/YYYY', value=None)
+
 
 
 
