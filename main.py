@@ -649,9 +649,6 @@ if escolha == 'Pagamento':
                     valor_pagar = 0
                     situacao = 'Ok'
 
-
-
-
                 st.write(f'Pagar : {valor_pagar}')
                 st.write(f'Receber : {valor_receber}')
                 data_completa = str(data_reserva).split('-')

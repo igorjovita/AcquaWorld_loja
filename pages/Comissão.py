@@ -32,7 +32,11 @@ comissario = st.selectbox('Selecione o parceiro', lista_vendedor)
 situacao = st.selectbox('Situação do Pagamento', ['Pendente', 'Pago', 'Todos'], index=None, placeholder='Selecione o status do pagamento')
 data_inicio = st.date_input('Data inicial', format='DD/MM/YYYY', value=None)
 data_final = st.date_input('Data final', format='DD/MM/YYYY', value=None)
-
-
+if st.button('Pesquisar Comissão'):
+    cursor.execute(f"SELECT id FROM vendedores where nome = '{comissario}'")
+    id_vendedor = cursor.fetchone()[0]
+    cursor.execute(f"SELECT reserva.data, reserva.nome_cliente, reserva.tipo, vendedores.nome, lancamento_comissao.valor_receber, lancamento_comissao.valor_pagar, lancamento_comissao.situacao FROM reserva JOIN lancamento_comissao ON reserva.id = lancamento_comissao.id_reserva JOIN vendedores on lancamento_comissao.id_vendedor = vendedores.id WHERE reserva.data BETWEEN '{data_inicio}' and '{data_final}' and lancamento_comissao.id_vendedor = {id_vendedor}")
+    resultados = cursor.fetchall()
+    st.write(resultados)
 
 
