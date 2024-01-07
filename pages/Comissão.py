@@ -41,26 +41,10 @@ if st.button('Pesquisar Comissão'):
                    f"vendedores on lancamento_comissao.id_vendedor = vendedores.id WHERE reserva.data BETWEEN '"
                    f"{data_inicio}' and '{data_final}' and lancamento_comissao.id_vendedor = {id_vendedor}")
     resultados = cursor.fetchall()
-    reservas = []
-    for resultado in resultados:
-        data_formatada = resultado[0].strftime('%d/%m/%Y')
-        nome_reserva = resultado[1]
-        tipo_reserva = resultado[2]
-        nome_vendedor = resultado[3]
-        valor_receber = resultado[4]
-        valor_pagar = resultado[5]
-        situacao_comissao = resultado[6]
-        reservas.append(data_formatada)
-        reservas.append(nome_reserva)
-        reservas.append(tipo_reserva)
-        reservas.append(nome_vendedor)
-        reservas.append(valor_receber)
-        reservas.append(valor_pagar)
-        reservas.append(situacao_comissao)
 
-    st.write(resultados)
-    dados = pd.DataFrame(reservas, columns=['Data', 'Nome Cliente', 'Tipo', 'Vendedor', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
-    st.dataframe(dados)
-    st.write(data_formatada)
+
+    df = pd.DataFrame(resultados, columns=['Data', 'Nome Cliente', 'Tipo', 'Vendedor', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
+    df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
+    st.write(df)
 
 
