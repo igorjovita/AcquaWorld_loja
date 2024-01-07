@@ -600,10 +600,10 @@ if escolha == 'Pagamento':
                     tipo_reserva = info_reserva_pg[1]
                     valor_total_reserva = info_reserva_pg[2]
 
-                    cursor.execute(
-                        f"SELECT recebedor, sum(pagamento) from pagamentos where id_reserva = {id_reserva_cliente} group by recebedor")
-                    resultado_soma = cursor.fetchone()
-                    st.write(resultado_soma)
+                    # cursor.execute(
+                    #     f"SELECT recebedor, sum(pagamento) from pagamentos where id_reserva = {id_reserva_cliente} group by recebedor")
+                    # resultado_soma = cursor.fetchone()
+                    # st.write(resultado_soma)
 
                     data_completa = str(data_reserva).split('-')
                     descricao = f'{nome} do dia {data_completa[2]}/{data_completa[1]}/{data_completa[0]}'
@@ -612,11 +612,11 @@ if escolha == 'Pagamento':
                         "INSERT INTO pagamentos (data ,id_reserva, recebedor, pagamento, forma_pg, parcela) VALUES (%s, %s, %s, %s, %s, %s)",
                         (
                             data_pagamento, id_reserva_cliente, 'AcquaWorld', pagamento, forma_pg, parcela))
+                    id_pagamento = cursor.lastrowid
                     cursor.execute(
                         "INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s, %s, %s)",
                         (1, data_pagamento, 'ENTRADA', tipo_reserva, descricao, forma_pg, pagamento))
-                    # cursor.execute(f"SELECT id FROM pagamentos WHERE id_reserva = {info_reserva_pg[0]}")
-                    # id_pagamento = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
+
                     # cursor.execute("INSERT INTO lancamento_comissao (id_reserva, id_vendedor, id_pagamento, valor_receber, valor_pagar, situacao) VALUES (%s, %s, %s, %s, %s, %s)", (info_reserva_pg[0], info_reserva_pg[1], id_pagamento,))
 
                     mydb.close()
