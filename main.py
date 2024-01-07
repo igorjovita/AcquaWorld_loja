@@ -635,6 +635,7 @@ if escolha == 'Pagamento':
                 st.write(acquaworld_nome)
                 st.write(acquaworld_valor)
                 reserva_neto = valor_total_reserva - valor_neto
+                situacao = 'Pendente'
 
                 if acquaworld_valor < valor_neto:
                     valor_receber = valor_neto - acquaworld_valor
@@ -646,6 +647,7 @@ if escolha == 'Pagamento':
                 if acquaworld_valor == valor_neto and vendedor_valor == reserva_neto:
                     valor_receber = 0
                     valor_pagar = 0
+                    situacao = 'Ok'
 
 
 
@@ -660,7 +662,9 @@ if escolha == 'Pagamento':
                     "(%s, %s, %s, %s, %s, %s, %s)",
                     (1, data_pagamento, 'ENTRADA', tipo_reserva, descricao, forma_pg, pagamento))
 
-                # cursor.execute("INSERT INTO lancamento_comissao (id_reserva, id_vendedor, id_pagamento, valor_receber, valor_pagar, situacao) VALUES (%s, %s, %s, %s, %s, %s)", (info_reserva_pg[0], info_reserva_pg[1], id_pagamento,))
+                cursor.execute("INSERT INTO lancamento_comissao (id_reserva, id_vendedor, valor_receber, valor_pagar, "
+                               "situacao) VALUES (%s, %s, %s, %s, %s)", (id_reserva_cliente, id_vendedor_pg,
+                                                                         valor_receber, valor_pagar, situacao))
 
                 mydb.close()
                 st.success('Pagamento lançado no sistema!')
