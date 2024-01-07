@@ -50,7 +50,14 @@ if st.button('Pesquisar Comissão'):
         valor_receber = resultado[4]
         valor_pagar = resultado[5]
         situacao_comissao = resultado[6]
-        reservas.append(data_formatada, nome_reserva, tipo_reserva, nome_vendedor, valor_receber, valor_pagar, situacao_comissao)
+        reservas.append(data_formatada)
+        reservas.append(nome_reserva)
+        reservas.append(tipo_reserva)
+        reservas.append(nome_vendedor)
+        reservas.append(valor_receber)
+        reservas.append(valor_pagar)
+        reservas.append(situacao_comissao)
+
     st.write(resultados)
     dados = pd.DataFrame(reservas, columns=['Data', 'Nome Cliente', 'Tipo', 'Vendedor', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
     st.dataframe(dados)
