@@ -648,10 +648,10 @@ if escolha == 'Pagamento':
                     valor_pagar = 0
 
 
-                
 
-                st.write(valor_pagar)
-                st.write(valor_receber)
+
+                st.write(f'Pagar : {valor_pagar}')
+                st.write(f'Receber : {valor_receber}')
                 data_completa = str(data_reserva).split('-')
                 descricao = f'{nome} do dia {data_completa[2]}/{data_completa[1]}/{data_completa[0]}'
 
