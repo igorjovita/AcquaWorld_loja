@@ -518,7 +518,7 @@ if escolha == 'Pagamento':
 
     if st.button('Selecionar Titular'):
         st.session_state.botao = True
-    if st.session_state.botao:
+    if st.session_state.botao == True:
         lista_nome_pagamento = []
         nome_cliente_reserva = []
         id_cliente_reserva = []
