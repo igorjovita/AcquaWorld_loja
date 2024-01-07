@@ -620,14 +620,14 @@ if escolha == 'Pagamento':
                 acquaworld_nome = None
                 acquaworld_valor = None
                 for result in resultado_soma:
-                    nome = result[0]
+                    nome_result = result[0]
                     valor = result[1]
 
-                    if nome == 'Vendedor':
-                        vendedor_nome = nome
+                    if nome_result == 'Vendedor':
+                        vendedor_nome = nome_result
                         vendedor_valor = valor
-                    elif nome == 'AcquaWorld':
-                        acquaworld_nome = nome
+                    elif nome_result == 'AcquaWorld':
+                        acquaworld_nome = nome_result
                         acquaworld_valor = valor
 
                 st.write(vendedor_nome)
