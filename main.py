@@ -518,7 +518,7 @@ if escolha == 'Pagamento':
 
     if st.button('Selecionar Titular'):
         st.session_state.botao = True
-    if st.session_state.botao == True:
+    if st.session_state.botao:
         lista_nome_pagamento = []
         nome_cliente_reserva = []
         id_cliente_reserva = []
@@ -634,9 +634,19 @@ if escolha == 'Pagamento':
                 st.write(vendedor_valor)
                 st.write(acquaworld_nome)
                 st.write(acquaworld_valor)
+
+                if acquaworld_valor < valor_neto:
+                    valor_receber = valor_neto - acquaworld_valor
+                    valor_pagar = 0
+
+                if acquaworld_valor > valor_neto:
+                    valor_receber = 0
+                    valor_pagar = acquaworld_valor - valor_neto
+
+                st.write(valor_pagar)
+                st.write(valor_receber)
                 data_completa = str(data_reserva).split('-')
                 descricao = f'{nome} do dia {data_completa[2]}/{data_completa[1]}/{data_completa[0]}'
-
 
                 cursor.execute(
                     "INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES "
