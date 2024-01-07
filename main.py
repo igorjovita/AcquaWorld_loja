@@ -527,7 +527,7 @@ if escolha == 'Pagamento':
         cursor = mydb.cursor(buffered=True)
 
         cursor.execute(f"SELECT id_cliente,id_vendedor from reserva where nome_cliente = '{selectbox_cliente}'")
-        resultado2 = cursor.fetchall()
+        resultado2 = cursor.fetchone()
         id_titular_pagamento = resultado2[0]
         id_vendedor_pg = resultado2[1]
         cursor.execute(
