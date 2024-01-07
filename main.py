@@ -612,7 +612,7 @@ if escolha == 'Pagamento':
 
                 cursor.execute(
                     f"SELECT recebedor, sum(pagamento) from pagamentos where id_reserva = {id_reserva_cliente} group by recebedor")
-                resultado_soma = cursor.fetchone()
+                resultado_soma = cursor.fetchall()
                 st.write(resultado_soma)
 
                 data_completa = str(data_reserva).split('-')
