@@ -615,6 +615,25 @@ if escolha == 'Pagamento':
                 resultado_soma = cursor.fetchall()
                 st.write(resultado_soma)
 
+                vendedor_nome = None
+                vendedor_valor = None
+                acquaworld_nome = None
+                acquaworld_valor = None
+                for result in resultado_soma:
+                    nome = result[0]
+                    valor = result[1]
+
+                    if nome == 'Vendedor':
+                        vendedor_nome = nome
+                        vendedor_valor = valor
+                    elif nome == 'AcquaWorld':
+                        acquaworld_nome = nome
+                        acquaworld_valor = valor
+
+                st.write(vendedor_nome)
+                st.write(vendedor_valor)
+                st.write(acquaworld_nome)
+                st.write(acquaworld_valor)
                 data_completa = str(data_reserva).split('-')
                 descricao = f'{nome} do dia {data_completa[2]}/{data_completa[1]}/{data_completa[0]}'
 
