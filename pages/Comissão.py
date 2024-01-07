@@ -35,8 +35,15 @@ data_final = st.date_input('Data final', format='DD/MM/YYYY', value=None)
 if st.button('Pesquisar Comissão'):
     cursor.execute(f"SELECT id FROM vendedores where nome = '{comissario}'")
     id_vendedor = cursor.fetchone()[0]
-    cursor.execute(f"SELECT reserva.data, reserva.nome_cliente, reserva.tipo, vendedores.nome, lancamento_comissao.valor_receber, lancamento_comissao.valor_pagar, lancamento_comissao.situacao FROM reserva JOIN lancamento_comissao ON reserva.id = lancamento_comissao.id_reserva JOIN vendedores on lancamento_comissao.id_vendedor = vendedores.id WHERE reserva.data BETWEEN '{data_inicio}' and '{data_final}' and lancamento_comissao.id_vendedor = {id_vendedor}")
+    cursor.execute(f"SELECT reserva.data, reserva.nome_cliente, reserva.tipo, vendedores.nome, "
+                   f"lancamento_comissao.valor_receber, lancamento_comissao.valor_pagar, lancamento_comissao.situacao "
+                   f"FROM reserva JOIN lancamento_comissao ON reserva.id = lancamento_comissao.id_reserva JOIN "
+                   f"vendedores on lancamento_comissao.id_vendedor = vendedores.id WHERE reserva.data BETWEEN '"
+                   f"{data_inicio}' and '{data_final}' and lancamento_comissao.id_vendedor = {id_vendedor}")
     resultados = cursor.fetchall()
+    for resultado in resultados:
+        data_formatada = resultado[0].strftime('%d/%m/%Y')
     st.write(resultados)
+    st.write(data_formatada)
 
 
