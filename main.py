@@ -622,7 +622,7 @@ if escolha == 'Pagamento':
 
                         mydb.close()
                         st.success('Pagamento lançado no sistema!')
-                        st.session_state.botao = False
+                        st.session_state.botao = not st.session_state.botao
         #
 #     st.write('---')
 #
