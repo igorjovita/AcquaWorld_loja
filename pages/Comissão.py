@@ -46,8 +46,8 @@ if st.button('Pesquisar Comissão'):
     df = pd.DataFrame(resultados, columns=['Data', 'Nome Cliente', 'Tipo', 'Vendedor', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
     df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
     soma_clientes = df['Nome Cliente'].nunique()
-    soma_receber = df['Valor Receber'].sum()
-    soma_pagar = df['Valor a Pagar'].sum()
+    soma_receber = df['Valor Receber'].sum
+    soma_pagar = df['Valor a Pagar'].sum
     df_soma = pd.DataFrame({'Data': ['Total'], 'Nome Cliente' : [soma_clientes], 'Valor Receber': [soma_receber], 'Valor Pagar': [soma_pagar]})
     df_final = pd.concat([df,df_soma])
     st.write(df_final)
