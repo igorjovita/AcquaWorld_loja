@@ -49,10 +49,14 @@ if st.button('Pesquisar Comissão'):
     soma_pagar = df['Valor a Pagar'].sum()
     df_soma = pd.DataFrame({'Data': ['Total'], 'Nome Cliente': f'{soma_clientes} clientes', 'Valor a Receber': f'R$ {soma_receber:.2f}', 'Valor a Pagar': f'R$ {soma_pagar:.2f}'})
     df_final = pd.concat([df, df_soma])
+    # Remover a última linha (soma total) antes de exibir a tabela
+    df_final = df_final.iloc[:-1]
+
+    # Exibir o DataFrame no Streamlit
     st.table(df_final.style.format({
         'Valor Receber': 'R${:,.2f}',
         'Valor Pagar': 'R${:,.2f}'
-    }).hide_index().set_properties(**{'text-align': 'center'}).set_table_styles([{
+    }).set_properties(**{'text-align': 'center'}).set_table_styles([{
         'selector': 'th',
         'props': [
             ('text-align', 'center'),
