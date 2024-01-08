@@ -49,7 +49,7 @@ if st.button('Pesquisar Comissão'):
     soma_pagar = df['Valor a Pagar'].sum()
     df_soma = pd.DataFrame({'Data': ['Total'], 'Nome Cliente': f'{soma_clientes} clientes', 'Valor a Receber': f'R$ {soma_receber:.2f}', 'Valor a Pagar': f'R$ {soma_pagar:.2f}'})
     df_final = pd.concat([df, df_soma])
-    st.dataframe(df_final.style.format({
+    st.table(df_final.style.format({
         'Valor a Receber': 'R${:,.2f}',
         'Valor a Pagar': 'R${:,.2f}'
     })).applymap(lambda x: 'font-weight: bold' if pd.isna(x) else '').render()
