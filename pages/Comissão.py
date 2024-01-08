@@ -42,14 +42,16 @@ if st.button('Pesquisar Comissão'):
                    f"{data_inicio}' and '{data_final}' and lancamento_comissao.id_vendedor = {id_vendedor}")
     resultados = cursor.fetchall()
 
-
     df = pd.DataFrame(resultados, columns=['Data', 'Nome Cliente', 'Tipo', 'Vendedor', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
     df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
     soma_clientes = df['Nome Cliente'].nunique()
     soma_receber = df['Valor a Receber'].sum()
     soma_pagar = df['Valor a Pagar'].sum()
-    df_soma = pd.DataFrame({'Data': ['Total'], 'Nome Cliente' : [soma_clientes], 'Valor a Receber': [soma_receber], 'Valor a Pagar': [soma_pagar]})
-    df_final = pd.concat([df,df_soma])
-    st.write(df_final)
+    df_soma = pd.DataFrame({'Data': ['Total'], 'Nome Cliente': f'{soma_clientes} clientes', 'Valor a Receber': f'R$ {soma_receber:.2f}', 'Valor a Pagar': f'R$ {soma_pagar:.2f}'})
+    df_final = pd.concat([df, df_soma])
+    st.dataframe(df_final.style.format({
+        'Valor a Receber': 'R${:,.2f}',
+        'Valor a Pagar': 'R${:,.2f}'
+    })).applymap(lambda x: 'font-weight: bold' if pd.isna(x) else '')
 
 
