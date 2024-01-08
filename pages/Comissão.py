@@ -52,7 +52,7 @@ if st.button('Pesquisar Comissão'):
     st.table(df_final.style.format({
         'Valor Receber': 'R${:,.2f}',
         'Valor Pagar': 'R${:,.2f}'
-    }).apply(lambda x: 'font-weight: bold' if pd.isna(x) else '').set_table_styles([{
+    }).hide_index().set_properties(**{'text-align': 'center'}).set_table_styles([{
         'selector': 'th',
         'props': [
             ('text-align', 'center'),
