@@ -52,6 +52,6 @@ if st.button('Pesquisar Comissão'):
     st.dataframe(df_final.style.format({
         'Valor a Receber': 'R${:,.2f}',
         'Valor a Pagar': 'R${:,.2f}'
-    })).applymap(lambda x: 'font-weight: bold' if pd.isna(x) else '')
+    })).applymap(lambda x: 'font-weight: bold' if pd.isna(x) else '').render()
 
 
