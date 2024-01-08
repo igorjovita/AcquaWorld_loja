@@ -67,6 +67,9 @@ if st.button('Pesquisar Comissão'):
 
     # Exibir a soma abaixo da tabela
     st.write(f"Total de clientes: {soma_clientes}")
-    st.write(f"Total a receber: R$ {soma_receber:.2f}")
-    st.write(f"Total a pagar: R$ {soma_pagar:.2f}")
+    st.write(f"Total  {comissario} pagar AcquaWorld: R$ {soma_receber:.2f}")
+    st.write(f"Total AcquaWorld pagar {comissario}: R$ {soma_pagar:.2f}")
 
+    st.write('---')
+
+    st.subheader('Acerto Comissão')
