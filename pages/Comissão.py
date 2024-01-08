@@ -62,5 +62,5 @@ if st.button('Pesquisar Comissão'):
             ('text-overflow', 'ellipsis'),
             ('max-width', '200px')  # Ajuste conforme necessário
         ]
-    }]).render(), unsafe_allow_html=True)
+    }]), unsafe_allow_html=True)
 
