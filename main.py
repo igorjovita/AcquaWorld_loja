@@ -570,102 +570,107 @@ if escolha == 'Pagamento':
                 st.text(f'Receber - R$ {receber_formatado}')
 
         if len(lista_nome_pagamento) > 1:
-            st.radio('Opções de pagamento', ['Pagamento Junto', 'Pagamento Individual'])
+            pagamento_escolha = st.radio('Opções de pagamento', ['Pagamento Junto', 'Pagamento Individual'])
 
-        forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None,
-                                placeholder='Insira a forma de pagamento')
-
-        if forma_pg == 'Credito':
-            parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
         else:
-            parcela = 0
+            pagamento_escolha = 'Pagamento Individual'
 
-        pagamento = st.text_input('Valor pago')
-        check_in_entry = st.selectbox('Cliente vai pra onde?', ['Loja', 'Para o pier'], index=None)
-        if check_in_entry == 'Loja':
-            check_in = '#00B0F0'
-        if check_in_entry == 'Para o pier':
-            check_in = 'yellow'
-        mydb.close()
+        if pagamento_escolha == 'Pagamento Individual':
 
-        if st.button('Lançar Pagamento'):
-            mydb.connect()
+            forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None,
+                                    placeholder='Insira a forma de pagamento')
 
-            cursor.execute(f"SELECT valor_neto FROM vendedores WHERE id = {id_vendedor_pg}")
-            valor_neto = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
-            for nome in lista_nome_pagamento:
-                cursor.execute(
-                    f"SELECT id, tipo, valor_total  FROM reserva WHERE nome_cliente = '{nome}' and data = '{data_reserva}'")
-                info_reserva_pg = cursor.fetchone()
+            if forma_pg == 'Credito':
+                parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
+            else:
+                parcela = 0
 
-                cursor.execute(f"UPDATE reserva set check_in = '{check_in}' where nome_cliente = '{nome}'")
+            pagamento = st.text_input('Valor pago')
+            check_in_entry = st.selectbox('Cliente vai pra onde?', ['Loja', 'Para o pier'], index=None)
+            if check_in_entry == 'Loja':
+                check_in = '#00B0F0'
+            if check_in_entry == 'Para o pier':
+                check_in = 'yellow'
+            mydb.close()
 
-                id_reserva_cliente = info_reserva_pg[0]
-                tipo_reserva = info_reserva_pg[1]
-                valor_total_reserva = info_reserva_pg[2]
+            if st.button('Lançar Pagamento'):
+                mydb.connect()
 
-                cursor.execute(
-                    "INSERT INTO pagamentos (data ,id_reserva, recebedor, pagamento, forma_pg, parcela) VALUES (%s, %s, %s, %s, %s, %s)",
-                    (
-                        data_pagamento, id_reserva_cliente, 'AcquaWorld', pagamento, forma_pg, parcela))
-                id_pagamento = cursor.lastrowid
+                cursor.execute(f"SELECT valor_neto FROM vendedores WHERE id = {id_vendedor_pg}")
+                valor_neto = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
+                for nome in lista_nome_pagamento:
+                    cursor.execute(
+                        f"SELECT id, tipo, valor_total  FROM reserva WHERE nome_cliente = '{nome}' and data = '{data_reserva}'")
+                    info_reserva_pg = cursor.fetchone()
 
-                cursor.execute(
-                    f"SELECT recebedor, sum(pagamento) from pagamentos where id_reserva = {id_reserva_cliente} group by recebedor")
-                resultado_soma = cursor.fetchall()
-                st.write(resultado_soma)
+                    cursor.execute(f"UPDATE reserva set check_in = '{check_in}' where nome_cliente = '{nome}'")
 
-                vendedor_nome = None
-                vendedor_valor = None
-                acquaworld_nome = None
-                acquaworld_valor = None
-                for result in resultado_soma:
-                    nome_result = result[0]
-                    valor = result[1]
+                    id_reserva_cliente = info_reserva_pg[0]
+                    tipo_reserva = info_reserva_pg[1]
+                    valor_total_reserva = info_reserva_pg[2]
 
-                    if nome_result == 'Vendedor':
-                        vendedor_nome = nome_result
-                        vendedor_valor = valor
-                    elif nome_result == 'AcquaWorld':
-                        acquaworld_nome = nome_result
-                        acquaworld_valor = valor
+                    cursor.execute(
+                        "INSERT INTO pagamentos (data ,id_reserva, recebedor, pagamento, forma_pg, parcela) VALUES (%s, %s, %s, %s, %s, %s)",
+                        (
+                            data_pagamento, id_reserva_cliente, 'AcquaWorld', pagamento, forma_pg, parcela))
+                    id_pagamento = cursor.lastrowid
 
-                st.write(vendedor_nome)
-                st.write(vendedor_valor)
-                st.write(acquaworld_nome)
-                st.write(acquaworld_valor)
-                reserva_neto = valor_total_reserva - valor_neto
-                situacao = 'Pendente'
+                    cursor.execute(
+                        f"SELECT recebedor, sum(pagamento) from pagamentos where id_reserva = {id_reserva_cliente} group by recebedor")
+                    resultado_soma = cursor.fetchall()
+                    st.write(resultado_soma)
 
-                if acquaworld_valor < valor_neto:
-                    valor_receber = valor_neto - acquaworld_valor
-                    valor_pagar = 0
+                    vendedor_nome = None
+                    vendedor_valor = None
+                    acquaworld_nome = None
+                    acquaworld_valor = None
+                    for result in resultado_soma:
+                        nome_result = result[0]
+                        valor = result[1]
 
-                if acquaworld_valor > valor_neto:
-                    valor_receber = 0
-                    valor_pagar = acquaworld_valor - valor_neto
-                if acquaworld_valor == valor_neto and vendedor_valor == reserva_neto:
-                    valor_receber = 0
-                    valor_pagar = 0
-                    situacao = 'Ok'
+                        if nome_result == 'Vendedor':
+                            vendedor_nome = nome_result
+                            vendedor_valor = valor
+                        elif nome_result == 'AcquaWorld':
+                            acquaworld_nome = nome_result
+                            acquaworld_valor = valor
 
-                st.write(f'Pagar : {valor_pagar}')
-                st.write(f'Receber : {valor_receber}')
-                data_completa = str(data_reserva).split('-')
-                descricao = f'{nome} do dia {data_completa[2]}/{data_completa[1]}/{data_completa[0]}'
+                    st.write(vendedor_nome)
+                    st.write(vendedor_valor)
+                    st.write(acquaworld_nome)
+                    st.write(acquaworld_valor)
+                    reserva_neto = valor_total_reserva - valor_neto
+                    situacao = 'Pendente'
 
-                cursor.execute(
-                    "INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES "
-                    "(%s, %s, %s, %s, %s, %s, %s)",
-                    (1, data_pagamento, 'ENTRADA', tipo_reserva, descricao, forma_pg, pagamento))
+                    if acquaworld_valor < valor_neto:
+                        valor_receber = valor_neto - acquaworld_valor
+                        valor_pagar = 0
 
-                cursor.execute("INSERT INTO lancamento_comissao (id_reserva, id_vendedor, valor_receber, valor_pagar, "
-                               "situacao) VALUES (%s, %s, %s, %s, %s)", (id_reserva_cliente, id_vendedor_pg,
-                                                                         valor_receber, valor_pagar, situacao))
+                    if acquaworld_valor > valor_neto:
+                        valor_receber = 0
+                        valor_pagar = acquaworld_valor - valor_neto
+                    if acquaworld_valor == valor_neto and vendedor_valor == reserva_neto:
+                        valor_receber = 0
+                        valor_pagar = 0
+                        situacao = 'Ok'
 
-                mydb.close()
-                st.success('Pagamento lançado no sistema!')
-                st.session_state.botao = False
+                    st.write(f'Pagar : {valor_pagar}')
+                    st.write(f'Receber : {valor_receber}')
+                    data_completa = str(data_reserva).split('-')
+                    descricao = f'{nome} do dia {data_completa[2]}/{data_completa[1]}/{data_completa[0]}'
+
+                    cursor.execute(
+                        "INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES "
+                        "(%s, %s, %s, %s, %s, %s, %s)",
+                        (1, data_pagamento, 'ENTRADA', tipo_reserva, descricao, forma_pg, pagamento))
+
+                    cursor.execute("INSERT INTO lancamento_comissao (id_reserva, id_vendedor, valor_receber, valor_pagar, "
+                                   "situacao) VALUES (%s, %s, %s, %s, %s)", (id_reserva_cliente, id_vendedor_pg,
+                                                                             valor_receber, valor_pagar, situacao))
+
+                    mydb.close()
+                    st.success('Pagamento lançado no sistema!')
+                    st.session_state.botao = False
     #
 #     st.write('---')
 #
