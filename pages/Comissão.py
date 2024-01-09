@@ -38,7 +38,7 @@ if st.button('Pesquisar Comissão'):
     cursor.execute(f""" SELECT 
         reserva.Data as Data,
         GROUP_CONCAT(DISTINCT reserva.nome_cliente SEPARATOR ' + ') as Nomes_Clientes,
-        GROUP_CONCAT(DISTINCT CONCAT(reserva.tipo, ' (', COUNT(*), ')') SEPARATOR ' + ') as Tipo_Clientes,
+        GROUP_CONCAT(DISTINCT CONCAT(reserva.tipo, ' (', cnt, ')') SEPARATOR ' + ') as Tipo_Clientes,
         SUM(lancamento_comissao.valor_receber) as Valor_Receber,
         SUM(lancamento_comissao.valor_pagar) as Valor_Pagar,
         lancamento_comissao.situacao
@@ -48,10 +48,15 @@ if st.button('Pesquisar Comissão'):
         lancamento_comissao ON reserva.Id = lancamento_comissao.Id_reserva
     JOIN 
         vendedores ON lancamento_comissao.Id_vendedor = vendedores.Id
+    LEFT JOIN (
+        SELECT Id_titular, Data, COUNT(*) as cnt
+        FROM reserva
+        GROUP BY Id_titular, Data
+    ) as cnt_reserva ON reserva.Id_titular = cnt_reserva.Id_titular AND reserva.Data = cnt_reserva.Data
     WHERE 
         reserva.Data BETWEEN '{data_inicio}' AND '{data_final}' 
         AND lancamento_comissao.Id_vendedor = {id_vendedor}
-    GROUP BY reserva.id_titular, reserva.Data, lancamento_comissao.situacao""")
+    GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao""")
     resultados = cursor.fetchall()
 
     df = pd.DataFrame(resultados, columns=['Data', 'Nome Cliente', 'Tipo', 'Vendedor', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
