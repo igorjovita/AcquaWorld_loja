@@ -35,15 +35,20 @@ data_final = st.date_input('Data final', format='DD/MM/YYYY', value=None)
 if st.button('Pesquisar Comissão'):
     cursor.execute(f"SELECT id FROM vendedores where nome = '{comissario}'")
     id_vendedor = cursor.fetchone()[0]
-    cursor.execute(f""" SELECT reserva.Data as Data,
+    cursor.execute(f""" SELECT 
+        reserva.Data as Data,
         GROUP_CONCAT(DISTINCT reserva.nome_cliente SEPARATOR ' + ') as Nomes_Clientes,
         GROUP_CONCAT(DISTINCT CONCAT(COUNT(*), ' ', reserva.tipo) SEPARATOR ' + ') as Tipo_Clientes,
         SUM(lancamento_comissao.valor_receber) as Valor_Receber,
         SUM(lancamento_comissao.valor_pagar) as Valor_Pagar,
-        lancamento_comissao.situacao FROM reserva JOIN 
-        lancamento_comissao ON reserva.Id = lancamento_comissao.Id_reserva JOIN 
+        lancamento_comissao.situacao
+    FROM 
+        reserva
+    JOIN 
+        lancamento_comissao ON reserva.Id = lancamento_comissao.Id_reserva
+    JOIN 
         vendedores ON lancamento_comissao.Id_vendedor = vendedores.Id
-        WHERE 
+    WHERE 
         reserva.Data BETWEEN '{data_inicio}' AND '{data_final}' 
         AND lancamento_comissao.Id_vendedor = {id_vendedor}
     GROUP BY reserva.id_titular, lancamento_comissao.situacao""")
