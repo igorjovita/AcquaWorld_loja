@@ -37,7 +37,7 @@ if st.button('Pesquisar Comissão'):
     id_vendedor = cursor.fetchone()[0]
     cursor.execute(f""" SELECT 
         reserva.Data as Data,
-        GROUP_CONCAT(DISTINCT reserva.nome_cliente SEPARATOR ' + ') as Nomes_Clientes,
+        GROUP_CONCAT(DISTINCT reserva.nome_cliente SEPARATOR ' , ') as Nomes_Clientes,
         GROUP_CONCAT(DISTINCT CONCAT(reserva.tipo, ' (', cnt, ')') SEPARATOR ' + ') as Tipo_Clientes,
         SUM(lancamento_comissao.valor_receber) as Valor_Receber,
         SUM(lancamento_comissao.valor_pagar) as Valor_Pagar,
@@ -59,7 +59,7 @@ if st.button('Pesquisar Comissão'):
     GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao""")
     resultados = cursor.fetchall()
 
-    df = pd.DataFrame(resultados, columns=['Data', 'Nome Cliente', 'Tipo', 'Vendedor', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
+    df = pd.DataFrame(resultados, columns=['Data', 'Nome Cliente', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
     df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
     soma_clientes = df['Nome Cliente'].nunique()
     soma_receber = df['Valor a Receber'].sum()
