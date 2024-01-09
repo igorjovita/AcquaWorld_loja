@@ -38,7 +38,7 @@ if st.button('Pesquisar Comissão'):
     cursor.execute(f""" SELECT 
         reserva.Data as Data,
         GROUP_CONCAT(DISTINCT reserva.nome_cliente SEPARATOR ' , ') as Nomes_Clientes,
-        GROUP_CONCAT(DISTINCT CONCAT(reserva.tipo, ' (', cnt, ')') SEPARATOR ' + ') as Tipo_Clientes,
+        GROUP_CONCAT(DISTINCT CONCAT(cnt, ' ', reserva.tipo) SEPARATOR ' + ') as Tipo_Clientes,
         SUM(lancamento_comissao.valor_receber) as Valor_Receber,
         SUM(lancamento_comissao.valor_pagar) as Valor_Pagar,
         lancamento_comissao.situacao
