@@ -576,7 +576,7 @@ if escolha == 'Pagamento':
             pagamento_escolha = 'Pagamento Individual'
 
         if pagamento_escolha == 'Pagamento Individual':
-            escolha_cliente = st.selectbox('Cliente', [nome_cliente_reserva], index=None)
+            escolha_cliente = st.selectbox('Cliente', options=nome_cliente_reserva, index=None)
 
             forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None,
                                     placeholder='Insira a forma de pagamento')
