@@ -530,10 +530,10 @@ if escolha == 'Pagamento':
                            (id_titular_pagamento, '#FFFFFF'))
 
             resultado_individual = cursor.fetchall()
-
+            lista_cliente = []
             if resultado_individual:
                 for item in resultado_individual:
-                    escolha_cliente = item
+                    lista_cliente.append(item)
 
                 lista_nome_pagamento = []
                 nome_cliente_reserva = []
@@ -590,7 +590,7 @@ if escolha == 'Pagamento':
 
                 if pagamento_escolha == 'Pagamento Individual':
 
-                    escolha_client_input = st.selectbox('Cliente', options=escolha_cliente, index=None)
+                    escolha_client_input = st.selectbox('Cliente', options=lista_cliente, index=None)
 
                     forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None,
                                             placeholder='Insira a forma de pagamento')
