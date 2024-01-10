@@ -544,7 +544,6 @@ if escolha == 'Pagamento':
                     mydb.connect()
                     cursor = mydb.cursor(buffered=True)
 
-
                     cursor.execute(
                         f'SELECT id, nome_cliente, receber_loja from reserva where id_titular = {id_titular_pagamento}')
                     resultado_pg = cursor.fetchall()
@@ -555,6 +554,7 @@ if escolha == 'Pagamento':
                         id_cliente_reserva.append(id_reserva_pg)
                         receber_loja_reserva.append(receber_loja_pg)
                     receber_grupo = 0
+                    total_sinal = 0
                     colun1, colun2, colun3, colun4 = st.columns(4)
 
                     with colun1:
@@ -575,7 +575,8 @@ if escolha == 'Pagamento':
                             f"<h2 style='color: white; font-size: 1.5em; text-align: center; font-weight: bold;'>Situação</h2>",
                             unsafe_allow_html=True)
 
-                    for nome, id_pg, receber_loja in zip(nome_cliente_reserva, id_cliente_reserva, receber_loja_reserva):
+                    for nome, id_pg, receber_loja in zip(nome_cliente_reserva, id_cliente_reserva,
+                                                         receber_loja_reserva):
                         nome_formatado = str(nome).translate(str.maketrans('', '', chars))
                         id_formatado = int(str(id_pg).translate(str.maketrans('', '', chars)))
                         if receber_loja is not None:
@@ -593,7 +594,6 @@ if escolha == 'Pagamento':
                         lista_nome_pagamento.append(nome_formatado)
                         coluna1, coluna2, coluna3, coluna4 = st.columns(4)
 
-
                         with coluna1:
                             st.markdown(
                                 f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>{nome_formatado}</h2>",
@@ -604,6 +604,7 @@ if escolha == 'Pagamento':
                                 st.markdown(
                                     f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>{recebedor} -  R$ {pagamento}</h2>",
                                     unsafe_allow_html=True)
+                            total_sinal += pagamento
 
                         else:
                             with coluna2:
@@ -623,6 +624,20 @@ if escolha == 'Pagamento':
 
                     if len(lista_nome_pagamento) > 1:
                         pagamento_escolha = st.radio('Opções de pagamento', ['Pagamento Grupo', 'Pagamento Individual'])
+                        colum1, colum2, colum3, colum4 = st.columns(4)
+
+                        with colum1:
+                            st.markdown(f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>Total</h2>",
+                                        unsafe_allow_html=True)
+
+                        with colum2:
+                            st.markdown(f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>R$ {total_sinal}</h2>",
+                                        unsafe_allow_html=True)
+
+                        with colum1:
+                            st.markdown(
+                                f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>R$ {receber_grupo}</h2>",
+                                unsafe_allow_html=True)
 
                     else:
                         pagamento_escolha = 'Pagamento Individual'
@@ -631,12 +646,12 @@ if escolha == 'Pagamento':
 
                         st.write('---')
 
-
                         escolha_client_input = st.selectbox('Cliente', options=lista_cliente)
 
                         st.subheader(f'Pagamento {escolha_client_input}')
 
-                        forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None,
+                        forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
+                                                index=None,
                                                 placeholder='Insira a forma de pagamento')
 
                         if forma_pg == 'Credito':
@@ -736,9 +751,9 @@ if escolha == 'Pagamento':
                         st.write('---')
 
                         st.subheader(f'Pagamento Grupo {selectbox_cliente}')
-                        st.markdown(f"<h2 style='color: green; font-size: 1.5em;'>Total a receber - R$ {receber_grupo}</h2>",
-                                    unsafe_allow_html=True)
-
+                        st.markdown(
+                            f"<h2 style='color: green; font-size: 1.5em;'>Total a receber - R$ {receber_grupo}</h2>",
+                            unsafe_allow_html=True)
 
                         forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
                                                 index=None,
