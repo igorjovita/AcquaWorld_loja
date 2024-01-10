@@ -602,7 +602,7 @@ if escolha == 'Pagamento':
                         if recebedor is not None:
                             with coluna2:
                                 st.markdown(
-                                    f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>Sinal {recebedor} R$ {pagamento}</h2>",
+                                    f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>{recebedor} -  R$ {pagamento}</h2>",
                                     unsafe_allow_html=True)
 
                         else:
@@ -612,7 +612,7 @@ if escolha == 'Pagamento':
                                     unsafe_allow_html=True)
                         with coluna3:
                             st.markdown(
-                                f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>Receber - R$ {receber_formatado}</h2>",
+                                f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>R$ {receber_formatado}</h2>",
                                 unsafe_allow_html=True)
 
                         receber_grupo += receber_formatado
