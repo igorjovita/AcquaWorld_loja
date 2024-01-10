@@ -572,7 +572,7 @@ if escolha == 'Pagamento':
                             recebedor = None
                         lista_nome_pagamento.append(nome_formatado)
                         coluna1, coluna2, coluna3 = st.columns(3)
-                        receber_grupo = None
+                        receber_grupo = 0
 
                         with coluna1:
                             st.text(f'{nome_formatado}')
