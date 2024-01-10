@@ -688,7 +688,7 @@ if escolha == 'Pagamento':
                         st.session_state.botao = False
 
                 else:
-                    st.subheader('Todos os clientes desse grupo já realizaram o pagamento!')
+                    st.markdown("<h2 style='color: green;'>Todos os clientes desse grupo já realizaram o pagamento!</h2>", unsafe_allow_html=True)
 
 
 
