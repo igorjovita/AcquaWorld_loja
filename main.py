@@ -702,7 +702,7 @@ if escolha == 'Pagamento':
 
                         st.subheader(f'Pagamento Grupo {selectbox_cliente}')
 
-                        total_pagar = st.write(f'Total a receber - R$ {receber_grupo}')
+                        total_pagar = st.text(f'Total a receber - R$ {receber_grupo}')
 
                         forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
                                                 index=None,
