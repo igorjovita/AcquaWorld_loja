@@ -533,7 +533,8 @@ if escolha == 'Pagamento':
             lista_cliente = []
             if resultado_individual:
                 for item in resultado_individual:
-                    lista_cliente.append(item)
+                    item_formatado = str(item).translate(str.maketrans('', '', chars))
+                    lista_cliente.append(item_formatado)
 
                 lista_nome_pagamento = []
                 nome_cliente_reserva = []
