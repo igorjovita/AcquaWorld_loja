@@ -752,7 +752,7 @@ if escolha == 'Pagamento':
                             mydb.close()
                             st.success('Pagamento lançado no sistema!')
                             st.session_state.botao = False
-                        lista_cliente.remove(escolha_client_input)
+                    
                     if pagamento_escolha == 'Pagamento Grupo':
                         st.write('---')
 
