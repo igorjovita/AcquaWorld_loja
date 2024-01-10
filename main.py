@@ -688,6 +688,7 @@ if escolha == 'Pagamento':
                         mydb.close()
                         st.success('Pagamento lançado no sistema!')
                         st.session_state.botao = False
+                        lista_cliente.remove(escolha_client_input)
 
             else:
                 st.success('Todos os clientes desse grupo já realizaram o pagamento!')
