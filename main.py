@@ -634,7 +634,7 @@ if escolha == 'Pagamento':
                             st.markdown(f"<h2 style='color: green; text-align: center; font-size: 1.2em;'>R$ {total_sinal}</h2>",
                                         unsafe_allow_html=True)
 
-                        with colum1:
+                        with colum3:
                             st.markdown(
                                 f"<h2 style='color: green; text-align: center; font-size: 1.2em;'>R$ {receber_grupo}</h2>",
                                 unsafe_allow_html=True)
