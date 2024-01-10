@@ -579,40 +579,41 @@ if escolha == 'Pagamento':
             with mydb.cursor() as cursor:
                 cursor.execute('SELECT nome_cliente FROM reserva WHERE id_titular = %s AND check_in != %s',
                                (id_titular_pagamento, '#FFFFFF'))
+
                 resultado_individual = cursor.fetchall()
-                for item in resultado_individual:
-                    escolha_cliente = item
 
+                if resultado_individual is not None:
+                    for item in resultado_individual:
+                        escolha_cliente = item
 
-            escolha_cliente = st.selectbox('Cliente', options=escolha_cliente, index=None)
+                escolha_client_input = st.selectbox('Cliente', options=escolha_cliente, index=None)
 
-            forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None,
-                                    placeholder='Insira a forma de pagamento')
+                forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None,
+                                        placeholder='Insira a forma de pagamento')
 
-            if forma_pg == 'Credito':
-                parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
-            else:
-                parcela = 0
+                if forma_pg == 'Credito':
+                    parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
+                else:
+                    parcela = 0
 
-            pagamento = st.text_input('Valor pago')
-            check_in_entry = st.selectbox('Cliente vai pra onde?', ['Loja', 'Para o pier'], index=None)
-            if check_in_entry == 'Loja':
-                check_in = '#00B0F0'
-            if check_in_entry == 'Para o pier':
-                check_in = 'yellow'
-            mydb.close()
+                pagamento = st.text_input('Valor pago')
+                check_in_entry = st.selectbox('Cliente vai pra onde?', ['Loja', 'Para o pier'], index=None)
+                if check_in_entry == 'Loja':
+                    check_in = '#00B0F0'
+                if check_in_entry == 'Para o pier':
+                    check_in = 'yellow'
 
-            if st.button('Lançar Pagamento'):
-                mydb.connect()
+                if st.button('Lançar Pagamento'):
 
-                cursor.execute(f"SELECT valor_neto FROM vendedores WHERE id = {id_vendedor_pg}")
-                valor_neto = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
-                for nome in lista_nome_pagamento:
+                    cursor.execute(f"SELECT valor_neto FROM vendedores WHERE id = {id_vendedor_pg}")
+                    valor_neto = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
+
                     cursor.execute(
-                        f"SELECT id, tipo, valor_total  FROM reserva WHERE nome_cliente = '{nome}' and data = '{data_reserva}'")
+                        f"SELECT id, tipo, valor_total  FROM reserva WHERE nome_cliente = '{escolha_cliente}' and data = '{data_reserva}'")
                     info_reserva_pg = cursor.fetchone()
 
-                    cursor.execute(f"UPDATE reserva set check_in = '{check_in}' where nome_cliente = '{nome}'")
+                    cursor.execute(
+                        f"UPDATE reserva set check_in = '{check_in}' where nome_cliente = '{escolha_cliente}'")
 
                     id_reserva_cliente = info_reserva_pg[0]
                     tipo_reserva = info_reserva_pg[1]
@@ -640,6 +641,7 @@ if escolha == 'Pagamento':
                         if nome_result == 'Vendedor':
                             vendedor_nome = nome_result
                             vendedor_valor = valor
+
                         elif nome_result == 'AcquaWorld':
                             acquaworld_nome = nome_result
                             acquaworld_valor = valor
@@ -673,14 +675,15 @@ if escolha == 'Pagamento':
                         "(%s, %s, %s, %s, %s, %s, %s)",
                         (1, data_pagamento, 'ENTRADA', tipo_reserva, descricao, forma_pg, pagamento))
 
-                    cursor.execute("INSERT INTO lancamento_comissao (id_reserva, id_vendedor, valor_receber, valor_pagar, "
-                                   "situacao) VALUES (%s, %s, %s, %s, %s)", (id_reserva_cliente, id_vendedor_pg,
-                                                                             valor_receber, valor_pagar, situacao))
+                    cursor.execute(
+                        "INSERT INTO lancamento_comissao (id_reserva, id_vendedor, valor_receber, valor_pagar, "
+                        "situacao) VALUES (%s, %s, %s, %s, %s)", (id_reserva_cliente, id_vendedor_pg,
+                                                                  valor_receber, valor_pagar, situacao))
 
                     mydb.close()
                     st.success('Pagamento lançado no sistema!')
                     st.session_state.botao = False
-    #
+#
 #     st.write('---')
 #
 #     st.subheader('Limitar Vagas')
