@@ -594,7 +594,12 @@ if escolha == 'Pagamento':
 
                     if pagamento_escolha == 'Pagamento Individual':
 
-                        escolha_client_input = st.selectbox('Cliente', options=lista_cliente, index=None)
+                        st.write('---')
+
+
+                        escolha_client_input = st.selectbox('Cliente', options=lista_cliente)
+
+                        st.subheader(f'Pagamento {escolha_client_input}')
 
                         forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None,
                                                 placeholder='Insira a forma de pagamento')
