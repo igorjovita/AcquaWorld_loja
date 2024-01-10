@@ -577,6 +577,7 @@ if escolha == 'Pagamento':
 
         if pagamento_escolha == 'Pagamento Individual':
             with mydb.cursor() as cursor:
+                lista_cliente = []
                 cursor.execute('SELECT nome_cliente FROM reserva WHERE id_titular = %s AND check_in != %s',
                                (id_titular_pagamento, '#FFFFFF'))
 
@@ -584,9 +585,9 @@ if escolha == 'Pagamento':
 
                 if resultado_individual is not None:
                     for item in resultado_individual:
-                        escolha_cliente = item
+                        lista_cliente.append(item)
 
-                escolha_client_input = st.selectbox('Cliente', options=escolha_cliente, index=None)
+                escolha_client_input = st.selectbox('Cliente', options=lista_cliente, index=None)
 
                 forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None,
                                         placeholder='Insira a forma de pagamento')
@@ -609,11 +610,11 @@ if escolha == 'Pagamento':
                     valor_neto = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
 
                     cursor.execute(
-                        f"SELECT id, tipo, valor_total  FROM reserva WHERE nome_cliente = '{escolha_cliente}' and data = '{data_reserva}'")
+                        f"SELECT id, tipo, valor_total  FROM reserva WHERE nome_cliente = '{escolha_client_input}' and data = '{data_reserva}'")
                     info_reserva_pg = cursor.fetchone()
 
                     cursor.execute(
-                        f"UPDATE reserva set check_in = '{check_in}' where nome_cliente = '{escolha_cliente}'")
+                        f"UPDATE reserva set check_in = '{check_in}' where nome_cliente = '{escolha_client_input}'")
 
                     id_reserva_cliente = info_reserva_pg[0]
                     tipo_reserva = info_reserva_pg[1]
