@@ -587,7 +587,7 @@ if escolha == 'Pagamento':
                         receber_grupo += receber_formatado
 
                     if len(lista_nome_pagamento) > 1:
-                        pagamento_escolha = st.radio('Opções de pagamento', ['Pagamento Junto', 'Pagamento Individual'])
+                        pagamento_escolha = st.radio('Opções de pagamento', ['Pagamento Grupo', 'Pagamento Individual'])
 
                     else:
                         pagamento_escolha = 'Pagamento Individual'
