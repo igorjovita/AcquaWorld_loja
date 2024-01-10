@@ -583,6 +583,7 @@ if escolha == 'Pagamento':
                 resultado_individual = cursor.fetchall()
 
                 if resultado_individual is not None:
+                    st.write(resultado_individual)
 
                     if resultado_individual is not None:
                         for item in resultado_individual:
