@@ -577,17 +577,16 @@ if escolha == 'Pagamento':
 
         if pagamento_escolha == 'Pagamento Individual':
             with mydb.cursor() as cursor:
-                lista_cliente = []
-                cursor.execute('SELECT nome_cliente FROM reserva WHERE id_titular = %s AND check_in != %s',
+                cursor.execute('SELECT nome_cliente FROM reserva WHERE id_titular = %s AND check_in = %s',
                                (id_titular_pagamento, '#FFFFFF'))
 
                 resultado_individual = cursor.fetchall()
 
                 if resultado_individual is not None:
                     for item in resultado_individual:
-                        lista_cliente.append(item)
+                        escolha_cliente = item
 
-                escolha_client_input = st.selectbox('Cliente', options=lista_cliente, index=None)
+                escolha_client_input = st.selectbox('Cliente', options=escolha_cliente, index=None)
 
                 forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None,
                                         placeholder='Insira a forma de pagamento')
