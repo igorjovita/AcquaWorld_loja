@@ -641,7 +641,7 @@ if escolha == 'Pagamento':
 
                         st.markdown("<div style='margin-bottom: 40px;'></div>", unsafe_allow_html=True)
 
-                        pagamento_escolha = st.radio('Opções de pagamento', ['Pagamento Grupo', 'Pagamento Individual'])
+                        pagamento_escolha = st.radio('Opções de pagamento', ['Pagamento Grupo', 'Pagamento Individual'], horizontal=True)
 
                     else:
                         pagamento_escolha = 'Pagamento Individual'
