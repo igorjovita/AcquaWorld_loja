@@ -577,7 +577,7 @@ if escolha == 'Pagamento':
 
         if pagamento_escolha == 'Pagamento Individual':
             with mydb.cursor() as cursor:
-                cursor.execute('SELECT nome_cliente FROM reserva WHERE id_titular = ? AND check_in != ?',
+                cursor.execute('SELECT nome_cliente FROM reserva WHERE id_titular = %s AND check_in != %s',
                                (id_titular_pagamento, '#FFFFFF'))
                 resultado_individual = cursor.fetchall()
 
