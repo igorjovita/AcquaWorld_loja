@@ -555,6 +555,26 @@ if escolha == 'Pagamento':
                         id_cliente_reserva.append(id_reserva_pg)
                         receber_loja_reserva.append(receber_loja_pg)
                     receber_grupo = 0
+                    colun1, colun2, colun3, colun4 = st.columns(4)
+
+                    with colun1:
+                        st.markdown(
+                            f"<h2 style='color: green; font-size: 0.8em;'>Nome do Cliente</h2>",
+                            unsafe_allow_html=True)
+                    with colu2:
+                        st.markdown(
+                            f"<h2 style='color: green; font-size: 0.8em;'>Sinal</h2>",
+                            unsafe_allow_html=True)
+
+                    with colun3:
+                        st.markdown(
+                            f"<h2 style='color: green; font-size: 0.8em;'>Valor a Receber</h2>",
+                            unsafe_allow_html=True)
+                    with colun4:
+                        st.markdown(
+                            f"<h2 style='color: green; font-size: 0.8em;'>Situação</h2>",
+                            unsafe_allow_html=True)
+
                     for nome, id_pg, receber_loja in zip(nome_cliente_reserva, id_cliente_reserva, receber_loja_reserva):
                         nome_formatado = str(nome).translate(str.maketrans('', '', chars))
                         id_formatado = int(str(id_pg).translate(str.maketrans('', '', chars)))
