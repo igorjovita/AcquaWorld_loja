@@ -525,7 +525,7 @@ if escolha == 'Pagamento':
             resultado2 = cursor.fetchone()
             id_titular_pagamento = resultado2[0]
             id_vendedor_pg = resultado2[1]
-            
+
             cursor.execute('SELECT nome_cliente FROM reserva WHERE id_titular = %s AND check_in = %s',
                            (id_titular_pagamento, '#FFFFFF'))
 
@@ -689,8 +689,7 @@ if escolha == 'Pagamento':
                         st.session_state.botao = False
 
             else:
-                st.markdown("<h2 style='color: green;'>Todos os clientes desse grupo já realizaram o pagamento!</h2>",
-                            unsafe_allow_html=True)
+                st.success('Todos os clientes desse grupo já realizaram o pagamento!')
 
 #     st.write('---')
 #
