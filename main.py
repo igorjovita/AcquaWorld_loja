@@ -582,7 +582,7 @@ if escolha == 'Pagamento':
 
                 resultado_individual = cursor.fetchall()
 
-                if resultado_individual is not None:
+                if resultado_individual:
                     st.write(resultado_individual)
 
                     if resultado_individual is not None:
