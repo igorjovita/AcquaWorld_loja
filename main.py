@@ -554,7 +554,7 @@ if escolha == 'Pagamento':
                         nome_cliente_reserva.append(nome_reserva_pg)
                         id_cliente_reserva.append(id_reserva_pg)
                         receber_loja_reserva.append(receber_loja_pg)
-
+                    receber_grupo = 0
                     for nome, id_pg, receber_loja in zip(nome_cliente_reserva, id_cliente_reserva, receber_loja_reserva):
                         nome_formatado = str(nome).translate(str.maketrans('', '', chars))
                         id_formatado = int(str(id_pg).translate(str.maketrans('', '', chars)))
@@ -572,7 +572,7 @@ if escolha == 'Pagamento':
                             recebedor = None
                         lista_nome_pagamento.append(nome_formatado)
                         coluna1, coluna2, coluna3 = st.columns(3)
-                        receber_grupo = 0
+
 
                         with coluna1:
                             st.text(f'{nome_formatado}')
