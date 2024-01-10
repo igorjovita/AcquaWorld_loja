@@ -687,8 +687,8 @@ if escolha == 'Pagamento':
                         st.success('Pagamento lançado no sistema!')
                         st.session_state.botao = False
 
-                    else:
-                        st.subheader('Todos os clientes desse grupo já realizaram o pagamento!')
+                else:
+                    st.subheader('Todos os clientes desse grupo já realizaram o pagamento!')
 
 
 
