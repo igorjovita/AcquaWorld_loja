@@ -601,8 +601,11 @@ if escolha == 'Pagamento':
 
                         if recebedor is not None:
                             with coluna2:
+                                pagamento_formatado = "{:,.2f}".format(pagamento).replace(",", "X").replace(".",
+                                                                                                                    ",").replace(
+                                    "X", ".")
                                 st.markdown(
-                                    f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>{recebedor} -  R$ {pagamento}</h2>",
+                                    f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>{recebedor} -  R$ {pagamento_formatado}</h2>",
                                     unsafe_allow_html=True)
                             total_sinal += pagamento
 
@@ -612,8 +615,11 @@ if escolha == 'Pagamento':
                                     f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>Nenhum sinal foi pago</h2>",
                                     unsafe_allow_html=True)
                         with coluna3:
+                            receber_formatado_individual = "{:,.2f}".format(receber_formatado).replace(",", "X").replace(".",
+                                                                                                                ",").replace(
+                                "X", ".")
                             st.markdown(
-                                f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>R$ {receber_formatado}</h2>",
+                                f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>R$ {receber_formatado_individual}</h2>",
                                 unsafe_allow_html=True)
 
                         receber_grupo += receber_formatado
@@ -631,13 +637,19 @@ if escolha == 'Pagamento':
                                         unsafe_allow_html=True)
 
                         with colum2:
+                            total_sinal_formatado = "{:,.2f}".format(total_sinal).replace(",", "X").replace(".",
+                                                                                                                ",").replace(
+                                "X", ".")
                             st.markdown(
-                                f"<h2 style='color: green; text-align: center; font-size: 1.2em;'>R$ {total_sinal}</h2>",
+                                f"<h2 style='color: green; text-align: center; font-size: 1.2em;'>R$ {total_sinal_formatado}</h2>",
                                 unsafe_allow_html=True)
 
                         with colum3:
+                            receber_grupo_formatado = "{:,.2f}".format(receber_grupo).replace(",", "X").replace(".",
+                                                                                                                ",").replace(
+                                "X", ".")
                             st.markdown(
-                                f"<h2 style='color: green; text-align: center; font-size: 1.2em;'>R$ {receber_grupo}</h2>",
+                                f"<h2 style='color: green; text-align: center; font-size: 1.2em;'>R$ {receber_grupo_formatado}</h2>",
                                 unsafe_allow_html=True)
 
                         st.markdown("<div style='margin-bottom: 40px;'></div>", unsafe_allow_html=True)
@@ -652,8 +664,11 @@ if escolha == 'Pagamento':
 
                         st.write('---')
                         st.subheader(f'Pagamento Grupo {selectbox_cliente}')
+                        receber_formatado_individual = "{:,.2f}".format(receber_formatado).replace(",", "X").replace(".",
+                                                                                                            ",").replace(
+                            "X", ".")
                         st.markdown(
-                            f"<h2 style='color: green; font-size: 1.5em;'>Total a receber - R$ {receber_formatado}</h2>",
+                            f"<h2 style='color: green; font-size: 1.5em;'>Total a receber - R$ {receber_formatado_individual}</h2>",
                             unsafe_allow_html=True)
 
                         escolha_client_input = st.selectbox('Cliente', options=lista_cliente)
