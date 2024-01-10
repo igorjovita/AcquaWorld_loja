@@ -649,10 +649,13 @@ if escolha == 'Pagamento':
                     if pagamento_escolha == 'Pagamento Individual':
 
                         st.write('---')
-                        nome_cliente_individual = None
-                        st.subheader(f'Pagamento {nome_cliente_individual}')
+                        st.subheader(f'Pagamento Grupo {selectbox_cliente}')
+                        st.markdown(
+                            f"<h2 style='color: green; font-size: 1.5em;'>Total a receber - R$ {receber_grupo}</h2>",
+                            unsafe_allow_html=True)
+                        
                         escolha_client_input = st.selectbox('Cliente', options=lista_cliente)
-                        nome_cliente_individual = escolha_client_input
+
 
                         st.subheader(f'Pagamento {escolha_client_input}')
 
