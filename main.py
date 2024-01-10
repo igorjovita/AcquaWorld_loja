@@ -649,8 +649,10 @@ if escolha == 'Pagamento':
                     if pagamento_escolha == 'Pagamento Individual':
 
                         st.write('---')
-
+                        nome_cliente_individual = None
+                        st.subheader(f'Pagamento {nome_cliente_individual}')
                         escolha_client_input = st.selectbox('Cliente', options=lista_cliente)
+                        nome_cliente_individual = escolha_client_input
 
                         st.subheader(f'Pagamento {escolha_client_input}')
 
