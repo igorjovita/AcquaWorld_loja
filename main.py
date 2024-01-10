@@ -580,9 +580,11 @@ if escolha == 'Pagamento':
                 cursor.execute('SELECT nome_cliente FROM reserva WHERE id_titular = %s AND check_in != %s',
                                (id_titular_pagamento, '#FFFFFF'))
                 resultado_individual = cursor.fetchall()
+                for item in resultado_individual:
+                    escolha_cliente = item
 
 
-            escolha_cliente = st.selectbox('Cliente', options=resultado_individual, index=None)
+            escolha_cliente = st.selectbox('Cliente', options=escolha_cliente, index=None)
 
             forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None,
                                     placeholder='Insira a forma de pagamento')
