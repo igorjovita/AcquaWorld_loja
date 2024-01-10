@@ -651,7 +651,7 @@ if escolha == 'Pagamento':
                         st.write('---')
                         st.subheader(f'Pagamento Grupo {selectbox_cliente}')
                         st.markdown(
-                            f"<h2 style='color: green; font-size: 1.5em;'>Total a receber - R$ {receber_grupo}</h2>",
+                            f"<h2 style='color: green; font-size: 1.5em;'>Total a receber - R$ {receber_formatado}</h2>",
                             unsafe_allow_html=True)
 
                         escolha_client_input = st.selectbox('Cliente', options=lista_cliente)
