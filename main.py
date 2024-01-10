@@ -623,7 +623,7 @@ if escolha == 'Pagamento':
                                 unsafe_allow_html=True)
 
                     if len(lista_nome_pagamento) > 1:
-                        pagamento_escolha = st.radio('Opções de pagamento', ['Pagamento Grupo', 'Pagamento Individual'])
+
                         colum1, colum2, colum3, colum4 = st.columns(4)
 
                         with colum1:
@@ -631,13 +631,15 @@ if escolha == 'Pagamento':
                                         unsafe_allow_html=True)
 
                         with colum2:
-                            st.markdown(f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>R$ {total_sinal}</h2>",
+                            st.markdown(f"<h2 style='color: green; text-align: center; font-size: 1.2em;'>R$ {total_sinal}</h2>",
                                         unsafe_allow_html=True)
 
                         with colum1:
                             st.markdown(
-                                f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>R$ {receber_grupo}</h2>",
+                                f"<h2 style='color: green; text-align: center; font-size: 1.2em;'>R$ {receber_grupo}</h2>",
                                 unsafe_allow_html=True)
+
+                        pagamento_escolha = st.radio('Opções de pagamento', ['Pagamento Grupo', 'Pagamento Individual'])
 
                     else:
                         pagamento_escolha = 'Pagamento Individual'
