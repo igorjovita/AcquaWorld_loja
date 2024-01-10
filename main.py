@@ -759,8 +759,11 @@ if escolha == 'Pagamento':
                         st.write('---')
 
                         st.subheader(f'Pagamento Grupo {selectbox_cliente}')
+                        receber_grupo_formatado = "{:,.2f}".format(receber_grupo).replace(",", "X").replace(".",
+                                                                                                            ",").replace(
+                            "X", ".")
                         st.markdown(
-                            f"<h2 style='color: green; font-size: 1.5em;'>Total a receber - R$ {receber_grupo}</h2>",
+                            f"<h2 style='color: green; font-size: 1.5em;'>Total a receber - R$ {receber_grupo_formatado}</h2>",
                             unsafe_allow_html=True)
 
                         forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
