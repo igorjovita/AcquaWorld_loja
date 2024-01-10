@@ -559,20 +559,20 @@ if escolha == 'Pagamento':
 
                     with colun1:
                         st.markdown(
-                            f"<h2 style='color: white; text-align: center; font-size: 1.2em; font-weight: bold;'>Nome do Cliente</h2>",
+                            f"<h2 style='color: white; text-align: center; font-size: 1.5em; font-weight: bold;'>Nome do Cliente</h2>",
                             unsafe_allow_html=True)
                     with colun2:
                         st.markdown(
-                            f"<h2 style='color: white; font-size: 1.2em; text-align: center; font-weight: bold;'>Sinal</h2>",
+                            f"<h2 style='color: white; font-size: 1.5em; text-align: center; font-weight: bold;'>Sinal</h2>",
                             unsafe_allow_html=True)
 
                     with colun3:
                         st.markdown(
-                            f"<h2 style='color: white; font-size: 1.2em; text-align: center; font-weight: bold;'>Valor a Receber</h2>",
+                            f"<h2 style='color: white; font-size: 1.5em; text-align: center; font-weight: bold;'>Valor a Receber</h2>",
                             unsafe_allow_html=True)
                     with colun4:
                         st.markdown(
-                            f"<h2 style='color: white; font-size: 1.2em; text-align: center; font-weight: bold;'>Situação</h2>",
+                            f"<h2 style='color: white; font-size: 1.5em; text-align: center; font-weight: bold;'>Situação</h2>",
                             unsafe_allow_html=True)
 
                     for nome, id_pg, receber_loja in zip(nome_cliente_reserva, id_cliente_reserva, receber_loja_reserva):
@@ -595,18 +595,32 @@ if escolha == 'Pagamento':
 
 
                         with coluna1:
-                            st.text(f'{nome_formatado}')
+                            st.markdown(
+                                f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>{nome_formatado}</h2>",
+                                unsafe_allow_html=True)
+
                         if recebedor is not None:
                             with coluna2:
-                                st.text(f'Sinal {recebedor} R$ {pagamento}')
+                                st.markdown(
+                                    f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>Sinal {recebedor} R$ {pagamento}</h2>",
+                                    unsafe_allow_html=True)
+
                         else:
                             with coluna2:
-                                st.text('Nenhum sinal foi pago')
+                                st.markdown(
+                                    f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>Nenhum sinal foi pago</h2>",
+                                    unsafe_allow_html=True)
                         with coluna3:
-                            st.text(f'Receber - R$ {receber_formatado}')
+                            st.markdown(
+                                f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>Receber - R$ {receber_formatado}</h2>",
+                                unsafe_allow_html=True)
+
                         receber_grupo += receber_formatado
                         with coluna4:
-                            st.text('Pendente')
+                            st.markdown(
+                                f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>Pendente</h2>",
+                                unsafe_allow_html=True)
+
                     if len(lista_nome_pagamento) > 1:
                         pagamento_escolha = st.radio('Opções de pagamento', ['Pagamento Grupo', 'Pagamento Individual'])
 
