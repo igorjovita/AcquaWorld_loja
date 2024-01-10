@@ -653,11 +653,8 @@ if escolha == 'Pagamento':
                         st.markdown(
                             f"<h2 style='color: green; font-size: 1.5em;'>Total a receber - R$ {receber_grupo}</h2>",
                             unsafe_allow_html=True)
-                        
+
                         escolha_client_input = st.selectbox('Cliente', options=lista_cliente)
-
-
-                        st.subheader(f'Pagamento {escolha_client_input}')
 
                         forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
                                                 index=None,
