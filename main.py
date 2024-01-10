@@ -576,8 +576,9 @@ if escolha == 'Pagamento':
             pagamento_escolha = 'Pagamento Individual'
 
         if pagamento_escolha == 'Pagamento Individual':
-            cursor.execute(f'SELECT nome_cliente from reserva where id_titular = {id_titular_pagamento} and check_in != #FFFFFF')
-            resultado_individual = cursor.fetchall()
+            with mydb.cursor() as cursor:
+                cursor.execute(f'SELECT nome_cliente from reserva where id_titular = {id_titular_pagamento} and check_in != #FFFFFF')
+                resultado_individual = cursor.fetchall()
 
 
             escolha_cliente = st.selectbox('Cliente', options=resultado_individual, index=None)
