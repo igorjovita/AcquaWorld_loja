@@ -559,20 +559,20 @@ if escolha == 'Pagamento':
 
                     with colun1:
                         st.markdown(
-                            f"<h2 style='color: white; text-align: center; font-size: 1.2em; font-style: italic;'>Nome do Cliente</h2>",
+                            f"<h2 style='color: white; text-align: center; font-size: 1.2em; font-weight: bold;'>Nome do Cliente</h2>",
                             unsafe_allow_html=True)
                     with colun2:
                         st.markdown(
-                            f"<h2 style='color: white; font-size: 1.2em; text-align: center; font-style: italic;'>Sinal</h2>",
+                            f"<h2 style='color: white; font-size: 1.2em; text-align: center; font-weight: bold;'>Sinal</h2>",
                             unsafe_allow_html=True)
 
                     with colun3:
                         st.markdown(
-                            f"<h2 style='color: white; font-size: 1.2em; text-align: center; font-style: italic;'>Valor a Receber</h2>",
+                            f"<h2 style='color: white; font-size: 1.2em; text-align: center; font-weight: bold;'>Valor a Receber</h2>",
                             unsafe_allow_html=True)
                     with colun4:
                         st.markdown(
-                            f"<h2 style='color: white; font-size: 1.2em; text-align: center; font-style: italic;'>Situação</h2>",
+                            f"<h2 style='color: white; font-size: 1.2em; text-align: center; font-weight: bold;'>Situação</h2>",
                             unsafe_allow_html=True)
 
                     for nome, id_pg, receber_loja in zip(nome_cliente_reserva, id_cliente_reserva, receber_loja_reserva):
