@@ -698,6 +698,9 @@ if escolha == 'Pagamento':
                             st.session_state.botao = False
                         lista_cliente.remove(escolha_client_input)
                     if pagamento_escolha == 'Pagamento Grupo':
+                        st.write('---')
+
+                        st.subheader(f'Pagamento Grupo {selectbox_cliente}')
 
                         total_pagar = st.write(f'Total a receber - R$ {receber_grupo}')
 
