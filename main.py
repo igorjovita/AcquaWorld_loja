@@ -639,7 +639,7 @@ if escolha == 'Pagamento':
                                 f"<h2 style='color: green; text-align: center; font-size: 1.2em;'>R$ {receber_grupo}</h2>",
                                 unsafe_allow_html=True)
 
-                        st.markdown("<div style='margin-bottom: 20px;'></div>", unsafe_allow_html=True)
+                        st.markdown("<div style='margin-bottom: 40px;'></div>", unsafe_allow_html=True)
 
                         pagamento_escolha = st.radio('Opções de pagamento', ['Pagamento Grupo', 'Pagamento Individual'])
 
