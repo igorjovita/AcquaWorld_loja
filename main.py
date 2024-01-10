@@ -571,7 +571,7 @@ if escolha == 'Pagamento':
                         else:
                             recebedor = None
                         lista_nome_pagamento.append(nome_formatado)
-                        coluna1, coluna2, coluna3 = st.columns(3)
+                        coluna1, coluna2, coluna3, coluna4 = st.columns(4)
 
 
                         with coluna1:
@@ -585,7 +585,8 @@ if escolha == 'Pagamento':
                         with coluna3:
                             st.text(f'Receber - R$ {receber_formatado}')
                         receber_grupo += receber_formatado
-
+                        with coluna4:
+                            st.text('Pendente')
                     if len(lista_nome_pagamento) > 1:
                         pagamento_escolha = st.radio('Opções de pagamento', ['Pagamento Grupo', 'Pagamento Individual'])
 
@@ -703,7 +704,7 @@ if escolha == 'Pagamento':
                         st.subheader(f'Pagamento Grupo {selectbox_cliente}')
                         st.markdown(f"<h2 style='color: green; font-size: 1.5em;'>Total a receber - R$ {receber_grupo}</h2>",
                                     unsafe_allow_html=True)
-                        
+
 
                         forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
                                                 index=None,
