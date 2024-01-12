@@ -602,7 +602,7 @@ if escolha == 'Pagamento':
                         if recebedor is not None:
                             with coluna2:
                                 pagamento_formatado = "{:,.2f}".format(pagamento).replace(",", "X").replace(".",
-                                                                                                                    ",").replace(
+                                                                                                            ",").replace(
                                     "X", ".")
                                 st.markdown(
                                     f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>{recebedor} -  R$ {pagamento_formatado}</h2>",
@@ -615,8 +615,9 @@ if escolha == 'Pagamento':
                                     f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>Nenhum sinal foi pago</h2>",
                                     unsafe_allow_html=True)
                         with coluna3:
-                            receber_formatado_individual = "{:,.2f}".format(receber_formatado).replace(",", "X").replace(".",
-                                                                                                                ",").replace(
+                            receber_formatado_individual = "{:,.2f}".format(receber_formatado).replace(",",
+                                                                                                       "X").replace(".",
+                                                                                                                    ",").replace(
                                 "X", ".")
                             st.markdown(
                                 f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>R$ {receber_formatado_individual}</h2>",
@@ -638,7 +639,7 @@ if escolha == 'Pagamento':
 
                         with colum2:
                             total_sinal_formatado = "{:,.2f}".format(total_sinal).replace(",", "X").replace(".",
-                                                                                                                ",").replace(
+                                                                                                            ",").replace(
                                 "X", ".")
                             st.markdown(
                                 f"<h2 style='color: green; text-align: center; font-size: 1.2em;'>R$ {total_sinal_formatado}</h2>",
@@ -661,9 +662,9 @@ if escolha == 'Pagamento':
                         pagamento_escolha = 'Pagamento Individual'
 
                     if pagamento_escolha == 'Pagamento Individual':
-
-                        st.write('---')
                         escolha_client_input = st.selectbox('Cliente', options=lista_cliente)
+                        st.write('---')
+
                         valor_a_receber_cliente = None
                         for nome, id_pg, receber_loja in zip(nome_cliente_reserva, id_cliente_reserva,
                                                              receber_loja_reserva):
@@ -679,8 +680,6 @@ if escolha == 'Pagamento':
                                 unsafe_allow_html=True)
                         else:
                             st.warning(f"Não foi possível encontrar o valor a receber para {escolha_client_input}")
-
-
 
                         forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
                                                 index=None,
@@ -798,7 +797,6 @@ if escolha == 'Pagamento':
                             parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
                         else:
                             parcela = 0
-
 
                         check_in_entry = st.selectbox('Cliente vai pra onde?', ['Loja', 'Para o pier'], index=None)
                         if check_in_entry == 'Loja':
