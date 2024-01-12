@@ -663,13 +663,21 @@ if escolha == 'Pagamento':
                     if pagamento_escolha == 'Pagamento Individual':
 
                         st.write('---')
-                        st.subheader(f'Pagamento Grupo {selectbox_cliente}')
-                        receber_formatado_individual = "{:,.2f}".format(receber_formatado).replace(",", "X").replace(".",
-                                                                                                            ",").replace(
-                            "X", ".")
-                        st.markdown(
-                            f"<h2 style='color: green; font-size: 1.5em;'>Total a receber - R$ {receber_formatado_individual}</h2>",
-                            unsafe_allow_html=True)
+                        valor_a_receber_cliente = None
+                        for nome, id_pg, receber_loja in zip(nome_cliente_reserva, id_cliente_reserva,
+                                                             receber_loja_reserva):
+                            if nome == escolha_client_input:
+                                valor_a_receber_cliente = receber_loja
+
+                        if valor_a_receber_cliente is not None:
+                            valor_a_receber_formatado = "{:,.2f}".format(valor_a_receber_cliente).replace(",",
+                                                                                                          "X").replace(
+                                ".", ",").replace("X", ".")
+                            st.markdown(
+                                f"<h2 style='color: green; font-size: 1.5em;'>Total a receber para {escolha_client_input} - R$ {valor_a_receber_formatado}</h2>",
+                                unsafe_allow_html=True)
+                        else:
+                            st.warning(f"Não foi possível encontrar o valor a receber para {escolha_client_input}")
 
                         escolha_client_input = st.selectbox('Cliente', options=lista_cliente)
 
