@@ -663,6 +663,7 @@ if escolha == 'Pagamento':
                     if pagamento_escolha == 'Pagamento Individual':
 
                         st.write('---')
+                        escolha_client_input = st.selectbox('Cliente', options=lista_cliente)
                         valor_a_receber_cliente = None
                         for nome, id_pg, receber_loja in zip(nome_cliente_reserva, id_cliente_reserva,
                                                              receber_loja_reserva):
@@ -679,7 +680,7 @@ if escolha == 'Pagamento':
                         else:
                             st.warning(f"Não foi possível encontrar o valor a receber para {escolha_client_input}")
 
-                        escolha_client_input = st.selectbox('Cliente', options=lista_cliente)
+
 
                         forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
                                                 index=None,
