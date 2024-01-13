@@ -353,8 +353,7 @@ if escolha == 'Reservar':
             reservas.append(
                 (data, id_cliente, tipo, id_vendedor, valor_mergulho, nome_cliente, '#FFFFFF', id_titular, valor_loja))
             st.write('---')
-            forma_pg = 'Pix'
-            pagamentos.append((data, recebedor_sinal, sinal, forma_pg))
+
 
         if st.button('Reservar'):
             with mydb.cursor() as cursor:
@@ -408,9 +407,12 @@ if escolha == 'Reservar':
                             cursor.execute(sql, reserva)
                             id_reserva = cursor.lastrowid
                             ids_reserva.append(id_reserva)
-
+                            forma_pg = 'Pix'
+                            pagamentos.append((data, recebedor_sinal, sinal, forma_pg))
                         if recebedor_sinal != '':
                             pagamento_com_ids = list(zip(ids_reserva, *pagamentos))
+
+
 
                             # sql2 = ("INSERT INTO pagamentos (id_reserva, data, recebedor, pagamento, forma_pg) VALUES (%s,%s, %s, %s, %s)")
                             # cursor.executemany(sql2, pagamento_com_ids)
