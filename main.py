@@ -354,7 +354,6 @@ if escolha == 'Reservar':
                 (data, id_cliente, tipo, id_vendedor, valor_mergulho, nome_cliente, '#FFFFFF', id_titular, valor_loja))
             st.write('---')
 
-
         if st.button('Reservar'):
             with mydb.cursor() as cursor:
                 cursor.execute(f"SELECT COUNT(*) FROM reserva where data = '{data}'")
@@ -393,7 +392,6 @@ if escolha == 'Reservar':
                     cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE id_cliente = %s and data = %s",
                                    (id_cliente, data))
                     verifica_cpf = cursor.fetchone()[0]
-                    
 
                     if verifica_cpf > 0:
                         st.error('Cliente já reservado para esta data')
@@ -401,7 +399,8 @@ if escolha == 'Reservar':
                     else:
                         ids_reserva = []
                         for reserva in reservas:
-                            sql = ("INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, check_in, id_titular, receber_loja) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s)")
+                            sql = (
+                                "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, check_in, id_titular, receber_loja) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s)")
 
                             # Executar a inserção de múltiplos valores
                             cursor.execute(sql, reserva)
@@ -412,11 +411,11 @@ if escolha == 'Reservar':
                         if recebedor_sinal != '':
                             pagamento_com_ids = ids_reserva + pagamentos
 
-
-                            for cliente in pagamento_com_ids:
-                                cursor.execute("INSERT INTO pagamentos (id_reserva, data, recebedor, pagamento, forma_pg) VALUES (%s,%s, %s, %s, %s)",
-                                               pagamento_com_ids)
-                            st.session_state['ids_clientes'] = []
+                            # for cliente in pagamento_com_ids:
+                            #     cursor.execute(
+                            #         "INSERT INTO pagamentos (id_reserva, data, recebedor, pagamento, forma_pg) VALUES (%s,%s, %s, %s, %s)",
+                            #         pagamento_com_ids)
+                            # st.session_state['ids_clientes'] = []
                             st.write(pagamento_com_ids)
 
                             reservas = []
