@@ -414,12 +414,11 @@ if escolha == 'Reservar':
 
 
 
-                            # sql2 = ("INSERT INTO pagamentos (id_reserva, data, recebedor, pagamento, forma_pg) VALUES (%s,%s, %s, %s, %s)")
-                            # cursor.executemany(sql2, pagamento_com_ids)
-                            # st.session_state['ids_clientes'] = []
+                            sql2 = ("INSERT INTO pagamentos (id_reserva, data, recebedor, pagamento, forma_pg) VALUES (%s,%s, %s, %s, %s)")
+                            cursor.executemany(sql2, pagamento_com_ids)
+                            st.session_state['ids_clientes'] = []
                             st.write(pagamento_com_ids)
-                            st.write(pagamentos)
-                            st.write(ids_reserva)
+
                             reservas = []
                             ids_reserva = []
                             pagamentos = []
