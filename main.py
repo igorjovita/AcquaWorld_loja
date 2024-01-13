@@ -413,9 +413,9 @@ if escolha == 'Reservar':
                             pagamento_com_ids = ids_reserva + pagamentos
 
 
-
-                            sql2 = ("INSERT INTO pagamentos (id_reserva, data, recebedor, pagamento, forma_pg) VALUES (%s,%s, %s, %s, %s)")
-                            cursor.executemany(sql2, pagamento_com_ids)
+                            for cliente in pagamento_com_ids:
+                                cursor.execute("INSERT INTO pagamentos (id_reserva, data, recebedor, pagamento, forma_pg) VALUES (%s,%s, %s, %s, %s)",
+                                               pagamento_com_ids)
                             st.session_state['ids_clientes'] = []
                             st.write(pagamento_com_ids)
 
