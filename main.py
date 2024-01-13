@@ -407,7 +407,7 @@ if escolha == 'Reservar':
                             sql = ("INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, check_in, id_titular, receber_loja) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s)")
 
                             # Executar a inserção de múltiplos valores
-                            cursor.executemany(sql, reserva)
+                            cursor.execute(sql, reserva)
                             id_reserva = cursor.lastrowid
                             ids_reserva.append(id_reserva)
 
