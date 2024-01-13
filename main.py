@@ -410,7 +410,7 @@ if escolha == 'Reservar':
                             forma_pg = 'Pix'
                             pagamentos.append((data, recebedor_sinal, sinal, forma_pg))
                         if recebedor_sinal != '':
-                            pagamento_com_ids = list(zip(ids_reserva, *pagamentos))
+                            pagamento_com_ids = list(zip(ids_reserva, pagamentos))
 
 
 
