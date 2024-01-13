@@ -354,7 +354,7 @@ if escolha == 'Reservar':
                 (data, id_cliente, tipo, id_vendedor, valor_mergulho, nome_cliente, '#FFFFFF', id_titular, valor_loja))
             st.write('---')
             forma_pg = 'Pix'
-            pagamentos.append(data, recebedor_sinal, sinal, forma_pg)
+            pagamentos.append((data, recebedor_sinal, sinal, forma_pg))
 
         if st.button('Reservar'):
             with mydb.cursor() as cursor:
