@@ -55,7 +55,8 @@ if st.button('Pesquisar Comissão'):
     ) as cnt_reserva ON reserva.Id_titular = cnt_reserva.Id_titular AND reserva.Data = cnt_reserva.Data
     WHERE 
         reserva.Data BETWEEN '{data_inicio}' AND '{data_final}' 
-        AND lancamento_comissao.Id_vendedor = {id_vendedor}
+        AND lancamento_comissao.Id_vendedor = {id_vendedor} AND
+        lancamento_comissao.situacao = '{situacao}'
     GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao""")
     resultados = cursor.fetchall()
 
