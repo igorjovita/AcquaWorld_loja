@@ -279,6 +279,7 @@ if escolha == 'Reservar':
             nome_cliente = st.text_input(f'Nome do Cliente {i + 1}:').capitalize()
             nomes_clientes.append(nome_cliente)
 
+        pagamentos = []
         reservas = []
         lista_telefone = []
         id_titular = None
@@ -308,7 +309,7 @@ if escolha == 'Reservar':
                                     index=None, placeholder='Certificação', key=f'tipo{nome_cliente}{i}')
                 valor_mergulho = st.text_input(f'Valor do Mergulho do cliente {nome_cliente}',
                                                key=f'valor{nome_cliente}{i}')
-                valor_loja = st.number_input(f'Valor a receber de {nome_cliente} :', format='%d', step=10,
+                valor_loja = st.text_input(f'Valor a receber de {nome_cliente} :', format='%d', step=10,
                                              key=f'loja{nome_cliente}{i}')
 
                 id_cliente = None
@@ -353,6 +354,8 @@ if escolha == 'Reservar':
             reservas.append(
                 (data, id_cliente, tipo, id_vendedor, valor_mergulho, nome_cliente, '#FFFFFF', id_titular, valor_loja))
             st.write('---')
+            forma_pg = 'Pix'
+            pagamentos.append(data, recebedor_sinal, sinal, forma_pg)
 
         if st.button('Reservar'):
             with mydb.cursor() as cursor:
@@ -400,19 +403,22 @@ if escolha == 'Reservar':
                         st.error('Cliente já reservado para esta data')
 
                     else:
-                        sql = ("INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, "
-                               "check_in, id_titular, receber_loja) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s)")
+                        ids_reserva = []
+                        for reserva in reservas:
+                            sql = ("INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, check_in, id_titular, receber_loja) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s)")
 
-                        # Executar a inserção de múltiplos valores
-                        cursor.executemany(sql, reservas)
+                            # Executar a inserção de múltiplos valores
+                            cursor.executemany(sql, reserva)
+                            id_reserva = cursor.lastrowid
+                            ids_reserva.append(id_reserva)
 
                         if recebedor_sinal != '':
-                            id_reserva = cursor.lastrowid
-                            forma_pg = 'Pix'
-                            cursor.execute(
-                                "INSERT INTO pagamentos (data, id_reserva, recebedor, pagamento, forma_pg) VALUES (%s, "
+                            pagamento_com_ids = list(zip(ids_reserva, *pagamentos))
+
+                            cursor.executemany(
+                                "INSERT INTO pagamentos (id_reserva, data, recebedor, pagamento, forma_pg) VALUES (%s, "
                                 "%s, %s, %s, %s)",
-                                (data, id_reserva, recebedor_sinal, int(sinal), forma_pg))
+                                pagamento_com_ids)
                             st.session_state['ids_clientes'] = []
                         st.success('Reserva realizada com sucesso!')
 
