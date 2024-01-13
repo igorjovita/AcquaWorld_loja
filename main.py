@@ -405,18 +405,18 @@ if escolha == 'Reservar':
                             # Executar a inserção de múltiplos valores
                             cursor.execute(sql, reserva)
                             id_reserva = cursor.lastrowid
-                            ids_reserva.append(id_reserva)
+
                             forma_pg = 'Pix'
-                            pagamentos.append((data.strftime('%d/%m/%Y'), recebedor_sinal, sinal, forma_pg))
+                            pagamentos.append((data.strftime('%d/%m/%Y'), id_reserva, recebedor_sinal, sinal, forma_pg))
                         if recebedor_sinal != '':
-                            ids_reserva.extend(pagamentos)
+
 
                             # for cliente in pagamento_com_ids:
                             #     cursor.execute(
-                            #         "INSERT INTO pagamentos (id_reserva, data, recebedor, pagamento, forma_pg) VALUES (%s,%s, %s, %s, %s)",
+                            #         "INSERT INTO pagamentos (data, id_reserva, recebedor, pagamento, forma_pg) VALUES (%s,%s, %s, %s, %s)",
                             #         pagamento_com_ids)
                             # st.session_state['ids_clientes'] = []
-                            st.write(ids_reserva)
+                            st.write(pagamentos)
 
                             reservas = []
                             ids_reserva = []
