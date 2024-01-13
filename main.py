@@ -418,6 +418,9 @@ if escolha == 'Reservar':
                             # cursor.executemany(sql2, pagamento_com_ids)
                             # st.session_state['ids_clientes'] = []
                             st.write(pagamento_com_ids)
+                            reservas = []
+                            ids_reserva = []
+                            pagamentos = []
                         st.success('Reserva realizada com sucesso!')
 
 if escolha == 'Editar':
