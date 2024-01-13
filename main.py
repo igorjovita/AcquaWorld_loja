@@ -309,8 +309,7 @@ if escolha == 'Reservar':
                                     index=None, placeholder='Certificação', key=f'tipo{nome_cliente}{i}')
                 valor_mergulho = st.text_input(f'Valor do Mergulho do cliente {nome_cliente}',
                                                key=f'valor{nome_cliente}{i}')
-                valor_loja = st.text_input(f'Valor a receber de {nome_cliente} :', format='%d', step=10,
-                                             key=f'loja{nome_cliente}{i}')
+                valor_loja = st.text_input(f'Valor a receber de {nome_cliente} :', key=f'loja{nome_cliente}{i}')
 
                 id_cliente = None
 
