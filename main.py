@@ -409,14 +409,14 @@ if escolha == 'Reservar':
                             forma_pg = 'Pix'
                             pagamentos.append((data.strftime('%d/%m/%Y'), recebedor_sinal, sinal, forma_pg))
                         if recebedor_sinal != '':
-                            pagamento_com_ids = ids_reserva.extend(pagamentos)
+                            ids_reserva.extend(pagamentos)
 
                             # for cliente in pagamento_com_ids:
                             #     cursor.execute(
                             #         "INSERT INTO pagamentos (id_reserva, data, recebedor, pagamento, forma_pg) VALUES (%s,%s, %s, %s, %s)",
                             #         pagamento_com_ids)
                             # st.session_state['ids_clientes'] = []
-                            st.write(pagamento_com_ids)
+                            st.write(ids_reserva)
 
                             reservas = []
                             ids_reserva = []
