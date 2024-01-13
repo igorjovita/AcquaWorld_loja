@@ -409,7 +409,7 @@ if escolha == 'Reservar':
                             forma_pg = 'Pix'
                             pagamentos.append((data.strftime('%d/%m/%Y'), recebedor_sinal, sinal, forma_pg))
                         if recebedor_sinal != '':
-                            pagamento_com_ids = ids_reserva + pagamentos
+                            pagamento_com_ids = ids_reserva.extend(pagamentos)
 
                             # for cliente in pagamento_com_ids:
                             #     cursor.execute(
