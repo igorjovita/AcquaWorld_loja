@@ -408,7 +408,7 @@ if escolha == 'Reservar':
                             id_reserva = cursor.lastrowid
                             ids_reserva.append(id_reserva)
                             forma_pg = 'Pix'
-                            pagamentos.append((data, recebedor_sinal, sinal, forma_pg))
+                            pagamentos.append((data.strftime('%d/%m/%Y'), recebedor_sinal, sinal, forma_pg))
                         if recebedor_sinal != '':
                             pagamento_com_ids = list(zip(ids_reserva, pagamentos))
 
