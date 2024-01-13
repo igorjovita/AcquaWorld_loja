@@ -414,9 +414,10 @@ if escolha == 'Reservar':
                         if recebedor_sinal != '':
                             pagamento_com_ids = list(zip(ids_reserva, *pagamentos))
 
-                            sql2 = ("INSERT INTO pagamentos (id_reserva, data, recebedor, pagamento, forma_pg) VALUES (%s,%s, %s, %s, %s)")
-                            cursor.executemany(sql2, pagamento_com_ids)
-                            st.session_state['ids_clientes'] = []
+                            # sql2 = ("INSERT INTO pagamentos (id_reserva, data, recebedor, pagamento, forma_pg) VALUES (%s,%s, %s, %s, %s)")
+                            # cursor.executemany(sql2, pagamento_com_ids)
+                            # st.session_state['ids_clientes'] = []
+                            st.write(pagamento_com_ids)
                         st.success('Reserva realizada com sucesso!')
 
 if escolha == 'Editar':
