@@ -30,35 +30,65 @@ lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).
 
 comissario = st.selectbox('Selecione o parceiro', lista_vendedor)
 situacao = st.selectbox('Situação do Pagamento', ['Pendente', 'Pago', 'Todos'], index=None, placeholder='Selecione o status do pagamento')
-data_inicio = st.date_input('Data inicial', format='DD/MM/YYYY', value=None)
-data_final = st.date_input('Data final', format='DD/MM/YYYY', value=None)
+
+filtro = st.radio('Filtrar Pesquisa',options=['Todos os resultados', 'Data Especifica'])
+if filtro == 'Data Especifica':
+    data_inicio = st.date_input('Data inicial', format='DD/MM/YYYY', value=None)
+    data_final = st.date_input('Data final', format='DD/MM/YYYY', value=None)
 if st.button('Pesquisar Comissão'):
-    cursor.execute(f"SELECT id FROM vendedores where nome = '{comissario}'")
-    id_vendedor = cursor.fetchone()[0]
-    cursor.execute(f""" SELECT 
-        reserva.Data as Data,
-        GROUP_CONCAT(DISTINCT reserva.nome_cliente SEPARATOR ' , ') as Nomes_Clientes,
-        GROUP_CONCAT(DISTINCT CONCAT(cnt, ' ', reserva.tipo) SEPARATOR ' + ') as Tipo_Clientes,
-        SUM(lancamento_comissao.valor_receber) as Valor_Receber,
-        SUM(lancamento_comissao.valor_pagar) as Valor_Pagar,
-        lancamento_comissao.situacao
-    FROM 
-        reserva
-    JOIN 
-        lancamento_comissao ON reserva.Id = lancamento_comissao.Id_reserva
-    JOIN 
-        vendedores ON lancamento_comissao.Id_vendedor = vendedores.Id
-    LEFT JOIN (
-        SELECT Id_titular, Data, COUNT(*) as cnt
-        FROM reserva
-        GROUP BY Id_titular, Data
-    ) as cnt_reserva ON reserva.Id_titular = cnt_reserva.Id_titular AND reserva.Data = cnt_reserva.Data
-    WHERE 
-        reserva.Data BETWEEN '{data_inicio}' AND '{data_final}' 
-        AND lancamento_comissao.Id_vendedor = {id_vendedor} AND
-        lancamento_comissao.situacao = '{situacao}'
-    GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao""")
-    resultados = cursor.fetchall()
+    if filtro == 'Data Especifica':
+        cursor.execute(f"SELECT id FROM vendedores where nome = '{comissario}'")
+        id_vendedor = cursor.fetchone()[0]
+        cursor.execute(f""" SELECT 
+            reserva.Data as Data,
+            GROUP_CONCAT(DISTINCT reserva.nome_cliente SEPARATOR ' , ') as Nomes_Clientes,
+            GROUP_CONCAT(DISTINCT CONCAT(cnt, ' ', reserva.tipo) SEPARATOR ' + ') as Tipo_Clientes,
+            SUM(lancamento_comissao.valor_receber) as Valor_Receber,
+            SUM(lancamento_comissao.valor_pagar) as Valor_Pagar,
+            lancamento_comissao.situacao
+        FROM 
+            reserva
+        JOIN 
+            lancamento_comissao ON reserva.Id = lancamento_comissao.Id_reserva
+        JOIN 
+            vendedores ON lancamento_comissao.Id_vendedor = vendedores.Id
+        LEFT JOIN (
+            SELECT Id_titular, Data, COUNT(*) as cnt
+            FROM reserva
+            GROUP BY Id_titular, Data
+        ) as cnt_reserva ON reserva.Id_titular = cnt_reserva.Id_titular AND reserva.Data = cnt_reserva.Data
+        WHERE 
+            reserva.Data BETWEEN '{data_inicio}' AND '{data_final}' 
+            AND lancamento_comissao.Id_vendedor = {id_vendedor} AND
+            lancamento_comissao.situacao = '{situacao}'
+        GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao""")
+        resultados = cursor.fetchall()
+    else:
+        cursor.execute(f"SELECT id FROM vendedores where nome = '{comissario}'")
+        id_vendedor = cursor.fetchone()[0]
+        cursor.execute(f""" SELECT 
+                    reserva.Data as Data,
+                    GROUP_CONCAT(DISTINCT reserva.nome_cliente SEPARATOR ' , ') as Nomes_Clientes,
+                    GROUP_CONCAT(DISTINCT CONCAT(cnt, ' ', reserva.tipo) SEPARATOR ' + ') as Tipo_Clientes,
+                    SUM(lancamento_comissao.valor_receber) as Valor_Receber,
+                    SUM(lancamento_comissao.valor_pagar) as Valor_Pagar,
+                    lancamento_comissao.situacao
+                FROM 
+                    reserva
+                JOIN 
+                    lancamento_comissao ON reserva.Id = lancamento_comissao.Id_reserva
+                JOIN 
+                    vendedores ON lancamento_comissao.Id_vendedor = vendedores.Id
+                LEFT JOIN (
+                    SELECT Id_titular, Data, COUNT(*) as cnt
+                    FROM reserva
+                    GROUP BY Id_titular, Data
+                ) as cnt_reserva ON reserva.Id_titular = cnt_reserva.Id_titular AND reserva.Data = cnt_reserva.Data
+                WHERE  
+                    lancamento_comissao.Id_vendedor = {id_vendedor} AND
+                    lancamento_comissao.situacao = '{situacao}'
+                GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao""")
+        resultados = cursor.fetchall()
 
     df = pd.DataFrame(resultados, columns=['Data', 'Nome Cliente', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
     df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
