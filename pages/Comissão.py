@@ -92,6 +92,7 @@ if st.button('Pesquisar Comissão'):
 
     df = pd.DataFrame(resultados, columns=['Data', 'Nome Cliente', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
     df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
+    total_clientes = df['Nome Cliente'].str.split(',').explode().str.strip().nunique()
     soma_clientes = df['Nome Cliente'].nunique()
     soma_receber = df['Valor a Receber'].sum()
     soma_pagar = df['Valor a Pagar'].sum()
@@ -114,7 +115,7 @@ if st.button('Pesquisar Comissão'):
     }]))
 
     # Exibir a soma abaixo da tabela
-    st.write(f"Total de clientes: {soma_clientes}")
+    st.write(f"Total de clientes: {total_clientes}")
     st.write(f"{comissario} pagar AcquaWorld: R$ {soma_receber:.2f}")
     st.write(f"AcquaWorld pagar {comissario}: R$ {soma_pagar:.2f}")
 
