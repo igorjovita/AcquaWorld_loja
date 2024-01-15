@@ -95,37 +95,35 @@ if st.button('Pesquisar Comissão'):
     # Criando layout de duas colunas
 
     # Adicionando coluna com checkboxes à primeira coluna
-    df['Selecionar'] = [st.checkbox("", key=f"checkbox_{i}", value=False) for i in range(len(df))]
+    df['Selecionar'] = [False] * len(df)
+    edited_df = st.data_editor(df, key="editable_df", edit_columns=['Valor a Receber', 'Valor a Pagar', 'Situação'])
 
     df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
     total_clientes = df['Nome Cliente'].str.split(',').explode().str.strip().nunique()
     soma_clientes = df['Nome Cliente'].nunique()
     soma_receber = df['Valor a Receber'].sum()
     soma_pagar = df['Valor a Pagar'].sum()
-    df_soma = pd.DataFrame(
-        {'Data': ['Total'], 'Nome Cliente': f'{soma_clientes} clientes', 'Valor a Receber': f'R$ {soma_receber:.2f}',
-         'Valor a Pagar': f'R$ {soma_pagar:.2f}'})
-    df_final = pd.concat([df, df_soma])
-    # Remover a última linha (soma total) antes de exibir a tabela
 
-    st.table(df.style.format({
-        'Valor Receber': 'R${:,.2f}',
-        'Valor Pagar': 'R${:,.2f}'
-    }).set_properties(**{'text-align': 'center'}).set_table_styles([{
-        'selector': 'th',
-        'props': [
-            ('text-align', 'center'),
-            ('white-space', 'nowrap'),
-            ('overflow', 'hidden'),
-            ('text-overflow', 'ellipsis'),
-            ('max-width', '200px')  # Ajuste conforme necessário
-        ]
-    }]))
+    if edited_df is not None:
 
-    # Exibir a soma abaixo da tabela
-    st.write(f"Total de clientes: {total_clientes}")
-    st.write(f"{comissario} pagar AcquaWorld: R$ {soma_receber:.2f}")
-    st.write(f"AcquaWorld pagar {comissario}: R$ {soma_pagar:.2f}")
+        st.table(df.style.format({
+            'Valor Receber': 'R${:,.2f}',
+            'Valor Pagar': 'R${:,.2f}'
+        }).set_properties(**{'text-align': 'center'}).set_table_styles([{
+            'selector': 'th',
+            'props': [
+                ('text-align', 'center'),
+                ('white-space', 'nowrap'),
+                ('overflow', 'hidden'),
+                ('text-overflow', 'ellipsis'),
+                ('max-width', '200px')  # Ajuste conforme necessário
+            ]
+        }]))
+
+        # Exibir a soma abaixo da tabela
+        st.write(f"Total de clientes: {total_clientes}")
+        st.write(f"{comissario} pagar AcquaWorld: R$ {soma_receber:.2f}")
+        st.write(f"AcquaWorld pagar {comissario}: R$ {soma_pagar:.2f}")
 
 st.write('---')
 
