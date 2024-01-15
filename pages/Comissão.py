@@ -97,8 +97,8 @@ if st.button('Pesquisar Comissão'):
     # Adicionando coluna com checkboxes à primeira coluna
     df['Selecionar'] = [False] * len(df)
     df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
-    df['Valor a Receber'] = df['Valor a Receber'].map('R${:,.2f}'.format).replace('.', ',')
-    df['Valor a Pagar'] = df['Valor a Pagar'].map('R${:,.2f}'.format).replace('.', ',')
+    df['Valor a Receber'] = df['Valor a Receber'].replace('.', ',').map('R${:,.2f}'.format)
+    df['Valor a Pagar'] = df['Valor a Pagar'].replace('.', ',').map('R${:,.2f}'.format)
 
     edited_df = st.data_editor(df, key="editable_df")
 
