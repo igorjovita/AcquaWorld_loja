@@ -96,7 +96,7 @@ if st.button('Pesquisar Comissão'):
     df['Selecionar'] = [False] * len(df)
     df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
     df['Valor a Receber'] = df['Valor a Receber'].apply(lambda x: f'R${x:,.2f}'.replace('.', '').replace(',', '.'))
-    df['Valor a Pagar'] = df['Valor a Pagar'].apply(lambda x: f'R${x:,.2f}'.replace('.', '').replace(',', '.'))
+    df['Valor a Pagar'] = df['Valor a Pagar'].apply(lambda x: f'R${x:,.2f}'.replace('.', ','))
 
     edited_df = st.data_editor(df, key="editable_df")
 
