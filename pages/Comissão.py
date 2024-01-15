@@ -20,7 +20,6 @@ mydb = mysql.connector.connect(
 
 cursor = mydb.cursor(buffered=True)
 
-
 # Comissario, Data da reserva, Nome cliente, Tipo, Pago comissario, Pago Loja
 
 st.subheader('Comissão')
@@ -29,9 +28,10 @@ cursor.execute("SELECT apelido FROM vendedores")
 lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
 
 comissario = st.selectbox('Selecione o parceiro', lista_vendedor)
-situacao = st.selectbox('Situação do Pagamento', ['Pendente', 'Pago', 'Todos'], index=None, placeholder='Selecione o status do pagamento')
+situacao = st.selectbox('Situação do Pagamento', ['Pendente', 'Pago', 'Todos'], index=None,
+                        placeholder='Selecione o status do pagamento')
 
-filtro = st.radio('Filtrar Pesquisa',options=['Todos os resultados', 'Data Especifica'])
+filtro = st.radio('Filtrar Pesquisa', options=['Todos os resultados', 'Data Especifica'])
 if filtro == 'Data Especifica':
     data_inicio = st.date_input('Data inicial', format='DD/MM/YYYY', value=None)
     data_final = st.date_input('Data final', format='DD/MM/YYYY', value=None)
@@ -90,22 +90,21 @@ if st.button('Pesquisar Comissão'):
                 GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao""")
         resultados = cursor.fetchall()
 
-    df = pd.DataFrame(resultados, columns=['Data', 'Nome Cliente', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
+    df = pd.DataFrame(resultados,
+                      columns=['Data', 'Nome Cliente', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
     # Criando layout de duas colunas
 
     # Adicionando coluna com checkboxes à primeira coluna
-    df['Selecionar'] = [st.checkbox("", key=f"checkbox_{i}", value=False) for i in range(len(df))]
-
-
-
-
+    df['Selecionar'] = [st.checkbox("", key=f"checkbox_{i}", value=False)]
 
     df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
     total_clientes = df['Nome Cliente'].str.split(',').explode().str.strip().nunique()
     soma_clientes = df['Nome Cliente'].nunique()
     soma_receber = df['Valor a Receber'].sum()
     soma_pagar = df['Valor a Pagar'].sum()
-    df_soma = pd.DataFrame({'Data': ['Total'], 'Nome Cliente': f'{soma_clientes} clientes', 'Valor a Receber': f'R$ {soma_receber:.2f}', 'Valor a Pagar': f'R$ {soma_pagar:.2f}'})
+    df_soma = pd.DataFrame(
+        {'Data': ['Total'], 'Nome Cliente': f'{soma_clientes} clientes', 'Valor a Receber': f'R$ {soma_receber:.2f}',
+         'Valor a Pagar': f'R$ {soma_pagar:.2f}'})
     df_final = pd.concat([df, df_soma])
     # Remover a última linha (soma total) antes de exibir a tabela
 
@@ -131,5 +130,3 @@ if st.button('Pesquisar Comissão'):
 st.write('---')
 
 st.subheader('Acerto Comissão')
-
-
