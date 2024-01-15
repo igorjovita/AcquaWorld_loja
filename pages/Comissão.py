@@ -94,22 +94,19 @@ if st.button('Pesquisar Comissão'):
     # Criando layout de duas colunas
 
     # Adicionando coluna com checkboxes à primeira coluna
-    df['Selecionar'] = [st.checkbox("", key=f"checkbox_{i}") for i in range(len(df))]
+    df['Selecionar'] = [st.checkbox("", key=f"checkbox_{i}", value=False) for i in range(len(df))]
 
     # Adicionando estilo personalizado com CSS para ajustar largura das checkboxes
     checkbox_style = """
-           <style>
-               input[type="checkbox"] {
-                   width: 15px;  /* Ajuste conforme necessário */
-                   height: 15px; /* Ajuste conforme necessário */
-               }
-           </style>
-       """
+        <style>
+            .streamlit-table .checkbox-container {
+                width: 20px;  /* Ajuste conforme necessário */
+            }
+        </style>
+    """
     st.markdown(checkbox_style, unsafe_allow_html=True)
 
-    col1, col2 = st.columns([0.1, 4.9])
 
-    col1.write(df['Selecionar'])
 
     df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
     total_clientes = df['Nome Cliente'].str.split(',').explode().str.strip().nunique()
@@ -120,7 +117,7 @@ if st.button('Pesquisar Comissão'):
     df_final = pd.concat([df, df_soma])
     # Remover a última linha (soma total) antes de exibir a tabela
 
-    col2.table(df.drop(columns=['Selecionar']).style.format({
+    st.dataframe(df.drop(columns=['Selecionar']).style.format({
         'Valor Receber': 'R${:,.2f}',
         'Valor Pagar': 'R${:,.2f}'
     }).set_properties(**{'text-align': 'center'}).set_table_styles([{
