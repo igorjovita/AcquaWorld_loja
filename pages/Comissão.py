@@ -103,8 +103,8 @@ if st.button('Pesquisar Comissão'):
 
     total_clientes = df['Nome Cliente'].str.split(',').explode().str.strip().nunique()
     soma_clientes = df['Nome Cliente'].nunique()
-    soma_receber = df['Valor a Receber'].sum()
-    soma_pagar = df['Valor a Pagar'].sum()
+    soma_receber = df['Valor a Receber'].replace('[\$,]', '', regex=True).astype(float).sum()
+    soma_pagar = df['Valor a Pagar'].replace('[\$,]', '', regex=True).astype(float).sum()
 
     # Exibir a soma abaixo da tabela
     st.write(f"Total de clientes: {total_clientes}")
