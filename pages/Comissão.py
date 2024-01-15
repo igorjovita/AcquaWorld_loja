@@ -96,9 +96,10 @@ if st.button('Pesquisar Comissão'):
 
     # Adicionando coluna com checkboxes à primeira coluna
     df['Selecionar'] = [False] * len(df)
+    df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
     edited_df = st.data_editor(df, key="editable_df")
 
-    df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
+
     total_clientes = df['Nome Cliente'].str.split(',').explode().str.strip().nunique()
     soma_clientes = df['Nome Cliente'].nunique()
     soma_receber = df['Valor a Receber'].sum()
