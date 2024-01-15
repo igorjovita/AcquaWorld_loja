@@ -97,16 +97,8 @@ if st.button('Pesquisar Comissão'):
     # Adicionando coluna com checkboxes à primeira coluna
     checkboxes = col1.checkbox(label="", key="checkbox_select_all")
     for i in range(len(df)):
-        checkboxes = st.checkbox(label="", key=f"checkbox_{i}")
-    checkbox_style = """
-            <style>
-                div[data-baseweb="checkbox"] {
-                    width: 10px;  /* Ajuste conforme necessário */
-                }
-            </style>
-        """
-    col1.markdown(checkbox_style, unsafe_allow_html=True)
-
+        checkboxes = [col1.checkbox(label="", key=f"checkbox_{i}")]
+        
     df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
     total_clientes = df['Nome Cliente'].str.split(',').explode().str.strip().nunique()
     soma_clientes = df['Nome Cliente'].nunique()
