@@ -118,7 +118,7 @@ if st.button('Pesquisar Comissão'):
             ('text-overflow', 'ellipsis'),
             ('max-width', '200px')  # Ajuste conforme necessário
         ]
-    })).width(800)  # Defina o valor de largura desejado em pixels
+    }])).width(800)  # Defina o valor de largura desejado em pixels
 
     # Exibir a soma abaixo da tabela
     st.write(f"Total de clientes: {total_clientes}")
