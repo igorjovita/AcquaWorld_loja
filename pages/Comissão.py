@@ -8,7 +8,7 @@ from datetime import date, datetime
 import locale
 
 # Configurando o locale para o Brasil (pt_BR)
-locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
+locale.setlocale(locale.LC_ALL, 'Portuguese_Brazil.1252')
 
 
 chars = "'),([]"
