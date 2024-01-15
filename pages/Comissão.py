@@ -91,12 +91,14 @@ if st.button('Pesquisar Comissão'):
         resultados = cursor.fetchall()
 
     df = pd.DataFrame(resultados, columns=['Data', 'Nome Cliente', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
-    checkboxes = st.checkbox(label="", key="checkbox_select_all")
-    st.write(checkboxes)
+    # Criando layout de duas colunas
+    col1, col2 = st.beta_columns(2)
+
+    # Adicionando coluna com checkboxes à primeira coluna
+    checkboxes = col1.checkbox(label="", key="checkbox_select_all")
     for i in range(len(df)):
-        checkboxes = st.checkbox(label="", key=f"checkbox_{i}")
-        st.write(checkboxes)
-        
+        checkboxes = col1.checkbox(label="", key=f"checkbox_{i}")
+
     df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
     total_clientes = df['Nome Cliente'].str.split(',').explode().str.strip().nunique()
     soma_clientes = df['Nome Cliente'].nunique()
@@ -106,7 +108,7 @@ if st.button('Pesquisar Comissão'):
     df_final = pd.concat([df, df_soma])
     # Remover a última linha (soma total) antes de exibir a tabela
 
-    st.table(df.style.format({
+    col2.st.table(df.style.format({
         'Valor Receber': 'R${:,.2f}',
         'Valor Pagar': 'R${:,.2f}'
     }).set_properties(**{'text-align': 'center'}).set_table_styles([{
