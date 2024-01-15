@@ -92,13 +92,11 @@ if st.button('Pesquisar Comissão'):
 
     df = pd.DataFrame(resultados,
                       columns=['Data', 'Nome Cliente', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
-    # Criando layout de duas colunas
 
-    # Adicionando coluna com checkboxes à primeira coluna
     df['Selecionar'] = [False] * len(df)
     df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
-    df['Valor a Receber'] = df['Valor a Receber'].replace('.', ',').map('R${:,.2f}'.format)
-    df['Valor a Pagar'] = df['Valor a Pagar'].replace('.', ',').map('R${:,.2f}'.format)
+    df['Valor a Receber'] = df['Valor a Receber'].apply(lambda x: f'R${x:,.2f}'.replace('.', ','))
+    df['Valor a Pagar'] = df['Valor a Pagar'].apply(lambda x: f'R${x:,.2f}'.replace('.', ','))
 
     edited_df = st.data_editor(df, key="editable_df")
 
