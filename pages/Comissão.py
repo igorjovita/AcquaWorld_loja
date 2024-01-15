@@ -2,14 +2,8 @@ import streamlit as st
 import pandas as pd
 from streamlit_option_menu import option_menu
 from babel.numbers import format_currency
-
 import os
 import mysql.connector
-from datetime import date, datetime
-import locale
-
-# Configurando o locale para o Brasil (pt_BR)
-# locale.setlocale(locale.LC_ALL, 'Portuguese_Brazil.1252')
 
 
 chars = "'),([]"
@@ -99,13 +93,12 @@ if st.button('Pesquisar Comissão'):
     df = pd.DataFrame(resultados,
                       columns=['Data', 'Nome Cliente', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
 
-    df['Selecionar'] = [False] * len(df)
+    df.insert(0, 'Selecionar', [False] * len(df))
     df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
     df['Valor a Receber'] = df['Valor a Receber'].map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
     df['Valor a Pagar'] = df['Valor a Pagar'].map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
 
     edited_df = st.data_editor(df, key="editable_df")
-
 
     total_clientes = df['Nome Cliente'].str.split(',').explode().str.strip().nunique()
     soma_clientes = df['Nome Cliente'].nunique()
@@ -116,7 +109,6 @@ if st.button('Pesquisar Comissão'):
     st.write(f"Total de clientes: {total_clientes}")
     st.write(f"{comissario} pagar AcquaWorld: R$ {soma_receber:.2f}")
     st.write(f"AcquaWorld pagar {comissario}: R$ {soma_pagar:.2f}")
-    st.write(locale.locale_alias)
 
 st.write('---')
 
