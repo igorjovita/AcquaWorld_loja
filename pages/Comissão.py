@@ -91,9 +91,21 @@ if st.button('Pesquisar Comissão'):
         resultados = cursor.fetchall()
 
     df = pd.DataFrame(resultados, columns=['Data', 'Nome Cliente', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
+    # Criando layout de duas colunas
+    col1, col2 = st.columns([0.1, 4.9])
 
     # Adicionando coluna com checkboxes à primeira coluna
-    df['Selecionar'] = [st.checkbox("", key=f"checkbox_{i}") for i in range(len(df))]
+    checkboxes = col1.checkbox(label="", key="checkbox_select_all")
+    for i in range(len(df)):
+        checkboxes = col1.checkbox(label="", key=f"checkbox_{i}")
+    checkbox_style = """
+            <style>
+                div[data-baseweb="checkbox"] {
+                    width: 2px;  /* Ajuste conforme necessário */
+                }
+            </style>
+        """
+    col1.markdown(checkbox_style, unsafe_allow_html=True)
 
     df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
     total_clientes = df['Nome Cliente'].str.split(',').explode().str.strip().nunique()
