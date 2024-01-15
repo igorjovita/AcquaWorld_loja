@@ -98,7 +98,7 @@ if st.button('Pesquisar Comissão'):
     df['Valor a Receber'] = df['Valor a Receber'].map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
     df['Valor a Pagar'] = df['Valor a Pagar'].map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
 
-    edited_df = st.data_editor(df, key="editable_df")
+    edited_df = st.data_editor(df, key="editable_df", hide_index=True)
 
     total_clientes = df['Nome Cliente'].str.split(',').explode().str.strip().nunique()
     soma_clientes = df['Nome Cliente'].nunique()
