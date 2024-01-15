@@ -104,7 +104,7 @@ if st.button('Pesquisar Comissão'):
     df_final = pd.concat([df, df_soma])
     # Remover a última linha (soma total) antes de exibir a tabela
 
-    st.table(df.style.format({
+    st.table(df.drop(columns=['Selecionar']).style.format({
         'Valor Receber': 'R${:,.2f}',
         'Valor Pagar': 'R${:,.2f}'
     }).set_properties(**{'text-align': 'center'}).set_table_styles([{
