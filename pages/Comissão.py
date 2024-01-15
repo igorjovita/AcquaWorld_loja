@@ -95,16 +95,16 @@ if st.button('Pesquisar Comissão'):
 
     df['Selecionar'] = [False] * len(df)
     df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
-    df['Valor a Receber'] = df['Valor a Receber'].apply(lambda x: f'R${x:,.2f}'.replace('.', ','))
-    df['Valor a Pagar'] = df['Valor a Pagar'].apply(lambda x: f'R${x:,.2f}'.replace('.', ','))
+    df['Valor a Receber'] = df['Valor a Receber'].apply(lambda x: f'R${x:,.2f}'.replace('.', '').replace(',', '.'))
+    df['Valor a Pagar'] = df['Valor a Pagar'].apply(lambda x: f'R${x:,.2f}'.replace('.', '').replace(',', '.'))
 
     edited_df = st.data_editor(df, key="editable_df")
 
 
     total_clientes = df['Nome Cliente'].str.split(',').explode().str.strip().nunique()
     soma_clientes = df['Nome Cliente'].nunique()
-    soma_receber = df['Valor a Receber'].replace('[\$,]', '', regex=True).astype(float).sum()
-    soma_pagar = df['Valor a Pagar'].replace('[\$,]', '', regex=True).astype(float).sum()
+    soma_receber = df['Valor a Receber'].replace('[^\d.]', '', regex=True).astype(float).sum()
+    soma_pagar = df['Valor a Pagar'].replace('[^\d.]', '', regex=True).astype(float).sum()
 
     # Exibir a soma abaixo da tabela
     st.write(f"Total de clientes: {total_clientes}")
