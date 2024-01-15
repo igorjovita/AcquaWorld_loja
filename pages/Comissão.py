@@ -105,6 +105,21 @@ if st.button('Pesquisar Comissão'):
     soma_receber = df['Valor a Receber'].replace('[^\d.]', '', regex=True).astype(float).sum()
     soma_pagar = df['Valor a Pagar'].replace('[^\d.]', '', regex=True).astype(float).sum()
 
+    # Configurando a largura da tabela
+    st.table(edited_df.style.format({
+        'Valor Receber': 'R${:,.2f}',
+        'Valor Pagar': 'R${:,.2f}'
+    }).set_properties(**{'text-align': 'center'}).set_table_styles([{
+        'selector': 'th',
+        'props': [
+            ('text-align', 'center'),
+            ('white-space', 'nowrap'),
+            ('overflow', 'hidden'),
+            ('text-overflow', 'ellipsis'),
+            ('max-width', '200px')  # Ajuste conforme necessário
+        ]
+    })).width(800)  # Defina o valor de largura desejado em pixels
+
     # Exibir a soma abaixo da tabela
     st.write(f"Total de clientes: {total_clientes}")
     st.write(f"{comissario} pagar AcquaWorld: R$ {soma_receber:.2f}")
