@@ -101,7 +101,7 @@ if st.button('Pesquisar Comissão'):
     checkbox_style = """
             <style>
                 div[data-baseweb="checkbox"] {
-                    width: 20px;  /* Ajuste conforme necessário */
+                    width: 10px;  /* Ajuste conforme necessário */
                 }
             </style>
         """
