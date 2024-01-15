@@ -97,7 +97,7 @@ if st.button('Pesquisar Comissão'):
     # Adicionando coluna com checkboxes à primeira coluna
     checkboxes = col1.checkbox(label="", key="checkbox_select_all")
     for i in range(len(df)):
-        checkboxes = col1.checkbox(label="", key=f"checkbox_{i}")
+        checkboxes = st.checkbox(label="", key=f"checkbox_{i}")
     checkbox_style = """
             <style>
                 div[data-baseweb="checkbox"] {
