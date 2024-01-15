@@ -91,6 +91,11 @@ if st.button('Pesquisar Comissão'):
         resultados = cursor.fetchall()
 
     df = pd.DataFrame(resultados, columns=['Data', 'Nome Cliente', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
+    # Adicionando coluna com checkboxes
+    checkboxes = [st.checkbox(label="", key=f"checkbox_{i}") for i in range(len(df))]
+
+    # Adicionando coluna ao DataFrame
+    df['Selecionar'] = checkboxes
     df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
     total_clientes = df['Nome Cliente'].str.split(',').explode().str.strip().nunique()
     soma_clientes = df['Nome Cliente'].nunique()
@@ -122,3 +127,5 @@ if st.button('Pesquisar Comissão'):
 st.write('---')
 
 st.subheader('Acerto Comissão')
+
+
