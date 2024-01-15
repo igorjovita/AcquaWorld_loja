@@ -95,7 +95,7 @@ if st.button('Pesquisar Comissão'):
     # Criando layout de duas colunas
 
     # Adicionando coluna com checkboxes à primeira coluna
-    df['Selecionar'] = [st.checkbox("", key=f"checkbox_{i}", value=False)]
+    df['Selecionar'] = [st.checkbox("", key=f"checkbox_{situacao}", value=False)]
 
     df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
     total_clientes = df['Nome Cliente'].str.split(',').explode().str.strip().nunique()
