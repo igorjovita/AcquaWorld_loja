@@ -5,7 +5,6 @@ from babel.numbers import format_currency
 import os
 import mysql.connector
 
-
 chars = "'),([]"
 chars2 = "')([]"
 
@@ -118,7 +117,7 @@ if st.button('Pesquisar Comissão'):
             ('text-overflow', 'ellipsis'),
             ('max-width', '200px')  # Ajuste conforme necessário
         ]
-    }])).set_width('800px')  # Defina o valor de largura desejado em pixels
+    }]),hide_index=True)  # Defina o valor de largura desejado em pixels
 
     # Exibir a soma abaixo da tabela
     st.write(f"Total de clientes: {total_clientes}")
