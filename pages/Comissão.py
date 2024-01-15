@@ -96,10 +96,7 @@ if st.button('Pesquisar Comissão'):
     for i in range(len(df)):
         checkboxes = st.checkbox(label="", key=f"checkbox_{i}")
         st.write(checkboxes)
-    # Adicionando coluna ao DataFrame
-
-    # Adicionando coluna ao DataFrame
-    df['Selecionar'] = checkboxes
+        
     df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
     total_clientes = df['Nome Cliente'].str.split(',').explode().str.strip().nunique()
     soma_clientes = df['Nome Cliente'].nunique()
