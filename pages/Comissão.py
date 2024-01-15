@@ -9,7 +9,7 @@ from datetime import date, datetime
 import locale
 
 # Configurando o locale para o Brasil (pt_BR)
-locale.setlocale(locale.LC_ALL, 'Portuguese_Brazil.1252')
+# locale.setlocale(locale.LC_ALL, 'Portuguese_Brazil.1252')
 
 
 chars = "'),([]"
@@ -116,6 +116,7 @@ if st.button('Pesquisar Comissão'):
     st.write(f"Total de clientes: {total_clientes}")
     st.write(f"{comissario} pagar AcquaWorld: R$ {soma_receber:.2f}")
     st.write(f"AcquaWorld pagar {comissario}: R$ {soma_pagar:.2f}")
+    st.write(locale.locale_alias)
 
 st.write('---')
 
