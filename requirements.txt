@@ -9,3 +9,4 @@ google-auth
 google-cloud
 google-cloud-storage
 google
+babel
