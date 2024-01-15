@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from streamlit_option_menu import option_menu
+from babel.numbers import format_currency
 
 import os
 import mysql.connector
@@ -100,8 +101,8 @@ if st.button('Pesquisar Comissão'):
 
     df['Selecionar'] = [False] * len(df)
     df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
-    df['Valor a Receber'] = df['Valor a Receber'].apply(lambda x: locale.currency(x, grouping=True))
-    df['Valor a Pagar'] = df['Valor a Pagar'].apply(lambda x: locale.currency(x, grouping=True))
+    df['Valor a Receber'] = df['Valor a Receber'].map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
+    df['Valor a Pagar'] = df['Valor a Pagar'].map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
 
     edited_df = st.data_editor(df, key="editable_df")
 
