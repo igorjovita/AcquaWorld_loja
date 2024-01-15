@@ -106,7 +106,7 @@ if st.button('Pesquisar Comissão'):
     soma_pagar = df['Valor a Pagar'].replace('[^\d.]', '', regex=True).astype(float).sum()
 
     # Configurando a largura da tabela
-    st.table(edited_df.style.format({
+    st.dataframe(edited_df.style.format({
         'Valor Receber': 'R${:,.2f}',
         'Valor Pagar': 'R${:,.2f}'
     }).set_properties(**{'text-align': 'center'}).set_table_styles([{
