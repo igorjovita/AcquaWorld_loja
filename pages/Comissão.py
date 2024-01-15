@@ -92,7 +92,7 @@ if st.button('Pesquisar Comissão'):
 
     df = pd.DataFrame(resultados, columns=['Data', 'Nome Cliente', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
     # Criando layout de duas colunas
-    col1, col2 = st.columns([1,4])
+    col1, col2 = st.columns([0.2, 4.8])
 
     # Adicionando coluna com checkboxes à primeira coluna
     checkboxes = col1.checkbox(label="", key="checkbox_select_all")
