@@ -91,8 +91,11 @@ if st.button('Pesquisar Comissão'):
         resultados = cursor.fetchall()
 
     df = pd.DataFrame(resultados, columns=['Data', 'Nome Cliente', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
-    checkboxes = [st.checkbox(label="", key=f"checkbox_{i}", width=25) for i in range(len(df))]
-
+    checkboxes = st.checkbox(label="", key="checkbox_select_all")
+    st.write(checkboxes)
+    for i in range(len(df)):
+        checkboxes = st.checkbox(label="", key=f"checkbox_{i}")
+        st.write(checkboxes)
     # Adicionando coluna ao DataFrame
 
     # Adicionando coluna ao DataFrame
