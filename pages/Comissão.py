@@ -101,8 +101,8 @@ if st.button('Pesquisar Comissão'):
 
     total_clientes = df['Nome Cliente'].str.split(',').explode().str.strip().nunique()
     soma_clientes = df['Nome Cliente'].nunique()
-    soma_receber = df['Valor a Receber']
-    soma_pagar = df['Valor a Pagar']
+    soma_receber = df['Valor a Receber'].replace('[^\d.]', '', regex=True).astype(float).sum()
+    soma_pagar = df['Valor a Pagar'].replace('[^\d.]', '', regex=True).astype(float).sum()
 
     # Configurando a largura da tabela
     st.dataframe(edited_df.style.format({
@@ -121,8 +121,8 @@ if st.button('Pesquisar Comissão'):
 
     # Exibir a soma abaixo da tabela
     st.write(f"Total de clientes: {total_clientes}")
-    st.write(f"{comissario} pagar AcquaWorld:  {soma_receber}")
-    st.write(f"AcquaWorld pagar {comissario}:  {soma_pagar}")
+    st.write(f"{comissario} pagar AcquaWorld: R$ {soma_receber:.2f}")
+    st.write(f"AcquaWorld pagar {comissario}: R$ {soma_pagar:.2f}")
 
 st.write('---')
 
