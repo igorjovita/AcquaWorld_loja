@@ -121,8 +121,8 @@ if st.button('Pesquisar Comissão'):
 
     # Exibir a soma abaixo da tabela
     st.write(f"Total de clientes: {total_clientes}")
-    st.write(f"{comissario} pagar AcquaWorld: R$ {soma_receber.map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))}")
-    st.write(f"AcquaWorld pagar {comissario}: R$ {soma_pagar.map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))}")
+    st.write(f"{comissario} pagar AcquaWorld: R$ {soma_receber}")
+    st.write(f"AcquaWorld pagar {comissario}: R$ {soma_pagar}")
 
 st.write('---')
 
