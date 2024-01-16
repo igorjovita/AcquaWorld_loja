@@ -101,8 +101,8 @@ if st.button('Pesquisar Comissão'):
 
     total_clientes = df['Nome Cliente'].str.split(',').explode().str.strip().nunique()
     soma_clientes = df['Nome Cliente'].nunique()
-    soma_receber = df['Valor a Receber'].replace('[^\d.]', '', regex=True).astype(float).sum()
-    soma_pagar = df['Valor a Pagar'].replace('[^\d.]', '', regex=True).astype(float).sum()
+    soma_receber = (df['Valor a Receber'].replace('[^\d.]', '', regex=True).astype(float).sum()).map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
+    soma_pagar = (df['Valor a Pagar'].replace('[^\d.]', '', regex=True).astype(float).sum()).map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
 
     # Configurando a largura da tabela
     st.dataframe(edited_df.style.format({
