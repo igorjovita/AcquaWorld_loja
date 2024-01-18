@@ -31,6 +31,13 @@ situacao = st.selectbox('Situação do Pagamento', ['Pendente', 'Pago', 'Todos']
                         placeholder='Selecione o status do pagamento')
 
 filtro = st.radio('Filtrar Pesquisa', options=['Todos os resultados', 'Data Especifica'])
+
+
+# Função para obter ou criar o session state
+def get_state():
+    return st.session_state
+
+
 if filtro == 'Data Especifica':
     data_inicio = st.date_input('Data inicial', format='DD/MM/YYYY', value=None)
     data_final = st.date_input('Data final', format='DD/MM/YYYY', value=None)
@@ -92,17 +99,20 @@ if st.button('Pesquisar Comissão'):
     df = pd.DataFrame(resultados,
                       columns=['Data', 'Nome Cliente', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
 
-    df.insert(0, 'Selecionar', [False] * len(df))
-    df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
-    df['Valor a Receber'] = df['Valor a Receber'].map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
-    df['Valor a Pagar'] = df['Valor a Pagar'].map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
+    state = get_state()
+    if 'df_state' not in state:
 
-    edited_df = st.data_editor(df, key="editable_df", hide_index=True)
+        state.df_state.insert(0, 'Selecionar', [False] * len(state.df_state))
+        state.df_state['Data'] = state.df_state['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
+        state.df_state['Valor a Receber'] = state.df_state['Valor a Receber'].map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
+        state.df_state['Valor a Pagar'] = state.df_state['Valor a Pagar'].map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
 
-    total_clientes = df['Nome Cliente'].str.split(',').explode().str.strip().nunique()
-    soma_clientes = df['Nome Cliente'].nunique()
-    soma_receber = df['Valor a Receber'].replace('[^\d.]', '', regex=True).astype(float).sum()
-    soma_pagar = df['Valor a Pagar'].replace('[^\d.]', '', regex=True).astype(float).sum()
+    state.df_state = st.data_editor(state.df_state, key="editable_df", hide_index=True)
+
+    total_clientes = state.df_state['Nome Cliente'].str.split(',').explode().str.strip().nunique()
+    soma_clientes = state.df_state['Nome Cliente'].nunique()
+    soma_receber = state.df_state['Valor a Receber'].replace('[^\d.]', '', regex=True).astype(float).sum()
+    soma_pagar = state.df_state['Valor a Pagar'].replace('[^\d.]', '', regex=True).astype(float).sum()
 
     # Exibir a soma abaixo da tabela
     st.write(f"Total de clientes: {total_clientes}")
