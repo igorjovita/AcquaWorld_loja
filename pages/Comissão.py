@@ -103,51 +103,68 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                     lancamento_comissao.situacao = '{situacao}'
                 GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao""")
         resultados = cursor.fetchall()
-        # Obtenha os índices das linhas selecionadas
-        linhas_selecionadas = state.df_state[state.df_state['Selecionar']].index
+        df = pd.DataFrame(resultados,
+                          columns=['Data', 'Nome Cliente', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
 
-        # Se houver linhas selecionadas
-        if not linhas_selecionadas.empty:
-            # Inicialize variáveis para acumular valores
-            total_receber = 0
-            total_pagar = 0
+        # Adicione uma coluna 'Selecionar' ao DataFrame
+        df.insert(0, 'Selecionar', [False] * len(df))
 
-            # Crie um DataFrame temporário para armazenar os dados selecionados
-            df_selecionado = state.df_state.loc[linhas_selecionadas].copy()
+        # Converta a coluna 'Data' para o formato desejado
+        df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
 
-            # Calcule os totais a receber e a pagar
-            total_receber = df_selecionado['Valor a Receber'].replace('[^\d.]', '', regex=True).astype(float).sum()
-            total_pagar = df_selecionado['Valor a Pagar'].replace('[^\d.]', '', regex=True).astype(float).sum()
+        # Formate as colunas 'Valor a Receber' e 'Valor a Pagar'
+        df['Valor a Receber'] = df['Valor a Receber'].map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
+        df['Valor a Pagar'] = df['Valor a Pagar'].map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
 
-            # Exibir os totais abaixo do DataFrame
-            st.write(f"Total a Receber: {format_currency(total_receber, 'BRL', locale='pt_BR')}")
-            st.write(f"Total a Pagar: {format_currency(total_pagar, 'BRL', locale='pt_BR')}")
+        # Adicione os dados ao DataFrame de estado
+        state.df_state = df
 
-            # Adicione inputs para a data e a forma de pagamento
-            data_pagamento = st.date_input('Data do Pagamento', format='DD/MM/YYYY', value=None)
-            forma_pagamento = st.text_input('Forma de Pagamento', '')
+        # Exiba o DataFrame no streamlit
+        st.dataframe(state.df_state)
 
-            # Adicione um botão para lançar o pagamento
-            if st.button('Confirmar Pagamento'):
-                # Itere sobre as linhas selecionadas e faça o processamento para cada uma delas
-                for indice in linhas_selecionadas:
-                    # Obtenha os dados da linha
-                    data = state.df_state.loc[indice, 'Data']
-                    nome_cliente = state.df_state.loc[indice, 'Nome Cliente']
-                    valor_receber = state.df_state.loc[indice, 'Valor a Receber']
-                    valor_pagar = state.df_state.loc[indice, 'Valor a Pagar']
+        # Adicionando lógica para verificar se algum checkbox foi marcado
+        if st.button('Lançar Pagamento'):
+            # Obtenha os índices das linhas selecionadas
+            linhas_selecionadas = state.df_state[state.df_state['Selecionar']].index
 
-                    # Atualize a tabela lancamento_comissao (substitua isso pela sua lógica real)
-                    cursor.execute(
-                        f"UPDATE lancamento_comissao SET situacao = 'Pago' WHERE Data = '{data}' AND Nome_Cliente = '{nome_cliente}'")
+            # Se houver linhas selecionadas
+            if not linhas_selecionadas.empty:
+                # Inicialize variáveis para acumular valores
+                total_receber = 0
+                total_pagar = 0
 
-                    # Insira na tabela pagamento_comissao (substitua isso pela sua lógica real)
-                    cursor.execute(
-                        f"INSERT INTO pagamento_comissao (Data, Nome_Cliente, Valor_Receber, Valor_Pagar, Data_Pagamento, Forma_Pagamento) VALUES ('{data}', '{nome_cliente}', {valor_receber}, {valor_pagar}, '{data_pagamento}', '{forma_pagamento}')")
+                # Crie um DataFrame temporário para armazenar os dados selecionados
+                df_selecionado = state.df_state.loc[linhas_selecionadas].copy()
 
-                    # Commit das alterações no banco de dados
-                    mydb.commit()
+                # Calcule os totais a receber e a pagar
+                total_receber = df_selecionado['Valor a Receber'].replace('[^\d.]', '', regex=True).astype(float).sum()
+                total_pagar = df_selecionado['Valor a Pagar'].replace('[^\d.]', '', regex=True).astype(float).sum()
 
+                # Exibir os totais abaixo do DataFrame
+                st.write(f"Total a Receber: {format_currency(total_receber, 'BRL', locale='pt_BR')}")
+                st.write(f"Total a Pagar: {format_currency(total_pagar, 'BRL', locale='pt_BR')}")
+
+                # Adicione inputs para a data e a forma de pagamento
+                data_pagamento = st.date_input('Data do Pagamento', format='DD/MM/YYYY', value=None)
+                forma_pagamento = st.text_input('Forma de Pagamento', '')
+
+                # Adicione um botão para lançar o pagamento
+                if st.button('Confirmar Pagamento'):
+                    # Itere sobre as linhas selecionadas e faça o processamento para cada uma delas
+                    for indice in linhas_selecionadas:
+                        # Obtenha os dados da linha
+                        data = state.df_state.loc[indice, 'Data']
+                        nome_cliente = state.df_state.loc[indice, 'Nome Cliente']
+                        valor_receber = state.df_state.loc[indice, 'Valor a Receber']
+                        valor_pagar = state.df_state.loc[indice, 'Valor a Pagar']
+
+                        # Atualize a tabela lancamento_comissao (substitua isso pela sua lógica real)
+                        cursor.execute(
+                            f"UPDATE lancamento_comissao SET situacao = 'Pago' WHERE Data = '{data}' AND Nome_Cliente = '{nome_cliente}'")
+
+                        # Insira na tabela pagamento_comissao (substitua isso pela sua lógica real)
+                        cursor.execute(
+                            f"INSERT INTO pagamento_comissao (Data, Nome_Cliente, Valor_Receber, Valor_Pagar, Data_Pagamento, Forma_Pagamento) VALUES ('{data}', '{nome_cliente}', {valor_receber}, {valor_pagar}, '{data_pagamento}', '{forma_pagamento}')")
     # df = pd.DataFrame(resultados,
     #                   columns=['Data', 'Nome Cliente', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
     #
