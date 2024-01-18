@@ -120,7 +120,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
         state.df_state = df
 
         # Exiba o DataFrame no streamlit
-        st.dataframe(state.df_state)
+        st.data_editor(state.df_state, hide_index=True)
 
         # Adicionando lógica para verificar se algum checkbox foi marcado
         if st.button('Lançar Pagamento'):
