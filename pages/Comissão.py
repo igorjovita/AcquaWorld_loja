@@ -42,7 +42,7 @@ def pressionar():
 if filtro == 'Data Especifica':
     data_inicio = st.date_input('Data inicial', format='DD/MM/YYYY', value=None)
     data_final = st.date_input('Data final', format='DD/MM/YYYY', value=None)
-if st.button('Pesquisar Comissão', on_click=pressionar):
+if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.botao_pressionado:
     if filtro == 'Data Especifica':
         cursor.execute(f"SELECT id FROM vendedores where nome = '{comissario}'")
         id_vendedor = cursor.fetchone()[0]
