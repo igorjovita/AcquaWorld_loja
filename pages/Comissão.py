@@ -113,7 +113,6 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
         df['Valor a Pagar'] = df['Valor a Pagar'].map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
 
         # Armazenar o DataFrame no Session State
-        state = get_state()
         state.df_state = df
 
         # Exibir DataFrame com st.data_editor
