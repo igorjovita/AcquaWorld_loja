@@ -142,13 +142,16 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
             total_receber = st.session_state.df_state.loc[
                 st.session_state.df_state['Selecionar'], 'Valor a Receber'].sum()
 
-            total_pagar_str = "R$ {:.2f}".format(float(total_pagar.replace('R$ ', '').replace('.', '').replace(',', '.')))
+            st.write(total_pagar)
+            st.write(total_receber)
 
-            total_receber_str = "R$ {:.2f}".format(float(total_receber.replace('R$ ', '').replace('.', '').replace(',', '.')))
-
-            # Exiba os totais abaixo da tabela
-            st.write(f"Total a Pagar: {total_pagar_str}")
-            st.write(f"Total a Receber: {total_receber_str}")
+            # total_pagar_str = "R$ {:.2f}".format(float(total_pagar.replace('R$ ', '').replace('.', '').replace(',', '.')))
+            #
+            # total_receber_str = "R$ {:.2f}".format(float(total_receber.replace('R$ ', '').replace('.', '').replace(',', '.')))
+            #
+            # # Exiba os totais abaixo da tabela
+            # st.write(f"Total a Pagar: {total_pagar_str}")
+            # st.write(f"Total a Receber: {total_receber_str}")
     # df = pd.DataFrame(resultados,
     #                   columns=['Data', 'Nome Cliente', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
     #
