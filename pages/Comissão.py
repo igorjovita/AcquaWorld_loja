@@ -4,7 +4,7 @@ from streamlit_option_menu import option_menu
 from babel.numbers import format_currency
 import os
 import mysql.connector
-
+from decimal import Decimal
 chars = "'),([]"
 chars2 = "')([]"
 
@@ -142,9 +142,9 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
             total_receber = st.session_state.df_state.loc[
                 st.session_state.df_state['Selecionar'], 'Valor a Receber'].sum()
 
-            # Formate os totais como moeda brasileira
-            total_pagar_str = format_currency(total_pagar, 'BRL', locale='pt_BR')
-            total_receber_str = format_currency(total_receber, 'BRL', locale='pt_BR')
+            # Converta os totais para Decimal e formate como moeda brasileira
+            total_pagar_str = format_currency(Decimal(str(total_pagar)), 'BRL', locale='pt_BR')
+            total_receber_str = format_currency(Decimal(str(total_receber)), 'BRL', locale='pt_BR')
 
             # Exiba os totais abaixo da tabela
             st.write(f"Total a Pagar: {total_pagar_str}")
