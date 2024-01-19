@@ -45,7 +45,7 @@ if 'botao_pressionado' not in st.session_state:
 def pressionar():
     st.session_state.botao_pressionado = True
     # Atualize a lista de itens selecionados com os IDs correspondentes
-    st.session_state.selected_items = st.session_state.df_state[st.session_state.df_state['Selecionar']]['ID'].tolist()
+    st.session_state.selected_items = st.session_state.df_state[st.session_state.df_state['Selecionar']].index.tolist()
 
 
 if filtro == 'Data Especifica':
