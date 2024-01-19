@@ -47,7 +47,7 @@ def pressionar():
     # Atualize a lista de itens selecionados com os IDs correspondentes
     st.session_state.selected_items = st.session_state.df_state[st.session_state.df_state['Selecionar']].index.tolist()
 
-
+lista_pagar = []
 if filtro == 'Data Especifica':
     data_inicio = st.date_input('Data inicial', format='DD/MM/YYYY', value=None)
     data_final = st.date_input('Data final', format='DD/MM/YYYY', value=None)
@@ -142,7 +142,10 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
             total_receber = st.session_state.df_state.loc[
                 st.session_state.df_state['Selecionar'], 'Valor a Receber'].sum()
 
-            st.write(total_pagar)
+            for valor in total_pagar:
+                lista_pagar.append(valor)
+
+            st.write(lista_pagar)
             st.write(total_receber)
 
             # total_pagar_str = "R$ {:.2f}".format(float(total_pagar.replace('R$ ', '').replace('.', '').replace(',', '.')))
