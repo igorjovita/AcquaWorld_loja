@@ -111,6 +111,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
         # Adicionar coluna de seleção e formatar valores
         df.insert(0, 'Selecionar', [False] * len(df))
         df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
+        soma_direta = df['Valor a Pagar'].sum()
         df['Valor a Receber'] = df['Valor a Receber'].map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
         df['Valor a Pagar'] = df['Valor a Pagar'].map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
 
@@ -125,7 +126,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
         soma_clientes = state.df_state['Nome Cliente'].nunique()
         soma_receber = state.df_state['Valor a Receber'].replace('[^\d.]', '', regex=True).astype(float).sum()
         soma_pagar = state.df_state['Valor a Pagar'].replace('[^\d.]', '', regex=True).astype(float).sum()
-        soma_formatado = format_currency(float(soma_pagar), 'BRL', locale='pt_BR')
+        soma_formatado = format_currency(float(soma_direta), 'BRL', locale='pt_BR')
 
         # Exibir totais abaixo do DataFrame
         st.write(f"Total de clientes: {total_clientes}")
