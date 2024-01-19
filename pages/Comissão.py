@@ -138,8 +138,9 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
         # Botão para lançar pagamento
         if st.button("Lançar Pagamento"):
             # Calcule a soma dos valores dos itens selecionados
-            total_pagar = st.session_state.df_state.loc[st.session_state.selected_items, 'Valor a Pagar'].sum()
-            total_receber = st.session_state.df_state.loc[st.session_state.selected_items, 'Valor a Receber'].sum()
+            total_pagar = st.session_state.df_state.loc[st.session_state.df_state['Selecionar'], 'Valor a Pagar'].sum()
+            total_receber = st.session_state.df_state.loc[
+                st.session_state.df_state['Selecionar'], 'Valor a Receber'].sum()
 
             # Exiba os totais abaixo da tabela
             st.write(f"Total a Pagar: {total_pagar}")
