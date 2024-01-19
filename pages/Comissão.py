@@ -142,11 +142,9 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
             total_receber = st.session_state.df_state.loc[
                 st.session_state.df_state['Selecionar'], 'Valor a Receber'].sum()
 
-            for valor in total_pagar:
-                lista_pagar.append(valor)
+            total = str(total_pagar)
 
-            st.write(lista_pagar)
-            st.write(total_receber)
+            st.write(total)
 
             # total_pagar_str = "R$ {:.2f}".format(float(total_pagar.replace('R$ ', '').replace('.', '').replace(',', '.')))
             #
