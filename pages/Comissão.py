@@ -143,8 +143,8 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                 st.session_state.df_state['Selecionar'], 'Valor a Receber'].sum()
 
             # Converta os totais para moeda brasileira
-            total_pagar_str = f"R$ {total_pagar:.2f}"
-            total_receber_str = f"R$ {total_receber:.2f}"
+            total_pagar_str = "R$ {:.2f}".format(total_pagar)
+            total_receber_str = "R$ {:.2f}".format(total_receber)
 
             # Exiba os totais abaixo da tabela
             st.write(f"Total a Pagar: {total_pagar_str}")
