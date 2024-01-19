@@ -142,9 +142,9 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
             total_receber = st.session_state.df_state.loc[
                 st.session_state.df_state['Selecionar'], 'Valor a Receber'].sum()
 
-            # Converta os totais para Decimal e formate como moeda brasileira
-            total_pagar_str = format_currency(Decimal(str(total_pagar)), 'BRL', locale='pt_BR')
-            total_receber_str = format_currency(Decimal(str(total_receber)), 'BRL', locale='pt_BR')
+            # Converta os totais para moeda brasileira
+            total_pagar_str = f"R$ {total_pagar:.2f}"
+            total_receber_str = f"R$ {total_receber:.2f}"
 
             # Exiba os totais abaixo da tabela
             st.write(f"Total a Pagar: {total_pagar_str}")
