@@ -131,7 +131,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
         # Exibir totais abaixo do DataFrame
         st.write(f"Total de clientes: {total_clientes}")
         st.write(f"{comissario} pagar AcquaWorld: R$ {soma_receber}")
-        st.write(f"AcquaWorld pagar {comissario}:{soma_formatado}")
+        st.write(f"AcquaWorld pagar {comissario}: {soma_formatado}")
 
         # Inputs para data e forma de pagamento
         data_pagamento = st.date_input("Data do Pagamento", format='DD/MM/YYYY', key="data_pagamento")
