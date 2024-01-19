@@ -44,6 +44,8 @@ if 'botao_pressionado' not in st.session_state:
 
 def pressionar():
     st.session_state.botao_pressionado = True
+    # Atualize a lista de itens selecionados com os IDs correspondentes
+    st.session_state.selected_items = st.session_state.df_state[st.session_state.df_state['Selecionar']]['ID'].tolist()
 
 
 if filtro == 'Data Especifica':
@@ -135,18 +137,15 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
 
         # Botão para lançar pagamento
         if st.button("Lançar Pagamento"):
-            # Lógica para lançar pagamento (atualizar e inserir no banco de dados)
-            for index, row in state.df_state.iterrows():
-                if row['Selecionar']:
-                    # Atualizar tabela lancamento_comissao (exemplo, ajuste conforme sua tabela)
-                    cursor.execute(
-                        f"UPDATE lancamento_comissao SET situacao = 'Pago' WHERE Id_reserva = {row['Id_reserva']}")
+            # Calcule a soma dos valores dos itens selecionados
+            total_pagar = st.session_state.df_state.loc[
+                st.session_state.df_state['ID'].isin(st.session_state.selected_items), 'Valor a Pagar'].sum()
+            total_receber = st.session_state.df_state.loc[
+                st.session_state.df_state['ID'].isin(st.session_state.selected_items), 'Valor a Receber'].sum()
 
-                    # Inserir na tabela pagamento_comissao (exemplo, ajuste conforme sua tabela)
-                    cursor.execute(f"INSERT INTO pagamento_comissao (Id_reserva, data_pagamento, forma_pagamento) "
-                                   f"VALUES ({row['Id_reserva']}, '{data_pagamento}', '{forma_pagamento}')")
-            # Limpar o Session State após lançamento de pagamento
-            state.df_state = pd.DataFrame()
+            # Exiba os totais abaixo da tabela
+            st.write(f"Total a Pagar: {total_pagar}")
+            st.write(f"Total a Receber: {total_receber}")
     # df = pd.DataFrame(resultados,
     #                   columns=['Data', 'Nome Cliente', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
     #
