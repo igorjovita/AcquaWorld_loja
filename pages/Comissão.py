@@ -132,8 +132,8 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
         col1, col2, col3 = st.columns(3)
 
         with col1:
-            st.text("Total de clientes:")
-            st.text(f'{total_clientes}').text_content_style('text-align: center;')
+            st.write("Total de clientes:")
+            st.write(f'{total_clientes}')
 
         with col2:
             st.write(f"{comissario} pagar :")
