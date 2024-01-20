@@ -151,10 +151,8 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
             total_pagar = st.session_state.df_state.loc[st.session_state.df_state['Selecionar'], 'Valor a Pagar'].sum()
             total_receber = st.session_state.df_state.loc[
                 st.session_state.df_state['Selecionar'], 'Valor a Receber'].sum()
-            st.write(total_pagar)
-            st.write(total_receber)
+
             total = str(total_pagar).replace('R$', '').replace('.', '').replace(',', '.').split()
-            st.write(total)
             for valor in total:
                 total_pagar_somado += float(valor)
 
@@ -164,10 +162,12 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
 
             if total_pagar_somado > total_receber_somado:
                 pagamento = float(total_pagar_somado) - float(total_receber_somado)
+                recebedor = f'{comissario} pagar :'
             else:
                 pagamento = float(total_receber_somado) - float(total_pagar_somado)
-
-            pagamento_input = st.text_input('Valor do pagamento', value=pagamento)
+                recebedor = f'{comissario} receber :'
+                
+            pagamento_input = st.text_input(label=recebedor, value=pagamento)
             data_pagamento = st.date_input("Data do Pagamento", format='DD/MM/YYYY', key="data_pagamento")
             forma_pagamento = st.text_input("Forma de Pagamento", key="forma_pagamento")
 
