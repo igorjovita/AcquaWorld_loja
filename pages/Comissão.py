@@ -47,7 +47,8 @@ def pressionar():
     # Atualize a lista de itens selecionados com os IDs correspondentes
     st.session_state.selected_items = st.session_state.df_state[st.session_state.df_state['Selecionar']].index.tolist()
 
-total_somado = 0
+total_pagar_somado = 0
+total_receber_somado = 0
 if filtro == 'Data Especifica':
     data_inicio = st.date_input('Data inicial', format='DD/MM/YYYY', value=None)
     data_final = st.date_input('Data final', format='DD/MM/YYYY', value=None)
@@ -145,7 +146,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
 
         if len(st.session_state.df_state.loc[st.session_state.df_state['Selecionar']]) > 0:
             st.write('---')
-
+            st.subheader('Acerto Comissão')
             # Calcule a soma dos valores dos itens selecionados
             total_pagar = st.session_state.df_state.loc[st.session_state.df_state['Selecionar'], 'Valor a Pagar'].sum()
             total_receber = st.session_state.df_state.loc[
@@ -153,14 +154,25 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
 
             total = str(total_pagar).replace('R$', '').replace(',', '.').split()
             for valor in total:
-                total_somado += float(valor)
+                total_pagar_somado += float(valor)
+
+            total2 = str(total_receber).replace('R$', '').replace(',', '.').split()
+            for valor2 in total2:
+                total_receber_somado += float(valor2)
 
             # Inputs para data e forma de pagamento
-            valor_pagar = format_currency(float(total_somado), 'BRL', locale='pt_BR')
-            pagamento = st.text_input('Valor do pagamento', value=valor_pagar)
+            valor_pagar = format_currency(float(total_pagar_somado), 'BRL', locale='pt_BR')
+            valor_receber = format_currency(float(total_receber_somado), 'BRL', locale='pt_BR')
+
+            if valor_pagar > valor_receber:
+                pagamento = float(valor_pagar) - float(valor_receber)
+            else:
+                pagamento = float(valor_receber) - float(valor_pagar)
+
+            pagamento_input = st.text_input('Valor do pagamento', value=pagamento)
             data_pagamento = st.date_input("Data do Pagamento", format='DD/MM/YYYY', key="data_pagamento")
             forma_pagamento = st.text_input("Forma de Pagamento", key="forma_pagamento")
-            
+
 
         # Botão para lançar pagamento
             if st.button("Lançar Pagamento"):
