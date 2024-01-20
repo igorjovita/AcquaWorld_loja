@@ -132,6 +132,8 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
         st.write(f"Total de clientes: {total_clientes}")
         st.write(f"{comissario} pagar AcquaWorld:   {soma_receber_formatado}")
         st.write(f"AcquaWorld pagar {comissario}: {soma_pagar_formatado}")
+        st.write(len(st.session_state.df_state['Selecionar']))
+        st.write(len(st.session_state.df_state.loc[st.session_state.df_state['Selecionar']]))
 
         if len(st.session_state.df_state['Selecionar']) > 0:
             # Inputs para data e forma de pagamento
