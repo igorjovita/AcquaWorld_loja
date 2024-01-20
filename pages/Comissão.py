@@ -163,6 +163,8 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
             # Inputs para data e forma de pagamento
             valor_pagar = format_currency(float(total_pagar_somado), 'BRL', locale='pt_BR')
             valor_receber = format_currency(float(total_receber_somado), 'BRL', locale='pt_BR')
+            st.write(valor_pagar)
+            st.write(valor_receber)
 
             if valor_pagar > valor_receber:
                 pagamento = float(valor_pagar) - float(valor_receber)
