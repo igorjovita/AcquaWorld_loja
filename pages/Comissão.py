@@ -144,6 +144,8 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
             st.write(f' {soma_pagar_formatado}')
 
         if len(st.session_state.df_state.loc[st.session_state.df_state['Selecionar']]) > 0:
+            st.write('---')
+
             # Inputs para data e forma de pagamento
             data_pagamento = st.date_input("Data do Pagamento", format='DD/MM/YYYY', key="data_pagamento")
             forma_pagamento = st.text_input("Forma de Pagamento", key="forma_pagamento")
@@ -161,32 +163,5 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
 
             st.write(format_currency(float(total_somado), 'BRL', locale='pt_BR'))
 
-            # total_pagar_str = "R$ {:.2f}".format(float(total_pagar.replace('R$ ', '').replace('.', '').replace(',', '.')))
-            # total_receber_str = "R$ {:.2f}".format(float(total_receber.replace('R$ ', '').replace('.', '').replace(',', '.')))
-            #
-            # # Exiba os totais abaixo da tabela
-            # st.write(f"Total a Pagar: {total_pagar_str}")
-            # st.write(f"Total a Receber: {total_receber_str}")
-    # df = pd.DataFrame(resultados,
-    #                   columns=['Data', 'Nome Cliente', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
-    #
-    # df.insert(0, 'Selecionar', [False] * len(df))
-    # df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
-    # df['Valor a Receber'] = df['Valor a Receber'].map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
-    # df['Valor a Pagar'] = df['Valor a Pagar'].map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
-    #
-    # edited_df = st.data_editor(df, key="editable_df", hide_index=True)
-    #
-    # total_clientes = df['Nome Cliente'].str.split(',').explode().str.strip().nunique()
-    # soma_clientes = df['Nome Cliente'].nunique()
-    # soma_receber = df['Valor a Receber'].replace('[^\d.]', '', regex=True).astype(float).sum()
-    # soma_pagar = df['Valor a Pagar'].replace('[^\d.]', '', regex=True).astype(float).sum()
-    #
-    # # Exibir a soma abaixo da tabela
-    # st.write(f"Total de clientes: {total_clientes}")
-    # st.write(f"{comissario} pagar AcquaWorld: R$ {soma_receber}")
-    # st.write(f"AcquaWorld pagar {comissario}: R$ {soma_pagar}")
 
-st.write('---')
 
-st.subheader('Acerto Comissão')
