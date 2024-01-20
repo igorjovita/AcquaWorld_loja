@@ -154,6 +154,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
             st.write(total_pagar)
             st.write(total_receber)
             total = str(total_pagar).strip('R$').replace('.', '').replace(',', '.').split()
+            st.write(total)
             for valor in total:
                 total_pagar_somado += float(valor)
 
