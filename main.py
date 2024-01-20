@@ -750,19 +750,21 @@ if escolha == 'Pagamento':
                             st.write(acquaworld_nome)
                             st.write(acquaworld_valor)
                             reserva_neto = valor_total_reserva - valor_neto
-                            situacao = 'Pendente'
 
                             if acquaworld_valor < valor_neto:
                                 valor_receber = valor_neto - acquaworld_valor
                                 valor_pagar = 0
+                                situacao = 'Pendente'
 
                             if acquaworld_valor > valor_neto:
                                 valor_receber = 0
                                 valor_pagar = acquaworld_valor - valor_neto
+                                situacao = 'Pendente'
+
                             if acquaworld_valor == valor_neto and vendedor_valor == reserva_neto:
                                 valor_receber = 0
                                 valor_pagar = 0
-                                situacao = 'Ok'
+                                situacao = 'Pago'
 
                             st.write(f'Pagar : {valor_pagar}')
                             st.write(f'Receber : {valor_receber}')
