@@ -129,10 +129,20 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
         soma_pagar_formatado = format_currency(float(soma_pagar_direta), 'BRL', locale='pt_BR')
 
         # Exibir totais abaixo do DataFrame
-        st.write(f"Total de clientes: {total_clientes}")
-        st.write(f"{comissario} pagar AcquaWorld:   {soma_receber_formatado}")
-        st.write(f"AcquaWorld pagar {comissario}: {soma_pagar_formatado}")
+        col1, col2, col3 = st.columns(3)
 
+        with col1:
+            st.write("Total de clientes:")
+            st.write(f'{total_clientes}')
+
+        with col2:
+            st.write(f"{comissario} pagar :")
+            st.write(f'{soma_receber_formatado}')
+
+        with col3:
+            st.write(f"{comissario} receber:")
+            st.write(f' {soma_pagar_formatado}')
+            
         if len(st.session_state.df_state.loc[st.session_state.df_state['Selecionar']]) > 0:
             # Inputs para data e forma de pagamento
             data_pagamento = st.date_input("Data do Pagamento", format='DD/MM/YYYY', key="data_pagamento")
