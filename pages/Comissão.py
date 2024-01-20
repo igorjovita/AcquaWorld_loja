@@ -149,15 +149,15 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
             forma_pagamento = st.text_input("Forma de Pagamento", key="forma_pagamento")
 
         # Botão para lançar pagamento
-        if st.button("Lançar Pagamento"):
-            # Calcule a soma dos valores dos itens selecionados
-            total_pagar = st.session_state.df_state.loc[st.session_state.df_state['Selecionar'], 'Valor a Pagar'].sum()
-            total_receber = st.session_state.df_state.loc[
-                st.session_state.df_state['Selecionar'], 'Valor a Receber'].sum()
+            if st.button("Lançar Pagamento"):
+                # Calcule a soma dos valores dos itens selecionados
+                total_pagar = st.session_state.df_state.loc[st.session_state.df_state['Selecionar'], 'Valor a Pagar'].sum()
+                total_receber = st.session_state.df_state.loc[
+                    st.session_state.df_state['Selecionar'], 'Valor a Receber'].sum()
 
-            total = str(total_pagar).replace('R$', '').replace(',', '.').split()
-            for valor in total:
-                total_somado += float(valor)
+                total = str(total_pagar).replace('R$', '').replace(',', '.').split()
+                for valor in total:
+                    total_somado += float(valor)
 
             st.write(format_currency(float(total_somado), 'BRL', locale='pt_BR'))
 
