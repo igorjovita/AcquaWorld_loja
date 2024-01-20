@@ -162,11 +162,11 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
 
             if total_pagar_somado > total_receber_somado:
                 pagamento = float(total_pagar_somado) - float(total_receber_somado)
-                recebedor = f'{comissario} pagar :'
+                recebedor = f'{comissario} receber :'
             else:
                 pagamento = float(total_receber_somado) - float(total_pagar_somado)
-                recebedor = f'{comissario} receber :'
-                
+                recebedor = f'{comissario} pagar :'
+
             pagamento_input = st.text_input(label=recebedor, value=pagamento)
             data_pagamento = st.date_input("Data do Pagamento", format='DD/MM/YYYY', key="data_pagamento")
             forma_pagamento = st.text_input("Forma de Pagamento", key="forma_pagamento")
