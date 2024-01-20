@@ -133,7 +133,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
 
         with col1:
             st.write("Total de clientes:")
-            st.write(f'{total_clientes}')
+            st.write(f'{total_clientes}').style('text-align: center;')
 
         with col2:
             st.write(f"{comissario} pagar :")
@@ -142,7 +142,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
         with col3:
             st.write(f"{comissario} receber:")
             st.write(f' {soma_pagar_formatado}')
-            
+
         if len(st.session_state.df_state.loc[st.session_state.df_state['Selecionar']]) > 0:
             # Inputs para data e forma de pagamento
             data_pagamento = st.date_input("Data do Pagamento", format='DD/MM/YYYY', key="data_pagamento")
