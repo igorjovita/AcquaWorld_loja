@@ -133,7 +133,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
         st.write(f"{comissario} pagar AcquaWorld:   {soma_receber_formatado}")
         st.write(f"AcquaWorld pagar {comissario}: {soma_pagar_formatado}")
 
-        if len(st.session_state.selected_items) > 0:
+        if len(st.session_state.df_state['Selecionar']) > 0:
             # Inputs para data e forma de pagamento
             data_pagamento = st.date_input("Data do Pagamento", format='DD/MM/YYYY', key="data_pagamento")
             forma_pagamento = st.text_input("Forma de Pagamento", key="forma_pagamento")
