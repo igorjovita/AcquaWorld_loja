@@ -161,7 +161,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                 for valor in total:
                     total_somado += float(valor)
 
-            st.write(format_currency(float(total_somado), 'BRL', locale='pt_BR'))
+                st.write(format_currency(float(total_somado), 'BRL', locale='pt_BR'))
 
 
 
