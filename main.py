@@ -237,7 +237,7 @@ if escolha == 'Reservar':
     mydb.connect()
     cursor.execute("SELECT apelido FROM vendedores")
     lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
-    st.subheader('Reservar Clientes')
+    st.subheader('Reservar Cliente')
 
     col1, col2, col3 = st.columns(3)
     ids_clientes = []
