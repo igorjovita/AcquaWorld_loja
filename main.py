@@ -254,35 +254,35 @@ if escolha == 'Reservar':
 
     with colu1:
         reserva_conjunta = st.selectbox('Agrupar reserva a Titular já reservado?', ['Não', 'Sim'])
-        if reserva_conjunta == 'Sim':
-            with mydb.cursor() as cursor:
-                cursor.execute(
-                    f"SELECT id_cliente, nome_cliente FROM reserva where id_titular = id_cliente and data = '{data}'")
-                resultados = cursor.fetchall()
-                for resultado in resultados:
-                    id_cliente_conjunto, nome_cliente_conjunto = resultado
+    if reserva_conjunta == 'Sim':
+        with mydb.cursor() as cursor:
+            cursor.execute(
+                f"SELECT id_cliente, nome_cliente FROM reserva where id_titular = id_cliente and data = '{data}'")
+            resultados = cursor.fetchall()
+            for resultado in resultados:
+                id_cliente_conjunto, nome_cliente_conjunto = resultado
 
-                    ids_clientes.append(id_cliente_conjunto)
-                    nomes_clientes.append(nome_cliente_conjunto)
-                st.write(id_cliente_conjunto)
-                st.write(nome_cliente_conjunto)
+                ids_clientes.append(id_cliente_conjunto)
+                nomes_clientes.append(nome_cliente_conjunto)
+            st.write(id_cliente_conjunto)
+            st.write(nome_cliente_conjunto)
 
-                with colu2:
-                    titular = st.selectbox('Esolha o titular', options=nomes_clientes)
+            with colu2:
+                titular = st.selectbox('Esolha o titular', options=nomes_clientes)
 
-            for i in range(quantidade_reserva):
-                # Campo de entrada para o nome do cliente
-                nome_cliente = st.text_input(f'Nome do Cliente {i + 1}:').capitalize()
-                nomes_clientes.append(nome_cliente)
-        else:
-            nome_titular = st.text_input('Nome do Titular da Reserva:').capitalize()
-            nomes_clientes = [nome_titular]
+        for i in range(quantidade_reserva):
+            # Campo de entrada para o nome do cliente
+            nome_cliente = st.text_input(f'Nome do Cliente {i + 1}:').capitalize()
+            nomes_clientes.append(nome_cliente)
+    else:
+        nome_titular = st.text_input('Nome do Titular da Reserva:').capitalize()
+        nomes_clientes = [nome_titular]
 
-            # Loop para os demais clientes
-            for i in range(1, quantidade_reserva):
-                # Campo de entrada para o nome do cliente
-                nome_cliente = st.text_input(f'Nome do Cliente {i + 1}:').capitalize()
-                nomes_clientes.append(nome_cliente)
+        # Loop para os demais clientes
+        for i in range(1, quantidade_reserva):
+            # Campo de entrada para o nome do cliente
+            nome_cliente = st.text_input(f'Nome do Cliente {i + 1}:').capitalize()
+            nomes_clientes.append(nome_cliente)
 
     if st.button('Inserir dados do cliente'):
         st.session_state.botao_clicado = True
