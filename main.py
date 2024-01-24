@@ -228,6 +228,12 @@ if escolha == 'Visualizar':
         st.markdown(download_link, unsafe_allow_html=True)
 
 if escolha == 'Reservar':
+    # Lista para armazenar os nomes dos clientes
+    nomes_clientes = []
+    pagamentos = []
+    reservas = []
+    lista_telefone = []
+    id_titular = None
     if 'ids_clientes' not in st.session_state:
         st.session_state['ids_clientes'] = []
 
@@ -289,12 +295,7 @@ if escolha == 'Reservar':
         else:
 
             if st.session_state.botao_clicado:
-                # Lista para armazenar os nomes dos clientes
-                nomes_clientes = []
-                pagamentos = []
-                reservas = []
-                lista_telefone = []
-                id_titular = None
+
                 # Exibir os campos adicionais para cada reserva
                 for i, nome_cliente in enumerate(nomes_clientes):
                     st.subheader(f'Reserva : {nome_cliente}')
