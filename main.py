@@ -607,7 +607,7 @@ if escolha == 'Pagamento':
                         if receber_loja is not None:
                             receber_formatado = float(str(receber_loja).translate(str.maketrans('', '', chars)))
                         else:
-                            receber_formatado = ''
+                            receber_formatado = float(0.00)
                         cursor.execute(f"SELECT recebedor, pagamento FROM pagamentos WHERE id_reserva = {id_formatado}")
                         result = cursor.fetchone()
 
