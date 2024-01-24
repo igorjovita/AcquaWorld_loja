@@ -169,7 +169,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
 
             pagamento_input = st.text_input(label=recebedor, value=pagamento)
             data_pagamento = st.date_input("Data do Pagamento", format='DD/MM/YYYY', key="data_pagamento")
-            forma_pagamento = st.text_input("Forma de Pagamento", key="forma_pagamento")
+            forma_pagamento = st.selectbox("Forma de Pagamento", options=['Pix', 'Dinheiro'], key="forma_pagamento", index=None)
 
 
         # Botão para lançar pagamento
