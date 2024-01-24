@@ -291,6 +291,7 @@ if escolha == 'Reservar':
     if st.button('Inserir dados do cliente'):
         st.session_state.botao_clicado = True
         if st.session_state.botao_clicado:
+            st.write(st.session_state.botao_clicado)
             if comissario is None:
                 st.error('Insira o vendedor dessa reserva!')
             else:
