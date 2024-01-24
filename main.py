@@ -316,7 +316,7 @@ if escolha == 'Reservar':
                         telefone = st.text_input(f'Telefone:',
                                                  key=f'telefone{nome_cliente}{i}')
                         peso = st.slider(f'Peso', 40, 160, key=f'peso{nome_cliente}{i}')
-                        recebedor_sinal = st.selectbox(f'Quem recebeu o sinal de {nome_cliente}?',
+                        recebedor_sinal = st.selectbox(f'Recebedor do Sinal',
                                                        ['AcquaWorld', 'Vendedor'],
                                                        index=None,
                                                        placeholder='Recebedor do Sinal',
