@@ -307,27 +307,27 @@ if escolha == 'Reservar':
                             st.subheader(f'Reserva  Cliente: {nome_cliente}')
                     colu1, colu2, colu3 = st.columns(3)
                     with colu1:
-                        cpf = st.text_input(f'Cpf do cliente {nome_cliente}', help='Apenas números',
+                        cpf = st.text_input(f'Cpf', help='Apenas números',
                                             key=f'cpf{nome_cliente}{i}')
-                        altura = st.slider(f'Altura do Cliente {nome_cliente}', 1.50, 2.10,
+                        altura = st.slider(f'Altura', 1.50, 2.10,
                                            key=f'altura{nome_cliente}{i}')
-                        sinal = st.text_input(f'Valor do Sinal de {nome_cliente}', key=f'sinal{nome_cliente}{i}')
+                        sinal = st.text_input(f'Valor do Sinal', key=f'sinal{nome_cliente}{i}')
                     with colu2:
-                        telefone = st.text_input(f'Telefone do Cliente {nome_cliente} :',
+                        telefone = st.text_input(f'Telefone:',
                                                  key=f'telefone{nome_cliente}{i}')
-                        peso = st.slider(f'Peso do Cliente {nome_cliente}', 40, 160, key=f'peso{nome_cliente}{i}')
+                        peso = st.slider(f'Peso', 40, 160, key=f'peso{nome_cliente}{i}')
                         recebedor_sinal = st.selectbox(f'Quem recebeu o sinal de {nome_cliente}?',
                                                        ['AcquaWorld', 'Vendedor'],
                                                        index=None,
                                                        placeholder='Recebedor do Sinal',
                                                        key=f'recebedor{nome_cliente}{i}')
                     with colu3:
-                        tipo = st.selectbox(f'Certificação do cliente {nome_cliente} : ',
+                        tipo = st.selectbox(f'Certificação: ',
                                             ('BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'),
                                             index=None, placeholder='Certificação', key=f'tipo{nome_cliente}{i}')
-                        valor_mergulho = st.text_input(f'Valor do Mergulho do cliente {nome_cliente}',
+                        valor_mergulho = st.text_input(f'Valor do Mergulho',
                                                        key=f'valor{nome_cliente}{i}')
-                        valor_loja = st.text_input(f'Valor a receber de {nome_cliente} :', key=f'loja{nome_cliente}{i}')
+                        valor_loja = st.text_input(f'Valor a receber:', key=f'loja{nome_cliente}{i}')
 
                         id_cliente = None
 
