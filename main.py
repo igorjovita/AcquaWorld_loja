@@ -270,10 +270,10 @@ if escolha == 'Reservar':
                 with colu2:
                     titular = st.selectbox('Esolha o titular', options=nomes_clientes)
 
-                for i in range(quantidade_reserva):
-                    # Campo de entrada para o nome do cliente
-                    nome_cliente = st.text_input(f'Nome do Cliente {i + 1}:').capitalize()
-                    nomes_clientes.append(nome_cliente)
+    for i in range(quantidade_reserva):
+        # Campo de entrada para o nome do cliente
+        nome_cliente = st.text_input(f'Nome do Cliente {i + 1}:').capitalize()
+        nomes_clientes.append(nome_cliente)
 
     if st.button('Inserir dados do cliente'):
         st.session_state.botao_clicado = True
