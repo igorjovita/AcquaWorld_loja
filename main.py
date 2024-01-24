@@ -237,8 +237,7 @@ if escolha == 'Reservar':
     if 'ids_clientes' not in st.session_state:
         st.session_state['ids_clientes'] = []
 
-    if 'botao_clicado' not in st.session_state:
-        st.session_state.botao_clicado = False
+
 
     mydb.connect()
     cursor.execute("SELECT apelido FROM vendedores")
@@ -287,12 +286,15 @@ if escolha == 'Reservar':
             # Campo de entrada para o nome do cliente
             nome_cliente = st.text_input(f'Nome do Cliente {i + 1}:').capitalize()
             nomes_clientes.append(nome_cliente)
+    if 'botao_clicado' not in st.session_state:
+        st.session_state.botao_clicado = False
 
     if st.button('Inserir dados do cliente'):
         st.session_state.botao_clicado = True
-        if st.session_state.botao_clicado:
-            st.write(st.session_state.botao_clicado)
-
+    if st.session_state.botao_clicado:
+        if comissario is None:
+            st.error('Insira o vendedor dessa reserva!')
+        else:
             # Exibir os campos adicionais para cada reserva
             for i, nome_cliente in enumerate(nomes_clientes):
                 st.subheader(f'Reserva : {nome_cliente}')
