@@ -290,156 +290,157 @@ if escolha == 'Reservar':
 
     if st.button('Inserir dados do cliente'):
         st.session_state.botao_clicado = True
-        if comissario is None:
-            st.error('Insira o vendedor dessa reserva!')
-        else:
-            # Exibir os campos adicionais para cada reserva
-            for i, nome_cliente in enumerate(nomes_clientes):
-                st.subheader(f'Reserva : {nome_cliente}')
-                if i < len(st.session_state['ids_clientes']):
-                    st.subheader(f'Reserva Titular: {nome_cliente}')
-                    st.text('Para acessar essa reserva posteriormente use o nome do titular!')
-                else:
-                    st.subheader(f'Reserva  Cliente: {nome_cliente}')
-                colu1, colu2, colu3 = st.columns(3)
-                with colu1:
-                    cpf = st.text_input(f'Cpf', help='Apenas números',
-                                        key=f'cpf{nome_cliente}{i}')
-                    altura = st.slider(f'Altura', 1.50, 2.10,
-                                       key=f'altura{nome_cliente}{i}')
-                    sinal = st.text_input(f'Valor do Sinal', key=f'sinal{nome_cliente}{i}')
-                with colu2:
-                    telefone = st.text_input(f'Telefone:',
-                                             key=f'telefone{nome_cliente}{i}')
-                    peso = st.slider(f'Peso', 40, 160, key=f'peso{nome_cliente}{i}')
-                    recebedor_sinal = st.selectbox(f'Recebedor do Sinal',
-                                                   ['AcquaWorld', 'Vendedor'],
-                                                   index=None,
-                                                   placeholder='Recebedor do Sinal',
-                                                   key=f'recebedor{nome_cliente}{i}')
-                with colu3:
-                    tipo = st.selectbox(f'Certificação: ',
-                                        ('BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'),
-                                        index=None, placeholder='Certificação', key=f'tipo{nome_cliente}{i}')
-                    valor_mergulho = st.text_input(f'Valor do Mergulho',
-                                                   key=f'valor{nome_cliente}{i}')
-                    valor_loja = st.text_input(f'Valor a receber:', key=f'loja{nome_cliente}{i}')
+        if st.session_state.botao_clicado:
+            if comissario is None:
+                st.error('Insira o vendedor dessa reserva!')
+            else:
+                # Exibir os campos adicionais para cada reserva
+                for i, nome_cliente in enumerate(nomes_clientes):
+                    st.subheader(f'Reserva : {nome_cliente}')
+                    if i < len(st.session_state['ids_clientes']):
+                        st.subheader(f'Reserva Titular: {nome_cliente}')
+                        st.text('Para acessar essa reserva posteriormente use o nome do titular!')
+                    else:
+                        st.subheader(f'Reserva  Cliente: {nome_cliente}')
+                    colu1, colu2, colu3 = st.columns(3)
+                    with colu1:
+                        cpf = st.text_input(f'Cpf', help='Apenas números',
+                                            key=f'cpf{nome_cliente}{i}')
+                        altura = st.slider(f'Altura', 1.50, 2.10,
+                                           key=f'altura{nome_cliente}{i}')
+                        sinal = st.text_input(f'Valor do Sinal', key=f'sinal{nome_cliente}{i}')
+                    with colu2:
+                        telefone = st.text_input(f'Telefone:',
+                                                 key=f'telefone{nome_cliente}{i}')
+                        peso = st.slider(f'Peso', 40, 160, key=f'peso{nome_cliente}{i}')
+                        recebedor_sinal = st.selectbox(f'Recebedor do Sinal',
+                                                       ['AcquaWorld', 'Vendedor'],
+                                                       index=None,
+                                                       placeholder='Recebedor do Sinal',
+                                                       key=f'recebedor{nome_cliente}{i}')
+                    with colu3:
+                        tipo = st.selectbox(f'Certificação: ',
+                                            ('BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'),
+                                            index=None, placeholder='Certificação', key=f'tipo{nome_cliente}{i}')
+                        valor_mergulho = st.text_input(f'Valor do Mergulho',
+                                                       key=f'valor{nome_cliente}{i}')
+                        valor_loja = st.text_input(f'Valor a receber:', key=f'loja{nome_cliente}{i}')
 
-                    id_cliente = None
+                        id_cliente = None
 
-                    roupa = f'{altura}/{peso}'
+                        roupa = f'{altura}/{peso}'
 
-                if st.button(f'Cadastrar {nome_cliente}', key=f'button{i}'):
-                    with mydb.cursor() as cursor:
-                        try:
-                            cursor.execute(
-                                "INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
-                                (cpf, nome_cliente, telefone, roupa))
-                            id_cliente = cursor.lastrowid
-                            st.session_state.ids_clientes.append(id_cliente)
-
-                            mydb.commit()
-                            lista_telefone.append(telefone)
-                        except IntegrityError:
-                            cursor.execute(f"SELECT id from cliente where cpf = %s and nome = %s",
-                                           (cpf, nome_cliente))
-                            info_registro = cursor.fetchone()
-                            if info_registro:
-                                id_cliente = info_registro[0]
+                    if st.button(f'Cadastrar {nome_cliente}', key=f'button{i}'):
+                        with mydb.cursor() as cursor:
+                            try:
+                                cursor.execute(
+                                    "INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
+                                    (cpf, nome_cliente, telefone, roupa))
+                                id_cliente = cursor.lastrowid
                                 st.session_state.ids_clientes.append(id_cliente)
 
-                # Adicione esta verificação antes de tentar acessar a lista
-                if i < len(st.session_state['ids_clientes']):
-                    id_cliente = st.session_state['ids_clientes'][i]
-                else:
-                    pass
-                with mydb.cursor() as cursor:
-                    cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
-                    id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
+                                mydb.commit()
+                                lista_telefone.append(telefone)
+                            except IntegrityError:
+                                cursor.execute(f"SELECT id from cliente where cpf = %s and nome = %s",
+                                               (cpf, nome_cliente))
+                                info_registro = cursor.fetchone()
+                                if info_registro:
+                                    id_cliente = info_registro[0]
+                                    st.session_state.ids_clientes.append(id_cliente)
 
-                    if reserva_conjunta == 'Sim':
-
-                        cursor.execute(f"SELECT id_cliente from reserva where nome_cliente = '{titular}'")
-                        id_titular = cursor.fetchone()[0]
-
+                    # Adicione esta verificação antes de tentar acessar a lista
+                    if i < len(st.session_state['ids_clientes']):
+                        id_cliente = st.session_state['ids_clientes'][i]
                     else:
-                        if id_titular is None:
-                            id_titular = id_cliente
+                        pass
+                    with mydb.cursor() as cursor:
+                        cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
+                        id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
 
-                reservas.append(
-                    (data, id_cliente, tipo, id_vendedor, valor_mergulho, nome_cliente, '#FFFFFF', id_titular,
-                     valor_loja))
-                st.write('---')
+                        if reserva_conjunta == 'Sim':
 
-            if st.button('Reservar'):
-                with mydb.cursor() as cursor:
-                    cursor.execute(f"SELECT COUNT(*) FROM reserva where data = '{data}'")
-                    contagem = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
-
-                    cursor.execute(f"SELECT * FROM restricao WHERE data = '{data}'")
-                    restricao = cursor.fetchone()
-
-                    cursor.execute(
-                        f"SELECT COUNT(*) FROM reserva WHERE (tipo = 'TUR2' or tipo = 'OWD' or tipo = 'ADV' or tipo = 'RESCUE' or tipo = 'REVIEW') and data = '{data}'")
-                    contagem_cred = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
-
-                    lista_cred = ['TUR2', 'OWD', 'ADV', 'RESCUE', 'REVIEW']
-
-                    if restricao is None:
-                        vaga_cred = 8
-                        vaga_total = 40
-                        vaga_bat = vaga_total - contagem_cred
-                    else:
-                        cursor.execute(
-                            f"SELECT vaga_bat, vaga_cred, vaga_total FROM restricao WHERE data = '{data}'")
-                        restricoes = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split()
-                        vaga_bat = int(restricoes[0])
-                        vaga_cred = int(restricoes[1])
-                        vaga_total = int(restricoes[2])
-
-                    if contagem >= vaga_total:
-                        st.error('Planilha está lotada nessa data!')
-
-                    elif tipo in lista_cred and contagem_cred >= vaga_cred:
-                        st.write(contagem_cred)
-                        st.write(vaga_cred)
-                        st.write(restricao)
-                        st.error('Todas as vagas de credenciados foram preenchidas')
-
-                    else:
-                        cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE id_cliente = %s and data = %s",
-                                       (id_cliente, data))
-                        verifica_cpf = cursor.fetchone()[0]
-
-                        if verifica_cpf > 0:
-                            st.error('Cliente já reservado para esta data')
+                            cursor.execute(f"SELECT id_cliente from reserva where nome_cliente = '{titular}'")
+                            id_titular = cursor.fetchone()[0]
 
                         else:
-                            ids_reserva = []
-                            for reserva in reservas:
-                                sql = (
-                                    "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, check_in, id_titular, receber_loja) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s)")
+                            if id_titular is None:
+                                id_titular = id_cliente
 
-                                # Executar a inserção de múltiplos valores
-                                cursor.execute(sql, reserva)
-                                id_reserva = cursor.lastrowid
+                    reservas.append(
+                        (data, id_cliente, tipo, id_vendedor, valor_mergulho, nome_cliente, '#FFFFFF', id_titular,
+                         valor_loja))
+                    st.write('---')
 
-                                forma_pg = 'Pix'
-                                pagamentos.append(
-                                    (data.strftime('%d/%m/%Y'), id_reserva, recebedor_sinal, sinal, forma_pg))
-                            if recebedor_sinal != '':
-                                for pagamento in pagamentos:
-                                    cursor.execute(
-                                        "INSERT INTO pagamentos (data, id_reserva, recebedor, pagamento, forma_pg) VALUES (%s,%s, %s, %s, %s)",
-                                        pagamento)
-                                st.session_state['ids_clientes'] = []
-                                st.write(pagamentos)
+                if st.button('Reservar'):
+                    with mydb.cursor() as cursor:
+                        cursor.execute(f"SELECT COUNT(*) FROM reserva where data = '{data}'")
+                        contagem = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
 
-                                reservas = []
+                        cursor.execute(f"SELECT * FROM restricao WHERE data = '{data}'")
+                        restricao = cursor.fetchone()
+
+                        cursor.execute(
+                            f"SELECT COUNT(*) FROM reserva WHERE (tipo = 'TUR2' or tipo = 'OWD' or tipo = 'ADV' or tipo = 'RESCUE' or tipo = 'REVIEW') and data = '{data}'")
+                        contagem_cred = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
+
+                        lista_cred = ['TUR2', 'OWD', 'ADV', 'RESCUE', 'REVIEW']
+
+                        if restricao is None:
+                            vaga_cred = 8
+                            vaga_total = 40
+                            vaga_bat = vaga_total - contagem_cred
+                        else:
+                            cursor.execute(
+                                f"SELECT vaga_bat, vaga_cred, vaga_total FROM restricao WHERE data = '{data}'")
+                            restricoes = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split()
+                            vaga_bat = int(restricoes[0])
+                            vaga_cred = int(restricoes[1])
+                            vaga_total = int(restricoes[2])
+
+                        if contagem >= vaga_total:
+                            st.error('Planilha está lotada nessa data!')
+
+                        elif tipo in lista_cred and contagem_cred >= vaga_cred:
+                            st.write(contagem_cred)
+                            st.write(vaga_cred)
+                            st.write(restricao)
+                            st.error('Todas as vagas de credenciados foram preenchidas')
+
+                        else:
+                            cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE id_cliente = %s and data = %s",
+                                           (id_cliente, data))
+                            verifica_cpf = cursor.fetchone()[0]
+
+                            if verifica_cpf > 0:
+                                st.error('Cliente já reservado para esta data')
+
+                            else:
                                 ids_reserva = []
-                                pagamentos = []
-                            st.success('Reserva realizada com sucesso!')
-                            st.session_state.botao_clicado = False
+                                for reserva in reservas:
+                                    sql = (
+                                        "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, check_in, id_titular, receber_loja) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s)")
+
+                                    # Executar a inserção de múltiplos valores
+                                    cursor.execute(sql, reserva)
+                                    id_reserva = cursor.lastrowid
+
+                                    forma_pg = 'Pix'
+                                    pagamentos.append(
+                                        (data.strftime('%d/%m/%Y'), id_reserva, recebedor_sinal, sinal, forma_pg))
+                                if recebedor_sinal != '':
+                                    for pagamento in pagamentos:
+                                        cursor.execute(
+                                            "INSERT INTO pagamentos (data, id_reserva, recebedor, pagamento, forma_pg) VALUES (%s,%s, %s, %s, %s)",
+                                            pagamento)
+                                    st.session_state['ids_clientes'] = []
+                                    st.write(pagamentos)
+
+                                    reservas = []
+                                    ids_reserva = []
+                                    pagamentos = []
+                                st.success('Reserva realizada com sucesso!')
+                                st.session_state.botao_clicado = False
 
 if escolha == 'Editar':
 
