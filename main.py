@@ -2,6 +2,7 @@ import base64
 import locale
 import pdfkit
 import jinja2
+from babel.numbers import format_currency
 from mysql.connector import IntegrityError
 import streamlit as st
 import pandas as pd
@@ -454,15 +455,22 @@ if escolha == 'Reservar':
                                 reservas = []
                                 ids_reserva = []
                                 pagamentos = []
+
+                            # Formatando as variáveis como moeda brasileira
+                            valor_sinal_formatado = format_currency(st.session_state.valor_sinal, 'BRL', locale='pt_BR')
+                            valor_mergulho_receber_formatado = format_currency(st.session_state.valor_mergulho_receber, 'BRL',
+                                                                               locale='pt_BR')
+                            valor_mergulho_total_formatado = format_currency(st.session_state.valor_mergulho_total, 'BRL',
+                                                                             locale='pt_BR')
                             st.success('Reserva realizada com sucesso!')
                             st.session_state.botao_clicado = False
                             st.code(f"""
                             *Reserva Concluida com Sucesso!*
                             
                             Titular da Reserva - {nome_titular}
-                            Valor total - {locale.currency(st.session_state.valor_mergulho_total, grouping=True)}
-                            Já foi pago - {locale.currency(st.session_state.valor_sinal, grouping=True)}
-                            Falta pagar - {locale.currency(st.session_state.valor_mergulho_receber, grouping=True)}
+                            Valor total - {valor_mergulho_total_formatado}
+                            Já foi pago - {valor_sinal_formatado}
+                            Falta pagar - {valor_mergulho_receber_formatado}
 
                             
                             Favor chegar na data marcada: 
