@@ -246,6 +246,9 @@ if escolha == 'Reservar':
     ids_clientes = []
     nomes_clientes = []
     nomes_titulares = []
+    valor_sinal = 0
+    valor_mergulho_total = 0
+    valor_mergulho_receber = 0
     with col1:
         data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
         comissario = st.selectbox('Vendedor:', lista_vendedor, index=None, placeholder='Escolha o vendedor')
@@ -333,6 +336,9 @@ if escolha == 'Reservar':
                     roupa = f'{altura}/{peso}'
 
                 if st.button(f'Cadastrar {nome_cliente}', key=f'button{i}'):
+                    valor_sinal += float(sinal)
+                    valor_mergulho_receber += float(valor_loja)
+                    valor_mergulho_total += float(valor_mergulho)
                     with mydb.cursor() as cursor:
                         try:
                             cursor.execute(
@@ -446,7 +452,11 @@ if escolha == 'Reservar':
                             st.code(f"""
                             Reserva Concluida com Sucesso!
                             
-                            Titular da Reserva - {nome_titular}
+                                Titular da Reserva - {nome_titular}
+                                Valor total - {valor_mergulho_total}
+                                Já foi pago - {valor_sinal}
+                                Pagar no dia {data} - {valor_mergulho_receber}
+                                
                             """)
 
 if escolha == 'Editar':
