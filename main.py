@@ -299,7 +299,7 @@ if escolha == 'Reservar':
         else:
             # Exibir os campos adicionais para cada reserva
             for i, nome_cliente in enumerate(nomes_clientes):
-                st.write(nome_cliente)
+                
                 if i < len(st.session_state['ids_clientes']):
                     st.subheader(f'Reserva Titular: {nome_cliente}')
                     st.text('Para acessar essa reserva posteriormente use o nome do titular!')
