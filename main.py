@@ -485,9 +485,9 @@ if escolha == 'Reservar':
 
                             *Na Marina dos Anjos, a prefeitura cobra uma taxa de  embarque de R$ 10,00,  por pessoa em dinheiro.*
                             """)
-                            st.session_state.valor_sinal = 0
-                            st.session_state.valor_mergulho_receber = 0
-                            st.session_state.valor_mergulho_total = 0
+                        st.session_state.valor_sinal = 0
+                        st.session_state.valor_mergulho_receber = 0
+                        st.session_state.valor_mergulho_total = 0
 
 if escolha == 'Editar':
 
