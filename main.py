@@ -247,11 +247,13 @@ if escolha == 'Reservar':
     col1, col2, col3 = st.columns(3)
     ids_clientes = []
     nomes_clientes = []
+
     with col1:
         data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
 
     with col2:
         quantidade_reserva = st.number_input('Quantidade de Reservas', min_value=0, value=0, step=1)
+
     with col3:
         comissario = st.selectbox('Vendedor:', lista_vendedor, index=None, placeholder='Escolha o vendedor')
 
@@ -259,25 +261,28 @@ if escolha == 'Reservar':
 
     with colu1:
         reserva_conjunta = st.selectbox('Agrupar reserva a Titular já reservado?', ['Não', 'Sim'])
+
     if reserva_conjunta == 'Sim':
         with mydb.cursor() as cursor:
             cursor.execute(
-                f"SELECT id_cliente, nome_cliente FROM reserva where id_titular = id_cliente and data = '{data}'")
+                f"SELECT id_cliente, nome_cliente FROM reserva WHERE id_titular = id_cliente AND data = '{data}'")
             resultados = cursor.fetchall()
             for resultado in resultados:
                 id_cliente_conjunto, nome_cliente_conjunto = resultado
-
                 ids_clientes.append(id_cliente_conjunto)
                 nomes_clientes.append(nome_cliente_conjunto)
 
             with colu2:
-                titular = st.selectbox('Esolha o titular', options=nomes_clientes)
+                titular = st.selectbox('Escolha o titular', options=nomes_clientes)
 
-        for i in range(quantidade_reserva):
-            # Campo de entrada para o nome do cliente
-            nome_cliente = st.text_input(f'Nome do Cliente {i + 1}:').capitalize()
-            nomes_clientes.append(nome_cliente)
-        nome_titular = titular
+            # Validar a seleção do titular antes de prosseguir
+            if not titular:
+                st.warning('Selecione o titular antes de adicionar clientes adicionais.')
+            else:
+                for i in range(1, quantidade_reserva):
+                    # Campo de entrada para o nome do cliente
+                    nome_cliente = st.text_input(f'Nome do Cliente {i + 1}:').capitalize()
+                    nomes_clientes.append(nome_cliente)
     else:
         nome_titular = st.text_input('Nome do Titular da Reserva:').capitalize()
         nomes_clientes = [nome_titular]
