@@ -281,7 +281,6 @@ if escolha == 'Reservar':
                     nomes_clientes.append(nome_cliente)
     else:
         nome_titular = st.text_input('Nome do Titular da Reserva:').capitalize()
-        nomes_clientes = [nome_titular]
 
         # Loop para os demais clientes
         for i in range(1, quantidade_reserva):
