@@ -465,7 +465,7 @@ if escolha == 'Reservar':
                             data_ = str(data).split('-')
                             data_formatada = f'{data_[2]}/{data_[1]}/{data_[0]}'
                             st.success('Reserva realizada com sucesso!')
-                        st.session_state.botao_clicado = False
+
                         st.code(f"""
                         *Reserva Concluida com Sucesso!*
                         
@@ -490,6 +490,7 @@ if escolha == 'Reservar':
                         st.session_state.valor_sinal = 0
                         st.session_state.valor_mergulho_receber = 0
                         st.session_state.valor_mergulho_total = 0
+                st.session_state.botao_clicado = False
 
 if escolha == 'Editar':
 
