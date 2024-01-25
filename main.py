@@ -267,7 +267,7 @@ if escolha == 'Reservar':
                 ids_clientes.append(id_cliente_conjunto)
                 nomes_clientes.append(nome_cliente_conjunto)
 
-            with colu2:
+            with col1:
                 titular = st.selectbox('Escolha o titular', options=nomes_clientes, index=None)
 
             # Validar a seleção do titular antes de prosseguir
