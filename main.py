@@ -249,7 +249,7 @@ if escolha == 'Reservar':
     ids_clientes = []
     nomes_clientes = []
     nomes_titulares = []
-    reservas_dependetes = []
+    reservas_dependentes = []
     nome_dependete = ''
     if 'valor_sinal' not in st.session_state:
         st.session_state.valor_sinal = 0
