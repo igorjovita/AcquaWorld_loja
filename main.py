@@ -246,6 +246,7 @@ if escolha == 'Reservar':
     ids_clientes = []
     nomes_clientes = []
     nomes_titulares = []
+    nome_titular = []
     with col1:
         data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
         comissario = st.selectbox('Vendedor:', lista_vendedor, index=None, placeholder='Escolha o vendedor')
@@ -298,6 +299,7 @@ if escolha == 'Reservar':
                 if i == 0:
                     st.subheader(f'Reserva Titular: {nome_cliente}')
                     st.text('Para acessar essa reserva posteriormente use o nome do titular!')
+                    nome_titular.append(nome_cliente)
                 else:
                     st.subheader(f'Reserva  Cliente: {nome_cliente}')
                 colu1, colu2, colu3 = st.columns(3)
