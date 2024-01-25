@@ -11,7 +11,7 @@ import mysql.connector
 from datetime import date, datetime
 import streamlit.components.v1
 
-locale.setlocale(locale.LC_ALL, 'pt_BR.utf-8')
+
 
 chars = "'),([]"
 chars2 = "')([]"
