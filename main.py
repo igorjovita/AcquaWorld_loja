@@ -274,7 +274,7 @@ if escolha == 'Reservar':
             if not titular:
                 st.warning('Selecione o titular antes de adicionar clientes adicionais.')
             else:
-                for i in range(1, quantidade_reserva):
+                for i in range(quantidade_reserva):
                     # Campo de entrada para o nome do cliente
                     nome_cliente = st.text_input(f'Nome do Cliente {i + 1}:').capitalize()
                     nomes_clientes.append(nome_cliente)
