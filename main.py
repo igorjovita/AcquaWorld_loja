@@ -244,23 +244,18 @@ if escolha == 'Reservar':
     lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
     st.subheader('Reservar Cliente')
 
-    col1, col2, col3 = st.columns(3)
+    col1, col2, = st.columns(2)
     ids_clientes = []
     nomes_clientes = []
 
     with col1:
         data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
+        comissario = st.selectbox('Vendedor:', lista_vendedor, index=None, placeholder='Escolha o vendedor')
 
     with col2:
         quantidade_reserva = st.number_input('Quantidade de Reservas', min_value=0, value=0, step=1)
-
-    with col3:
-        comissario = st.selectbox('Vendedor:', lista_vendedor, index=None, placeholder='Escolha o vendedor')
-
-    colu1, colu2, colu3 = st.columns(3)
-
-    with colu1:
         reserva_conjunta = st.selectbox('Agrupar reserva a Titular já reservado?', ['Não', 'Sim'])
+
 
     if reserva_conjunta == 'Sim':
         with mydb.cursor() as cursor:
