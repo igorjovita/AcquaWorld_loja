@@ -457,23 +457,26 @@ if escolha == 'Reservar':
                             st.code(f"""
                             *Reserva Concluida com Sucesso!*
                             
-                                Titular da Reserva - {nome_titular}
-                                Valor total - {st.session_state.valor_mergulho_total}
-                                Já foi pago - {st.session_state.valor_sinal}
-                                Falta pagar - {st.session_state.valor_mergulho_receber}
-                                
-                                Favor chegar na data marcada: 
+                            Titular da Reserva - {nome_titular}
+                            Valor total - {st.session_state.valor_mergulho_total}
+                            Já foi pago - {st.session_state.valor_sinal}
+                            Falta pagar - {st.session_state.valor_mergulho_receber}
+                            
+                            Favor chegar na data marcada: 
 
-                                ⚠️ {data} às 07:30hs em nossa loja 
-                                
-                                ⚠️ Favor chegar na hora pois é necessário, efetuar o restante do pagamento caso ainda não tenha feito, preencher os termos de responsabilidade/questionário médico e fazer retirada da pulseirinha que dá acesso à embarcação.
-                                
-                                ⚓ O ponto de encontro será na loja de mergulho !⚓
-                                
-                                ➡️ARRAIAL DO CABO: Praça da Bandeira, n 23, Praia dos Anjos. Loja de Madeira na esquina, um pouco depois da rodoviária Indo pra praia dos anjos.
+                            ⚠️ {data} às 07:30hs em nossa loja 
+                            
+                            ⚠️ Favor chegar na hora pois é necessário, efetuar o restante do pagamento caso ainda não tenha feito, preencher os termos de responsabilidade/questionário médico e fazer retirada da pulseirinha que dá acesso à embarcação.
+                            
+                            ⚓ O ponto de encontro será na loja de mergulho !⚓
+                            
+                            ➡️ARRAIAL DO CABO: Praça da Bandeira, n 23, Praia dos Anjos. Loja de Madeira na esquina, um pouco depois da rodoviária Indo pra praia dos anjos.
 
-                                *Na Marina dos Anjos, a prefeitura cobra uma taxa de  embarque de R$ 10,00,  por pessoa em dinheiro.*
+                            *Na Marina dos Anjos, a prefeitura cobra uma taxa de  embarque de R$ 10,00,  por pessoa em dinheiro.*
                             """)
+                            st.session_state.valor_sinal = 0
+                            st.session_state.valor_mergulho_receber = 0
+                            st.session_state.valor_mergulho_total = 0
 
 if escolha == 'Editar':
 
