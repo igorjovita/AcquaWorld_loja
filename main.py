@@ -245,7 +245,7 @@ if escolha == 'Reservar':
     col1, col2, = st.columns(2)
     ids_clientes = []
     nomes_clientes = []
-    nomes_titulares = []    
+    nomes_titulares = []
     with col1:
         data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
         comissario = st.selectbox('Vendedor:', lista_vendedor, index=None, placeholder='Escolha o vendedor')
@@ -266,7 +266,7 @@ if escolha == 'Reservar':
 
             with col1:
                 titular = st.selectbox('Escolha o titular', options=nomes_titulares, index=None)
-                nomes_clientes.append(nomes_clientes)
+                
 
             # Validar a seleção do titular antes de prosseguir
             if not titular:
