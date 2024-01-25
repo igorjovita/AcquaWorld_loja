@@ -469,7 +469,7 @@ if escolha == 'Reservar':
                             data_formatada = f'{data_[2]}/{data_[1]}/{data_[0]}'
                             st.success('Reserva realizada com sucesso!')
 
-                        for dependente in reservas_dependetes:
+                        for dependente in reservas_dependentes:
                             nome_dependete += f'Reservas dependentes : {dependente}\n'
                         st.code(f"""
                         *Reserva Concluida com Sucesso!*
