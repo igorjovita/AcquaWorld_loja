@@ -266,7 +266,7 @@ if escolha == 'Reservar':
 
             with col1:
                 titular = st.selectbox('Escolha o titular', options=nomes_titulares, index=None)
-                
+
 
             # Validar a seleção do titular antes de prosseguir
             if not titular:
@@ -295,7 +295,10 @@ if escolha == 'Reservar':
             # Exibir os campos adicionais para cada reserva
             for i, nome_cliente in enumerate(nomes_clientes):
 
-                if i == 0:
+                if reserva_conjunta == 'Sim':
+                    nome_titular = titular
+
+                if i == 0 and reserva_conjunta == 'Não':
                     st.subheader(f'Reserva Titular: {nome_cliente}')
                     st.text('Para acessar essa reserva posteriormente use o nome do titular!')
                     nome_titular = nome_cliente
