@@ -460,11 +460,11 @@ if escolha == 'Reservar':
                                 Titular da Reserva - {nome_titular}
                                 Valor total - {st.session_state.valor_mergulho_total}
                                 Já foi pago - {st.session_state.valor_sinal}
-                                Pagar no dia {data} - {st.session_state.valor_mergulho_receber}
+                                Falta pagar - {st.session_state.valor_mergulho_receber}
                                 
                                 Favor chegar na data marcada: 
 
-                                ⚠️ /  /2024 às 07:30hs em nossa loja 
+                                ⚠️ {data} às 07:30hs em nossa loja 
                                 
                                 ⚠️ Favor chegar na hora pois é necessário, efetuar o restante do pagamento caso ainda não tenha feito, preencher os termos de responsabilidade/questionário médico e fazer retirada da pulseirinha que dá acesso à embarcação.
                                 
