@@ -237,8 +237,6 @@ if escolha == 'Reservar':
     if 'ids_clientes' not in st.session_state:
         st.session_state['ids_clientes'] = []
 
-
-
     mydb.connect()
     cursor.execute("SELECT apelido FROM vendedores")
     lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
@@ -255,7 +253,6 @@ if escolha == 'Reservar':
     with col2:
         quantidade_reserva = st.number_input('Quantidade de Reservas', min_value=0, value=0, step=1)
         reserva_conjunta = st.selectbox('Agrupar reserva a Titular já reservado?', ['Não', 'Sim'])
-
 
     if reserva_conjunta == 'Sim':
         with mydb.cursor() as cursor:
@@ -280,10 +277,8 @@ if escolha == 'Reservar':
                     nome_cliente = st.text_input(f'Nome do Cliente {i + 1}:').capitalize()
                     nomes_clientes.append(nome_cliente)
     else:
-        nome_titular = st.text_input('Nome do Titular da Reserva:').capitalize()
-
         # Loop para os demais clientes
-        for i in range(1, quantidade_reserva):
+        for i in range(quantidade_reserva):
             # Campo de entrada para o nome do cliente
             nome_cliente = st.text_input(f'Nome do Cliente {i + 1}:').capitalize()
             nomes_clientes.append(nome_cliente)
