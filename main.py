@@ -12,8 +12,6 @@ import mysql.connector
 from datetime import date, datetime
 import streamlit.components.v1
 
-
-
 chars = "'),([]"
 chars2 = "')([]"
 
@@ -280,7 +278,6 @@ if escolha == 'Reservar':
             with col1:
                 titular = st.selectbox('Escolha o titular', options=nomes_titulares, index=None)
 
-
             # Validar a seleção do titular antes de prosseguir
             if not titular:
                 st.warning('Selecione o titular antes de adicionar clientes adicionais.')
@@ -461,21 +458,21 @@ if escolha == 'Reservar':
 
                             # Formatando as variáveis como moeda brasileira
                             valor_sinal_formatado = format_currency(st.session_state.valor_sinal, 'BRL', locale='pt_BR')
-                            valor_mergulho_receber_formatado = format_currency(st.session_state.valor_mergulho_receber, 'BRL',
+                            valor_mergulho_receber_formatado = format_currency(st.session_state.valor_mergulho_receber,
+                                                                               'BRL',
                                                                                locale='pt_BR')
-                            valor_mergulho_total_formatado = format_currency(st.session_state.valor_mergulho_total, 'BRL',
+                            valor_mergulho_total_formatado = format_currency(st.session_state.valor_mergulho_total,
+                                                                             'BRL',
                                                                              locale='pt_BR')
                             data_ = str(data).split('-')
                             data_formatada = f'{data_[2]}/{data_[1]}/{data_[0]}'
                             st.success('Reserva realizada com sucesso!')
 
-                        for dependente in reservas_dependentes:
-                            nome_dependete += f'Reservas dependentes : {dependente}\n'
                         st.code(f"""
                         *Reserva Concluida com Sucesso!*
                         
                         Titular da Reserva - {nome_titular}
-                        {nome_dependete}
+                        Reservas Dependentes: {', '.join(reservas_dependentes)}
                         Valor total - {valor_mergulho_total_formatado}
                         Já foi pago - {valor_sinal_formatado}
                         Falta pagar - {valor_mergulho_receber_formatado}
