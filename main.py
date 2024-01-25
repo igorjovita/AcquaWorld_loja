@@ -249,6 +249,8 @@ if escolha == 'Reservar':
     ids_clientes = []
     nomes_clientes = []
     nomes_titulares = []
+    reservas_dependetes = []
+    nome_dependete = ''
     if 'valor_sinal' not in st.session_state:
         st.session_state.valor_sinal = 0
 
@@ -314,6 +316,7 @@ if escolha == 'Reservar':
                     st.text('Para acessar essa reserva posteriormente use o nome do titular!')
                     nome_titular = nome_cliente
                 else:
+                    reservas_dependentes.append(nome_cliente)
                     st.subheader(f'Reserva  Cliente: {nome_cliente}')
                 colu1, colu2, colu3 = st.columns(3)
                 with colu1:
@@ -466,10 +469,13 @@ if escolha == 'Reservar':
                             data_formatada = f'{data_[2]}/{data_[1]}/{data_[0]}'
                             st.success('Reserva realizada com sucesso!')
 
+                        for dependente in reservas_dependetes:
+                            nome_dependete += f'Reservas dependentes : {dependente}\n'
                         st.code(f"""
                         *Reserva Concluida com Sucesso!*
                         
                         Titular da Reserva - {nome_titular}
+                        {nome_dependete}
                         Valor total - {valor_mergulho_total_formatado}
                         Já foi pago - {valor_sinal_formatado}
                         Falta pagar - {valor_mergulho_receber_formatado}
