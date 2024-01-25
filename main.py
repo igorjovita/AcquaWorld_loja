@@ -462,6 +462,8 @@ if escolha == 'Reservar':
                                                                                locale='pt_BR')
                             valor_mergulho_total_formatado = format_currency(st.session_state.valor_mergulho_total, 'BRL',
                                                                              locale='pt_BR')
+                            data_ = str(data).split('-')
+                            data_formatada = f'{data_[2]}/{data_[1]}/{data_[0]}'
                             st.success('Reserva realizada com sucesso!')
                             st.session_state.botao_clicado = False
                             st.code(f"""
@@ -475,7 +477,7 @@ if escolha == 'Reservar':
                             
                             Favor chegar na data marcada: 
 
-                            ⚠️ {data} às 07:30hs em nossa loja 
+                            ⚠️ {data_formatada} às 07:30hs em nossa loja 
                             
                             ⚠️ Favor chegar na hora pois é necessário, efetuar o restante do pagamento caso ainda não tenha feito, preencher os termos de responsabilidade/questionário médico e fazer retirada da pulseirinha que dá acesso à embarcação.
                             
