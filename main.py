@@ -455,13 +455,24 @@ if escolha == 'Reservar':
                             st.success('Reserva realizada com sucesso!')
                             st.session_state.botao_clicado = False
                             st.code(f"""
-                            Reserva Concluida com Sucesso!
+                            *Reserva Concluida com Sucesso!*
                             
                                 Titular da Reserva - {nome_titular}
                                 Valor total - {st.session_state.valor_mergulho_total}
                                 Já foi pago - {st.session_state.valor_sinal}
                                 Pagar no dia {data} - {st.session_state.valor_mergulho_receber}
                                 
+                                Favor chegar na data marcada: 
+
+                                ⚠️ /  /2024 às 07:30hs em nossa loja 
+                                
+                                ⚠️ Favor chegar na hora pois é necessário, efetuar o restante do pagamento caso ainda não tenha feito, preencher os termos de responsabilidade/questionário médico e fazer retirada da pulseirinha que dá acesso à embarcação.
+                                
+                                ⚓ O ponto de encontro será na loja de mergulho !⚓
+                                
+                                ➡️ARRAIAL DO CABO: Praça da Bandeira, n 23, Praia dos Anjos. Loja de Madeira na esquina, um pouco depois da rodoviária Indo pra praia dos anjos.
+
+                                *Na Marina dos Anjos, a prefeitura cobra uma taxa de  embarque de R$ 10,00,  por pessoa em dinheiro.*
                             """)
 
 if escolha == 'Editar':
