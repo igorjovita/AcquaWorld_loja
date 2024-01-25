@@ -446,7 +446,7 @@ if escolha == 'Reservar':
                             st.code(f"""
                             Reserva Concluida com Sucesso!
                             
-                            Titular da Reserva - {titular}
+                            Titular da Reserva - {nome_titular}
                             """)
 
 if escolha == 'Editar':
