@@ -1,5 +1,5 @@
 import base64
-
+import locale
 import pdfkit
 import jinja2
 from mysql.connector import IntegrityError
@@ -458,9 +458,10 @@ if escolha == 'Reservar':
                             *Reserva Concluida com Sucesso!*
                             
                             Titular da Reserva - {nome_titular}
-                            Valor total - {st.session_state.valor_mergulho_total}
-                            Já foi pago - {st.session_state.valor_sinal}
-                            Falta pagar - {st.session_state.valor_mergulho_receber}
+                            Valor total - {locale.currency(st.session_state.valor_mergulho_total, grouping=True)}
+                            Já foi pago - {locale.currency(st.session_state.valor_sinal, grouping=True)}
+                            Falta pagar - {locale.currency(st.session_state.valor_mergulho_receber, grouping=True)}
+
                             
                             Favor chegar na data marcada: 
 
