@@ -277,6 +277,7 @@ if escolha == 'Reservar':
             # Campo de entrada para o nome do cliente
             nome_cliente = st.text_input(f'Nome do Cliente {i + 1}:').capitalize()
             nomes_clientes.append(nome_cliente)
+        nome_titular = titular
     else:
         nome_titular = st.text_input('Nome do Titular da Reserva:').capitalize()
         nomes_clientes = [nome_titular]
@@ -442,6 +443,11 @@ if escolha == 'Reservar':
                                 pagamentos = []
                             st.success('Reserva realizada com sucesso!')
                             st.session_state.botao_clicado = False
+                            st.code(f"""
+                            Reserva Concluida com Sucesso!
+                            
+                            Titular da Reserva - {titular}
+                            """)
 
 if escolha == 'Editar':
 
