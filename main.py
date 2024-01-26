@@ -480,7 +480,7 @@ if escolha == 'Reservar':
                         *Reserva Concluida com Sucesso!*
                         
                         Titular da Reserva - {nome_titular}
-                        {st.session_state.nome_dependente}
+                            {st.session_state.nome_dependente}
                         
                         Valor total - {valor_mergulho_total_formatado}
                         Já foi pago - {valor_sinal_formatado}
@@ -502,6 +502,7 @@ if escolha == 'Reservar':
                         st.session_state.valor_sinal = 0
                         st.session_state.valor_mergulho_receber = 0
                         st.session_state.valor_mergulho_total = 0
+                        st.session_state.nome_dependente = ''
                 st.session_state.botao_clicado = False
 
 if escolha == 'Editar':
