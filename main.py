@@ -352,6 +352,7 @@ if escolha == 'Reservar':
                     st.session_state.valor_mergulho_total += float(valor_mergulho)
                     if i != 0:
                         nome_dependente += f'{nome_cliente} - {tipo} - {sinal}\n'
+                        st.write(nome_dependente)
                     with mydb.cursor() as cursor:
                         try:
                             cursor.execute(
@@ -471,7 +472,7 @@ if escolha == 'Reservar':
                             data_formatada = f'{data_[2]}/{data_[1]}/{data_[0]}'
                             st.success('Reserva realizada com sucesso!')
 
-                        
+
                         st.code(f"""
                         *Reserva Concluida com Sucesso!*
                         
