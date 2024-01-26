@@ -355,7 +355,7 @@ if escolha == 'Reservar':
                     st.session_state.valor_mergulho_total += float(valor_mergulho)
                     if i != 0:
                         st.session_state.nome_dependente += f'{nome_cliente} - {tipo} - R$ {sinal}\n'
-                        st.write(nome_dependente)
+                        st.write(st.session_state.nome_dependente)
                     with mydb.cursor() as cursor:
                         try:
                             cursor.execute(
