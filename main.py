@@ -480,7 +480,7 @@ if escolha == 'Reservar':
                         *Reserva Concluida com Sucesso!*
                         
                         Titular da Reserva - {nome_titular}
-                            {st.session_state.nome_dependente}
+                        Reservas Dependentes: {', '.join(st.session_state.nome_dependente)}
                         
                         Valor total - {valor_mergulho_total_formatado}
                         Já foi pago - {valor_sinal_formatado}
