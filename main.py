@@ -298,9 +298,6 @@ if escolha == 'Reservar':
     if 'botao_clicado' not in st.session_state:
         st.session_state.botao_clicado = False
 
-    if 'nome_dependente' not in st.session_state:
-        st.session_state.nome_dependente = ''
-
     if st.button('Inserir dados do cliente'):
         st.session_state.botao_clicado = True
     if st.session_state.botao_clicado:
@@ -354,8 +351,8 @@ if escolha == 'Reservar':
                     st.session_state.valor_mergulho_receber += float(valor_loja)
                     st.session_state.valor_mergulho_total += float(valor_mergulho)
                     if i != 0:
-                        st.session_state.nome_dependente += f'{nome_cliente} - {tipo} - R$ {sinal}\n'
-                        st.write(st.session_state.nome_dependente)
+                        nome_dependente += nome_cliente
+
                     with mydb.cursor() as cursor:
                         try:
                             cursor.execute(
@@ -480,7 +477,7 @@ if escolha == 'Reservar':
                         *Reserva Concluida com Sucesso!*
                         
                         Titular da Reserva - {nome_titular}
-                        {st.session_state.nome_dependente}
+                        {nome_dependente}
                         Valor total - {valor_mergulho_total_formatado}
                         Já foi pago - {valor_sinal_formatado}
                         Falta pagar - {valor_mergulho_receber_formatado}
