@@ -299,7 +299,7 @@ if escolha == 'Reservar':
         st.session_state.botao_clicado = False
 
     if 'nome_dependente' not in st.session_state:
-        st.session_state.nome_dependente = ''
+        st.session_state.nome_dependente = []
 
     if st.button('Inserir dados do cliente'):
         st.session_state.botao_clicado = True
@@ -354,7 +354,7 @@ if escolha == 'Reservar':
                     st.session_state.valor_mergulho_receber += float(valor_loja)
                     st.session_state.valor_mergulho_total += float(valor_mergulho)
                     if i != 0:
-                        st.session_state.nome_dependente += ', '.join([nome_cliente])
+                        st.session_state.nome_dependente.append(nome_cliente)
                     st.write(st.session_state.nome_dependente)
                     with mydb.cursor() as cursor:
                         try:
@@ -471,6 +471,9 @@ if escolha == 'Reservar':
                                                                                locale='pt_BR')
                             valor_mergulho_total_formatado = format_currency(st.session_state.valor_mergulho_total, 'BRL',
                                                                              locale='pt_BR')
+                            # Na hora de exibir, utilize a vírgula para juntar os nomes dos dependentes
+                            nomes_dependentes_formatados = ', '.join(st.session_state.nome_dependente)
+
                             data_ = str(data).split('-')
                             data_formatada = f'{data_[2]}/{data_[1]}/{data_[0]}'
                             st.success('Reserva realizada com sucesso!')
@@ -480,7 +483,7 @@ if escolha == 'Reservar':
                         *Reserva Concluida com Sucesso!*
                         
                         Titular da Reserva - {nome_titular}
-                        Reservas Dependentes: {st.session_state.nome_dependente}
+                        Reservas Dependentes: {nomes_dependentes_formatados}
                         
                         Valor total - {valor_mergulho_total_formatado}
                         Já foi pago - {valor_sinal_formatado}
