@@ -459,7 +459,7 @@ if escolha == 'Reservar':
                                         "INSERT INTO pagamentos (data, id_reserva, recebedor, pagamento, forma_pg) VALUES (%s,%s, %s, %s, %s)",
                                         pagamento)
                                 st.session_state['ids_clientes'] = []
-                                
+
 
                                 reservas = []
                                 ids_reserva = []
@@ -506,7 +506,9 @@ if escolha == 'Reservar':
                         st.session_state.valor_mergulho_receber = 0
                         st.session_state.valor_mergulho_total = 0
                         st.session_state.nome_dependente = ''
-                st.session_state.botao_clicado = False
+                if 'botao_clicado' in st.session_state:
+                    st.session_state.botao_clicado = False
+                
 
 if escolha == 'Editar':
 
