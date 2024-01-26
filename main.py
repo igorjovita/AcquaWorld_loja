@@ -459,7 +459,7 @@ if escolha == 'Reservar':
                                         "INSERT INTO pagamentos (data, id_reserva, recebedor, pagamento, forma_pg) VALUES (%s,%s, %s, %s, %s)",
                                         pagamento)
                                 st.session_state['ids_clientes'] = []
-                                st.write(pagamentos)
+                                
 
                                 reservas = []
                                 ids_reserva = []
@@ -483,7 +483,7 @@ if escolha == 'Reservar':
                         *Reserva Concluida com Sucesso!*
                         
                         Titular da Reserva - {nome_titular}
-                        Reservas Dependentes: {nomes_dependentes_formatados}
+                        Reservas Dependentes - {nomes_dependentes_formatados}
                         
                         Valor total - {valor_mergulho_total_formatado}
                         Já foi pago - {valor_sinal_formatado}
