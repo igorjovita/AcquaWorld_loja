@@ -250,7 +250,7 @@ if escolha == 'Reservar':
     nomes_clientes = []
     nomes_titulares = []
     reservas_dependentes = []
-    nome_dependete = ''
+    nome_dependente = ''
     if 'valor_sinal' not in st.session_state:
         st.session_state.valor_sinal = 0
 
@@ -351,7 +351,7 @@ if escolha == 'Reservar':
                     st.session_state.valor_mergulho_receber += float(valor_loja)
                     st.session_state.valor_mergulho_total += float(valor_mergulho)
                     if i != 0:
-                        reservas_dependentes += f'{nome_cliente} - {tipo} - {sinal}\n'
+                        nome_dependente += f'{nome_cliente} - {tipo} - {sinal}\n'
                     with mydb.cursor() as cursor:
                         try:
                             cursor.execute(
@@ -471,13 +471,12 @@ if escolha == 'Reservar':
                             data_formatada = f'{data_[2]}/{data_[1]}/{data_[0]}'
                             st.success('Reserva realizada com sucesso!')
 
-                        for dependente in reservas_dependentes:
-                            nome_dependete = f'Reservas depen {dependente}\n'
+                        
                         st.code(f"""
                         *Reserva Concluida com Sucesso!*
                         
                         Titular da Reserva - {nome_titular}
-                        {reservas_dependentes}
+                        {nome_dependente}
                         Valor total - {valor_mergulho_total_formatado}
                         Já foi pago - {valor_sinal_formatado}
                         Falta pagar - {valor_mergulho_receber_formatado}
