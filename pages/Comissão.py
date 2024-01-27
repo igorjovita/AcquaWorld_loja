@@ -146,6 +146,9 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
             total_receber = st.session_state.df_state.loc[
                 st.session_state.df_state['Selecionar'], 'Valor a Receber'].sum()
 
+            lista_titular = st.session_state.df_state.loc[
+                st.session_state.df_state['Selecionar'], 'Nome Titular'].tolist()
+
             total = str(total_pagar).replace('R$', '').replace('.', '').replace(',', '.').split()
             for valor in total:
                 total_pagar_somado += float(valor)
@@ -167,7 +170,8 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
 
 
         # Botão para lançar pagamento
-        #     if st.button("Lançar Pagamento"):
+            if st.button("Lançar Pagamento"):
+                st.write(lista_titular)
         #         with mydb.cursor() as cursor:
         #             cursor.execute("INSERT INTO pagamento_comissao (id_comissao, data, pagador, valor, forma_pg, conta) VALUES (%s, %s, %s, %s, %s, %s)",())
         #
