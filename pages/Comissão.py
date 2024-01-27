@@ -84,30 +84,29 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
         cursor.execute(f"SELECT id FROM vendedores where nome = '{comissario}'")
         id_vendedor = cursor.fetchone()[0]
         cursor.execute(f""" SELECT 
-                    reserva.Data as Data,
-                    GROUP_CONCAT(DISTINCT reserva.nome_cliente SEPARATOR ' , ') as Nomes_Clientes,
-                    GROUP_CONCAT(DISTINCT CONCAT(cnt, ' ', reserva.tipo) SEPARATOR ' + ') as Tipo_Clientes,
-                    SUM(lancamento_comissao.valor_receber) as Valor_Receber,
-                    SUM(lancamento_comissao.valor_pagar) as Valor_Pagar,
-                    lancamento_comissao.situacao
-                FROM 
-                    reserva
-                JOIN 
-                    lancamento_comissao ON reserva.Id = lancamento_comissao.Id_reserva
-                JOIN 
-                    vendedores ON lancamento_comissao.Id_vendedor = vendedores.Id
-                LEFT JOIN (
-                    SELECT Id_titular, Data, COUNT(*) as cnt
-                    FROM reserva
-                    GROUP BY Id_titular, Data
-                ) as cnt_reserva ON reserva.Id_titular = cnt_reserva.Id_titular AND reserva.Data = cnt_reserva.Data
-                WHERE  
-                    lancamento_comissao.Id_vendedor = {id_vendedor} AND
-                    lancamento_comissao.situacao = '{situacao}'
-                GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao""")
+                        reserva.Data as Data,
+                        CONCAT('Titular ', reserva.nome_cliente, ' - ', GROUP_CONCAT(DISTINCT CONCAT(cnt, ' ', reserva.tipo) SEPARATOR ' + ')) as Tipo_Clientes,
+                        SUM(lancamento_comissao.valor_receber) as Valor_Receber,
+                        SUM(lancamento_comissao.valor_pagar) as Valor_Pagar,
+                        lancamento_comissao.situacao
+                    FROM 
+                        reserva
+                    JOIN 
+                        lancamento_comissao ON reserva.Id = lancamento_comissao.Id_reserva
+                    JOIN 
+                        vendedores ON lancamento_comissao.Id_vendedor = vendedores.Id
+                    LEFT JOIN (
+                        SELECT Id_titular, Data, COUNT(*) as cnt
+                        FROM reserva
+                        GROUP BY Id_titular, Data
+                    ) as cnt_reserva ON reserva.Id_titular = cnt_reserva.Id_titular AND reserva.Data = cnt_reserva.Data
+                    WHERE  
+                        lancamento_comissao.Id_vendedor = {id_vendedor} AND
+                        lancamento_comissao.situacao = '{situacao}'
+                    GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao""")
         resultados = cursor.fetchall()
         df = pd.DataFrame(resultados,
-                          columns=['Data', 'Nome Cliente', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
+                          columns=['Data', 'Reserva', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
 
         # Adicionar coluna de seleção e formatar valores
         df.insert(0, 'Selecionar', [False] * len(df))
@@ -124,8 +123,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
         state.df_state = st.data_editor(state.df_state, key="editable_df", hide_index=True)
 
         # Calcular totais
-        total_clientes = state.df_state['Nome Cliente'].str.split(',').explode().str.strip().nunique()
-        soma_clientes = state.df_state['Nome Cliente'].nunique()
+
         soma_receber_formatado = format_currency(float(soma_receber_direta), 'BRL', locale='pt_BR')
         soma_pagar_formatado = format_currency(float(soma_pagar_direta), 'BRL', locale='pt_BR')
 
@@ -133,8 +131,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
         col1, col2, col3 = st.columns(3)
 
         with col1:
-            st.write("Total de clientes:")
-            st.write(f'{total_clientes}')
+            pass
 
         with col2:
             st.write(f"{comissario} pagar :")
@@ -173,8 +170,9 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
 
 
         # Botão para lançar pagamento
-            if st.button("Lançar Pagamento"):
-                pass
-
+        #     if st.button("Lançar Pagamento"):
+        #         with mydb.cursor() as cursor:
+        #             cursor.execute("INSERT INTO pagamento_comissao (id_comissao, data, pagador, valor, forma_pg, conta) VALUES (%s, %s, %s, %s, %s, %s)",())
+        #
 
 
