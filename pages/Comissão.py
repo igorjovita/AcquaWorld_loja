@@ -128,16 +128,12 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
         soma_pagar_formatado = format_currency(float(soma_pagar_direta), 'BRL', locale='pt_BR')
 
         # Exibir totais abaixo do DataFrame
-        col1, col2, col3 = st.columns(3)
-
+        col1, col2 = st.columns(2)
         with col1:
-            pass
-
-        with col2:
             st.write(f"{comissario} pagar :")
             st.write(f'{soma_receber_formatado}')
 
-        with col3:
+        with col2:
             st.write(f"{comissario} receber:")
             st.write(f' {soma_pagar_formatado}')
 
