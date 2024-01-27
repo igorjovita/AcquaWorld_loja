@@ -464,6 +464,12 @@ if escolha == 'Reservar':
                                 reservas = []
                                 ids_reserva = []
                                 pagamentos = []
+                            data_ = str(data).split('-')
+                            data_formatada = f'{data_[2]}/{data_[1]}/{data_[0]}'
+                            descricao = f'Sinal reserva titular {titular} dia {data_formatada}'
+                            forma_pg = 'Pix'
+                            if recebedor_sinal == 'AcquaWorld':
+                                cursor.execute("INSERT INTO caixa (data, tipo_movimento, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s)",(data, 'ENTRADA', descricao, forma_pg, sinal))
 
                             # Formatando as variáveis como moeda brasileira
                             valor_sinal_formatado = format_currency(st.session_state.valor_sinal, 'BRL', locale='pt_BR')
@@ -474,8 +480,7 @@ if escolha == 'Reservar':
                             # Na hora de exibir, utilize a vírgula para juntar os nomes dos dependentes
                             nomes_dependentes_formatados = ', '.join(st.session_state.nome_dependente)
 
-                            data_ = str(data).split('-')
-                            data_formatada = f'{data_[2]}/{data_[1]}/{data_[0]}'
+
                             st.success('Reserva realizada com sucesso!')
 
 
@@ -508,7 +513,7 @@ if escolha == 'Reservar':
                         st.session_state.nome_dependente = ''
                 if 'botao_clicado' in st.session_state:
                     st.session_state.botao_clicado = False
-                
+
 
 if escolha == 'Editar':
 
