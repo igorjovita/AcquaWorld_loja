@@ -327,7 +327,6 @@ if escolha == 'Reservar':
             if contagem >= vaga_total:
                 st.error('Planilha está lotada nessa data!')
 
-
         if comissario is None:
             st.error('Insira o vendedor dessa reserva!')
         else:
@@ -460,7 +459,7 @@ if escolha == 'Reservar':
                                 pagamentos = []
                             data_ = str(data).split('-')
                             data_formatada = f'{data_[2]}/{data_[1]}/{data_[0]}'
-                            descricao = f'Sinal reserva titular {titular} dia {data_formatada}'
+                            descricao = f'Sinal reserva titular {nome_titular} dia {data_formatada}'
                             forma_pg = 'Pix'
                             if recebedor_sinal == 'AcquaWorld':
                                 cursor.execute(
