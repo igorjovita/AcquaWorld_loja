@@ -247,10 +247,7 @@ if escolha == 'Reservar':
 
     col1, col2, = st.columns(2)
     ids_clientes = []
-    nomes_clientes = []
     nomes_titulares = []
-    reservas_dependentes = []
-    nome_dependente = ''
     if 'valor_sinal' not in st.session_state:
         st.session_state.valor_sinal = 0
 
@@ -319,7 +316,6 @@ if escolha == 'Reservar':
                     st.text('Para acessar essa reserva posteriormente use o nome do titular!')
                     nome_titular = nome_cliente
                 else:
-                    reservas_dependentes.append(nome_cliente)
                     st.subheader(f'Reserva  Cliente: {nome_cliente}')
                 colu1, colu2, colu3 = st.columns(3)
                 with colu1:
