@@ -88,7 +88,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                         CONCAT('Titular ', reserva.nome_cliente, ' - ', GROUP_CONCAT(DISTINCT CONCAT(cnt, ' ', reserva.tipo) SEPARATOR ' + ')) as Tipo_Clientes,
                         SUM(lancamento_comissao.valor_receber) as Valor_Receber,
                         SUM(lancamento_comissao.valor_pagar) as Valor_Pagar,
-                        SUM(pagamentos.pagamento as Valor_Pago,
+                        SUM(pagamentos.pagamento) as Valor_Pago,
                         lancamento_comissao.situacao
                     FROM 
                         reserva
