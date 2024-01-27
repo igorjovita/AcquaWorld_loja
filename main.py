@@ -461,18 +461,20 @@ if escolha == 'Reservar':
                             data_formatada = f'{data_[2]}/{data_[1]}/{data_[0]}'
                             descricao = f'Sinal reserva titular {nome_titular} dia {data_formatada}'
                             forma_pg = 'Pix'
-                            if recebedor_sinal == 'AcquaWorld':
-                                cursor.execute(
-                                    "INSERT INTO caixa (data, tipo_movimento, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s)",
-                                    (data, 'ENTRADA', descricao, forma_pg, sinal))
-
                             # Formatando as variáveis como moeda brasileira
                             valor_sinal_formatado = format_currency(st.session_state.valor_sinal, 'BRL', locale='pt_BR')
                             valor_mergulho_receber_formatado = format_currency(st.session_state.valor_mergulho_receber,
                                                                                'BRL',
                                                                                locale='pt_BR')
-                            valor_mergulho_total_formatado = format_currency(st.session_state.valor_mergulho_total, 'BRL',
+                            valor_mergulho_total_formatado = format_currency(st.session_state.valor_mergulho_total,
+                                                                             'BRL',
                                                                              locale='pt_BR')
+                            if recebedor_sinal == 'AcquaWorld':
+                                cursor.execute(
+                                    "INSERT INTO caixa (data, tipo_movimento, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s)",
+                                    (data, 'ENTRADA', descricao, forma_pg, st.session_state.valor_sinal))
+
+
                             # Na hora de exibir, utilize a vírgula para juntar os nomes dos dependentes
                             nomes_dependentes_formatados = ', '.join(st.session_state.nome_dependente)
 
