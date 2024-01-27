@@ -12,8 +12,6 @@ import mysql.connector
 from datetime import date, datetime
 import streamlit.components.v1
 
-
-
 chars = "'),([]"
 chars2 = "')([]"
 
@@ -277,7 +275,6 @@ if escolha == 'Reservar':
             with col1:
                 titular = st.selectbox('Escolha o titular', options=nomes_titulares, index=None)
 
-
             # Validar a seleção do titular antes de prosseguir
             if not titular:
                 st.warning('Selecione o titular antes de adicionar clientes adicionais.')
@@ -301,7 +298,39 @@ if escolha == 'Reservar':
     if st.button('Inserir dados do cliente'):
         st.session_state.botao_clicado = True
     if st.session_state.botao_clicado:
+        with mydb.cursor() as cursor:
+            cursor.execute(f"SELECT COUNT(*) FROM reserva where data = '{data}'")
+            contagem = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
 
+            cursor.execute(f"SELECT * FROM restricao WHERE data = '{data}'")
+            restricao = cursor.fetchone()
+
+            cursor.execute(
+                f"SELECT COUNT(*) FROM reserva WHERE (tipo = 'TUR2' or tipo = 'OWD' or tipo = 'ADV' or tipo = 'RESCUE' or tipo = 'REVIEW') and data = '{data}'")
+            contagem_cred = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
+
+            lista_cred = ['TUR2', 'OWD', 'ADV', 'RESCUE', 'REVIEW']
+
+            if restricao is None:
+                vaga_cred = 8
+                vaga_total = 40
+                vaga_bat = vaga_total - contagem_cred
+            else:
+                cursor.execute(
+                    f"SELECT vaga_bat, vaga_cred, vaga_total FROM restricao WHERE data = '{data}'")
+                restricoes = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split()
+                vaga_bat = int(restricoes[0])
+                vaga_cred = int(restricoes[1])
+                vaga_total = int(restricoes[2])
+
+            if contagem >= vaga_total:
+                st.error('Planilha está lotada nessa data!')
+
+            elif tipo in lista_cred and contagem_cred >= vaga_cred:
+                st.write(contagem_cred)
+                st.write(vaga_cred)
+                st.write(restricao)
+                st.error('Todas as vagas de credenciados foram preenchidas')
         if comissario is None:
             st.error('Insira o vendedor dessa reserva!')
         else:
@@ -395,90 +424,57 @@ if escolha == 'Reservar':
 
             if st.button('Reservar'):
                 with mydb.cursor() as cursor:
-                    cursor.execute(f"SELECT COUNT(*) FROM reserva where data = '{data}'")
-                    contagem = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
 
-                    cursor.execute(f"SELECT * FROM restricao WHERE data = '{data}'")
-                    restricao = cursor.fetchone()
+                    cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE id_cliente = %s and data = %s",
+                                   (id_cliente, data))
+                    verifica_cpf = cursor.fetchone()[0]
 
-                    cursor.execute(
-                        f"SELECT COUNT(*) FROM reserva WHERE (tipo = 'TUR2' or tipo = 'OWD' or tipo = 'ADV' or tipo = 'RESCUE' or tipo = 'REVIEW') and data = '{data}'")
-                    contagem_cred = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
-
-                    lista_cred = ['TUR2', 'OWD', 'ADV', 'RESCUE', 'REVIEW']
-
-                    if restricao is None:
-                        vaga_cred = 8
-                        vaga_total = 40
-                        vaga_bat = vaga_total - contagem_cred
-                    else:
-                        cursor.execute(
-                            f"SELECT vaga_bat, vaga_cred, vaga_total FROM restricao WHERE data = '{data}'")
-                        restricoes = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split()
-                        vaga_bat = int(restricoes[0])
-                        vaga_cred = int(restricoes[1])
-                        vaga_total = int(restricoes[2])
-
-                    if contagem >= vaga_total:
-                        st.error('Planilha está lotada nessa data!')
-
-                    elif tipo in lista_cred and contagem_cred >= vaga_cred:
-                        st.write(contagem_cred)
-                        st.write(vaga_cred)
-                        st.write(restricao)
-                        st.error('Todas as vagas de credenciados foram preenchidas')
+                    if verifica_cpf > 0:
+                        st.error('Cliente já reservado para esta data')
 
                     else:
-                        cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE id_cliente = %s and data = %s",
-                                       (id_cliente, data))
-                        verifica_cpf = cursor.fetchone()[0]
+                        ids_reserva = []
+                        for reserva in reservas:
+                            sql = (
+                                "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, check_in, id_titular, receber_loja) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s)")
 
-                        if verifica_cpf > 0:
-                            st.error('Cliente já reservado para esta data')
+                            # Executar a inserção de múltiplos valores
+                            cursor.execute(sql, reserva)
+                            id_reserva = cursor.lastrowid
 
-                        else:
-                            ids_reserva = []
-                            for reserva in reservas:
-                                sql = (
-                                    "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, check_in, id_titular, receber_loja) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s)")
-
-                                # Executar a inserção de múltiplos valores
-                                cursor.execute(sql, reserva)
-                                id_reserva = cursor.lastrowid
-
-                                forma_pg = 'Pix'
-                                pagamentos.append(
-                                    (data.strftime('%d/%m/%Y'), id_reserva, recebedor_sinal, sinal, forma_pg))
-                            if recebedor_sinal != '':
-                                for pagamento in pagamentos:
-                                    cursor.execute(
-                                        "INSERT INTO pagamentos (data, id_reserva, recebedor, pagamento, forma_pg) VALUES (%s,%s, %s, %s, %s)",
-                                        pagamento)
-                                st.session_state['ids_clientes'] = []
-
-
-                                reservas = []
-                                ids_reserva = []
-                                pagamentos = []
-                            data_ = str(data).split('-')
-                            data_formatada = f'{data_[2]}/{data_[1]}/{data_[0]}'
-                            descricao = f'Sinal reserva titular {titular} dia {data_formatada}'
                             forma_pg = 'Pix'
-                            if recebedor_sinal == 'AcquaWorld':
-                                cursor.execute("INSERT INTO caixa (data, tipo_movimento, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s)",(data, 'ENTRADA', descricao, forma_pg, sinal))
+                            pagamentos.append(
+                                (data.strftime('%d/%m/%Y'), id_reserva, recebedor_sinal, sinal, forma_pg))
+                        if recebedor_sinal != '':
+                            for pagamento in pagamentos:
+                                cursor.execute(
+                                    "INSERT INTO pagamentos (data, id_reserva, recebedor, pagamento, forma_pg) VALUES (%s,%s, %s, %s, %s)",
+                                    pagamento)
+                            st.session_state['ids_clientes'] = []
 
-                            # Formatando as variáveis como moeda brasileira
-                            valor_sinal_formatado = format_currency(st.session_state.valor_sinal, 'BRL', locale='pt_BR')
-                            valor_mergulho_receber_formatado = format_currency(st.session_state.valor_mergulho_receber, 'BRL',
-                                                                               locale='pt_BR')
-                            valor_mergulho_total_formatado = format_currency(st.session_state.valor_mergulho_total, 'BRL',
-                                                                             locale='pt_BR')
-                            # Na hora de exibir, utilize a vírgula para juntar os nomes dos dependentes
-                            nomes_dependentes_formatados = ', '.join(st.session_state.nome_dependente)
+                            reservas = []
+                            ids_reserva = []
+                            pagamentos = []
+                        data_ = str(data).split('-')
+                        data_formatada = f'{data_[2]}/{data_[1]}/{data_[0]}'
+                        descricao = f'Sinal reserva titular {titular} dia {data_formatada}'
+                        forma_pg = 'Pix'
+                        if recebedor_sinal == 'AcquaWorld':
+                            cursor.execute(
+                                "INSERT INTO caixa (data, tipo_movimento, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s)",
+                                (data, 'ENTRADA', descricao, forma_pg, sinal))
 
+                        # Formatando as variáveis como moeda brasileira
+                        valor_sinal_formatado = format_currency(st.session_state.valor_sinal, 'BRL', locale='pt_BR')
+                        valor_mergulho_receber_formatado = format_currency(st.session_state.valor_mergulho_receber,
+                                                                           'BRL',
+                                                                           locale='pt_BR')
+                        valor_mergulho_total_formatado = format_currency(st.session_state.valor_mergulho_total, 'BRL',
+                                                                         locale='pt_BR')
+                        # Na hora de exibir, utilize a vírgula para juntar os nomes dos dependentes
+                        nomes_dependentes_formatados = ', '.join(st.session_state.nome_dependente)
 
-                            st.success('Reserva realizada com sucesso!')
-
+                        st.success('Reserva realizada com sucesso!')
 
                         st.code(f"""
                         *Reserva Concluida com Sucesso!*
@@ -509,7 +505,6 @@ if escolha == 'Reservar':
                         st.session_state.nome_dependente = ''
                 if 'botao_clicado' in st.session_state:
                     st.session_state.botao_clicado = False
-
 
 if escolha == 'Editar':
 
