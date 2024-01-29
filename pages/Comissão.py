@@ -177,15 +177,20 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
         # Botão para lançar pagamento
             if st.button("Lançar Pagamento"):
                 lista_ids = []
+
+                # Criar um novo cursor dentro do bloco with
                 with mydb.cursor() as cursor:
                     st.write(lista_titular)
                     for titular in lista_titular:
                         cursor.execute(f"SELECT id_cliente from reserva where nome_cliente = '{titular}'")
                         id_titular = cursor.fetchone()[0]
                         st.write(id_titular)
+
                         cursor.execute(f"SELECT id from lancamento_comissao where id_titular = {id_titular}")
                         id_comissao = cursor.fetchone()[0]
                         lista_ids.append(id_comissao)
+
+                # Fora do bloco with, você pode executar operações adicionais com o cursor
                 with mydb.cursor() as cursor:
                     for numero in lista_ids:
                         if recebedor == f'{comissario} receber':
@@ -193,7 +198,9 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                         else:
                             pagador = f'{comissario}'
 
-                        cursor.execute("INSERT INTO pagamento_comissao (id_comissao, data, pagador, valor, forma_pg, conta) VALUES (%s, %s, %s, %s, %s, %s)", (numero, data_pagamento, pagador, pagamento, forma_pagamento, 1))
+                        cursor.execute(
+                            "INSERT INTO pagamento_comissao (id_comissao, data, pagador, valor, forma_pg, conta) VALUES (%s, %s, %s, %s, %s, %s)",
+                            (numero, data_pagamento, pagador, pagamento, forma_pagamento, 1))
 
                 st.write(lista_titular)
 
