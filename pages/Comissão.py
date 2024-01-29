@@ -184,7 +184,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                         id_titular = cursor.fetchone()
                         st.write(id_titular)
                         cursor.execute(f"SELECT id from lancamento_comissao where id_titular = {id_titular}")
-                        id_comissao = cursor.fetchone()
+                        id_comissao = cursor.fetchone()[0]
                         lista_ids.append(id_comissao)
                     for numero in lista_ids:
                         if recebedor == f'{comissario} receber':
