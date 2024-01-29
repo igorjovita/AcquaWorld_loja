@@ -620,8 +620,7 @@ if escolha == 'Pagamento':
                 id_titular_pagamento = resultado2[0]
                 id_vendedor_pg = resultado2[1]
 
-                cursor.execute('SELECT nome_cliente FROM reserva WHERE id_titular = %s AND check_in = %s',
-                               (id_titular_pagamento, '#FFFFFF'))
+                cursor.execute(f'SELECT nome_cliente FROM reserva WHERE id_titular = {id_titular_pagamento}')
 
                 resultado_individual = cursor.fetchall()
                 lista_cliente = []
