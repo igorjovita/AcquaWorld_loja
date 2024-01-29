@@ -200,7 +200,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
 
                     # Fora do loop for, você pode executar operações adicionais com um novo cursor
                     for numero in lista_ids:
-                        if recebedor == f'{comissario} receber':
+                        if recebedor == f'{comissario} receber :':
                             pagador = 'AcquaWorld'
                         else:
                             pagador = f'{comissario}'
