@@ -189,21 +189,20 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                         lista_ids.append(id_comissao)
 
                     # Recuperar os resultados da segunda consulta antes de fechar o cursor
-                    resultados_segunda_consulta = cursor.fetchall()
 
                     st.write(lista_ids)
-                    st.write(resultados_segunda_consulta)
-                #
-                #     # Fora do loop for, você pode executar operações adicionais com um novo cursor
-                #     for numero in lista_ids:
-                #         if recebedor == f'{comissario} receber':
-                #             pagador = 'AcquaWorld'
-                #         else:
-                #             pagador = f'{comissario}'
-                #
-                #         cursor.execute(
-                #             "INSERT INTO pagamento_comissao (id_comissao, data, pagador, valor) VALUES (%s, %s, %s, %s)",
-                #             (numero, data_pagamento, pagador, pagamento))
+                    
+
+                    # Fora do loop for, você pode executar operações adicionais com um novo cursor
+                    for numero in lista_ids:
+                        if recebedor == f'{comissario} receber':
+                            pagador = 'AcquaWorld'
+                        else:
+                            pagador = f'{comissario}'
+
+                        cursor.execute(
+                            "INSERT INTO pagamento_comissao (id_comissao, data, pagador, valor) VALUES (%s, %s, %s, %s)",
+                            (numero, data_pagamento, pagador, pagamento))
                 #
                 # st.write(lista_titular)
 
