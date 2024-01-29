@@ -789,7 +789,7 @@ if escolha == 'Pagamento':
                         if check_in_entry == 'Para o pier':
                             check_in = 'yellow'
 
-                        if st.button('Lançar Pagamento'):
+                        if st.button('Lançar Pagamento2'):
 
                             cursor.execute(f"SELECT valor_neto FROM vendedores WHERE id = {id_vendedor_pg}")
                             valor_neto = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
