@@ -193,16 +193,16 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                     st.write(lista_ids)
 
 
-                    # # Fora do loop for, você pode executar operações adicionais com um novo cursor
-                    # for numero in lista_ids:
-                    #     if recebedor == f'{comissario} receber':
-                    #         pagador = 'AcquaWorld'
-                    #     else:
-                    #         pagador = f'{comissario}'
-                    #
-                    #     cursor.execute(
-                    #         "INSERT INTO pagamento_comissao (id_comissao, data, pagador, valor) VALUES (%s, %s, %s, %s)",
-                    #         (numero, data_pagamento, pagador, pagamento))
+                    # Fora do loop for, você pode executar operações adicionais com um novo cursor
+                    for numero in lista_ids:
+                        if recebedor == f'{comissario} receber':
+                            pagador = 'AcquaWorld'
+                        else:
+                            pagador = f'{comissario}'
+
+                        cursor.execute(
+                            "INSERT INTO pagamento_comissao (id_comissao, data, pagador, valor) VALUES (%s, %s, %s, %s)",
+                            (numero, data_pagamento, pagador, pagamento))
                 #
                 # st.write(lista_titular)
 
