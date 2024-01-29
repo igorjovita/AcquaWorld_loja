@@ -85,10 +85,10 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
         id_vendedor = cursor.fetchone()[0]
         cursor.execute(f""" SELECT 
                         reserva.Data as Data,
-                        CONCAT('Titular ', reserva.nome_cliente, ' - ', GROUP_CONCAT(DISTINCT CONCAT(cnt, ' ', reserva.tipo) SEPARATOR ' + ')) as Tipo_Clientes,
+                        reserva.nome_cliente as Nome_Titular,
+                        GROUP_CONCAT(DISTINCT CONCAT(cnt, ' ', reserva.tipo) SEPARATOR ' + ') as Tipos_Reserva,
                         SUM(lancamento_comissao.valor_receber) as Valor_Receber,
                         SUM(lancamento_comissao.valor_pagar) as Valor_Pagar,
-                        SUM(pagamentos.pagamento) as Valor_Pago,
                         lancamento_comissao.situacao
                     FROM 
                         reserva
@@ -101,12 +101,10 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                         FROM reserva
                         GROUP BY Id_titular, Data
                     ) as cnt_reserva ON reserva.Id_titular = cnt_reserva.Id_titular AND reserva.Data = cnt_reserva.Data
-                    LEFT JOIN pagamentos ON reserva.Id = pagamentos.id_reserva
                     WHERE  
                         lancamento_comissao.Id_vendedor = {id_vendedor} AND
                         lancamento_comissao.situacao = '{situacao}'
-                    GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao
-                    """)
+                    GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao;""")
         resultados = cursor.fetchall()
         df = pd.DataFrame(resultados,
                           columns=['Data', 'Nome Titular', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
@@ -175,7 +173,6 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
             if st.button("Lançar Pagamento"):
                 for titular in lista_titular:
                     with mydb.cursor() as cursor:
-                        cursor.execute()
                         cursor.execute("INSERT INTO pagamento_comissao (id_comissao, data, pagador, valor, forma_pg, conta) VALUES (%s, %s, %s, %s, %s, %s)",())
 
                 st.write(lista_titular)
