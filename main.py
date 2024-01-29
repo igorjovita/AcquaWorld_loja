@@ -837,6 +837,7 @@ if escolha == 'Pagamento':
                             st.write(vendedor_valor)
                             st.write(acquaworld_nome)
                             st.write(acquaworld_valor)
+                            st.write(f'id_titular = {id_titular_pagamento}')
                             reserva_neto = valor_total_reserva - valor_neto
 
                             if acquaworld_valor < valor_neto:
