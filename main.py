@@ -609,7 +609,7 @@ if escolha == 'Pagamento':
 
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista_pagamento)
 
-    if st.button('Selecionar Titular22'):
+    if st.button('Selecionar Titular'):
         st.session_state.botao = True
     if st.session_state.botao:
 
@@ -619,6 +619,7 @@ if escolha == 'Pagamento':
             if resultado2:
                 id_titular_pagamento = resultado2[0]
                 id_vendedor_pg = resultado2[1]
+                st.write(id_titular_pagamento)
 
                 cursor.execute(f'SELECT nome_cliente FROM reserva WHERE id_titular = {id_titular_pagamento}')
 
