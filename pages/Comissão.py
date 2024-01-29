@@ -181,7 +181,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                     st.write(lista_titular)
                     for titular in lista_titular:
                         cursor.execute(f"SELECT id_cliente from reserva where nome_cliente = '{titular}'")
-                        id_titular = cursor.fetchone()
+                        id_titular = cursor.fetchone()[0]
                         st.write(id_titular)
                         cursor.execute(f"SELECT id from lancamento_comissao where id_titular = {id_titular}")
                         result = cursor.fetchone()
