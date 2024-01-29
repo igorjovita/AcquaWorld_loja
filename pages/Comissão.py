@@ -84,29 +84,39 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
         cursor.execute(f"SELECT id FROM vendedores where nome = '{comissario}'")
         id_vendedor = cursor.fetchone()[0]
         cursor.execute(f""" SELECT 
-                            reserva.Data as Data,
-                            reserva.nome_cliente as Nome_Titular,
-                            GROUP_CONCAT(DISTINCT CONCAT(cnt_reserva.cnt, ' ', reserva.tipo) SEPARATOR ' + ') as Tipos_Reserva,
-                            SUM(lancamento_comissao.valor_receber) as Valor_Receber,
-                            SUM(lancamento_comissao.valor_pagar) as Valor_Pagar,
-                            lancamento_comissao.situacao
-                        FROM 
-                            reserva
-                        JOIN 
-                            lancamento_comissao ON reserva.Id = lancamento_comissao.Id_reserva
-                        LEFT JOIN (
-                            SELECT Id_titular, Data, COUNT(*) as cnt
-                            FROM reserva
-                            GROUP BY Id_titular, Data
-                        ) as cnt_reserva ON reserva.Id_titular = cnt_reserva.Id_titular AND reserva.Data = cnt_reserva.Data
-                        WHERE  
-                            lancamento_comissao.Id_vendedor = {id_vendedor} AND
-                            lancamento_comissao.situacao = '{situacao}'
-                        GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao;
+                        reserva.Data as Data,
+                        reserva.nome_cliente as Nome_Titular,
+                        GROUP_CONCAT(DISTINCT CONCAT(cnt, ' ', reserva.tipo) SEPARATOR ' + ') as Tipos_Reserva,
+                        SUM(lancamento_comissao.valor_receber) as Valor_Receber,
+                        SUM(lancamento_comissao.valor_pagar) as Valor_Pagar,
+                        COALESCE(SUM(pagamentos_soma.pagamento), 0) as Valor_Pago,
+                        lancamento_comissao.situacao
+                    FROM 
+                        reserva
+                    JOIN 
+                        lancamento_comissao ON reserva.Id = lancamento_comissao.Id_reserva
+                    JOIN 
+                        vendedores ON lancamento_comissao.Id_vendedor = vendedores.Id
+                    LEFT JOIN (
+                        SELECT Id_titular, Data, COUNT(*) as cnt
+                        FROM reserva
+                        GROUP BY Id_titular, Data
+                    ) as cnt_reserva ON reserva.Id_titular = cnt_reserva.Id_titular AND reserva.Data = cnt_reserva.Data
+                    LEFT JOIN (
+                        SELECT id_reserva, SUM(pagamento) as pagamento
+                        FROM pagamentos
+                        WHERE recebedor = 'AcquaWorld'
+                        GROUP BY id_reserva
+                    ) as pagamentos_soma ON reserva.Id = pagamentos_soma.id_reserva
+                    WHERE  
+                        lancamento_comissao.Id_vendedor = {id_vendedor} AND
+                        lancamento_comissao.situacao = '{situacao}'
+                    GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao;
+
                     """)
         resultados = cursor.fetchall()
         df = pd.DataFrame(resultados,
-                          columns=['Data', 'Nome Titular', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
+                          columns=['Data', 'Nome Titular', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Pago Loja', 'Situação'])
 
         st.write(f"Valor a Pagar - {df['Valor a Pagar']}")
         # Adicionar coluna de seleção e formatar valores
@@ -116,7 +126,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
         soma_receber_direta = df['Valor a Receber'].sum()
         df['Valor a Receber'] = df['Valor a Receber'].map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
         df['Valor a Pagar'] = df['Valor a Pagar'].map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
-        # df['Pago Loja'] = df['Pago Loja'].map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
+        df['Pago Loja'] = df['Pago Loja'].map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
 
         # Armazenar o DataFrame no Session State
         state.df_state = df
