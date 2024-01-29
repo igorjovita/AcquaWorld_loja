@@ -975,8 +975,8 @@ if escolha == 'Pagamento':
 
                                 cursor.execute(
                                     "INSERT INTO lancamento_comissao (id_reserva, id_vendedor, valor_receber, valor_pagar, "
-                                    "situacao) VALUES (%s, %s, %s, %s, %s)", (id_reserva_cliente, id_vendedor_pg,
-                                                                              valor_receber, valor_pagar, situacao))
+                                    "situacao, id_titular) VALUES (%s, %s, %s, %s, %s, %s)", (id_reserva_cliente, id_vendedor_pg,
+                                                                              valor_receber, valor_pagar, situacao, id_titular_pagamento))
 
                             mydb.close()
                             st.success('Pagamento lançado no sistema!')
