@@ -186,8 +186,8 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                         cursor.execute(f"SELECT id from lancamento_comissao where id_titular = {id_titular}")
                         id_comissao = cursor.fetchone()[0]
                         lista_ids.append(id_comissao)
-                for numero in lista_ids:
-                    with mydb.cursor() as cursor:
+                with mydb.cursor() as cursor:
+                    for numero in lista_ids:
                         if recebedor == f'{comissario} receber':
                             pagador = 'AcquaWorld'
                         else:
