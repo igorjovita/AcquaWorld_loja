@@ -179,14 +179,13 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                 lista_ids = []
 
                 with mydb.cursor() as cursor:
-                    st.write(lista_titular)
                     for titular in lista_titular:
                         cursor.execute(f"SELECT id_cliente from reserva where nome_cliente = '{titular}'")
                         id_titular = cursor.fetchone()[0]
                         st.write(id_titular)
 
                         cursor.execute(f"SELECT id from lancamento_comissao where id_titular = {id_titular}")
-                        id_comissao = cursor.fetchone()[0]
+                        id_comissao = cursor.fetchall()
                         lista_ids.append(id_comissao)
 
                     # Recuperar os resultados da segunda consulta antes de fechar o cursor
