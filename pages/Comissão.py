@@ -205,9 +205,11 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                         else:
                             pagador = f'{comissario}'
 
+                        cursor.execute(f"SELECT valor_pagar from lancamento_comissao where id = {numero}")
+                        valor_pagar = cursor.fetchone()[0]
                         cursor.execute(
                             "INSERT INTO pagamento_comissao (id_comissao, data, pagador, valor) VALUES (%s, %s, %s, %s)",
-                            (numero, data_pagamento, pagador, pagamento))
+                            (numero, data_pagamento, pagador, valor_pagar))
                 #
                 # st.write(lista_titular)
 
