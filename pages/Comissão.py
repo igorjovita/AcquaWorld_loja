@@ -89,7 +89,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                         GROUP_CONCAT(DISTINCT CONCAT(cnt, ' ', reserva.tipo) SEPARATOR ' + ') as Tipos_Reserva,
                         SUM(lancamento_comissao.valor_receber) as Valor_Receber,
                         SUM(lancamento_comissao.valor_pagar) as Valor_Pagar,
-                        SUM(pagamentos.pagamento) as Valor_Pago, 
+                        SUM(pagamentos.pagamento) as Valor_Pago, -- Adição da soma dos pagamentos
                         lancamento_comissao.situacao
                     FROM 
                         reserva
@@ -100,14 +100,15 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                     LEFT JOIN (
                         SELECT Id_titular, Data, COUNT(*) as cnt
                         FROM reserva
-                        GROUP BY nome_cliente, Data
-                    ) as cnt_reserva ON reserva.nome_cliente = cnt_reserva.nome_cliente AND reserva.Data = cnt_reserva.Data
+                        GROUP BY Id_titular, Data
+                    ) as cnt_reserva ON reserva.Id_titular = cnt_reserva.Id_titular AND reserva.Data = cnt_reserva.Data
                     LEFT JOIN pagamentos ON reserva.Id = pagamentos.id_reserva -- Adição da junção com pagamentos
                     WHERE  
                         lancamento_comissao.Id_vendedor = {id_vendedor} AND
                         lancamento_comissao.situacao = '{situacao}' AND
-                        pagamentos.recebedor = 'AcquaWorld'
-                    GROUP BY reserva.nome_cliente, reserva.Data, lancamento_comissao.situacao;""")
+                        pagamentos.recebedor = 'AcquaWorld' -- Adição da condição para 'AcquaWorld'
+                    GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao;
+                    """)
         resultados = cursor.fetchall()
         df = pd.DataFrame(resultados,
                           columns=['Data', 'Nome Titular', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Pago Loja', 'Situação'])
