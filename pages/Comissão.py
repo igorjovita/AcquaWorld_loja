@@ -190,7 +190,10 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                         id_comissao = cursor.fetchone()[0]
                         lista_ids.append(id_comissao)
 
-                # Fora do bloco with, você pode executar operações adicionais com o cursor
+                    # Agora você pode fechar o cursor dentro do bloco with
+                    cursor.close()
+
+                # Fora do bloco with, você pode executar operações adicionais com um novo cursor
                 with mydb.cursor() as cursor:
                     for numero in lista_ids:
                         if recebedor == f'{comissario} receber':
@@ -203,6 +206,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                             (numero, data_pagamento, pagador, pagamento, forma_pagamento, 1))
 
                 st.write(lista_titular)
+
 
 
 
