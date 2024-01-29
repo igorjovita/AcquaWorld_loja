@@ -178,7 +178,6 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
             if st.button("Lançar Pagamento"):
                 lista_ids = []
 
-                # Criar um novo cursor dentro do bloco with
                 with mydb.cursor() as cursor:
                     st.write(lista_titular)
                     for titular in lista_titular:
@@ -190,11 +189,10 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                         id_comissao = cursor.fetchone()[0]
                         lista_ids.append(id_comissao)
 
-                    # Agora você pode fechar o cursor dentro do bloco with
-                    cursor.close()
+                    # Recuperar os resultados da segunda consulta antes de fechar o cursor
+                    resultados_segunda_consulta = cursor.fetchall()
 
-                # Fora do bloco with, você pode executar operações adicionais com um novo cursor
-                with mydb.cursor() as cursor:
+                    # Fora do loop for, você pode executar operações adicionais com um novo cursor
                     for numero in lista_ids:
                         if recebedor == f'{comissario} receber':
                             pagador = 'AcquaWorld'
@@ -206,6 +204,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                             (numero, data_pagamento, pagador, pagamento, forma_pagamento, 1))
 
                 st.write(lista_titular)
+
 
 
 
