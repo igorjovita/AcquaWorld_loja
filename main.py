@@ -922,9 +922,9 @@ if escolha == 'Pagamento':
                                 pagamento = receber_loja_individual
 
                                 cursor.execute(
-                                    "INSERT INTO pagamentos (data ,id_reserva, recebedor, pagamento, forma_pg, parcela) VALUES (%s, %s, %s, %s, %s, %s)",
+                                    "INSERT INTO pagamentos (data ,id_reserva, recebedor, pagamento, forma_pg, parcela, id_titular) VALUES (%s, %s, %s, %s, %s, %s, %s)",
                                     (
-                                        data_pagamento, id_reserva_cliente, 'AcquaWorld', pagamento, forma_pg, parcela))
+                                        data_pagamento, id_reserva_cliente, 'AcquaWorld', pagamento, forma_pg, parcela, id_titular_pagamento))
                                 id_pagamento = cursor.lastrowid
 
                                 cursor.execute(
