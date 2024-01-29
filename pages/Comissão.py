@@ -178,9 +178,11 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
             if st.button("Lançar Pagamento"):
                 lista_ids = []
                 with mydb.cursor() as cursor:
+                    st.write(lista_titular)
                     for titular in lista_titular:
                         cursor.execute(f"SELECT id_cliente from reserva where nome_cliente = '{titular}'")
                         id_titular = cursor.fetchone()
+                        st.write(id_titular)
                         cursor.execute(f"SELECT id from lancamento_comissao where id_titular = {id_titular}")
                         id_comissao = cursor.fetchone()
                         lista_ids.append(id_comissao)
