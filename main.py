@@ -446,11 +446,11 @@ if escolha == 'Reservar':
 
                                 forma_pg = 'Pix'
                                 pagamentos.append(
-                                    (data.strftime('%d/%m/%Y'), id_reserva, recebedor_sinal, sinal, forma_pg))
+                                    (data.strftime('%d/%m/%Y'), id_reserva, recebedor_sinal, sinal, forma_pg,id_titular))
                             if recebedor_sinal != '':
                                 for pagamento in pagamentos:
                                     cursor.execute(
-                                        "INSERT INTO pagamentos (data, id_reserva, recebedor, pagamento, forma_pg) VALUES (%s,%s, %s, %s, %s)",
+                                        "INSERT INTO pagamentos (data, id_reserva, recebedor, pagamento, forma_pg, id_titular) VALUES (%s,%s, %s, %s, %s, %s)",
                                         pagamento)
                                 st.session_state['ids_clientes'] = []
 
