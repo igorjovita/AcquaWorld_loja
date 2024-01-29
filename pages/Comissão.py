@@ -176,9 +176,21 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
 
         # Botão para lançar pagamento
             if st.button("Lançar Pagamento"):
-                # for titular in lista_titular:
-                #     with mydb.cursor() as cursor:
-                #         cursor.execute("INSERT INTO pagamento_comissao (id_comissao, data, pagador, valor, forma_pg, conta) VALUES (%s, %s, %s, %s, %s, %s)",())
+                lista_ids = []
+                with mydb.cursor() as cursor:
+                    for titular in lista_titular:
+                        cursor.execute(f"SELECT id_cliente from reserva where nome_cliente = '{titular}'")
+                        id_titular = cursor.fetchone()
+                        cursor.execute(f"SELECT id from lancamento_comissao where id_titular = {id_titular}")
+                        id_comissao = cursor.fetchone()
+                        lista_ids.append(id_comissao)
+                    for numero in lista_ids:
+                        if recebedor == f'{comissario} receber':
+                            pagador = 'AcquaWorld'
+                        else:
+                            pagador = f'{comissario}'
+
+                        cursor.execute("INSERT INTO pagamento_comissao (id_comissao, data, pagador, valor, forma_pg, conta) VALUES (%s, %s, %s, %s, %s, %s)", (numero, data_pagamento, pagador, pagamento, forma_pagamento, 1))
 
                 st.write(lista_titular)
 
