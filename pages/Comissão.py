@@ -112,8 +112,8 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
         resultados = cursor.fetchall()
         df = pd.DataFrame(resultados,
                           columns=['Data', 'Nome Titular', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Pago Loja', 'Situação'])
-        
-        st.write(df['Valor a Pagar'])
+
+        st.write(f"Valor a Pagar - {df['Valor a Pagar']}")
         # Adicionar coluna de seleção e formatar valores
         df.insert(0, 'Selecionar', [False] * len(df))
         df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
