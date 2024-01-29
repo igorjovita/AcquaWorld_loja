@@ -213,6 +213,15 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
 
                         cursor.execute(f"UPDATE lancamento_comissao SET situacao = 'Pago' where id = {numero}")
 
+                    if pagador == 'AcquaWorld':
+                        descricao = f'ACERTO COMISSÃO {comissario}'
+                        cursor.execute("INSERT INTO caixa (data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s, %s)", (data_pagamento, 'SAIDA', 'PGT VENDEDOR', descricao, 'Pix', pagamento))
+                    else:
+                        descricao = f'ACERTO {comissario}'
+                        cursor.execute(
+                            "INSERT INTO caixa (data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s, %s)",
+                            (data_pagamento, 'ENTRADA', 'PGT VENDEDOR', descricao, 'Pix', pagamento))
+
                     st.write(pagador)
                 #
                 # st.write(lista_titular)
