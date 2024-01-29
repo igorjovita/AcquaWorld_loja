@@ -84,30 +84,25 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
         cursor.execute(f"SELECT id FROM vendedores where nome = '{comissario}'")
         id_vendedor = cursor.fetchone()[0]
         cursor.execute(f""" SELECT 
-                        reserva.Data as Data,
-                        reserva.nome_cliente as Nome_Titular,
-                        GROUP_CONCAT(DISTINCT CONCAT(cnt, ' ', reserva.tipo) SEPARATOR ' + ') as Tipos_Reserva,
-                        SUM(lancamento_comissao.valor_receber) as Valor_Receber,
-                        SUM(lancamento_comissao.valor_pagar) as Valor_Pagar,
-                        SUM(pagamentos.pagamento) as Valor_Pago, -- Adição da soma dos pagamentos
-                        lancamento_comissao.situacao
-                    FROM 
-                        reserva
-                    JOIN 
-                        lancamento_comissao ON reserva.Id = lancamento_comissao.Id_reserva
-                    JOIN 
-                        vendedores ON lancamento_comissao.Id_vendedor = vendedores.Id
-                    LEFT JOIN (
-                        SELECT Id_titular, Data, COUNT(*) as cnt
-                        FROM reserva
-                        GROUP BY Id_titular, Data
-                    ) as cnt_reserva ON reserva.Id_titular = cnt_reserva.Id_titular AND reserva.Data = cnt_reserva.Data
-                    LEFT JOIN pagamentos ON reserva.Id = pagamentos.id_reserva -- Adição da junção com pagamentos
-                    WHERE  
-                        lancamento_comissao.Id_vendedor = {id_vendedor} AND
-                        lancamento_comissao.situacao = '{situacao}' AND
-                        pagamentos.recebedor = 'AcquaWorld' -- Adição da condição para 'AcquaWorld'
-                    GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao;
+                            reserva.Data as Data,
+                            reserva.nome_cliente as Nome_Titular,
+                            GROUP_CONCAT(DISTINCT CONCAT(cnt_reserva.cnt, ' ', reserva.tipo) SEPARATOR ' + ') as Tipos_Reserva,
+                            SUM(lancamento_comissao.valor_receber) as Valor_Receber,
+                            SUM(lancamento_comissao.valor_pagar) as Valor_Pagar,
+                            lancamento_comissao.situacao
+                        FROM 
+                            reserva
+                        JOIN 
+                            lancamento_comissao ON reserva.Id = lancamento_comissao.Id_reserva
+                        LEFT JOIN (
+                            SELECT Id_titular, Data, COUNT(*) as cnt
+                            FROM reserva
+                            GROUP BY Id_titular, Data
+                        ) as cnt_reserva ON reserva.Id_titular = cnt_reserva.Id_titular AND reserva.Data = cnt_reserva.Data
+                        WHERE  
+                            lancamento_comissao.Id_vendedor = {id_vendedor} AND
+                            lancamento_comissao.situacao = '{situacao}'
+                        GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao;
                     """)
         resultados = cursor.fetchall()
         df = pd.DataFrame(resultados,
