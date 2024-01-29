@@ -609,7 +609,7 @@ if escolha == 'Pagamento':
 
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista_pagamento)
 
-    if st.button('Selecionar Titular'):
+    if st.button('Selecionar Titular22'):
         st.session_state.botao = True
     if st.session_state.botao:
 
