@@ -212,6 +212,8 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                             (numero, data_pagamento, pagador, valor_pagar))
 
                         cursor.execute(f"UPDATE lancamento_comissao SET situacao = 'Pago' where id = {numero}")
+
+                    st.write(pagador)
                 #
                 # st.write(lista_titular)
 
