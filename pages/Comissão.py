@@ -176,9 +176,9 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
 
         # Botão para lançar pagamento
             if st.button("Lançar Pagamento"):
-                for titular in lista_titular:
-                    with mydb.cursor() as cursor:
-                        cursor.execute("INSERT INTO pagamento_comissao (id_comissao, data, pagador, valor, forma_pg, conta) VALUES (%s, %s, %s, %s, %s, %s)",())
+                # for titular in lista_titular:
+                #     with mydb.cursor() as cursor:
+                #         cursor.execute("INSERT INTO pagamento_comissao (id_comissao, data, pagador, valor, forma_pg, conta) VALUES (%s, %s, %s, %s, %s, %s)",())
 
                 st.write(lista_titular)
 
