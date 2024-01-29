@@ -789,7 +789,7 @@ if escolha == 'Pagamento':
                         if check_in_entry == 'Para o pier':
                             check_in = 'yellow'
 
-                        if st.button('Lançar Pagamento2'):
+                        if st.button('Lançar Pagamento'):
 
                             cursor.execute(f"SELECT valor_neto FROM vendedores WHERE id = {id_vendedor_pg}")
                             valor_neto = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
@@ -806,9 +806,9 @@ if escolha == 'Pagamento':
                             valor_total_reserva = info_reserva_pg[2]
 
                             cursor.execute(
-                                "INSERT INTO pagamentos (data ,id_reserva, recebedor, pagamento, forma_pg, parcela) VALUES (%s, %s, %s, %s, %s, %s)",
+                                "INSERT INTO pagamentos (data ,id_reserva, recebedor, pagamento, forma_pg, parcela, id_titular) VALUES (%s,%s, %s, %s, %s, %s, %s)",
                                 (
-                                    data_pagamento, id_reserva_cliente, 'AcquaWorld', pagamento, forma_pg, parcela))
+                                    data_pagamento, id_reserva_cliente, 'AcquaWorld', pagamento, forma_pg, parcela, id_titular_pagamento))
                             id_pagamento = cursor.lastrowid
 
                             cursor.execute(
