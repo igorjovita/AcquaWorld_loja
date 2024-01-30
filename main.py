@@ -297,6 +297,8 @@ if escolha == 'Reservar':
 
     if 'pagamentos' not in st.session_state:
         st.session_state.pagamentos = []
+    if 'pagamentos2' not in st.session_state:
+        st.session_state.pagamentos2 = []
 
     if st.button('Inserir dados do cliente'):
         st.session_state.botao_clicado = True
@@ -450,8 +452,10 @@ if escolha == 'Reservar':
                             cursor.execute(sql, reserva)
                             id_reserva = cursor.lastrowid
 
-                            st.session_state.pagamentos.append((id_titular, id_reserva))
+                            st.session_state.pagamentos2.append((id_titular, id_reserva))
 
+                        lista_completa = st.session_state.pagamento.extend(st.session_state.pagamentos2)
+                        st.write(lista_completa)
                         st.write(st.session_state.pagamentos)
                         if recebedor_sinal != '':
                             for pagamento in st.session_state.pagamentos:
