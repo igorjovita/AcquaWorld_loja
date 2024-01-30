@@ -88,9 +88,9 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                 reserva.Data as Data,
                 reserva.nome_cliente as Nome_Titular,
                 GROUP_CONCAT(DISTINCT tipo_reserva.tipo SEPARATOR ' + ') as Tipos_Reserva,
-                COALESCE(soma_receber.valor_receber, 0) as Valor_Receber,
-                COALESCE(soma_pagar.valor_pagar, 0) as Valor_Pagar,
-                COALESCE(valor_pago, 0) as Valor_Pago,
+                COALESCE(SUM(soma_receber.valor_receber), 0) as Valor_Receber,
+                COALESCE(SUM(soma_pagar.valor_pagar), 0) as Valor_Pagar,
+                COALESCE(SUM(valor_pago), 0) as Valor_Pago,
                 lancamento_comissao.situacao
             FROM 
                 reserva
