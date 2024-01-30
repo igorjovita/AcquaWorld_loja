@@ -1003,7 +1003,8 @@ if escolha == 'Pagamento':
                             "INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES "
                             "(%s, %s, %s, %s, %s, %s, %s)",
                             (1, data_pagamento, 'ENTRADA', tipo_reserva, descricao, forma_pg, pagamento))
-
+                        st.write(f'Info Reserva - {info_reserva_pg}')
+                        st.write(f'Tipo - {tipo}')
                         st.write(f'Valor Neto - {valor_neto}')
                         st.write(f'Valor Receber - {valor_receber}')
                         st.write(f'Valor Pagar - {valor_pagar}')
