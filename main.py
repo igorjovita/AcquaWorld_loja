@@ -454,9 +454,10 @@ if escolha == 'Reservar':
                             id_reserva = cursor.lastrowid
 
                             st.session_state.pagamentos2.append((id_titular, id_reserva))
+                            
+                        for i in range(len(st.session_state.pagamentos)):
+                            st.session_state.pagamentos[i].extend(st.session_state.pagamentos2[i])
 
-                        lista_completa = st.session_state.pagamentos.extend(st.session_state.pagamentos2)
-                        st.write(lista_completa)
                         st.write(st.session_state.pagamentos)
                         if recebedor_sinal != '':
                             for pagamento in st.session_state.pagamentos:
