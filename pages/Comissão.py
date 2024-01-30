@@ -87,7 +87,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                     SELECT 
                         reserva.Data as Data,
                         reserva.nome_cliente as Nome_Titular,
-                        GROUP_CONCAT(DISTINCT CONCAT(cnt, ' ', reserva.tipo) SEPARATOR ' + ') as Tipos_Reserva,
+                        GROUP_CONCAT(DISTINCT reserva.tipo SEPARATOR ' + ') as Tipos_Reserva,
                         SUM(lancamento_comissao.valor_receber) as Valor_Receber,
                         SUM(lancamento_comissao.valor_pagar) as Valor_Pagar,
                         COALESCE(SUM(pagamentos_soma.pagamento), 0) as Valor_Pago,
