@@ -295,6 +295,9 @@ if escolha == 'Reservar':
     if 'nome_dependente' not in st.session_state:
         st.session_state.nome_dependente = []
 
+    if 'pagamentos' not in st.session_state:
+        st.session_state.pagamentos = []
+
     if st.button('Inserir dados do cliente'):
         st.session_state.botao_clicado = True
     if st.session_state.botao_clicado:
@@ -371,6 +374,8 @@ if escolha == 'Reservar':
                     roupa = f'{altura}/{peso}'
 
                 if st.button(f'Cadastrar {nome_cliente}', key=f'button{i}'):
+                    forma_pg = 'Pix'
+                    st.session_state.pagamentos.append((data, recebedor_sinal, sinal, forma_pg))
                     st.session_state.valor_sinal += float(sinal)
                     st.session_state.valor_mergulho_receber += float(valor_loja)
                     st.session_state.valor_mergulho_total += float(valor_mergulho)
@@ -444,13 +449,11 @@ if escolha == 'Reservar':
                             cursor.execute(sql, reserva)
                             id_reserva = cursor.lastrowid
 
-                            forma_pg = 'Pix'
-                            pagamentos.append(
-                                (data.strftime('%d/%m/%Y'), id_reserva, recebedor_sinal, st.session_state.valor_sinal, forma_pg, id_titular))
+                            st.session_state.pagamentos.append((id_titular, id_reserva))
                         if recebedor_sinal != '':
-                            for pagamento in pagamentos:
+                            for pagamento in st.session_state.pagamentos:
                                 cursor.execute(
-                                    "INSERT INTO pagamentos (data, id_reserva, recebedor, pagamento, forma_pg, id_titular) VALUES (%s,%s, %s, %s, %s, %s)",
+                                    "INSERT INTO pagamentos (data, recebedor, pagamento, forma_pg, id_titular, id_reserva) VALUES (%s,%s, %s, %s, %s, %s)",
                                     pagamento)
                             st.session_state['ids_clientes'] = []
 
