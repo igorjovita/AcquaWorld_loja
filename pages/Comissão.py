@@ -121,7 +121,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                         lancamento_comissao.situacao = '{situacao}'
                     GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao;""")
 
-    resultados = cursor.fetchall()
+        resultados = cursor.fetchall()
     df = pd.DataFrame(resultados,
                       columns=['Data', 'Nome Titular', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Pago Loja', 'Situação'])
 
