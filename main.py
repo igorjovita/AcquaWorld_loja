@@ -626,7 +626,7 @@ if escolha == 'Pagamento':
     if st.session_state.botao:
 
         with mydb.cursor() as cursor:
-            cursor.execute(f"SELECT id_cliente,id_vendedor from reserva where nome_cliente = '{selectbox_cliente}'")
+            cursor.execute(f"SELECT id_cliente,id_vendedor from reserva where nome_cliente = '{selectbox_cliente}' and data = '{data_reserva}'")
             resultado2 = cursor.fetchone()
             if resultado2:
                 id_titular_pagamento = resultado2[0]
@@ -634,7 +634,6 @@ if escolha == 'Pagamento':
                 st.write(id_titular_pagamento)
 
                 cursor.execute(f'SELECT nome_cliente FROM reserva WHERE id_titular = {id_titular_pagamento}')
-
                 resultado_individual = cursor.fetchall()
                 lista_cliente = []
                 if resultado_individual:
