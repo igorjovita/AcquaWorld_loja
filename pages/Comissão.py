@@ -57,28 +57,35 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
         cursor.execute(f"SELECT id FROM vendedores where nome = '{comissario}'")
         id_vendedor = cursor.fetchone()[0]
         cursor.execute(f""" SELECT 
-            reserva.Data as Data,
-            reserva.nome_cliente as Nome_Titular,
-            GROUP_CONCAT(DISTINCT CONCAT(cnt, ' ', reserva.tipo) SEPARATOR ' + ') as Tipos_Reserva,
-            SUM(lancamento_comissao.valor_receber) as Valor_Receber,
-            SUM(lancamento_comissao.valor_pagar) as Valor_Pagar,
-            lancamento_comissao.situacao
-        FROM 
-            reserva
-        JOIN 
-            lancamento_comissao ON reserva.Id = lancamento_comissao.Id_reserva
-        JOIN 
-            vendedores ON lancamento_comissao.Id_vendedor = vendedores.Id
-        LEFT JOIN (
-            SELECT Id_titular, Data, COUNT(*) as cnt
-            FROM reserva
-            GROUP BY Id_titular, Data
-        ) as cnt_reserva ON reserva.Id_titular = cnt_reserva.Id_titular AND reserva.Data = cnt_reserva.Data
-        WHERE 
-            reserva.Data BETWEEN '{data_inicio}' AND '{data_final}' 
-            AND lancamento_comissao.Id_vendedor = {id_vendedor} AND
-            lancamento_comissao.situacao = '{situacao}'
-        GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao""")
+                        reserva.Data as Data,
+                        reserva.nome_cliente as Nome_Titular,
+                        GROUP_CONCAT(DISTINCT reserva.tipo SEPARATOR ' + ') as Tipos_Reserva,
+                        SUM(lancamento_comissao.valor_receber) as Valor_Receber,
+                        SUM(lancamento_comissao.valor_pagar) as Valor_Pagar,
+                        COALESCE(SUM(pagamentos_soma.pagamento), 0) as Valor_Pago,
+                        lancamento_comissao.situacao
+                    FROM 
+                        reserva
+                    JOIN 
+                        lancamento_comissao ON reserva.Id = lancamento_comissao.Id_reserva
+                    JOIN 
+                        vendedores ON lancamento_comissao.Id_vendedor = vendedores.Id
+                    LEFT JOIN (
+                        SELECT Id_titular, Data, COUNT(*) as cnt
+                        FROM reserva
+                        GROUP BY Id_titular, Data
+                    ) as cnt_reserva ON reserva.Id_titular = cnt_reserva.Id_titular AND reserva.Data = cnt_reserva.Data
+                    LEFT JOIN (
+                        SELECT id_reserva, SUM(pagamento) as pagamento
+                        FROM pagamentos
+                        WHERE recebedor = 'AcquaWorld'
+                        GROUP BY id_reserva
+                    ) as pagamentos_soma ON reserva.Id = pagamentos_soma.id_reserva
+                    WHERE  
+                        reserva.data BETWEEN '{data_inicio}' and '{data_final}' AND
+                        lancamento_comissao.Id_vendedor = {id_vendedor} AND
+                        lancamento_comissao.situacao = '{situacao}'
+                    GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao;""")
         resultados = cursor.fetchall()
     else:
         cursor.execute(f"SELECT id FROM vendedores where nome = '{comissario}'")
@@ -114,116 +121,114 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                         lancamento_comissao.situacao = '{situacao}'
                     GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao;""")
 
+    resultados = cursor.fetchall()
+    df = pd.DataFrame(resultados,
+                      columns=['Data', 'Nome Titular', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Pago Loja', 'Situação'])
 
-        resultados = cursor.fetchall()
-        df = pd.DataFrame(resultados,
-                          columns=['Data', 'Nome Titular', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Pago Loja', 'Situação'])
+    # Adicionar coluna de seleção e formatar valores
+    df.insert(0, 'Selecionar', [False] * len(df))
+    df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
+    soma_pagar_direta = df['Valor a Pagar'].sum()
+    soma_receber_direta = df['Valor a Receber'].sum()
+    df['Valor a Receber'] = df['Valor a Receber'].map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
+    df['Valor a Pagar'] = df['Valor a Pagar'].map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
+    df['Pago Loja'] = df['Pago Loja'].map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
 
-        # Adicionar coluna de seleção e formatar valores
-        df.insert(0, 'Selecionar', [False] * len(df))
-        df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
-        soma_pagar_direta = df['Valor a Pagar'].sum()
-        soma_receber_direta = df['Valor a Receber'].sum()
-        df['Valor a Receber'] = df['Valor a Receber'].map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
-        df['Valor a Pagar'] = df['Valor a Pagar'].map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
-        df['Pago Loja'] = df['Pago Loja'].map(lambda x: format_currency(x, 'BRL', locale='pt_BR'))
+    # Armazenar o DataFrame no Session State
+    state.df_state = df
 
-        # Armazenar o DataFrame no Session State
-        state.df_state = df
+    # Exibir DataFrame com st.data_editor
+    state.df_state = st.data_editor(state.df_state, key="editable_df", hide_index=True)
 
-        # Exibir DataFrame com st.data_editor
-        state.df_state = st.data_editor(state.df_state, key="editable_df", hide_index=True)
+    # Calcular totais
 
-        # Calcular totais
+    soma_receber_formatado = format_currency(float(soma_receber_direta), 'BRL', locale='pt_BR')
+    soma_pagar_formatado = format_currency(float(soma_pagar_direta), 'BRL', locale='pt_BR')
 
-        soma_receber_formatado = format_currency(float(soma_receber_direta), 'BRL', locale='pt_BR')
-        soma_pagar_formatado = format_currency(float(soma_pagar_direta), 'BRL', locale='pt_BR')
+    # Exibir totais abaixo do DataFrame
+    col1, col2 = st.columns(2)
+    with col1:
+        st.write(f"{comissario} pagar :")
+        st.write(f'{soma_receber_formatado}')
 
-        # Exibir totais abaixo do DataFrame
-        col1, col2 = st.columns(2)
-        with col1:
-            st.write(f"{comissario} pagar :")
-            st.write(f'{soma_receber_formatado}')
+    with col2:
+        st.write(f"{comissario} receber:")
+        st.write(f' {soma_pagar_formatado}')
 
-        with col2:
-            st.write(f"{comissario} receber:")
-            st.write(f' {soma_pagar_formatado}')
+    if len(st.session_state.df_state.loc[st.session_state.df_state['Selecionar']]) > 0:
+        st.write('---')
+        st.subheader('Acerto Comissão')
+        # Calcule a soma dos valores dos itens selecionados
+        total_pagar = st.session_state.df_state.loc[st.session_state.df_state['Selecionar'], 'Valor a Pagar'].sum()
+        total_receber = st.session_state.df_state.loc[
+            st.session_state.df_state['Selecionar'], 'Valor a Receber'].sum()
 
-        if len(st.session_state.df_state.loc[st.session_state.df_state['Selecionar']]) > 0:
-            st.write('---')
-            st.subheader('Acerto Comissão')
-            # Calcule a soma dos valores dos itens selecionados
-            total_pagar = st.session_state.df_state.loc[st.session_state.df_state['Selecionar'], 'Valor a Pagar'].sum()
-            total_receber = st.session_state.df_state.loc[
-                st.session_state.df_state['Selecionar'], 'Valor a Receber'].sum()
+        lista_titular = st.session_state.df_state.loc[
+            st.session_state.df_state['Selecionar'], 'Nome Titular'].tolist()
 
-            lista_titular = st.session_state.df_state.loc[
-                st.session_state.df_state['Selecionar'], 'Nome Titular'].tolist()
+        total = str(total_pagar).replace('R$', '').replace('.', '').replace(',', '.').split()
+        for valor in total:
+            total_pagar_somado += float(valor)
 
-            total = str(total_pagar).replace('R$', '').replace('.', '').replace(',', '.').split()
-            for valor in total:
-                total_pagar_somado += float(valor)
+        total2 = str(total_receber).replace('R$', '').replace(',', '.').split()
+        for valor2 in total2:
+            total_receber_somado += float(valor2)
 
-            total2 = str(total_receber).replace('R$', '').replace(',', '.').split()
-            for valor2 in total2:
-                total_receber_somado += float(valor2)
+        if total_pagar_somado > total_receber_somado:
+            pagamento = float(total_pagar_somado) - float(total_receber_somado)
+            recebedor = f'{comissario} receber :'
+        else:
+            pagamento = float(total_receber_somado) - float(total_pagar_somado)
+            recebedor = f'{comissario} pagar :'
 
-            if total_pagar_somado > total_receber_somado:
-                pagamento = float(total_pagar_somado) - float(total_receber_somado)
-                recebedor = f'{comissario} receber :'
-            else:
-                pagamento = float(total_receber_somado) - float(total_pagar_somado)
-                recebedor = f'{comissario} pagar :'
-
-            pagamento_input = st.text_input(label=recebedor, value=pagamento)
-            data_pagamento = st.date_input("Data do Pagamento", format='DD/MM/YYYY', key="data_pagamento")
-            forma_pagamento = st.selectbox("Forma de Pagamento", options=['Pix', 'Dinheiro'], key="forma_pagamento", index=None)
-
-
-        # Botão para lançar pagamento
-            if st.button("Lançar Pagamento"):
-                lista_ids = []
-
-                with mydb.cursor() as cursor:
-                    for titular in lista_titular:
-                        cursor.execute(f"SELECT id_cliente from reserva where nome_cliente = '{titular}'")
-                        id_titular = cursor.fetchone()[0]
-                        st.write(id_titular)
-
-                        cursor.execute(f"SELECT id from lancamento_comissao where id_titular = {id_titular}")
-                        id_comissao = [result[0] for result in cursor.fetchall()]
-                        lista_ids.extend(id_comissao)
-
-                    # Recuperar os resultados da segunda consulta antes de fechar o cursor
-
-                    st.write(lista_ids)
+        pagamento_input = st.text_input(label=recebedor, value=pagamento)
+        data_pagamento = st.date_input("Data do Pagamento", format='DD/MM/YYYY', key="data_pagamento")
+        forma_pagamento = st.selectbox("Forma de Pagamento", options=['Pix', 'Dinheiro'], key="forma_pagamento", index=None)
 
 
-                    # Fora do loop for, você pode executar operações adicionais com um novo cursor
-                    for numero in lista_ids:
-                        if recebedor == f'{comissario} receber :':
-                            pagador = 'AcquaWorld'
-                        else:
-                            pagador = f'{comissario}'
+    # Botão para lançar pagamento
+        if st.button("Lançar Pagamento"):
+            lista_ids = []
 
-                        cursor.execute(f"SELECT valor_pagar from lancamento_comissao where id = {numero}")
-                        valor_pagar = cursor.fetchone()[0]
-                        cursor.execute(
-                            "INSERT INTO pagamento_comissao (id_comissao, data, pagador, valor) VALUES (%s, %s, %s, %s)",
-                            (numero, data_pagamento, pagador, valor_pagar))
+            with mydb.cursor() as cursor:
+                for titular in lista_titular:
+                    cursor.execute(f"SELECT id_cliente from reserva where nome_cliente = '{titular}'")
+                    id_titular = cursor.fetchone()[0]
+                    st.write(id_titular)
 
-                        cursor.execute(f"UPDATE lancamento_comissao SET situacao = 'Pago' where id = {numero}")
+                    cursor.execute(f"SELECT id from lancamento_comissao where id_titular = {id_titular}")
+                    id_comissao = [result[0] for result in cursor.fetchall()]
+                    lista_ids.extend(id_comissao)
 
-                    if pagador == 'AcquaWorld':
-                        descricao = f'ACERTO COMISSÃO {comissario}'
-                        cursor.execute("INSERT INTO caixa (data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s, %s)", (data_pagamento, 'SAIDA', 'PGT VENDEDOR', descricao, 'Pix', pagamento))
+                # Recuperar os resultados da segunda consulta antes de fechar o cursor
+
+                st.write(lista_ids)
+
+                # Fora do loop for, você pode executar operações adicionais com um novo cursor
+                for numero in lista_ids:
+                    if recebedor == f'{comissario} receber :':
+                        pagador = 'AcquaWorld'
                     else:
-                        descricao = f'ACERTO {comissario}'
-                        cursor.execute(
-                            "INSERT INTO caixa (data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s, %s)",
-                            (data_pagamento, 'ENTRADA', 'PGT VENDEDOR', descricao, 'Pix', pagamento))
+                        pagador = f'{comissario}'
 
-                    st.write(pagador)
+                    cursor.execute(f"SELECT valor_pagar from lancamento_comissao where id = {numero}")
+                    valor_pagar = cursor.fetchone()[0]
+                    cursor.execute(
+                        "INSERT INTO pagamento_comissao (id_comissao, data, pagador, valor) VALUES (%s, %s, %s, %s)",
+                        (numero, data_pagamento, pagador, valor_pagar))
+
+                    cursor.execute(f"UPDATE lancamento_comissao SET situacao = 'Pago' where id = {numero}")
+
+                if pagador == 'AcquaWorld':
+                    descricao = f'ACERTO COMISSÃO {comissario}'
+                    cursor.execute("INSERT INTO caixa (data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s, %s)", (data_pagamento, 'SAIDA', 'PGT VENDEDOR', descricao, 'Pix', pagamento))
+                else:
+                    descricao = f'ACERTO {comissario}'
+                    cursor.execute(
+                        "INSERT INTO caixa (data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s, %s)",
+                        (data_pagamento, 'ENTRADA', 'PGT VENDEDOR', descricao, 'Pix', pagamento))
+
+                st.write(pagador)
                 #
                 # st.write(lista_titular)
 
