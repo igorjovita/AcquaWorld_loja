@@ -84,36 +84,36 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
         cursor.execute(f"SELECT id FROM vendedores where nome = '{comissario}'")
         id_vendedor = cursor.fetchone()[0]
         cursor.execute("""
-            SELECT 
-                reserva.Data as Data,
-                reserva.nome_cliente as Nome_Titular,
-                GROUP_CONCAT(DISTINCT CONCAT(cnt_reserva.cnt, ' ', reserva.tipo) SEPARATOR ' + ') as Tipos_Reserva,
-                SUM(lancamento_comissao.valor_receber) as Valor_Receber,
-                SUM(lancamento_comissao.valor_pagar) as Valor_Pagar,
-                COALESCE(SUM(pagamentos_soma.pagamento), 0) as Valor_Pago,
-                lancamento_comissao.situacao
-            FROM 
-                reserva
-            JOIN 
-                lancamento_comissao ON reserva.Id = lancamento_comissao.Id_reserva
-            JOIN 
-                vendedores ON lancamento_comissao.Id_vendedor = vendedores.Id
-            LEFT JOIN (
-                SELECT Id_titular, Data, COUNT(*) as cnt
-                FROM reserva
-                WHERE Id_vendedor = %s AND situacao = %s
-                GROUP BY Id_titular, Data
-            ) as cnt_reserva ON reserva.Id_titular = cnt_reserva.Id_titular AND reserva.Data = cnt_reserva.Data
-            LEFT JOIN (
-                SELECT id_reserva, SUM(pagamento) as pagamento
-                FROM pagamentos
-                WHERE recebedor = 'AcquaWorld'
-                GROUP BY id_reserva
-            ) as pagamentos_soma ON reserva.Id = pagamentos_soma.id_reserva
-            WHERE  
-                lancamento_comissao.Id_vendedor = %s AND
-                lancamento_comissao.situacao = %s
-            GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao;
+           SELECT 
+               reserva.Data as Data,
+               reserva.nome_cliente as Nome_Titular,
+               GROUP_CONCAT(DISTINCT CONCAT(cnt_reserva.cnt, ' ', reserva.tipo) SEPARATOR ' + ') as Tipos_Reserva,
+               SUM(lancamento_comissao.valor_receber) as Valor_Receber,
+               SUM(lancamento_comissao.valor_pagar) as Valor_Pagar,
+               COALESCE(SUM(pagamentos_soma.pagamento), 0) as Valor_Pago,
+               lancamento_comissao.situacao
+           FROM 
+               reserva
+           JOIN 
+               lancamento_comissao ON reserva.Id = lancamento_comissao.Id_reserva
+           JOIN 
+               vendedores ON lancamento_comissao.Id_vendedor = vendedores.Id
+           LEFT JOIN (
+               SELECT Id_titular, Data, COUNT(*) as cnt
+               FROM reserva
+               WHERE Id_vendedor = %s AND situacao = %s
+               GROUP BY Id_titular, Data
+           ) as cnt_reserva ON reserva.Id_titular = cnt_reserva.Id_titular AND reserva.Data = cnt_reserva.Data
+           LEFT JOIN (
+               SELECT id_reserva, SUM(pagamento) as pagamento
+               FROM pagamentos
+               WHERE recebedor = 'AcquaWorld'
+               GROUP BY id_reserva
+           ) as pagamentos_soma ON reserva.Id = pagamentos_soma.id_reserva
+           WHERE  
+               lancamento_comissao.Id_vendedor = %s AND
+               lancamento_comissao.situacao = %s
+           GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao;
         """, (id_vendedor, situacao, id_vendedor, situacao))
 
         resultados = cursor.fetchall()
