@@ -84,9 +84,10 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
         cursor.execute(f"SELECT id FROM vendedores where nome = '{comissario}'")
         id_vendedor = cursor.fetchone()[0]
         cursor.execute(f"""
-            SELECT reserva.Data as Data,
+            SELECT 
+                reserva.Data as Data,
                 reserva.nome_cliente as Nome_Titular,
-                GROUP_CONCAT(DISTINCT tipo_reserva.tipo SEPARATOR ' + ') as Tipos_Reserva,
+                GROUP_CONCAT(DISTINCT CONCAT(cnt_reserva.cnt, ' ', reserva.tipo) SEPARATOR ' + ') as Tipos_Reserva,
                 SUM(lancamento_comissao.valor_receber) as Valor_Receber,
                 SUM(lancamento_comissao.valor_pagar) as Valor_Pagar,
                 COALESCE(SUM(pagamentos_soma.pagamento), 0) as Valor_Pago,
@@ -112,6 +113,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                 lancamento_comissao.Id_vendedor = {id_vendedor} AND
                 lancamento_comissao.situacao = '{situacao}'
             GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao;
+
         """)
 
         resultados = cursor.fetchall()
