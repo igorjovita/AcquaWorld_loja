@@ -87,7 +87,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
             SELECT 
                 reserva.Data as Data,
                 reserva.nome_cliente as Nome_Titular,
-                GROUP_CONCAT(DISTINCT CONCAT(cnt_reserva.cnt, ' ', reserva.tipo) SEPARATOR ' + ') as Tipos_Reserva,
+                tipo_reserva.tipo as Tipo_Reserva,
                 SUM(lancamento_comissao.valor_receber) as Valor_Receber,
                 SUM(lancamento_comissao.valor_pagar) as Valor_Pagar,
                 COALESCE(SUM(pagamentos_soma.pagamento), 0) as Valor_Pago,
@@ -99,11 +99,10 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
             JOIN 
                 vendedores ON lancamento_comissao.Id_vendedor = vendedores.Id
             LEFT JOIN (
-                SELECT Id_titular, Data, COUNT(DISTINCT tipo) as cnt
+                SELECT Id_titular, Data, tipo
                 FROM reserva
                 WHERE Id_vendedor = {id_vendedor}
-                GROUP BY Id_titular, Data
-            ) as cnt_reserva ON reserva.Id_titular = cnt_reserva.Id_titular AND reserva.Data = cnt_reserva.Data
+            ) as tipo_reserva ON reserva.Id_titular = tipo_reserva.Id_titular AND reserva.Data = tipo_reserva.Data
             LEFT JOIN (
                 SELECT id_reserva, SUM(pagamento) as pagamento
                 FROM pagamentos
@@ -113,7 +112,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
             WHERE  
                 lancamento_comissao.Id_vendedor = {id_vendedor} AND
                 lancamento_comissao.situacao = '{situacao}'
-            GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao;
+            GROUP BY reserva.Id_titular, reserva.Data, tipo_reserva.tipo, lancamento_comissao.situacao;
         """)
 
         resultados = cursor.fetchall()
