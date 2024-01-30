@@ -103,15 +103,12 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                         GROUP BY Id_titular, Data
                     ) as cnt_reserva ON reserva.Id_titular = cnt_reserva.Id_titular AND reserva.Data = cnt_reserva.Data
                     LEFT JOIN (
-                        SELECT id_reserva, SUM(pagamento) as pagamento
-                        FROM pagamentos
-                        WHERE recebedor = 'AcquaWorld'
-                        GROUP BY id_reserva
-                    ) as pagamentos_soma ON reserva.Id = pagamentos_soma.id_reserva
-                    WHERE  
-                        lancamento_comissao.Id_vendedor = {id_vendedor} AND
-                        lancamento_comissao.situacao = '{situacao}'
-                    GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao;
+                        SELECT Id_titular, Data, COUNT(*) as cnt
+                        FROM reserva
+                        WHERE Id_vendedor = {id_vendedor} AND situacao = '{situacao}'
+                        GROUP BY Id_titular, Data
+                    ) as cnt_reserva ON reserva.Id_titular = cnt_reserva.Id_titular AND reserva.Data = cnt_reserva.Data
+                    ;
 
                     """)
         resultados = cursor.fetchall()
