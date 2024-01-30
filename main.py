@@ -953,13 +953,13 @@ if escolha == 'Pagamento':
                             cursor.execute(f"SELECT valor_neto FROM vendedores WHERE id = {id_vendedor_pg}")
                             valor_neto = int(cursor.fetchone()[0])
 
-                        if tipo == 'ACP':
+                        elif tipo == 'ACP':
                             cursor.execute(f"SELECT neto_acp FROM vendedores WHERE id = {id_vendedor_pg}")
                             valor_neto = int(cursor.fetchone()[0])
-                        if tipo == 'TUR1':
+                        elif tipo == 'TUR1':
                             cursor.execute(f"SELECT neto_tur1 FROM vendedores WHERE id = {id_vendedor_pg}")
                             valor_neto = int(cursor.fetchone()[0])
-                        if tipo == 'TUR2':
+                        elif tipo == 'TUR2':
                             cursor.execute(f"SELECT neto_tur2 FROM vendedores WHERE id = {id_vendedor_pg}")
                             valor_neto = int(cursor.fetchone()[0])
                         else:
