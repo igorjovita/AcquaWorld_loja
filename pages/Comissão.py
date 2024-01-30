@@ -82,7 +82,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                         GROUP BY id_reserva
                     ) as pagamentos_soma ON reserva.Id = pagamentos_soma.id_reserva
                     WHERE  
-                        reserva.data BETWEEN '{data_inicio}' and '{data_final}' AND
+                        reserva.Data BETWEEN '{data_inicio}' and '{data_final}' AND
                         lancamento_comissao.Id_vendedor = {id_vendedor} AND
                         lancamento_comissao.situacao = '{situacao}'
                     GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao;""")
