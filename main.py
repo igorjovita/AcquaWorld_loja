@@ -425,7 +425,6 @@ if escolha == 'Reservar':
                 st.write('---')
 
         if st.button('Reservar'):
-            st.write(st.session_state.pagamentos)
             if tipo in lista_cred and contagem_cred >= vaga_cred:
                 st.write(contagem_cred)
                 st.write(vaga_cred)
@@ -452,6 +451,8 @@ if escolha == 'Reservar':
                             id_reserva = cursor.lastrowid
 
                             st.session_state.pagamentos.append((id_titular, id_reserva))
+
+                        st.write(st.session_state.pagamentos)
                         if recebedor_sinal != '':
                             for pagamento in st.session_state.pagamentos:
                                 cursor.execute(
