@@ -446,7 +446,7 @@ if escolha == 'Reservar':
 
                             forma_pg = 'Pix'
                             pagamentos.append(
-                                (data.strftime('%d/%m/%Y'), id_reserva, recebedor_sinal, sinal, forma_pg,id_titular))
+                                (data.strftime('%d/%m/%Y'), id_reserva, recebedor_sinal, sinal, forma_pg, id_titular))
                         if recebedor_sinal != '':
                             for pagamento in pagamentos:
                                 cursor.execute(
@@ -630,360 +630,377 @@ if escolha == 'Pagamento':
                         item_formatado = str(item).translate(str.maketrans('', '', chars))
                         lista_cliente.append(item_formatado)
 
-                    lista_nome_pagamento = []
-                    nome_cliente_reserva = []
-                    id_cliente_reserva = []
-                    receber_loja_reserva = []
-                    mydb.connect()
-                    cursor = mydb.cursor(buffered=True)
+            lista_nome_pagamento = []
+            nome_cliente_reserva = []
+            id_cliente_reserva = []
+            receber_loja_reserva = []
+            mydb.connect()
+            cursor = mydb.cursor(buffered=True)
 
-                    cursor.execute(
-                        f'SELECT id, nome_cliente, receber_loja from reserva where id_titular = {id_titular_pagamento}')
-                    resultado_pg = cursor.fetchall()
-                    for item in resultado_pg:
-                        id_reserva_pg, nome_reserva_pg, receber_loja_pg = item
+            cursor.execute(
+                f'SELECT id, nome_cliente, receber_loja from reserva where id_titular = {id_titular_pagamento}')
+            resultado_pg = cursor.fetchall()
+            for item in resultado_pg:
+                id_reserva_pg, nome_reserva_pg, receber_loja_pg = item
 
-                        nome_cliente_reserva.append(nome_reserva_pg)
-                        id_cliente_reserva.append(id_reserva_pg)
-                        receber_loja_reserva.append(receber_loja_pg)
-                    receber_grupo = 0
-                    total_sinal = 0
-                    colun1, colun2, colun3, colun4 = st.columns(4)
+                nome_cliente_reserva.append(nome_reserva_pg)
+                id_cliente_reserva.append(id_reserva_pg)
+                receber_loja_reserva.append(receber_loja_pg)
+            receber_grupo = 0
+            total_sinal = 0
+            colun1, colun2, colun3, colun4 = st.columns(4)
 
-                    with colun1:
-                        st.markdown(
-                            f"<h2 style='color: white; text-align: center; font-size: 1.5em; font-weight: bold;'>Nome do Cliente</h2>",
-                            unsafe_allow_html=True)
-                    with colun2:
-                        st.markdown(
-                            f"<h2 style='color: white; font-size: 1.5em; text-align: center; font-weight: bold;'>Sinal</h2>",
-                            unsafe_allow_html=True)
+            with colun1:
+                st.markdown(
+                    f"<h2 style='color: white; text-align: center; font-size: 1.5em; font-weight: bold;'>Nome do Cliente</h2>",
+                    unsafe_allow_html=True)
+            with colun2:
+                st.markdown(
+                    f"<h2 style='color: white; font-size: 1.5em; text-align: center; font-weight: bold;'>Sinal</h2>",
+                    unsafe_allow_html=True)
 
-                    with colun3:
-                        st.markdown(
-                            f"<h2 style='color: white; font-size: 1.5em; text-align: center; font-weight: bold;'>Valor a Receber</h2>",
-                            unsafe_allow_html=True)
-                    with colun4:
-                        st.markdown(
-                            f"<h2 style='color: white; font-size: 1.5em; text-align: center; font-weight: bold;'>Situação</h2>",
-                            unsafe_allow_html=True)
+            with colun3:
+                st.markdown(
+                    f"<h2 style='color: white; font-size: 1.5em; text-align: center; font-weight: bold;'>Valor a Receber</h2>",
+                    unsafe_allow_html=True)
+            with colun4:
+                st.markdown(
+                    f"<h2 style='color: white; font-size: 1.5em; text-align: center; font-weight: bold;'>Situação</h2>",
+                    unsafe_allow_html=True)
 
-                    for nome, id_pg, receber_loja in zip(nome_cliente_reserva, id_cliente_reserva,
-                                                         receber_loja_reserva):
-                        nome_formatado = str(nome).translate(str.maketrans('', '', chars))
-                        id_formatado = int(str(id_pg).translate(str.maketrans('', '', chars)))
-                        if receber_loja is not None:
-                            receber_formatado = float(str(receber_loja).translate(str.maketrans('', '', chars)))
-                        else:
-                            receber_formatado = float(0.00)
-                        cursor.execute(f"SELECT recebedor, pagamento FROM pagamentos WHERE id_reserva = {id_formatado}")
-                        result = cursor.fetchone()
+            for nome, id_pg, receber_loja in zip(nome_cliente_reserva, id_cliente_reserva,
+                                                 receber_loja_reserva):
+                nome_formatado = str(nome).translate(str.maketrans('', '', chars))
+                id_formatado = int(str(id_pg).translate(str.maketrans('', '', chars)))
+                if receber_loja is not None:
+                    receber_formatado = float(str(receber_loja).translate(str.maketrans('', '', chars)))
+                else:
+                    receber_formatado = float(0.00)
+                cursor.execute(f"SELECT recebedor, pagamento FROM pagamentos WHERE id_reserva = {id_formatado}")
+                result = cursor.fetchone()
 
-                        if result is not None:
-                            recebedor = result[0]
-                            pagamento = result[1]
-                        else:
-                            recebedor = None
-                        lista_nome_pagamento.append(nome_formatado)
-                        coluna1, coluna2, coluna3, coluna4 = st.columns(4)
+                if result is not None:
+                    recebedor = result[0]
+                    pagamento = result[1]
+                else:
+                    recebedor = None
+                lista_nome_pagamento.append(nome_formatado)
+                coluna1, coluna2, coluna3, coluna4 = st.columns(4)
 
-                        with coluna1:
-                            st.markdown(
-                                f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>{nome_formatado}</h2>",
-                                unsafe_allow_html=True)
+                with coluna1:
+                    st.markdown(
+                        f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>{nome_formatado}</h2>",
+                        unsafe_allow_html=True)
 
-                        if recebedor is not None:
-                            with coluna2:
-                                pagamento_formatado = "{:,.2f}".format(pagamento).replace(",", "X").replace(".",
-                                                                                                            ",").replace(
-                                    "X", ".")
-                                st.markdown(
-                                    f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>{recebedor} -  R$ {pagamento_formatado}</h2>",
-                                    unsafe_allow_html=True)
-                            total_sinal += pagamento
-
-                        else:
-                            with coluna2:
-                                st.markdown(
-                                    f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>Nenhum sinal foi pago</h2>",
-                                    unsafe_allow_html=True)
-                        with coluna3:
-                            receber_formatado_individual = "{:,.2f}".format(receber_formatado).replace(",",
-                                                                                                       "X").replace(".",
-                                                                                                                    ",").replace(
-                                "X", ".")
-                            st.markdown(
-                                f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>R$ {receber_formatado_individual}</h2>",
-                                unsafe_allow_html=True)
-
-                        receber_grupo += receber_formatado
-                        with coluna4:
-                            st.markdown(
-                                f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>Pendente</h2>",
-                                unsafe_allow_html=True)
-
-                    if len(lista_nome_pagamento) > 1:
-
-                        colum1, colum2, colum3, colum4 = st.columns(4)
-
-                        with colum1:
-                            st.markdown(f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>Total</h2>",
-                                        unsafe_allow_html=True)
-
-                        with colum2:
-                            total_sinal_formatado = "{:,.2f}".format(total_sinal).replace(",", "X").replace(".",
-                                                                                                            ",").replace(
-                                "X", ".")
-                            st.markdown(
-                                f"<h2 style='color: green; text-align: center; font-size: 1.2em;'>R$ {total_sinal_formatado}</h2>",
-                                unsafe_allow_html=True)
-
-                        with colum3:
-                            receber_grupo_formatado = "{:,.2f}".format(receber_grupo).replace(",", "X").replace(".",
-                                                                                                                ",").replace(
-                                "X", ".")
-                            st.markdown(
-                                f"<h2 style='color: green; text-align: center; font-size: 1.2em;'>R$ {receber_grupo_formatado}</h2>",
-                                unsafe_allow_html=True)
-
-                        st.markdown("<div style='margin-bottom: 40px;'></div>", unsafe_allow_html=True)
-
-                        pagamento_escolha = st.radio('Opções de pagamento', ['Pagamento Grupo', 'Pagamento Individual'],
-                                                     horizontal=True)
-
-                    else:
-                        pagamento_escolha = 'Pagamento Individual'
-
-                    if pagamento_escolha == 'Pagamento Individual':
-                        escolha_client_input = st.selectbox('Cliente', options=lista_cliente)
-                        st.write('---')
-
-                        valor_a_receber_cliente = None
-                        for nome, id_pg, receber_loja in zip(nome_cliente_reserva, id_cliente_reserva,
-                                                             receber_loja_reserva):
-                            if nome == escolha_client_input:
-                                valor_a_receber_cliente = receber_loja
-
-                        if valor_a_receber_cliente is not None:
-                            valor_a_receber_formatado = "{:,.2f}".format(valor_a_receber_cliente).replace(",",
-                                                                                                          "X").replace(
-                                ".", ",").replace("X", ".")
-                            st.markdown(
-                                f"<h2 style='color: green; font-size: 1.5em;'>Total a receber para {escolha_client_input} - R$ {valor_a_receber_formatado}</h2>",
-                                unsafe_allow_html=True)
-                        else:
-                            st.warning(f"Não foi possível encontrar o valor a receber para {escolha_client_input}")
-
-                        forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
-                                                index=None,
-                                                placeholder='Insira a forma de pagamento')
-
-                        if forma_pg == 'Credito':
-                            parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
-                        else:
-                            parcela = 0
-
-                        pagamento = st.text_input('Valor pago')
-                        check_in_entry = st.selectbox('Cliente vai pra onde?', ['Loja', 'Para o pier'], index=None)
-                        if check_in_entry == 'Loja':
-                            check_in = '#00B0F0'
-                        if check_in_entry == 'Para o pier':
-                            check_in = 'yellow'
-
-                        if st.button('Lançar Pagamento'):
-
-                            cursor.execute(f"SELECT valor_neto FROM vendedores WHERE id = {id_vendedor_pg}")
-                            valor_neto = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
-
-                            cursor.execute(
-                                f"SELECT id, tipo, valor_total  FROM reserva WHERE nome_cliente = '{escolha_client_input}' and data = '{data_reserva}'")
-                            info_reserva_pg = cursor.fetchone()
-
-                            cursor.execute(
-                                f"UPDATE reserva set check_in = '{check_in}' where nome_cliente = '{escolha_client_input}'")
-
-                            id_reserva_cliente = info_reserva_pg[0]
-                            tipo_reserva = info_reserva_pg[1]
-                            valor_total_reserva = info_reserva_pg[2]
-
-                            cursor.execute(
-                                "INSERT INTO pagamentos (data ,id_reserva, recebedor, pagamento, forma_pg, parcela, id_titular) VALUES (%s,%s, %s, %s, %s, %s, %s)",
-                                (
-                                    data_pagamento, id_reserva_cliente, 'AcquaWorld', pagamento, forma_pg, parcela, id_titular_pagamento))
-                            id_pagamento = cursor.lastrowid
-
-                            cursor.execute(
-                                f"SELECT recebedor, sum(pagamento) from pagamentos where id_reserva = {id_reserva_cliente} group by recebedor")
-                            resultado_soma = cursor.fetchall()
-                            st.write(resultado_soma)
-
-                            vendedor_nome = None
-                            vendedor_valor = None
-                            acquaworld_nome = None
-                            acquaworld_valor = None
-                            for result in resultado_soma:
-                                nome_result = result[0]
-                                valor = result[1]
-
-                                if nome_result == 'Vendedor':
-                                    vendedor_nome = nome_result
-                                    vendedor_valor = valor
-
-                                elif nome_result == 'AcquaWorld':
-                                    acquaworld_nome = nome_result
-                                    acquaworld_valor = valor
-
-                            st.write(vendedor_nome)
-                            st.write(vendedor_valor)
-                            st.write(acquaworld_nome)
-                            st.write(acquaworld_valor)
-                            st.write(f'id_titular = {id_titular_pagamento}')
-                            reserva_neto = valor_total_reserva - valor_neto
-
-                            if acquaworld_valor < valor_neto:
-                                valor_receber = valor_neto - acquaworld_valor
-                                valor_pagar = 0
-                                situacao = 'Pendente'
-
-                            if acquaworld_valor > valor_neto:
-                                valor_receber = 0
-                                valor_pagar = acquaworld_valor - valor_neto
-                                situacao = 'Pendente'
-
-                            if acquaworld_valor == valor_neto and vendedor_valor == reserva_neto:
-                                valor_receber = 0
-                                valor_pagar = 0
-                                situacao = 'Pago'
-
-                            st.write(f'Pagar : {valor_pagar}')
-                            st.write(f'Receber : {valor_receber}')
-                            data_completa = str(data_reserva).split('-')
-                            descricao = f'{nome} do dia {data_completa[2]}/{data_completa[1]}/{data_completa[0]}'
-
-                            cursor.execute(
-                                "INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES "
-                                "(%s, %s, %s, %s, %s, %s, %s)",
-                                (1, data_pagamento, 'ENTRADA', tipo_reserva, descricao, forma_pg, pagamento))
-
-                            cursor.execute(
-                                "INSERT INTO lancamento_comissao (id_reserva, id_vendedor, valor_receber, valor_pagar, "
-                                "situacao, id_titular) VALUES (%s, %s, %s, %s, %s, %s)",
-                                (id_reserva_cliente, id_vendedor_pg,
-                                 valor_receber, valor_pagar, situacao, id_titular_pagamento))
-
-                            mydb.close()
-                            st.success('Pagamento lançado no sistema!')
-                            st.session_state.botao = False
-
-                    if pagamento_escolha == 'Pagamento Grupo':
-                        st.write('---')
-
-                        st.subheader(f'Pagamento Grupo {selectbox_cliente}')
-                        receber_grupo_formatado = "{:,.2f}".format(receber_grupo).replace(",", "X").replace(".",
-                                                                                                            ",").replace(
+                if recebedor is not None:
+                    with coluna2:
+                        pagamento_formatado = "{:,.2f}".format(pagamento).replace(",", "X").replace(".",
+                                                                                                    ",").replace(
                             "X", ".")
                         st.markdown(
-                            f"<h2 style='color: green; font-size: 1.5em;'>Total a receber - R$ {receber_grupo_formatado}</h2>",
+                            f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>{recebedor} -  R$ {pagamento_formatado}</h2>",
                             unsafe_allow_html=True)
+                    total_sinal += pagamento
 
-                        forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
-                                                index=None,
-                                                placeholder='Insira a forma de pagamento')
+                else:
+                    with coluna2:
+                        st.markdown(
+                            f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>Nenhum sinal foi pago</h2>",
+                            unsafe_allow_html=True)
+                with coluna3:
+                    receber_formatado_individual = "{:,.2f}".format(receber_formatado).replace(",",
+                                                                                               "X").replace(".",
+                                                                                                            ",").replace(
+                        "X", ".")
+                    st.markdown(
+                        f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>R$ {receber_formatado_individual}</h2>",
+                        unsafe_allow_html=True)
 
-                        if forma_pg == 'Credito':
-                            parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
-                        else:
-                            parcela = 0
+                receber_grupo += receber_formatado
+                with coluna4:
+                    st.markdown(
+                        f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>Pendente</h2>",
+                        unsafe_allow_html=True)
 
-                        check_in_entry = st.selectbox('Cliente vai pra onde?', ['Loja', 'Para o pier'], index=None)
-                        if check_in_entry == 'Loja':
-                            check_in = '#00B0F0'
-                        if check_in_entry == 'Para o pier':
-                            check_in = 'yellow'
+            if len(lista_nome_pagamento) > 1:
 
-                        if st.button('Lançar Pagamento'):
+                colum1, colum2, colum3, colum4 = st.columns(4)
 
+                with colum1:
+                    st.markdown(f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>Total</h2>",
+                                unsafe_allow_html=True)
+
+                with colum2:
+                    total_sinal_formatado = "{:,.2f}".format(total_sinal).replace(",", "X").replace(".",
+                                                                                                    ",").replace(
+                        "X", ".")
+                    st.markdown(
+                        f"<h2 style='color: green; text-align: center; font-size: 1.2em;'>R$ {total_sinal_formatado}</h2>",
+                        unsafe_allow_html=True)
+
+                with colum3:
+                    receber_grupo_formatado = "{:,.2f}".format(receber_grupo).replace(",", "X").replace(".",
+                                                                                                        ",").replace(
+                        "X", ".")
+                    st.markdown(
+                        f"<h2 style='color: green; text-align: center; font-size: 1.2em;'>R$ {receber_grupo_formatado}</h2>",
+                        unsafe_allow_html=True)
+
+                st.markdown("<div style='margin-bottom: 40px;'></div>", unsafe_allow_html=True)
+
+                pagamento_escolha = st.radio('Opções de pagamento', ['Pagamento Grupo', 'Pagamento Individual'],
+                                             horizontal=True)
+
+            else:
+                pagamento_escolha = 'Pagamento Individual'
+
+            if pagamento_escolha == 'Pagamento Individual':
+                escolha_client_input = st.selectbox('Cliente', options=lista_cliente)
+                st.write('---')
+
+                valor_a_receber_cliente = None
+                for nome, id_pg, receber_loja in zip(nome_cliente_reserva, id_cliente_reserva,
+                                                     receber_loja_reserva):
+                    if nome == escolha_client_input:
+                        valor_a_receber_cliente = receber_loja
+
+                if valor_a_receber_cliente is not None:
+                    valor_a_receber_formatado = "{:,.2f}".format(valor_a_receber_cliente).replace(",",
+                                                                                                  "X").replace(
+                        ".", ",").replace("X", ".")
+                    st.markdown(
+                        f"<h2 style='color: green; font-size: 1.5em;'>Total a receber para {escolha_client_input} - R$ {valor_a_receber_formatado}</h2>",
+                        unsafe_allow_html=True)
+                else:
+                    st.warning(f"Não foi possível encontrar o valor a receber para {escolha_client_input}")
+
+                forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
+                                        index=None,
+                                        placeholder='Insira a forma de pagamento')
+
+                if forma_pg == 'Credito':
+                    parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
+                else:
+                    parcela = 0
+
+                pagamento = st.text_input('Valor pago')
+                check_in_entry = st.selectbox('Cliente vai pra onde?', ['Loja', 'Para o pier'], index=None)
+                if check_in_entry == 'Loja':
+                    check_in = '#00B0F0'
+                if check_in_entry == 'Para o pier':
+                    check_in = 'yellow'
+
+                if st.button('Lançar Pagamento'):
+
+                    cursor.execute(f"SELECT valor_neto FROM vendedores WHERE id = {id_vendedor_pg}")
+                    valor_neto = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
+
+                    cursor.execute(
+                        f"SELECT id, tipo, valor_total  FROM reserva WHERE nome_cliente = '{escolha_client_input}' and data = '{data_reserva}'")
+                    info_reserva_pg = cursor.fetchone()
+
+                    cursor.execute(
+                        f"UPDATE reserva set check_in = '{check_in}' where nome_cliente = '{escolha_client_input}'")
+
+                    id_reserva_cliente = info_reserva_pg[0]
+                    tipo_reserva = info_reserva_pg[1]
+                    valor_total_reserva = info_reserva_pg[2]
+
+                    cursor.execute(
+                        "INSERT INTO pagamentos (data ,id_reserva, recebedor, pagamento, forma_pg, parcela, id_titular) VALUES (%s,%s, %s, %s, %s, %s, %s)",
+                        (
+                            data_pagamento, id_reserva_cliente, 'AcquaWorld', pagamento, forma_pg, parcela,
+                            id_titular_pagamento))
+                    id_pagamento = cursor.lastrowid
+
+                    cursor.execute(
+                        f"SELECT recebedor, sum(pagamento) from pagamentos where id_reserva = {id_reserva_cliente} group by recebedor")
+                    resultado_soma = cursor.fetchall()
+                    st.write(resultado_soma)
+
+                    vendedor_nome = None
+                    vendedor_valor = None
+                    acquaworld_nome = None
+                    acquaworld_valor = None
+                    for result in resultado_soma:
+                        nome_result = result[0]
+                        valor = result[1]
+
+                        if nome_result == 'Vendedor':
+                            vendedor_nome = nome_result
+                            vendedor_valor = valor
+
+                        elif nome_result == 'AcquaWorld':
+                            acquaworld_nome = nome_result
+                            acquaworld_valor = valor
+
+                    st.write(vendedor_nome)
+                    st.write(vendedor_valor)
+                    st.write(acquaworld_nome)
+                    st.write(acquaworld_valor)
+                    st.write(f'id_titular = {id_titular_pagamento}')
+                    reserva_neto = valor_total_reserva - valor_neto
+
+                    if acquaworld_valor < valor_neto:
+                        valor_receber = valor_neto - acquaworld_valor
+                        valor_pagar = 0
+                        situacao = 'Pendente'
+
+                    if acquaworld_valor > valor_neto:
+                        valor_receber = 0
+                        valor_pagar = acquaworld_valor - valor_neto
+                        situacao = 'Pendente'
+
+                    if acquaworld_valor == valor_neto and vendedor_valor == reserva_neto:
+                        valor_receber = 0
+                        valor_pagar = 0
+                        situacao = 'Pago'
+
+                    st.write(f'Pagar : {valor_pagar}')
+                    st.write(f'Receber : {valor_receber}')
+                    data_completa = str(data_reserva).split('-')
+                    descricao = f'{nome} do dia {data_completa[2]}/{data_completa[1]}/{data_completa[0]}'
+
+                    cursor.execute(
+                        "INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES "
+                        "(%s, %s, %s, %s, %s, %s, %s)",
+                        (1, data_pagamento, 'ENTRADA', tipo_reserva, descricao, forma_pg, pagamento))
+
+                    cursor.execute(
+                        "INSERT INTO lancamento_comissao (id_reserva, id_vendedor, valor_receber, valor_pagar, "
+                        "situacao, id_titular) VALUES (%s, %s, %s, %s, %s, %s)",
+                        (id_reserva_cliente, id_vendedor_pg,
+                         valor_receber, valor_pagar, situacao, id_titular_pagamento))
+
+                    mydb.close()
+                    st.success('Pagamento lançado no sistema!')
+                    st.session_state.botao = False
+
+            if pagamento_escolha == 'Pagamento Grupo':
+                st.write('---')
+
+                st.subheader(f'Pagamento Grupo {selectbox_cliente}')
+                receber_grupo_formatado = "{:,.2f}".format(receber_grupo).replace(",", "X").replace(".",
+                                                                                                    ",").replace(
+                    "X", ".")
+                st.markdown(
+                    f"<h2 style='color: green; font-size: 1.5em;'>Total a receber - R$ {receber_grupo_formatado}</h2>",
+                    unsafe_allow_html=True)
+
+                forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
+                                        index=None,
+                                        placeholder='Insira a forma de pagamento')
+
+                if forma_pg == 'Credito':
+                    parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
+                else:
+                    parcela = 0
+
+                check_in_entry = st.selectbox('Cliente vai pra onde?', ['Loja', 'Para o pier'], index=None)
+                if check_in_entry == 'Loja':
+                    check_in = '#00B0F0'
+                if check_in_entry == 'Para o pier':
+                    check_in = 'yellow'
+
+                if st.button('Lançar Pagamento'):
+
+                    for nome in lista_nome_pagamento:
+
+                        cursor.execute(
+                            f"SELECT id, tipo, valor_total, receber_loja, tipo  FROM reserva WHERE nome_cliente = '{nome}' and data = '{data_reserva}'")
+                        info_reserva_pg = cursor.fetchone()
+
+                        cursor.execute(
+                            f"UPDATE reserva set check_in = '{check_in}' where nome_cliente = '{nome}'")
+
+                        id_reserva_cliente = info_reserva_pg[0]
+                        tipo_reserva = info_reserva_pg[1]
+                        valor_total_reserva = info_reserva_pg[2]
+                        receber_loja_individual = info_reserva_pg[3]
+                        tipo = info_reserva_pg[4]
+                        pagamento = receber_loja_individual
+
+                        cursor.execute(
+                            "INSERT INTO pagamentos (data ,id_reserva, recebedor, pagamento, forma_pg, parcela, id_titular) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                            (
+                                data_pagamento, id_reserva_cliente, 'AcquaWorld', pagamento, forma_pg, parcela,
+                                id_titular_pagamento))
+                        id_pagamento = cursor.lastrowid
+
+                        cursor.execute(
+                            f"SELECT recebedor, sum(pagamento) from pagamentos where id_reserva = {id_reserva_cliente} group by recebedor")
+                        resultado_soma = cursor.fetchall()
+                        st.write(resultado_soma)
+
+                        vendedor_nome = None
+                        vendedor_valor = None
+                        acquaworld_nome = None
+                        acquaworld_valor = None
+
+                        if tipo == 'BAT':
                             cursor.execute(f"SELECT valor_neto FROM vendedores WHERE id = {id_vendedor_pg}")
-                            valor_neto = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
+                            valor_neto = int(cursor.fetchone()[0])
 
-                            for nome in lista_nome_pagamento:
+                        if tipo == 'ACP':
+                            cursor.execute(f"SELECT neto_acp FROM vendedores WHERE id = {id_vendedor_pg}")
+                            valor_neto = int(cursor.fetchone()[0])
+                        if tipo == 'TUR1':
+                            cursor.execute(f"SELECT neto_tur1 FROM vendedores WHERE id = {id_vendedor_pg}")
+                            valor_neto = int(cursor.fetchone()[0])
+                        if tipo == 'TUR2':
+                            cursor.execute(f"SELECT neto_tur2 FROM vendedores WHERE id = {id_vendedor_pg}")
+                            valor_neto = int(cursor.fetchone()[0])
+                        else:
+                            valor_neto = valor_total_reserva * 10/100
 
-                                cursor.execute(
-                                    f"SELECT id, tipo, valor_total, receber_loja  FROM reserva WHERE nome_cliente = '{nome}' and data = '{data_reserva}'")
-                                info_reserva_pg = cursor.fetchone()
+                        st.write(valor_neto)
 
-                                cursor.execute(
-                                    f"UPDATE reserva set check_in = '{check_in}' where nome_cliente = '{nome}'")
+                        for result in resultado_soma:
+                            nome_result = result[0]
+                            valor = result[1]
 
-                                id_reserva_cliente = info_reserva_pg[0]
-                                tipo_reserva = info_reserva_pg[1]
-                                valor_total_reserva = info_reserva_pg[2]
-                                receber_loja_individual = info_reserva_pg[3]
-                                pagamento = receber_loja_individual
+                            if nome_result == 'Vendedor':
+                                vendedor_nome = nome_result
+                                vendedor_valor = valor
 
-                                cursor.execute(
-                                    "INSERT INTO pagamentos (data ,id_reserva, recebedor, pagamento, forma_pg, parcela, id_titular) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-                                    (
-                                        data_pagamento, id_reserva_cliente, 'AcquaWorld', pagamento, forma_pg, parcela, id_titular_pagamento))
-                                id_pagamento = cursor.lastrowid
+                            elif nome_result == 'AcquaWorld':
+                                acquaworld_nome = nome_result
+                                acquaworld_valor = valor
 
-                                cursor.execute(
-                                    f"SELECT recebedor, sum(pagamento) from pagamentos where id_reserva = {id_reserva_cliente} group by recebedor")
-                                resultado_soma = cursor.fetchall()
-                                st.write(resultado_soma)
+                        reserva_neto = valor_total_reserva - valor_neto
+                        situacao = 'Pendente'
 
-                                vendedor_nome = None
-                                vendedor_valor = None
-                                acquaworld_nome = None
-                                acquaworld_valor = None
-                                for result in resultado_soma:
-                                    nome_result = result[0]
-                                    valor = result[1]
+                        if acquaworld_valor < valor_neto:
+                            valor_receber = valor_neto - acquaworld_valor
+                            valor_pagar = 0
 
-                                    if nome_result == 'Vendedor':
-                                        vendedor_nome = nome_result
-                                        vendedor_valor = valor
+                        if acquaworld_valor > valor_neto:
+                            valor_receber = 0
+                            valor_pagar = acquaworld_valor - valor_neto
+                        if acquaworld_valor == valor_neto and vendedor_valor == reserva_neto:
+                            valor_receber = 0
+                            valor_pagar = 0
+                            situacao = 'Ok'
 
-                                    elif nome_result == 'AcquaWorld':
-                                        acquaworld_nome = nome_result
-                                        acquaworld_valor = valor
+                        st.write(f'Pagar : {valor_pagar}')
+                        st.write(f'Receber : {valor_receber}')
+                        data_completa = str(data_reserva).split('-')
+                        descricao = f'{nome} do dia {data_completa[2]}/{data_completa[1]}/{data_completa[0]}'
 
-                                reserva_neto = valor_total_reserva - valor_neto
-                                situacao = 'Pendente'
+                        cursor.execute(
+                            "INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES "
+                            "(%s, %s, %s, %s, %s, %s, %s)",
+                            (1, data_pagamento, 'ENTRADA', tipo_reserva, descricao, forma_pg, pagamento))
 
-                                if acquaworld_valor < valor_neto:
-                                    valor_receber = valor_neto - acquaworld_valor
-                                    valor_pagar = 0
+                        cursor.execute(
+                            "INSERT INTO lancamento_comissao (id_reserva, id_vendedor, valor_receber, valor_pagar, "
+                            "situacao, id_titular) VALUES (%s, %s, %s, %s, %s, %s)",
+                            (id_reserva_cliente, id_vendedor_pg,
+                             valor_receber, valor_pagar, situacao, id_titular_pagamento))
 
-                                if acquaworld_valor > valor_neto:
-                                    valor_receber = 0
-                                    valor_pagar = acquaworld_valor - valor_neto
-                                if acquaworld_valor == valor_neto and vendedor_valor == reserva_neto:
-                                    valor_receber = 0
-                                    valor_pagar = 0
-                                    situacao = 'Ok'
-
-                                st.write(f'Pagar : {valor_pagar}')
-                                st.write(f'Receber : {valor_receber}')
-                                data_completa = str(data_reserva).split('-')
-                                descricao = f'{nome} do dia {data_completa[2]}/{data_completa[1]}/{data_completa[0]}'
-
-                                cursor.execute(
-                                    "INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES "
-                                    "(%s, %s, %s, %s, %s, %s, %s)",
-                                    (1, data_pagamento, 'ENTRADA', tipo_reserva, descricao, forma_pg, pagamento))
-
-                                cursor.execute(
-                                    "INSERT INTO lancamento_comissao (id_reserva, id_vendedor, valor_receber, valor_pagar, "
-                                    "situacao, id_titular) VALUES (%s, %s, %s, %s, %s, %s)", (id_reserva_cliente, id_vendedor_pg,
-                                                                              valor_receber, valor_pagar, situacao, id_titular_pagamento))
-
-                            mydb.close()
-                            st.success('Pagamento lançado no sistema!')
-                            st.session_state.botao = False
-
-
-
+                    mydb.close()
+                    st.success('Pagamento lançado no sistema!')
+                    st.session_state.botao = False
 
                 else:
                     st.success('Todos os clientes desse grupo já realizaram o pagamento!')
