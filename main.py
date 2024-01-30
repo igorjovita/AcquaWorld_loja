@@ -1004,11 +1004,19 @@ if escolha == 'Pagamento':
                             "(%s, %s, %s, %s, %s, %s, %s)",
                             (1, data_pagamento, 'ENTRADA', tipo_reserva, descricao, forma_pg, pagamento))
 
+                        st.write(f'Valor Neto - {valor_neto}')
+                        st.write(f'Valor Receber - {valor_receber}')
+                        st.write(f'Valor Pagar - {valor_pagar}')
+                        st.write(f'AcquaWorld Valor - {acquaworld_valor}')
+                        st.write(f'AcquaWorld Nome - {acquaworld_nome}')
+                        st.write(f'Vendedor Valor - {vendedor_valor}')
+                        st.write(f'Vendedor Nome - {vendedor_nome}')
                         cursor.execute(
                             "INSERT INTO lancamento_comissao (id_reserva, id_vendedor, valor_receber, valor_pagar, "
                             "situacao, id_titular) VALUES (%s, %s, %s, %s, %s, %s)",
                             (id_reserva_cliente, id_vendedor_pg,
                              valor_receber, valor_pagar, situacao, id_titular_pagamento))
+
 
                     mydb.close()
                     st.success('Pagamento lançado no sistema!')
