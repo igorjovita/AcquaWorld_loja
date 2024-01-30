@@ -33,13 +33,13 @@ mydb.connect()
 cursor.execute("SELECT apelido FROM vendedores")
 lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
 
-    comissario = st.selectbox('Selecione o parceiro', lista_vendedor)
-    situacao = st.selectbox('Situação do Pagamento', ['Pendente', 'Pago', 'Todos'], index=None,
-                            placeholder='Selecione o status do pagamento')
+comissario = st.selectbox('Selecione o parceiro', lista_vendedor)
+situacao = st.selectbox('Situação do Pagamento', ['Pendente', 'Pago', 'Todos'], index=None,
+                        placeholder='Selecione o status do pagamento')
 
-    filtro = st.radio('Filtrar Pesquisa', options=['Todos os resultados', 'Data Especifica'])
-    if 'botao_pressionado' not in st.session_state:
-        st.session_state.botao_pressionado = False
+filtro = st.radio('Filtrar Pesquisa', options=['Todos os resultados', 'Data Especifica'])
+if 'botao_pressionado' not in st.session_state:
+    st.session_state.botao_pressionado = False
 
 
 def pressionar():
@@ -113,7 +113,6 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                                 lancamento_comissao.Id_vendedor = {id_vendedor}
                             GROUP BY reserva.Id_titular, reserva.Data, lancamento_comissao.situacao;
                         """)
-
         resultados = cursor.fetchall()
         df = pd.DataFrame(resultados,
                           columns=['Data', 'Nome Titular', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Pago Loja', 'Situação'])
