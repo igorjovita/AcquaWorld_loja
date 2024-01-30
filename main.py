@@ -376,6 +376,7 @@ if escolha == 'Reservar':
                 if st.button(f'Cadastrar {nome_cliente}', key=f'button{i}'):
                     forma_pg = 'Pix'
                     st.session_state.pagamentos.append((data, recebedor_sinal, sinal, forma_pg))
+                    st.write(st.session_state.pagamentos)
                     st.session_state.valor_sinal += float(sinal)
                     st.session_state.valor_mergulho_receber += float(valor_loja)
                     st.session_state.valor_mergulho_total += float(valor_mergulho)
@@ -424,6 +425,7 @@ if escolha == 'Reservar':
                 st.write('---')
 
         if st.button('Reservar'):
+            st.write(st.session_state.pagamentos)
             if tipo in lista_cred and contagem_cred >= vaga_cred:
                 st.write(contagem_cred)
                 st.write(vaga_cred)
