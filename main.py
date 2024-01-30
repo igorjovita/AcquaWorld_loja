@@ -297,6 +297,7 @@ if escolha == 'Reservar':
 
     if 'pagamentos' not in st.session_state:
         st.session_state.pagamentos = []
+
     if 'pagamentos2' not in st.session_state:
         st.session_state.pagamentos2 = []
 
@@ -454,7 +455,7 @@ if escolha == 'Reservar':
 
                             st.session_state.pagamentos2.append((id_titular, id_reserva))
 
-                        lista_completa = st.session_state.pagamento.extend(st.session_state.pagamentos2)
+                        lista_completa = st.session_state.pagamentos.extend(st.session_state.pagamentos2)
                         st.write(lista_completa)
                         st.write(st.session_state.pagamentos)
                         if recebedor_sinal != '':
