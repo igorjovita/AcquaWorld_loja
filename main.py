@@ -446,7 +446,7 @@ if escolha == 'Reservar':
 
                             forma_pg = 'Pix'
                             pagamentos.append(
-                                (data.strftime('%d/%m/%Y'), id_reserva, recebedor_sinal, sinal, forma_pg, id_titular))
+                                (data.strftime('%d/%m/%Y'), id_reserva, recebedor_sinal, st.session_state.valor_sinal, forma_pg, id_titular))
                         if recebedor_sinal != '':
                             for pagamento in pagamentos:
                                 cursor.execute(
@@ -505,7 +505,7 @@ if escolha == 'Reservar':
                         st.session_state.valor_sinal = 0
                         st.session_state.valor_mergulho_receber = 0
                         st.session_state.valor_mergulho_total = 0
-                        st.session_state.nome_dependente = ''
+                        st.session_state.nome_dependente = []
                 if 'botao_clicado' in st.session_state:
                     st.session_state.botao_clicado = False
 
@@ -951,8 +951,8 @@ if escolha == 'Pagamento':
                             cursor.execute(f"SELECT neto_tur2 FROM vendedores WHERE id = {id_vendedor_pg}")
                             valor_neto = int(cursor.fetchone()[0])
                         else:
-                            valor_neto = valor_total_reserva * 10/100
-
+                            comissao = valor_total_reserva * 10/100
+                            valor_neto = valor_total_reserva - comissao
                         st.write(valor_neto)
 
                         for result in resultado_soma:
