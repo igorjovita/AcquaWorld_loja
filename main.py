@@ -1017,6 +1017,8 @@ if escolha == 'Pagamento':
                             (id_reserva_cliente, id_vendedor_pg,
                              valor_receber, valor_pagar, situacao, id_titular_pagamento))
 
+                    st.session_state.pagamentos = []
+                    st.session_state.pagamentos2 = []
 
                     mydb.close()
                     st.success('Pagamento lançado no sistema!')
