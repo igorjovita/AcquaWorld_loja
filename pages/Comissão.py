@@ -84,13 +84,12 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
         cursor.execute(f"SELECT id FROM vendedores where nome = '{comissario}'")
         id_vendedor = cursor.fetchone()[0]
         cursor.execute(f"""
-            SELECT 
-                reserva.Data as Data,
+            SELECT reserva.Data as Data,
                 reserva.nome_cliente as Nome_Titular,
                 GROUP_CONCAT(DISTINCT tipo_reserva.tipo SEPARATOR ' + ') as Tipos_Reserva,
-                COALESCE(SUM(soma_receber.valor_receber), 0) as Valor_Receber,
-                COALESCE(SUM(soma_pagar.valor_pagar), 0) as Valor_Pagar,
-                COALESCE(SUM(valor_pago), 0) as Valor_Pago,
+                SUM(lancamento_comissao.valor_receber) as Valor_Receber,
+                SUM(lancamento_comissao.valor_pagar) as Valor_Pagar,
+                COALESCE(SUM(pagamentos_soma.pagamento), 0) as Valor_Pago,
                 lancamento_comissao.situacao
             FROM 
                 reserva
@@ -99,24 +98,12 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
             JOIN 
                 vendedores ON lancamento_comissao.Id_vendedor = vendedores.Id
             LEFT JOIN (
-                SELECT Id_titular, Data, tipo
+                SELECT Id_titular, Data, COUNT(*) as cnt
                 FROM reserva
-                WHERE Id_vendedor = {id_vendedor}
-            ) as tipo_reserva ON reserva.Id_titular = tipo_reserva.Id_titular AND reserva.Data = tipo_reserva.Data
+                GROUP BY Id_titular, Data
+            ) as cnt_reserva ON reserva.Id_titular = cnt_reserva.Id_titular AND reserva.Data = cnt_reserva.Data
             LEFT JOIN (
-                SELECT Id_reserva, SUM(valor_receber) as valor_receber
-                FROM lancamento_comissao
-                WHERE Id_vendedor = {id_vendedor}
-                GROUP BY Id_reserva
-            ) as soma_receber ON reserva.Id = soma_receber.Id_reserva
-            LEFT JOIN (
-                SELECT Id_reserva, SUM(valor_pagar) as valor_pagar
-                FROM lancamento_comissao
-                WHERE Id_vendedor = {id_vendedor}
-                GROUP BY Id_reserva
-            ) as soma_pagar ON reserva.Id = soma_pagar.Id_reserva
-            LEFT JOIN (
-                SELECT id_reserva, SUM(pagamento) as valor_pago
+                SELECT id_reserva, SUM(pagamento) as pagamento
                 FROM pagamentos
                 WHERE recebedor = 'AcquaWorld'
                 GROUP BY id_reserva
