@@ -694,6 +694,8 @@ if escolha == 'Pagamento':
                     nome_formatado = str(nome).translate(str.maketrans('', '', chars))
                     id_formatado = int(str(id_pg).translate(str.maketrans('', '', chars)))
 
+                    info_cliente_pg = obter_info_reserva(cursor, nome=nome_formatado, data_reserva=data_reserva)
+
                     if receber_loja is not None:
                         receber_formatado = float(str(receber_loja).translate(str.maketrans('', '', chars)))
                     else:
@@ -704,7 +706,7 @@ if escolha == 'Pagamento':
 
                     if len(result) == 1:
                         recebedor, pagamento = result[0]  # Desempacotando a tupla
-                        st.write('AQUI ESTOU')
+
                     elif len(result) > 1:
                         pagamento = 0
                         recebedor = result[0][0]  # Obtendo o recebedor da primeira tupla
@@ -739,7 +741,7 @@ if escolha == 'Pagamento':
                                 unsafe_allow_html=True)
 
                     with coluna3:
-                        if valor_total == pagamento:
+                        if info_cliente_pg[3] == pagamento:
                             receber_formatado_individual = 0.00
                             situacao = 'Pago'
                             pagamento = 0
