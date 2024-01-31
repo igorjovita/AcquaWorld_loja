@@ -260,6 +260,9 @@ if escolha == 'Reservar':
     if 'pagamentos2' not in st.session_state:
         st.session_state.pagamentos2 = []
 
+    if 'nome_cadastrado' not in st.session_state:
+        st.session_state.nome_cadastrado = []
+
     # Capturar nome dos vendedores cadastrados no sistema
     mydb.connect()
     cursor.execute("SELECT apelido FROM vendedores")
@@ -382,32 +385,37 @@ if escolha == 'Reservar':
                     roupa = f'{altura}/{peso}'
 
                 if st.button(f'Cadastrar {nome_cliente}', key=f'button{i}'):
-                    forma_pg = 'Pix'
-                    st.session_state.pagamentos.append((data, recebedor_sinal, sinal, forma_pg))
-                    st.session_state.valor_sinal += float(sinal)
-                    st.session_state.valor_mergulho_receber += float(valor_loja)
-                    st.session_state.valor_mergulho_total += float(valor_mergulho)
 
-                    if i != 0:
-                        st.session_state.nome_dependente.append(nome_cliente)
+                    if nome_cliente not in st.session_state.nome_cadastrado:
+                        st.session_state.nome_cadastrado.append(nome_cliente)
+                        forma_pg = 'Pix'
+                        st.session_state.pagamentos.append((data, recebedor_sinal, sinal, forma_pg))
+                        st.session_state.valor_sinal += float(sinal)
+                        st.session_state.valor_mergulho_receber += float(valor_loja)
+                        st.session_state.valor_mergulho_total += float(valor_mergulho)
 
-                    with mydb.cursor() as cursor:
-                        try:
-                            cursor.execute(
-                                "INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
-                                (cpf, nome_cliente, telefone, roupa))
-                            id_cliente = cursor.lastrowid
-                            st.session_state.ids_clientes.append(id_cliente)
-                            mydb.commit()
+                        if i != 0:
+                            st.session_state.nome_dependente.append(nome_cliente)
 
-                        except IntegrityError:
-                            cursor.execute(f"SELECT id from cliente where cpf = %s and nome = %s",
-                                           (cpf, nome_cliente))
-                            info_registro = cursor.fetchone()
-
-                            if info_registro:
-                                id_cliente = info_registro[0]
+                        with mydb.cursor() as cursor:
+                            try:
+                                cursor.execute(
+                                    "INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
+                                    (cpf, nome_cliente, telefone, roupa))
+                                id_cliente = cursor.lastrowid
                                 st.session_state.ids_clientes.append(id_cliente)
+                                mydb.commit()
+
+                            except IntegrityError:
+                                cursor.execute(f"SELECT id from cliente where cpf = %s and nome = %s",
+                                               (cpf, nome_cliente))
+                                info_registro = cursor.fetchone()
+
+                                if info_registro:
+                                    id_cliente = info_registro[0]
+                                    st.session_state.ids_clientes.append(id_cliente)
+                    else:
+                        st.error(f'{nome_cliente} já foi cadastrado no sistema!')
 
                 # Adicione esta verificação antes de tentar acessar a lista
                 if i < len(st.session_state['ids_clientes']):
