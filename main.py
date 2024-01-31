@@ -738,27 +738,17 @@ if escolha == 'Pagamento':
                                 unsafe_allow_html=True)
 
                     with coluna3:
-                        # if valor_total == pagamento:
-                        #     receber_formatado_individual = 0.00
-                        #     situacao = 'Pago'
-                        #
-                        # else:
-                        #     receber_formatado_individual = "{:,.2f}".format(receber_formatado).replace(",",
-                        #                                                                                "X").replace(".",
-                        #                                                                                             ",").replace(
-                        #         "X", ".")
-                        #     situacao = 'Pendente'
-
-                        if pagamento >= valor_total:
+                        if valor_total == pagamento:
                             receber_formatado_individual = 0.00
                             situacao = 'Pago'
+
                         else:
-                            receber_formatado_individual = "{:,.2f}".format(valor_total - pagamento).replace(",",
-                                                                                                             "X").replace(
-                                ".",
-                                ",").replace(
+                            receber_formatado_individual = "{:,.2f}".format(receber_formatado).replace(",",
+                                                                                                       "X").replace(".",
+                                                                                                                    ",").replace(
                                 "X", ".")
                             situacao = 'Pendente'
+
                     receber_grupo += receber_formatado
                     with coluna4:
                         st.markdown(
