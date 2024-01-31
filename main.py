@@ -764,6 +764,7 @@ if escolha == 'Pagamento':
                             unsafe_allow_html=True)
 
                 if receber_grupo == 0.00:
+                    st.write('---')
                     st.success('Todas os clientes dessa reserva efeturam o pagamento!')
 
                 else:
