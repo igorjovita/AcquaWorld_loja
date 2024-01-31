@@ -718,7 +718,7 @@ if escolha == 'Pagamento':
 
                     with coluna1:
                         st.markdown(
-                            f"<h2 style='color: white; text-align: center; font-size: 1em;'>{nome_formatado}</h2>",
+                            f"<h2 style='color: white; text-align: center; font-size: 1.1em;'>{nome_formatado}</h2>",
                             unsafe_allow_html=True)
 
                     if recebedor is not None:
@@ -727,14 +727,14 @@ if escolha == 'Pagamento':
                                                                                                         ",").replace(
                                 "X", ".")
                             st.markdown(
-                                f"<h2 style='color: white; text-align: center; font-size: 1em;'>{recebedor} -  R$ {pagamento_formatado}</h2>",
+                                f"<h2 style='color: white; text-align: center; font-size: 1.1em;'>{recebedor} -  R$ {pagamento_formatado}</h2>",
                                 unsafe_allow_html=True)
                         total_sinal += pagamento
 
                     else:
                         with coluna2:
                             st.markdown(
-                                f"<h2 style='color: white; text-align: center; font-size: 1em;'>Nenhum sinal foi pago</h2>",
+                                f"<h2 style='color: white; text-align: center; font-size: 1.1em;'>Nenhum sinal foi pago</h2>",
                                 unsafe_allow_html=True)
 
                     with coluna3:
