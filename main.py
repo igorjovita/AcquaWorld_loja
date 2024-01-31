@@ -678,7 +678,7 @@ if escolha == 'Pagamento':
                         unsafe_allow_html=True)
                 with colun2:
                     st.markdown(
-                        f"<h2 style='color: white; font-size: 1.5em; text-align: center; font-weight: bold;'>Sinal</h2>",
+                        f"<h2 style='color: white; font-size: 1.5em; text-align: center; font-weight: bold;'>Valor Pago</h2>",
                         unsafe_allow_html=True)
 
                 with colun3:
