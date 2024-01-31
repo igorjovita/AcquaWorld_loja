@@ -748,6 +748,9 @@ if escolha == 'Pagamento':
                                                                                                                     ",").replace(
                                 "X", ".")
                             situacao = 'Pendente'
+                        st.markdown(
+                            f"<h2 style='color: white; text-align: center; font-size: 1em;'>R$ {receber_formatado_individual}</h2>",
+                            unsafe_allow_html=True)
 
                     receber_grupo += receber_formatado
                     with coluna4:
