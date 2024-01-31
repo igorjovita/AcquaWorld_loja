@@ -687,29 +687,30 @@ if escolha == 'Pagamento':
                         f"<h2 style='color: white; font-size: 1.5em; text-align: center; font-weight: bold;'>Situação</h2>",
                         unsafe_allow_html=True)
 
-                for nome, id_pg, receber_loja in zip(nome_cliente_reserva, id_cliente_reserva,
-                                                     receber_loja_reserva):
+                for nome, id_pg, receber_loja in zip(nome_cliente_reserva, id_cliente_reserva, receber_loja_reserva):
                     nome_formatado = str(nome).translate(str.maketrans('', '', chars))
                     id_formatado = int(str(id_pg).translate(str.maketrans('', '', chars)))
+
                     if receber_loja is not None:
                         receber_formatado = float(str(receber_loja).translate(str.maketrans('', '', chars)))
                     else:
                         receber_formatado = float(0.00)
+
                     cursor.execute(f"SELECT recebedor, pagamento FROM pagamentos WHERE id_reserva = {id_formatado}")
                     result = cursor.fetchall()
 
                     if len(result) == 1:
-                        recebedor = result[0]
-                        pagamento = result[1]
-
+                        recebedor, pagamento = result[0]  # Desempacotando a tupla
                     elif len(result) > 1:
                         pagamento = 0
-                        recebedor = result[0]
+                        recebedor = result[0][0]  # Obtendo o recebedor da primeira tupla
                         for numero in result:
-                            pagamento += result[1]
+                            pagamento += numero[1]  # Somando os pagamentos das tuplas
                     else:
                         recebedor = None
+
                     lista_nome_pagamento.append(nome_formatado)
+
                     coluna1, coluna2, coluna3, coluna4 = st.columns(4)
 
                     with coluna1:
