@@ -127,7 +127,7 @@ def processar_pagamento(nome, cursor, data_reserva, check_in, forma_pg, parcela,
     tipo_movimento = 'Entrada'
     id_conta = 1
 
-    insert_caixa(cursor, data_reserva, tipo_movimento, tipo, descricao, forma_pg, pagamento)
+    insert_caixa(cursor, id_conta, data_reserva, tipo_movimento, tipo, descricao, forma_pg, pagamento)
 
     # Inserir no lançamento de comissão
     insert_lancamento_comissao(cursor, id_reserva_cliente, id_vendedor_pg, valor_receber, valor_pagar, situacao, id_titular_pagamento)
