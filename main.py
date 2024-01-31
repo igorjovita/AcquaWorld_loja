@@ -704,6 +704,7 @@ if escolha == 'Pagamento':
 
                     if len(result) == 1:
                         recebedor, pagamento = result[0]  # Desempacotando a tupla
+                        st.write('AQUI ESTOU')
                     elif len(result) > 1:
                         pagamento = 0
                         recebedor = result[0][0]  # Obtendo o recebedor da primeira tupla
