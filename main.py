@@ -987,8 +987,7 @@ if escolha == 'Pagamento':
 
             else:
                 st.success('Todos os clientes desse grupo já realizaram o pagamento!')
-        else:
-            st.error('Nenhuma reserva para essa data')
+       
 #     st.write('---')
 #
 #     st.subheader('Limitar Vagas')
