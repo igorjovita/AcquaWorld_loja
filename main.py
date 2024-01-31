@@ -959,7 +959,8 @@ if escolha == 'Pagamento':
                         vendedor_valor = None
                         acquaworld_nome = None
                         acquaworld_valor = None
-
+                        reserva_neto = valor_total_reserva - valor_neto
+                        
                         valor_neto = obter_valor_neto(cursor, tipo, valor_total_reserva, id_vendedor_pg)
 
                         st.write(valor_neto)

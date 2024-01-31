@@ -38,7 +38,7 @@ def insert_pagamento(cursor, data_pagamento, id_reserva_cliente, recebedor, paga
 
 
 def calcular_valores(valor_neto, valor_total_reserva, acquaworld_valor, vendedor_valor, reserva_neto):
-    reserva_neto = valor_total_reserva - valor_neto
+
     situacao = 'Pendente'
 
     if acquaworld_valor < valor_neto:
