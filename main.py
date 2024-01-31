@@ -208,7 +208,6 @@ def gerar_html(self):
     # Gerar PDF
     config = pdfkit.configuration()
     pdfkit.from_string(output_text, pdf_filename, configuration=config)
-    st.write(cpf)
 
     return output_text
 
@@ -229,23 +228,17 @@ if escolha == 'Visualizar':
         st.markdown(download_link, unsafe_allow_html=True)
 
 if escolha == 'Reservar':
-    # Lista para armazenar os nomes dos clientes
+    # Inicialização de listas e variaveis
     nomes_clientes = []
-    pagamentos = []
     reservas = []
-    lista_telefone = []
+    nomes_titulares = []
     id_titular = None
+
+    # Inicializaçao de session_state
+
     if 'ids_clientes' not in st.session_state:
         st.session_state['ids_clientes'] = []
 
-    mydb.connect()
-    cursor.execute("SELECT apelido FROM vendedores")
-    lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
-    st.subheader('Reservar Cliente')
-
-    col1, col2, = st.columns(2)
-    ids_clientes = []
-    nomes_titulares = []
     if 'valor_sinal' not in st.session_state:
         st.session_state.valor_sinal = 0
 
@@ -254,6 +247,28 @@ if escolha == 'Reservar':
 
     if 'valor_mergulho_receber' not in st.session_state:
         st.session_state.valor_mergulho_receber = 0
+
+    if 'botao_clicado' not in st.session_state:
+        st.session_state.botao_clicado = False
+
+    if 'nome_dependente' not in st.session_state:
+        st.session_state.nome_dependente = []
+
+    if 'pagamentos' not in st.session_state:
+        st.session_state.pagamentos = []
+
+    if 'pagamentos2' not in st.session_state:
+        st.session_state.pagamentos2 = []
+
+    # Capturar nome dos vendedores cadastrados no sistema
+    mydb.connect()
+    cursor.execute("SELECT apelido FROM vendedores")
+    lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+
+    st.subheader('Reservar Cliente')
+
+    col1, col2, = st.columns(2)
+
     with col1:
         data = st.date_input('Data da Reserva', format='DD/MM/YYYY')
         comissario = st.selectbox('Vendedor:', lista_vendedor, index=None, placeholder='Escolha o vendedor')
@@ -269,7 +284,6 @@ if escolha == 'Reservar':
             resultados = cursor.fetchall()
             for resultado in resultados:
                 id_cliente_conjunto, nome_cliente_conjunto = resultado
-                ids_clientes.append(id_cliente_conjunto)
                 nomes_titulares.append(nome_cliente_conjunto)
 
             with col1:
@@ -289,20 +303,10 @@ if escolha == 'Reservar':
             # Campo de entrada para o nome do cliente
             nome_cliente = st.text_input(f'Nome do Cliente {i + 1}:').capitalize()
             nomes_clientes.append(nome_cliente)
-    if 'botao_clicado' not in st.session_state:
-        st.session_state.botao_clicado = False
-
-    if 'nome_dependente' not in st.session_state:
-        st.session_state.nome_dependente = []
-
-    if 'pagamentos' not in st.session_state:
-        st.session_state.pagamentos = []
-
-    if 'pagamentos2' not in st.session_state:
-        st.session_state.pagamentos2 = []
 
     if st.button('Inserir dados do cliente'):
         st.session_state.botao_clicado = True
+
     if st.session_state.botao_clicado:
         with mydb.cursor() as cursor:
             cursor.execute(f"SELECT COUNT(*) FROM reserva where data = '{data}'")
@@ -348,13 +352,16 @@ if escolha == 'Reservar':
                     nome_titular = nome_cliente
                 else:
                     st.subheader(f'Reserva  Cliente: {nome_cliente}')
+
                 colu1, colu2, colu3 = st.columns(3)
+
                 with colu1:
                     cpf = st.text_input(f'Cpf', help='Apenas números',
                                         key=f'cpf{nome_cliente}{i}')
                     altura = st.slider(f'Altura', 1.50, 2.10,
                                        key=f'altura{nome_cliente}{i}')
                     sinal = st.text_input(f'Valor do Sinal', key=f'sinal{nome_cliente}{i}')
+
                 with colu2:
                     telefone = st.text_input(f'Telefone:',
                                              key=f'telefone{nome_cliente}{i}')
@@ -366,26 +373,24 @@ if escolha == 'Reservar':
                                                    key=f'recebedor{nome_cliente}{i}')
                 with colu3:
                     tipo = st.selectbox(f'Certificação: ',
-                                        ('BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'),
+                                        ('BAT', 'ACP', 'TUR1', 'TUR2', 'OWD', 'ADV'),
                                         index=None, placeholder='Certificação', key=f'tipo{nome_cliente}{i}')
                     valor_mergulho = st.text_input(f'Valor do Mergulho',
                                                    key=f'valor{nome_cliente}{i}')
                     valor_loja = st.text_input(f'Valor a receber:', key=f'loja{nome_cliente}{i}')
-
-                    id_cliente = None
 
                     roupa = f'{altura}/{peso}'
 
                 if st.button(f'Cadastrar {nome_cliente}', key=f'button{i}'):
                     forma_pg = 'Pix'
                     st.session_state.pagamentos.append((data, recebedor_sinal, sinal, forma_pg))
-                    st.write(st.session_state.pagamentos)
                     st.session_state.valor_sinal += float(sinal)
                     st.session_state.valor_mergulho_receber += float(valor_loja)
                     st.session_state.valor_mergulho_total += float(valor_mergulho)
+
                     if i != 0:
                         st.session_state.nome_dependente.append(nome_cliente)
-                    st.write(st.session_state.nome_dependente)
+
                     with mydb.cursor() as cursor:
                         try:
                             cursor.execute(
@@ -393,13 +398,13 @@ if escolha == 'Reservar':
                                 (cpf, nome_cliente, telefone, roupa))
                             id_cliente = cursor.lastrowid
                             st.session_state.ids_clientes.append(id_cliente)
-
                             mydb.commit()
-                            lista_telefone.append(telefone)
+
                         except IntegrityError:
                             cursor.execute(f"SELECT id from cliente where cpf = %s and nome = %s",
                                            (cpf, nome_cliente))
                             info_registro = cursor.fetchone()
+
                             if info_registro:
                                 id_cliente = info_registro[0]
                                 st.session_state.ids_clientes.append(id_cliente)
@@ -407,8 +412,10 @@ if escolha == 'Reservar':
                 # Adicione esta verificação antes de tentar acessar a lista
                 if i < len(st.session_state['ids_clientes']):
                     id_cliente = st.session_state['ids_clientes'][i]
+
                 else:
                     pass
+
                 with mydb.cursor() as cursor:
                     cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
                     id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
@@ -444,7 +451,6 @@ if escolha == 'Reservar':
                         st.error('Cliente já reservado para esta data')
 
                     else:
-                        ids_reserva = []
                         for reserva in reservas:
                             sql = (
                                 "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, check_in, id_titular, receber_loja) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s)")
@@ -458,7 +464,6 @@ if escolha == 'Reservar':
                         for i in range(len(st.session_state.pagamentos)):
                             st.session_state.pagamentos[i] = st.session_state.pagamentos[i] + st.session_state.pagamentos2[i]
 
-                        st.write(st.session_state.pagamentos)
                         if recebedor_sinal != '':
                             for pagamento in st.session_state.pagamentos:
                                 cursor.execute(
@@ -467,12 +472,13 @@ if escolha == 'Reservar':
                             st.session_state['ids_clientes'] = []
 
                             reservas = []
-                            ids_reserva = []
-                            pagamentos = []
+
                         data_ = str(data).split('-')
                         data_formatada = f'{data_[2]}/{data_[1]}/{data_[0]}'
+
                         descricao = f'Sinal reserva titular {nome_titular} dia {data_formatada}'
                         forma_pg = 'Pix'
+
                         # Formatando as variáveis como moeda brasileira
                         valor_sinal_formatado = format_currency(st.session_state.valor_sinal, 'BRL', locale='pt_BR')
                         valor_mergulho_receber_formatado = format_currency(st.session_state.valor_mergulho_receber,
@@ -518,6 +524,7 @@ if escolha == 'Reservar':
                         st.session_state.valor_mergulho_receber = 0
                         st.session_state.valor_mergulho_total = 0
                         st.session_state.nome_dependente = []
+
                 if 'botao_clicado' in st.session_state:
                     st.session_state.botao_clicado = False
 
