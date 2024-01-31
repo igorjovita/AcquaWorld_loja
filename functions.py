@@ -1,5 +1,5 @@
 
-def obter_valor_neto(cursor, tipo, id_vendedor_pg):
+def obter_valor_neto(cursor, tipo, valor_total_reserva, id_vendedor_pg):
     if tipo == 'BAT':
         cursor.execute(f"SELECT valor_neto FROM vendedores WHERE id = {id_vendedor_pg}")
     elif tipo == 'ACP':
@@ -19,8 +19,7 @@ def obter_valor_neto(cursor, tipo, id_vendedor_pg):
 
 def obter_info_reserva(cursor, nome, data_reserva):
     cursor.execute(
-        f"SELECT id, id_cliente, tipo,"
-        f" valor_total, receber_loja, FROM reserva WHERE nome_cliente = '{nome}' and data = '{data_reserva}'")
+        f"SELECT id, id_cliente, tipo, valor_total, receber_loja FROM reserva WHERE nome_cliente = '{nome}' and data = '{data_reserva}'")
     info_reserva = cursor.fetchone()
     return info_reserva
 
