@@ -674,7 +674,7 @@ if escolha == 'Pagamento':
 
                 with colun1:
                     st.markdown(
-                        f"<h2 style='color: white; text-align: center; font-size: 1.5em; font-weight: bold;'>Nome do Cliente</h2>",
+                        f"<h2 style='color: white; text-align: center; font-size: 1.5em; font-weight: bold;'>Nome</h2>",
                         unsafe_allow_html=True)
                 with colun2:
                     st.markdown(
