@@ -656,15 +656,15 @@ if escolha == 'Pagamento':
                 id_vendedor_pg = resultado2[5]
                 st.write(id_titular_pagamento)
 
-            cursor.execute(
-                f'SELECT id, nome_cliente, receber_loja from reserva where id_titular = {id_titular_pagamento}')
-            resultado_pg = cursor.fetchall()
-            for item in resultado_pg:
-                id_reserva_pg, nome_reserva_pg, receber_loja_pg = item
+                cursor.execute(
+                    f'SELECT id, nome_cliente, receber_loja from reserva where id_titular = {id_titular_pagamento}')
+                resultado_pg = cursor.fetchall()
+                for item in resultado_pg:
+                    id_reserva_pg, nome_reserva_pg, receber_loja_pg = item
 
-                nome_cliente_reserva.append(nome_reserva_pg)
-                id_cliente_reserva.append(id_reserva_pg)
-                receber_loja_reserva.append(receber_loja_pg)
+                    nome_cliente_reserva.append(nome_reserva_pg)
+                    id_cliente_reserva.append(id_reserva_pg)
+                    receber_loja_reserva.append(receber_loja_pg)
             receber_grupo = 0
             total_sinal = 0
             colun1, colun2, colun3, colun4 = st.columns(4)
