@@ -853,7 +853,7 @@ if escolha == 'Pagamento':
                     st.session_state.botao = False
 
             else:
-                st.success('Todos os clientes desse grupo já realizaram o pagamento!')
+                st.warning('Nenhuma reserva lançada para essa data!')
 
 #     st.write('---')
 #
