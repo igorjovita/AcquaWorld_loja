@@ -11,7 +11,8 @@ import os
 import mysql.connector
 from datetime import date, datetime
 import streamlit.components.v1
-from functions import obter_valor_neto, obter_info_reserva, update_check_in, insert_pagamento, calcular_valores,insert_lancamento_comissao, insert_caixa, processar_pagamento
+from functions import obter_valor_neto, obter_info_reserva, update_check_in, insert_pagamento, calcular_valores, \
+    insert_lancamento_comissao, insert_caixa, processar_pagamento
 
 chars = "'),([]"
 chars2 = "')([]"
@@ -471,7 +472,8 @@ if escolha == 'Reservar':
                             st.session_state.pagamentos2.append((id_titular, id_reserva))
 
                         for i in range(len(st.session_state.pagamentos)):
-                            st.session_state.pagamentos[i] = st.session_state.pagamentos[i] + st.session_state.pagamentos2[i]
+                            st.session_state.pagamentos[i] = st.session_state.pagamentos[i] + \
+                                                             st.session_state.pagamentos2[i]
 
                         if recebedor_sinal != '':
                             for pagamento in st.session_state.pagamentos:
@@ -653,6 +655,7 @@ if escolha == 'Pagamento':
                 id_reserva = resultado2[0]
                 id_titular_pagamento = resultado2[1]
                 tipo = resultado2[2]
+                valor_total = resultado2[3]
                 id_vendedor_pg = resultado2[5]
                 st.write(id_titular_pagamento)
 
@@ -733,11 +736,18 @@ if escolha == 'Pagamento':
                             st.markdown(
                                 f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>Nenhum sinal foi pago</h2>",
                                 unsafe_allow_html=True)
+
                     with coluna3:
-                        receber_formatado_individual = "{:,.2f}".format(receber_formatado).replace(",",
-                                                                                                   "X").replace(".",
-                                                                                                                ",").replace(
-                            "X", ".")
+                        if valor_total == pagamento:
+                            resultado_formatado_individual = 0.00
+                            situacao = 'Pago'
+
+                        else:
+                            receber_formatado_individual = "{:,.2f}".format(receber_formatado).replace(",",
+                                                                                                       "X").replace(".",
+                                                                                                                    ",").replace(
+                                "X", ".")
+                            situacao = 'Pendente'
                         st.markdown(
                             f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>R$ {receber_formatado_individual}</h2>",
                             unsafe_allow_html=True)
@@ -745,7 +755,7 @@ if escolha == 'Pagamento':
                     receber_grupo += receber_formatado
                     with coluna4:
                         st.markdown(
-                            f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>Pendente</h2>",
+                            f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>{situacao}</h2>",
                             unsafe_allow_html=True)
 
                 if len(lista_nome_pagamento) > 1:
@@ -844,13 +854,12 @@ if escolha == 'Pagamento':
                 if st.button('Lançar Pagamento'):
                     if pagamento_escolha == 'Pagamento Grupo':
                         for nome in lista_nome_pagamento:
-                            processar_pagamento(nome, cursor, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg, id_titular_pagamento)
+                            processar_pagamento(nome, cursor, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg,
+                                                id_titular_pagamento)
                     else:
                         nome = escolha_client_input
                         processar_pagamento(nome, cursor, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg,
                                             id_titular_pagamento)
-
-
 
                     st.session_state.pagamentos = []
                     st.session_state.pagamentos2 = []
