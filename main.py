@@ -739,7 +739,7 @@ if escolha == 'Pagamento':
 
                     with coluna3:
                         if valor_total == pagamento:
-                            resultado_formatado_individual = 0.00
+                            receber_formatado_individual = 0.00
                             situacao = 'Pago'
 
                         else:
