@@ -966,7 +966,7 @@ if escolha == 'Pagamento':
                         acquaworld_nome = None
                         acquaworld_valor = None
 
-                        valor_neto = obter_valor_neto(cursor, tipo, id_vendedor)
+                        valor_neto = obter_valor_neto(cursor, tipo, id_vendedor_pg)
 
                         # if tipo == 'BAT':
                         #     cursor.execute(f"SELECT valor_neto FROM vendedores WHERE id = {id_vendedor_pg}")
