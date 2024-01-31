@@ -741,6 +741,7 @@ if escolha == 'Pagamento':
                         if valor_total == pagamento:
                             receber_formatado_individual = 0.00
                             situacao = 'Pago'
+                            pagamento = 0
 
                         else:
                             receber_formatado_individual = "{:,.2f}".format(receber_formatado).replace(",",
