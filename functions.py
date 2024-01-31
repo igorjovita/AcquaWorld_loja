@@ -19,7 +19,7 @@ def obter_valor_neto(cursor, tipo, valor_total_reserva, id_vendedor_pg):
 
 def obter_info_reserva(cursor, nome, data_reserva):
     cursor.execute(
-        f"SELECT id, id_cliente, tipo, valor_total, receber_loja FROM reserva WHERE nome_cliente = '{nome}' and data = '{data_reserva}'")
+        f"SELECT id, id_cliente, tipo, valor_total, receber_loja, id_vendedor FROM reserva WHERE nome_cliente = '{nome}' and data = '{data_reserva}'")
     info_reserva = cursor.fetchone()
     return info_reserva
 
