@@ -233,7 +233,7 @@ if escolha == 'Reservar':
     reservas = []
     nomes_titulares = []
     id_titular = None
-
+    id_cliente = None
     # Inicializaçao de session_state
 
     if 'ids_clientes' not in st.session_state:
