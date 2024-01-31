@@ -739,6 +739,7 @@ if escolha == 'Pagamento':
                             st.markdown(
                                 f"<h2 style='color: white; text-align: center; font-size: 1em;'>Nenhum sinal foi pago</h2>",
                                 unsafe_allow_html=True)
+                            pagamento = 0
 
                     with coluna3:
                         if info_cliente_pg[3] == pagamento:
