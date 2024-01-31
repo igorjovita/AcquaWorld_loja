@@ -665,192 +665,192 @@ if escolha == 'Pagamento':
                     nome_cliente_reserva.append(nome_reserva_pg)
                     id_cliente_reserva.append(id_reserva_pg)
                     receber_loja_reserva.append(receber_loja_pg)
-            receber_grupo = 0
-            total_sinal = 0
-            colun1, colun2, colun3, colun4 = st.columns(4)
+                receber_grupo = 0
+                total_sinal = 0
+                colun1, colun2, colun3, colun4 = st.columns(4)
 
-            with colun1:
-                st.markdown(
-                    f"<h2 style='color: white; text-align: center; font-size: 1.5em; font-weight: bold;'>Nome do Cliente</h2>",
-                    unsafe_allow_html=True)
-            with colun2:
-                st.markdown(
-                    f"<h2 style='color: white; font-size: 1.5em; text-align: center; font-weight: bold;'>Sinal</h2>",
-                    unsafe_allow_html=True)
-
-            with colun3:
-                st.markdown(
-                    f"<h2 style='color: white; font-size: 1.5em; text-align: center; font-weight: bold;'>Valor a Receber</h2>",
-                    unsafe_allow_html=True)
-            with colun4:
-                st.markdown(
-                    f"<h2 style='color: white; font-size: 1.5em; text-align: center; font-weight: bold;'>Situação</h2>",
-                    unsafe_allow_html=True)
-
-            for nome, id_pg, receber_loja in zip(nome_cliente_reserva, id_cliente_reserva,
-                                                 receber_loja_reserva):
-                nome_formatado = str(nome).translate(str.maketrans('', '', chars))
-                id_formatado = int(str(id_pg).translate(str.maketrans('', '', chars)))
-                if receber_loja is not None:
-                    receber_formatado = float(str(receber_loja).translate(str.maketrans('', '', chars)))
-                else:
-                    receber_formatado = float(0.00)
-                cursor.execute(f"SELECT recebedor, pagamento FROM pagamentos WHERE id_reserva = {id_formatado}")
-                result = cursor.fetchone()
-
-                if result is not None:
-                    recebedor = result[0]
-                    pagamento = result[1]
-                else:
-                    recebedor = None
-                lista_nome_pagamento.append(nome_formatado)
-                coluna1, coluna2, coluna3, coluna4 = st.columns(4)
-
-                with coluna1:
+                with colun1:
                     st.markdown(
-                        f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>{nome_formatado}</h2>",
+                        f"<h2 style='color: white; text-align: center; font-size: 1.5em; font-weight: bold;'>Nome do Cliente</h2>",
+                        unsafe_allow_html=True)
+                with colun2:
+                    st.markdown(
+                        f"<h2 style='color: white; font-size: 1.5em; text-align: center; font-weight: bold;'>Sinal</h2>",
                         unsafe_allow_html=True)
 
-                if recebedor is not None:
-                    with coluna2:
-                        pagamento_formatado = "{:,.2f}".format(pagamento).replace(",", "X").replace(".",
-                                                                                                    ",").replace(
+                with colun3:
+                    st.markdown(
+                        f"<h2 style='color: white; font-size: 1.5em; text-align: center; font-weight: bold;'>Valor a Receber</h2>",
+                        unsafe_allow_html=True)
+                with colun4:
+                    st.markdown(
+                        f"<h2 style='color: white; font-size: 1.5em; text-align: center; font-weight: bold;'>Situação</h2>",
+                        unsafe_allow_html=True)
+
+                for nome, id_pg, receber_loja in zip(nome_cliente_reserva, id_cliente_reserva,
+                                                     receber_loja_reserva):
+                    nome_formatado = str(nome).translate(str.maketrans('', '', chars))
+                    id_formatado = int(str(id_pg).translate(str.maketrans('', '', chars)))
+                    if receber_loja is not None:
+                        receber_formatado = float(str(receber_loja).translate(str.maketrans('', '', chars)))
+                    else:
+                        receber_formatado = float(0.00)
+                    cursor.execute(f"SELECT recebedor, pagamento FROM pagamentos WHERE id_reserva = {id_formatado}")
+                    result = cursor.fetchone()
+
+                    if result is not None:
+                        recebedor = result[0]
+                        pagamento = result[1]
+                    else:
+                        recebedor = None
+                    lista_nome_pagamento.append(nome_formatado)
+                    coluna1, coluna2, coluna3, coluna4 = st.columns(4)
+
+                    with coluna1:
+                        st.markdown(
+                            f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>{nome_formatado}</h2>",
+                            unsafe_allow_html=True)
+
+                    if recebedor is not None:
+                        with coluna2:
+                            pagamento_formatado = "{:,.2f}".format(pagamento).replace(",", "X").replace(".",
+                                                                                                        ",").replace(
+                                "X", ".")
+                            st.markdown(
+                                f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>{recebedor} -  R$ {pagamento_formatado}</h2>",
+                                unsafe_allow_html=True)
+                        total_sinal += pagamento
+
+                    else:
+                        with coluna2:
+                            st.markdown(
+                                f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>Nenhum sinal foi pago</h2>",
+                                unsafe_allow_html=True)
+                    with coluna3:
+                        receber_formatado_individual = "{:,.2f}".format(receber_formatado).replace(",",
+                                                                                                   "X").replace(".",
+                                                                                                                ",").replace(
                             "X", ".")
                         st.markdown(
-                            f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>{recebedor} -  R$ {pagamento_formatado}</h2>",
+                            f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>R$ {receber_formatado_individual}</h2>",
                             unsafe_allow_html=True)
-                    total_sinal += pagamento
+
+                    receber_grupo += receber_formatado
+                    with coluna4:
+                        st.markdown(
+                            f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>Pendente</h2>",
+                            unsafe_allow_html=True)
+
+                if len(lista_nome_pagamento) > 1:
+
+                    colum1, colum2, colum3, colum4 = st.columns(4)
+
+                    with colum1:
+                        st.markdown(f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>Total</h2>",
+                                    unsafe_allow_html=True)
+
+                    with colum2:
+                        total_sinal_formatado = "{:,.2f}".format(total_sinal).replace(",", "X").replace(".",
+                                                                                                        ",").replace(
+                            "X", ".")
+                        st.markdown(
+                            f"<h2 style='color: green; text-align: center; font-size: 1.2em;'>R$ {total_sinal_formatado}</h2>",
+                            unsafe_allow_html=True)
+
+                    with colum3:
+                        receber_grupo_formatado = "{:,.2f}".format(receber_grupo).replace(",", "X").replace(".",
+                                                                                                            ",").replace(
+                            "X", ".")
+                        st.markdown(
+                            f"<h2 style='color: green; text-align: center; font-size: 1.2em;'>R$ {receber_grupo_formatado}</h2>",
+                            unsafe_allow_html=True)
+
+                    st.markdown("<div style='margin-bottom: 40px;'></div>", unsafe_allow_html=True)
+
+                    pagamento_escolha = st.radio('Opções de pagamento', ['Pagamento Grupo', 'Pagamento Individual'],
+                                                 horizontal=True)
 
                 else:
-                    with coluna2:
+                    pagamento_escolha = 'Pagamento Individual'
+
+                if pagamento_escolha == 'Pagamento Individual':
+                    escolha_client_input = st.selectbox('Cliente', options=nome_cliente_reserva)
+                    st.write('---')
+
+                    valor_a_receber_cliente = None
+                    for nome, id_pg, receber_loja in zip(nome_cliente_reserva, id_cliente_reserva,
+                                                         receber_loja_reserva):
+                        if nome == escolha_client_input:
+                            valor_a_receber_cliente = receber_loja
+
+                    if valor_a_receber_cliente is not None:
+                        valor_a_receber_formatado = "{:,.2f}".format(valor_a_receber_cliente).replace(",",
+                                                                                                      "X").replace(
+                            ".", ",").replace("X", ".")
                         st.markdown(
-                            f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>Nenhum sinal foi pago</h2>",
+                            f"<h2 style='color: green; font-size: 1.5em;'>Total a receber de {escolha_client_input} - R$ {valor_a_receber_formatado}</h2>",
                             unsafe_allow_html=True)
-                with coluna3:
-                    receber_formatado_individual = "{:,.2f}".format(receber_formatado).replace(",",
-                                                                                               "X").replace(".",
-                                                                                                            ",").replace(
-                        "X", ".")
-                    st.markdown(
-                        f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>R$ {receber_formatado_individual}</h2>",
-                        unsafe_allow_html=True)
+                    else:
+                        st.warning(f"Não foi possível encontrar o valor a receber de {escolha_client_input}")
 
-                receber_grupo += receber_formatado
-                with coluna4:
-                    st.markdown(
-                        f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>Pendente</h2>",
-                        unsafe_allow_html=True)
+                    forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
+                                            index=None,
+                                            placeholder='Insira a forma de pagamento')
 
-            if len(lista_nome_pagamento) > 1:
+                    if forma_pg == 'Credito':
+                        parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
+                    else:
+                        parcela = 0
 
-                colum1, colum2, colum3, colum4 = st.columns(4)
+                    check_in_entry = st.selectbox('Cliente vai pra onde?', ['Loja', 'Para o pier'], index=None)
+                    if check_in_entry == 'Loja':
+                        check_in = '#00B0F0'
+                    if check_in_entry == 'Para o pier':
+                        check_in = 'yellow'
 
-                with colum1:
-                    st.markdown(f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>Total</h2>",
-                                unsafe_allow_html=True)
+                if pagamento_escolha == 'Pagamento Grupo':
+                    st.write('---')
 
-                with colum2:
-                    total_sinal_formatado = "{:,.2f}".format(total_sinal).replace(",", "X").replace(".",
-                                                                                                    ",").replace(
-                        "X", ".")
-                    st.markdown(
-                        f"<h2 style='color: green; text-align: center; font-size: 1.2em;'>R$ {total_sinal_formatado}</h2>",
-                        unsafe_allow_html=True)
-
-                with colum3:
+                    st.subheader(f'Pagamento Grupo {selectbox_cliente}')
                     receber_grupo_formatado = "{:,.2f}".format(receber_grupo).replace(",", "X").replace(".",
                                                                                                         ",").replace(
                         "X", ".")
                     st.markdown(
-                        f"<h2 style='color: green; text-align: center; font-size: 1.2em;'>R$ {receber_grupo_formatado}</h2>",
+                        f"<h2 style='color: green; font-size: 1.5em;'>Total a receber - R$ {receber_grupo_formatado}</h2>",
                         unsafe_allow_html=True)
 
-                st.markdown("<div style='margin-bottom: 40px;'></div>", unsafe_allow_html=True)
+                    forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
+                                            index=None,
+                                            placeholder='Insira a forma de pagamento')
 
-                pagamento_escolha = st.radio('Opções de pagamento', ['Pagamento Grupo', 'Pagamento Individual'],
-                                             horizontal=True)
+                    if forma_pg == 'Credito':
+                        parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
+                    else:
+                        parcela = 0
 
-            else:
-                pagamento_escolha = 'Pagamento Individual'
+                    check_in_entry = st.selectbox('Cliente vai pra onde?', ['Loja', 'Para o pier'], index=None)
+                    if check_in_entry == 'Loja':
+                        check_in = '#00B0F0'
+                    if check_in_entry == 'Para o pier':
+                        check_in = 'yellow'
 
-            if pagamento_escolha == 'Pagamento Individual':
-                escolha_client_input = st.selectbox('Cliente', options=nome_cliente_reserva)
-                st.write('---')
-
-                valor_a_receber_cliente = None
-                for nome, id_pg, receber_loja in zip(nome_cliente_reserva, id_cliente_reserva,
-                                                     receber_loja_reserva):
-                    if nome == escolha_client_input:
-                        valor_a_receber_cliente = receber_loja
-
-                if valor_a_receber_cliente is not None:
-                    valor_a_receber_formatado = "{:,.2f}".format(valor_a_receber_cliente).replace(",",
-                                                                                                  "X").replace(
-                        ".", ",").replace("X", ".")
-                    st.markdown(
-                        f"<h2 style='color: green; font-size: 1.5em;'>Total a receber de {escolha_client_input} - R$ {valor_a_receber_formatado}</h2>",
-                        unsafe_allow_html=True)
-                else:
-                    st.warning(f"Não foi possível encontrar o valor a receber de {escolha_client_input}")
-
-                forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
-                                        index=None,
-                                        placeholder='Insira a forma de pagamento')
-
-                if forma_pg == 'Credito':
-                    parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
-                else:
-                    parcela = 0
-
-                check_in_entry = st.selectbox('Cliente vai pra onde?', ['Loja', 'Para o pier'], index=None)
-                if check_in_entry == 'Loja':
-                    check_in = '#00B0F0'
-                if check_in_entry == 'Para o pier':
-                    check_in = 'yellow'
-
-            if pagamento_escolha == 'Pagamento Grupo':
-                st.write('---')
-
-                st.subheader(f'Pagamento Grupo {selectbox_cliente}')
-                receber_grupo_formatado = "{:,.2f}".format(receber_grupo).replace(",", "X").replace(".",
-                                                                                                    ",").replace(
-                    "X", ".")
-                st.markdown(
-                    f"<h2 style='color: green; font-size: 1.5em;'>Total a receber - R$ {receber_grupo_formatado}</h2>",
-                    unsafe_allow_html=True)
-
-                forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
-                                        index=None,
-                                        placeholder='Insira a forma de pagamento')
-
-                if forma_pg == 'Credito':
-                    parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
-                else:
-                    parcela = 0
-
-                check_in_entry = st.selectbox('Cliente vai pra onde?', ['Loja', 'Para o pier'], index=None)
-                if check_in_entry == 'Loja':
-                    check_in = '#00B0F0'
-                if check_in_entry == 'Para o pier':
-                    check_in = 'yellow'
-
-            if st.button('Lançar Pagamento'):
-                if pagamento_escolha == 'Pagamento Grupo':
-                    for nome in lista_nome_pagamento:
-                        processar_pagamento(nome, cursor, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg, id_titular_pagamento)
-                else:
-                    nome = escolha_client_input
-                    processar_pagamento(nome, cursor, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg,
-                                        id_titular_pagamento)
+                if st.button('Lançar Pagamento'):
+                    if pagamento_escolha == 'Pagamento Grupo':
+                        for nome in lista_nome_pagamento:
+                            processar_pagamento(nome, cursor, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg, id_titular_pagamento)
+                    else:
+                        nome = escolha_client_input
+                        processar_pagamento(nome, cursor, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg,
+                                            id_titular_pagamento)
 
 
 
-                st.session_state.pagamentos = []
-                st.session_state.pagamentos2 = []
+                    st.session_state.pagamentos = []
+                    st.session_state.pagamentos2 = []
 
-                mydb.close()
-                st.success('Pagamento lançado no sistema!')
-                st.session_state.botao = False
+                    mydb.close()
+                    st.success('Pagamento lançado no sistema!')
+                    st.session_state.botao = False
 
             else:
                 st.success('Todos os clientes desse grupo já realizaram o pagamento!')
