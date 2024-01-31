@@ -882,8 +882,6 @@ if escolha == 'Pagamento':
 
                     insert_caixa(cursor, id_conta, data_pagamento, tipo_movimento, tipo, descricao, forma_pg, pagamento)
 
-
-
                     cursor.execute(
                         "INSERT INTO lancamento_comissao (id_reserva, id_vendedor, valor_receber, valor_pagar, "
                         "situacao, id_titular) VALUES (%s, %s, %s, %s, %s, %s)",
@@ -921,9 +919,13 @@ if escolha == 'Pagamento':
                     check_in = 'yellow'
 
                 if st.button('Lançar Pagamento'):
-
-                    for nome in lista_nome_pagamento:
-                        processar_pagamento(nome, cursor, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg, id_titular_pagamento)
+                    if pagamento_escolha == 'Pagamento Grupo':
+                        for nome in lista_nome_pagamento:
+                            processar_pagamento(nome, cursor, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg, id_titular_pagamento)
+                    else:
+                        nome = escolha_client_input
+                        processar_pagamento(nome, cursor, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg,
+                                            id_titular_pagamento)
 
                         # info_reserva = obter_info_reserva(cursor, nome, data_reserva)
                         #
