@@ -11,7 +11,7 @@ import os
 import mysql.connector
 from datetime import date, datetime
 import streamlit.components.v1
-from functions import obter_valor_neto
+from functions import obter_valor_neto, obter_info_reserva, update_check_in, insert_pagamento, calcular_valores
 
 chars = "'),([]"
 chars2 = "')([]"
@@ -935,26 +935,20 @@ if escolha == 'Pagamento':
 
                     for nome in lista_nome_pagamento:
 
-                        cursor.execute(
-                            f"SELECT id, tipo, valor_total, receber_loja, tipo  FROM reserva WHERE nome_cliente = '{nome}' and data = '{data_reserva}'")
-                        info_reserva_pg = cursor.fetchone()
+                        info_reserva = obter_info_reserva(cursor, nome, data_reserva)
 
-                        cursor.execute(
-                            f"UPDATE reserva set check_in = '{check_in}' where nome_cliente = '{nome}'")
+                        update_check_in(cursor, nome, check_in)
 
-                        id_reserva_cliente = info_reserva_pg[0]
-                        tipo_reserva = info_reserva_pg[1]
-                        valor_total_reserva = info_reserva_pg[2]
-                        receber_loja_individual = info_reserva_pg[3]
-                        tipo = info_reserva_pg[4]
+                        id_reserva_cliente = info_reserva[0]
+                        id_cliente_pg = info_reserva[1]
+                        tipo = info_reserva[2]
+                        valor_total_reserva = info_reserva[3]
+                        receber_loja_individual = info_reserva[4]
+
                         pagamento = receber_loja_individual
+                        recebedor_pagamento = 'AcquaWorld'
 
-                        cursor.execute(
-                            "INSERT INTO pagamentos (data ,id_reserva, recebedor, pagamento, forma_pg, parcela, id_titular) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-                            (
-                                data_pagamento, id_reserva_cliente, 'AcquaWorld', pagamento, forma_pg, parcela,
-                                id_titular_pagamento))
-                        id_pagamento = cursor.lastrowid
+                        id_pagamento = insert_pagamento(cursor, data_pagamento, id_reserva_cliente, recebedor, pagamento, forma_pg, parcela, id_titular_pagamento)
 
                         cursor.execute(
                             f"SELECT recebedor, sum(pagamento) from pagamentos where id_reserva = {id_reserva_cliente} group by recebedor")
@@ -968,22 +962,6 @@ if escolha == 'Pagamento':
 
                         valor_neto = obter_valor_neto(cursor, tipo, id_vendedor_pg)
 
-                        # if tipo == 'BAT':
-                        #     cursor.execute(f"SELECT valor_neto FROM vendedores WHERE id = {id_vendedor_pg}")
-                        #     valor_neto = int(cursor.fetchone()[0])
-                        #
-                        # elif tipo == 'ACP':
-                        #     cursor.execute(f"SELECT neto_acp FROM vendedores WHERE id = {id_vendedor_pg}")
-                        #     valor_neto = int(cursor.fetchone()[0])
-                        # elif tipo == 'TUR1':
-                        #     cursor.execute(f"SELECT neto_tur1 FROM vendedores WHERE id = {id_vendedor_pg}")
-                        #     valor_neto = int(cursor.fetchone()[0])
-                        # elif tipo == 'TUR2':
-                        #     cursor.execute(f"SELECT neto_tur2 FROM vendedores WHERE id = {id_vendedor_pg}")
-                        #     valor_neto = int(cursor.fetchone()[0])
-                        # else:
-                        #     comissao = valor_total_reserva * 10/100
-                        #     valor_neto = valor_total_reserva - comissao
                         st.write(valor_neto)
 
                         for result in resultado_soma:
@@ -998,20 +976,22 @@ if escolha == 'Pagamento':
                                 acquaworld_nome = nome_result
                                 acquaworld_valor = valor
 
-                        reserva_neto = valor_total_reserva - valor_neto
-                        situacao = 'Pendente'
+                        valor_receber, valor_pagar, situacao = calcular_valores(valor_neto, valor_total_reserva, acquaworld_valor, vendedor_valor, reserva_neto)
 
-                        if acquaworld_valor < valor_neto:
-                            valor_receber = valor_neto - acquaworld_valor
-                            valor_pagar = 0
-
-                        if acquaworld_valor > valor_neto:
-                            valor_receber = 0
-                            valor_pagar = acquaworld_valor - valor_neto
-                        if acquaworld_valor == valor_neto and vendedor_valor == reserva_neto:
-                            valor_receber = 0
-                            valor_pagar = 0
-                            situacao = 'Ok'
+                        # reserva_neto = valor_total_reserva - valor_neto
+                        # situacao = 'Pendente'
+                        #
+                        # if acquaworld_valor < valor_neto:
+                        #     valor_receber = valor_neto - acquaworld_valor
+                        #     valor_pagar = 0
+                        #
+                        # if acquaworld_valor > valor_neto:
+                        #     valor_receber = 0
+                        #     valor_pagar = acquaworld_valor - valor_neto
+                        # if acquaworld_valor == valor_neto and vendedor_valor == reserva_neto:
+                        #     valor_receber = 0
+                        #     valor_pagar = 0
+                        #     situacao = 'Ok'
 
                         st.write(f'Pagar : {valor_pagar}')
                         st.write(f'Receber : {valor_receber}')
@@ -1021,7 +1001,7 @@ if escolha == 'Pagamento':
                         cursor.execute(
                             "INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES "
                             "(%s, %s, %s, %s, %s, %s, %s)",
-                            (1, data_pagamento, 'ENTRADA', tipo_reserva, descricao, forma_pg, pagamento))
+                            (1, data_pagamento, 'ENTRADA', tipo, descricao, forma_pg, pagamento))
                         st.write(f'Info Reserva - {info_reserva_pg}')
                         st.write(f'Tipo - {tipo}')
                         st.write(f'Valor Neto - {valor_neto}')

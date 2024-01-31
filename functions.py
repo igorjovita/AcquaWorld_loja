@@ -1,4 +1,3 @@
-import streamlit as st
 
 def obter_valor_neto(cursor, tipo, id_vendedor_pg):
     if tipo == 'BAT':
@@ -16,3 +15,46 @@ def obter_valor_neto(cursor, tipo, id_vendedor_pg):
 
     valor_neto = int(cursor.fetchone()[0])
     return valor_neto
+
+
+def obter_info_reserva(cursor, nome, data_reserva):
+    cursor.execute(
+        f"SELECT id, id_cliente, tipo,"
+        f" valor_total, receber_loja, FROM reserva WHERE nome_cliente = '{nome}' and data = '{data_reserva}'")
+    info_reserva = cursor.fetchone()
+    return info_reserva
+
+
+def update_check_in(cursor, check_in, nome):
+    cursor.execute(
+        f"UPDATE reserva set check_in = '{check_in}' where nome_cliente = '{nome}'")
+
+
+def insert_pagamento(cursor, data_pagamento, id_reserva_cliente, recebedor, pagamento, forma_pg, parcela, id_titular_pagamento):
+    cursor.execute(
+        "INSERT INTO pagamentos (data ,id_reserva, recebedor, pagamento, forma_pg, parcela, id_titular) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+        (data_pagamento, id_reserva_cliente, recebedor, pagamento, forma_pg, parcela, id_titular_pagamento))
+    id_pagamento = cursor.lastrowid
+    return id_pagamento
+
+
+def calcular_valores(valor_neto, valor_total_reserva, acquaworld_valor, vendedor_valor, reserva_neto):
+    reserva_neto = valor_total_reserva - valor_neto
+    situacao = 'Pendente'
+
+    if acquaworld_valor < valor_neto:
+        valor_receber = valor_neto - acquaworld_valor
+        valor_pagar = 0
+
+    elif acquaworld_valor > valor_neto:
+        valor_receber = 0
+        valor_pagar = acquaworld_valor - valor_neto
+
+    elif acquaworld_valor == valor_neto and vendedor_valor == reserva_neto:
+        valor_receber = 0
+        valor_pagar = 0
+        situacao = 'Ok'
+
+    return valor_receber, valor_pagar, situacao
+
+
