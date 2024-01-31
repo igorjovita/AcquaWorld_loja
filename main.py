@@ -11,7 +11,7 @@ import os
 import mysql.connector
 from datetime import date, datetime
 import streamlit.components.v1
-from functions import obter_valor_neto, obter_info_reserva, update_check_in, insert_pagamento, calcular_valores
+from functions import obter_valor_neto, obter_info_reserva, update_check_in, insert_pagamento, calcular_valores,insert_lancamento_comissao, insert_caixa
 
 chars = "'),([]"
 chars2 = "')([]"
@@ -959,7 +959,7 @@ if escolha == 'Pagamento':
                         vendedor_valor = None
                         acquaworld_nome = None
                         acquaworld_valor = None
-                        
+
                         valor_neto = obter_valor_neto(cursor, tipo, valor_total_reserva, id_vendedor_pg)
                         reserva_neto = valor_total_reserva - valor_neto
 
@@ -978,33 +978,19 @@ if escolha == 'Pagamento':
                                 acquaworld_nome = nome_result
                                 acquaworld_valor = valor
 
-                        valor_receber, valor_pagar, situacao = calcular_valores(valor_neto, valor_total_reserva, acquaworld_valor, vendedor_valor, reserva_neto)
-
-                        # reserva_neto = valor_total_reserva - valor_neto
-                        # situacao = 'Pendente'
-                        #
-                        # if acquaworld_valor < valor_neto:
-                        #     valor_receber = valor_neto - acquaworld_valor
-                        #     valor_pagar = 0
-                        #
-                        # if acquaworld_valor > valor_neto:
-                        #     valor_receber = 0
-                        #     valor_pagar = acquaworld_valor - valor_neto
-                        # if acquaworld_valor == valor_neto and vendedor_valor == reserva_neto:
-                        #     valor_receber = 0
-                        #     valor_pagar = 0
-                        #     situacao = 'Ok'
+                        valor_receber, valor_pagar, situacao = calcular_valores(valor_neto, acquaworld_valor, vendedor_valor, reserva_neto)
 
                         st.write(f'Pagar : {valor_pagar}')
                         st.write(f'Receber : {valor_receber}')
                         data_completa = str(data_reserva).split('-')
                         descricao = f'{nome} do dia {data_completa[2]}/{data_completa[1]}/{data_completa[0]}'
+                        tipo_movimento = 'Entrada'
+                        id_conta = 1
 
-                        cursor.execute(
-                            "INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES "
-                            "(%s, %s, %s, %s, %s, %s, %s)",
-                            (1, data_pagamento, 'ENTRADA', tipo, descricao, forma_pg, pagamento))
-                        st.write(f'Info Reserva - {info_reserva_pg}')
+                        insert_caixa(cursor, id_conta, data_pagamento, tipo_movimento, tipo, descricao, forma_pg, pagamento)
+
+
+                        st.write(f'Info Reserva - {info_reserva}')
                         st.write(f'Tipo - {tipo}')
                         st.write(f'Valor Neto - {valor_neto}')
                         st.write(f'Valor Receber - {valor_receber}')
@@ -1013,11 +999,9 @@ if escolha == 'Pagamento':
                         st.write(f'AcquaWorld Nome - {acquaworld_nome}')
                         st.write(f'Vendedor Valor - {vendedor_valor}')
                         st.write(f'Vendedor Nome - {vendedor_nome}')
-                        cursor.execute(
-                            "INSERT INTO lancamento_comissao (id_reserva, id_vendedor, valor_receber, valor_pagar, "
-                            "situacao, id_titular) VALUES (%s, %s, %s, %s, %s, %s)",
-                            (id_reserva_cliente, id_vendedor_pg,
-                             valor_receber, valor_pagar, situacao, id_titular_pagamento))
+
+                        insert_lancamento_comissao(cursor, id_reserva_cliente, id_vendedor_pg, valor_receber, valor_pagar, situacao, id_titular_pagamento)
+
 
                     st.session_state.pagamentos = []
                     st.session_state.pagamentos2 = []

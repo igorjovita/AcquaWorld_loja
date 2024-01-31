@@ -37,7 +37,7 @@ def insert_pagamento(cursor, data_pagamento, id_reserva_cliente, recebedor, paga
     return id_pagamento
 
 
-def calcular_valores(valor_neto, valor_total_reserva, acquaworld_valor, vendedor_valor, reserva_neto):
+def calcular_valores(valor_neto, acquaworld_valor, vendedor_valor, reserva_neto):
 
     situacao = 'Pendente'
 
@@ -55,5 +55,20 @@ def calcular_valores(valor_neto, valor_total_reserva, acquaworld_valor, vendedor
         situacao = 'Ok'
 
     return valor_receber, valor_pagar, situacao
+
+
+def insert_lancamento_comissao(cursor, id_reserva_cliente, id_vendedor_pg, valor_receber, valor_pagar, situacao, id_titular_pagamento):
+    cursor.execute(
+        "INSERT INTO lancamento_comissao (id_reserva, id_vendedor, valor_receber, valor_pagar, "
+        "situacao, id_titular) VALUES (%s, %s, %s, %s, %s, %s)",
+        (id_reserva_cliente, id_vendedor_pg,
+         valor_receber, valor_pagar, situacao, id_titular_pagamento))
+
+
+def insert_caixa(cursor, id_conta, data_pagamento, tipo_movimento, tipo, descricao, forma_pg, pagamento):
+    cursor.execute(
+        "INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES "
+        "(%s, %s, %s, %s, %s, %s, %s)",
+        (id_conta, data_pagamento, tipo_movimento, tipo, descricao, forma_pg, pagamento))
 
 
