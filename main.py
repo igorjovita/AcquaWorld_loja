@@ -524,6 +524,8 @@ if escolha == 'Reservar':
                         st.session_state.valor_mergulho_receber = 0
                         st.session_state.valor_mergulho_total = 0
                         st.session_state.nome_dependente = []
+                        st.session_state.pagamentos = []
+                        st.session_state.pagamentos2 = []
 
                 if 'botao_clicado' in st.session_state:
                     st.session_state.botao_clicado = False
