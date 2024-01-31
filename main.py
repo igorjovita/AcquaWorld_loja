@@ -749,19 +749,16 @@ if escolha == 'Pagamento':
                         #         "X", ".")
                         #     situacao = 'Pendente'
 
-                        tolerancia = 0.01  # Ajuste conforme necessário
-
-                        receber_formatado_individual = max(0, valor_total - pagamento)
-                        situacao = 'Pago' if receber_formatado_individual == 0 else 'Pendente'
-                        receber_formatado_individual = "{:,.2f}".format(receber_formatado_individual).replace(",",
-                                                                                                              "X").replace(
-                            ".",
-                            ",").replace(
-                            "X", ".")
-                        st.markdown(
-                            f"<h2 style='color: white; text-align: center; font-size: 1em;'>R$ {receber_formatado_individual}</h2>",
-                            unsafe_allow_html=True)
-
+                        if pagamento >= valor_total:
+                            receber_formatado_individual = 0.00
+                            situacao = 'Pago'
+                        else:
+                            receber_formatado_individual = "{:,.2f}".format(valor_total - pagamento).replace(",",
+                                                                                                             "X").replace(
+                                ".",
+                                ",").replace(
+                                "X", ".")
+                            situacao = 'Pendente'
                     receber_grupo += receber_formatado
                     with coluna4:
                         st.markdown(
