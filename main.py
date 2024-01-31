@@ -698,9 +698,15 @@ if escolha == 'Pagamento':
                     cursor.execute(f"SELECT recebedor, pagamento FROM pagamentos WHERE id_reserva = {id_formatado}")
                     result = cursor.fetchall()
 
-                    if result is not None:
+                    if len(result) == 1:
                         recebedor = result[0]
                         pagamento = result[1]
+
+                    elif len(result) > 1:
+                        pagamento = 0
+                        recebedor = result[0]
+                        for numero in result:
+                            pagamento += result[1]
                     else:
                         recebedor = None
                     lista_nome_pagamento.append(nome_formatado)
