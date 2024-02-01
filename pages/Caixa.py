@@ -68,7 +68,7 @@ if escolha == 'Caixa Diario':
 
         if st.markdown("<a href='#' onclick='abrir_detalhes(\"Entradas\")'>Entradas</a>", unsafe_allow_html=True):
             tipo_movimento = 'ENTRADA'
-            pesquisa_caixa(data_caixa, tipo_movimento)
+            st.table(pesquisa_caixa(data_caixa, tipo_movimento))
 
         if st.markdown(f"<a href='#' onclick='{abrir_detalhes}(\"Saídas\")'>Saídas</a>", unsafe_allow_html=True):
             tipo_movimento = 'SAIDA'
