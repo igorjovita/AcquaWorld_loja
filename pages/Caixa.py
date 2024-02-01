@@ -66,7 +66,7 @@ if escolha == 'Caixa Diario':
         entrada_final = str(entradas).replace('.', ',')
         col1, col2 = st.columns(2)
 
-        if st.markdown("<a href='#' onclick='abrir_detalhes(\"Entradas\")'>Entradas</a>", unsafe_allow_html=True):
+        if st.markdown("font-size: 3em; <a href='#' onclick='abrir_detalhes(\"Entradas\")'>Entradas</a>", unsafe_allow_html=True):
             tipo_movimento = 'ENTRADA'
             st.table(pesquisa_caixa(data_caixa, tipo_movimento))
 
