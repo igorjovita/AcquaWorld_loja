@@ -4,6 +4,7 @@ import mysql.connector
 import os
 from datetime import timedelta, date
 from functions import select_caixa, pesquisa_caixa, info_caixa
+import jinja2
 
 escolha = option_menu(menu_title=None, options=['Caixa Diario', 'Entrada', 'Saida'], orientation='horizontal')
 
@@ -75,27 +76,31 @@ if escolha == 'Caixa Diario':
         saidas = (str(dividido[3]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
         saida_final = str(saidas).replace('.', ',')
 
-    col1, col2 = st.columns(2)
+    planilha_loader = jinja2.FileSystemLoader('./')
+    planilha_env = jinja2.Environment(loader=planilha_loader)
+    planilha = planilha_env.get_template('planilha_caixa.html')
 
-    with col1:
-        st.subheader('ENTRADAS')
-        st.subheader(entrada_final)
-        if st.button('Abrir Entradas'):
-            if st.session_state.opcao_caixa == 'ENTRADA':
-                st.session_state.opcao_caixa = ''
-            else:
-                st.session_state.opcao_caixa = 'ENTRADA'
-
-    with col2:
-        st.subheader('SAIDAS')
-        st.subheader(saida_final)
-        if st.button('Abrir Saidas'):
-            if st.session_state.opcao_caixa == 'SAIDAS':
-                st.session_state.opcao_caixa = ''
-            else:
-                st.session_state.opcao_caixa = 'SAIDAS'
-
-    st.data_editor(info_caixa(st.session_state.opcao_caixa))
+    # col1, col2 = st.columns(2)
+    #
+    # with col1:
+    #     st.subheader('ENTRADAS')
+    #     st.subheader(entrada_final)
+    #     if st.button('Abrir Entradas'):
+    #         if st.session_state.opcao_caixa == 'ENTRADA':
+    #             st.session_state.opcao_caixa = ''
+    #         else:
+    #             st.session_state.opcao_caixa = 'ENTRADA'
+    #
+    # with col2:
+    #     st.subheader('SAIDAS')
+    #     st.subheader(saida_final)
+    #     if st.button('Abrir Saidas'):
+    #         if st.session_state.opcao_caixa == 'SAIDAS':
+    #             st.session_state.opcao_caixa = ''
+    #         else:
+    #             st.session_state.opcao_caixa = 'SAIDAS'
+    #
+    # st.data_editor(info_caixa(st.session_state.opcao_caixa))
 
 
 
