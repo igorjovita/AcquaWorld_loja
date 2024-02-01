@@ -76,19 +76,19 @@ if escolha == 'Caixa Diario':
                 tipo_movimento = 'SAIDA'
                 st.table(pesquisa_caixa(data_caixa, tipo_movimento))
 
-        st.subheader(f'- Entradas: R$ {entrada_final}')
-        st.subheader('- Total de Saidas : R$ 0')
-
-    if contagem > 3:
-        entradas = (str(dividido[1]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
-        entrada_final = str(entradas).replace('.', ',')
-        saidas = (str(dividido[3]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
-        saida_final = str(saidas).replace('.', ',')
-        st.subheader(f'- Total de Entradas : R$ {entrada_final}')
-        st.subheader(f'    - Total de Saidas : R$ {saida_final}')
-
-    st.subheader('Detalhes de Entradas e Saídas:')
-    st.table(controle)
+    #     st.subheader(f'- Entradas: R$ {entrada_final}')
+    #     st.subheader('- Total de Saidas : R$ 0')
+    #
+    # if contagem > 3:
+    #     entradas = (str(dividido[1]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
+    #     entrada_final = str(entradas).replace('.', ',')
+    #     saidas = (str(dividido[3]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
+    #     saida_final = str(saidas).replace('.', ',')
+    #     st.subheader(f'- Total de Entradas : R$ {entrada_final}')
+    #     st.subheader(f'    - Total de Saidas : R$ {saida_final}')
+    #
+    # st.subheader('Detalhes de Entradas e Saídas:')
+    # st.table(controle)
 
 if escolha == 'Saida':
     data = date.today()
