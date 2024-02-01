@@ -18,11 +18,6 @@ mydb = mysql.connector.connect(
 
 cursor = mydb.cursor(buffered=True)
 
-# Adicione isso para organizar o layout
-st.sidebar.header('Opções')
-data_caixa = st.sidebar.date_input('Selecione a Data', format='DD/MM/YYYY', key='date_input')
-
-# ... (código anterior)
 
 if escolha == 'Entrada':
     data = date.today()
@@ -86,6 +81,9 @@ if escolha == 'Caixa Diario':
         saida_final = str(saidas).replace('.', ',')
         st.subheader(f'- Total de Entradas : R$ {entrada_final}')
         st.subheader(f'    - Total de Saidas : R$ {saida_final}')
+
+    st.subheader('Detalhes de Entradas e Saídas:')
+    st.table(controle)
 
 if escolha == 'Saida':
     data = date.today()
