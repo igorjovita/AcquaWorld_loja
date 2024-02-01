@@ -24,9 +24,9 @@ def obter_info_reserva(cursor, nome, data_reserva):
     return info_reserva
 
 
-def update_check_in(cursor, check_in, nome):
+def update_check_in(cursor, nome, check_in, data_reserva):
     cursor.execute(
-        f"UPDATE reserva set check_in = '{check_in}' where nome_cliente = '{nome}'")
+        f"UPDATE reserva set check_in = '{check_in}' where nome_cliente = '{nome}' and data = '{data_reserva}'")
 
 
 def insert_pagamento(cursor, data_pagamento, id_reserva_cliente, recebedor, pagamento, forma_pg, parcela, id_titular_pagamento):
@@ -77,7 +77,7 @@ def processar_pagamento(nome, cursor, data_reserva, check_in, forma_pg, parcela,
     info_reserva = obter_info_reserva(cursor, nome, data_reserva)
 
     # Atualizar o check-in
-    update_check_in(cursor, nome, check_in)
+    update_check_in(cursor, nome, check_in, data_reserva)
 
     # Extrair informações relevantes
     id_reserva_cliente = info_reserva[0]
