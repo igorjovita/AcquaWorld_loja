@@ -3,7 +3,7 @@ from streamlit_option_menu import option_menu
 import mysql.connector
 import os
 from datetime import timedelta, date
-from functions import select_caixa, pesquisa_caixa
+from functions import select_caixa, pesquisa_caixa, abrir_detalhes
 
 escolha = option_menu(menu_title=None, options=['Caixa Diario', 'Entrada', 'Saida'], orientation='horizontal')
 
@@ -72,7 +72,7 @@ if escolha == 'Caixa Diario':
             tipo_movimento = 'ENTRADA'
             pesquisa_caixa(data_caixa, tipo_movimento)
 
-        if st.markdown("<a href='#' onclick='abrir_detalhes(\"Saídas\")'>Saídas</a>", unsafe_allow_html=True):
+        if st.markdown(f"<a href='#' onclick='{abrir_detalhes}(\"Saídas\")'>Saídas</a>", unsafe_allow_html=True):
             tipo_movimento = 'SAIDA'
             pesquisa_caixa(data_caixa, tipo_movimento)
 

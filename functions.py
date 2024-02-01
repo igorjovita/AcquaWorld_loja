@@ -1,6 +1,6 @@
 import os
 import mysql.connector
-
+import streamlit as st
 
 mydb = mysql.connector.connect(
     host=os.getenv("DB_HOST"),
@@ -171,5 +171,7 @@ def pesquisa_caixa(data_caixa, tipo_movimento):
     return dados
 
 
-
+def abrir_detalhes():
+    dados = st.write('OI')
+    return dados
 
