@@ -1,7 +1,7 @@
 import os
 import mysql.connector
 import streamlit as st
-
+import jinja2
 mydb = mysql.connector.connect(
     host=os.getenv("DB_HOST"),
     user=os.getenv("DB_USERNAME"),
@@ -178,4 +178,11 @@ def info_caixa(tipo_movimento):
         cursor.execute(f"select data,descricao,forma_pg, valor from caixa where tipo_movimento = '{tipo_movimento}'")
         dados = cursor.fetchall()
         return dados
+
+def planilha_caixa():
+    planilha_loader = jinja2.FileSystemLoader('./')
+    planilha_env = jinja2.Environment(loader=planilha_loader)
+    planilha = planilha_env.get_template('planilha_caixa.html')
+    planilha_caixa = planilha.render
+    return planilha_caixa
 

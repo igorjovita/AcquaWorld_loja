@@ -3,7 +3,7 @@ from streamlit_option_menu import option_menu
 import mysql.connector
 import os
 from datetime import timedelta, date
-from functions import select_caixa, pesquisa_caixa, info_caixa
+from functions import select_caixa, pesquisa_caixa, info_caixa,planilha_caixa
 import jinja2
 
 escolha = option_menu(menu_title=None, options=['Caixa Diario', 'Entrada', 'Saida'], orientation='horizontal')
@@ -75,10 +75,8 @@ if escolha == 'Caixa Diario':
         entrada_final = str(entradas).replace('.', ',')
         saidas = (str(dividido[3]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
         saida_final = str(saidas).replace('.', ',')
+    planilha_caixa()
 
-    planilha_loader = jinja2.FileSystemLoader('./')
-    planilha_env = jinja2.Environment(loader=planilha_loader)
-    planilha = planilha_env.get_template('planilha_caixa.html')
 
     # col1, col2 = st.columns(2)
     #
