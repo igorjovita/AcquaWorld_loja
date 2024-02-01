@@ -57,12 +57,12 @@ def calcular_valores(valor_neto, acquaworld_valor, vendedor_valor, reserva_neto)
     return valor_receber, valor_pagar, situacao
 
 
-def insert_lancamento_comissao(cursor, id_reserva_cliente, id_vendedor_pg, valor_receber, valor_pagar, situacao, id_titular_pagamento):
+def insert_lancamento_comissao(cursor, id_reserva_cliente, id_vendedor_pg, valor_receber, valor_pagar, id_titular_pagamento):
     cursor.execute(
         "INSERT INTO lancamento_comissao (id_reserva, id_vendedor, valor_receber, valor_pagar, "
-        "situacao, id_titular) VALUES (%s, %s, %s, %s, %s, %s)",
+        " id_titular) VALUES (%s, %s, %s, %s, %s)",
         (id_reserva_cliente, id_vendedor_pg,
-         valor_receber, valor_pagar, situacao, id_titular_pagamento))
+         valor_receber, valor_pagar, id_titular_pagamento))
 
 
 def insert_caixa(cursor, id_conta, data_pagamento, tipo_movimento, tipo, descricao, forma_pg, pagamento):
@@ -130,7 +130,9 @@ def processar_pagamento(nome, cursor, data_reserva, check_in, forma_pg, parcela,
     insert_caixa(cursor, id_conta, data_reserva, tipo_movimento, tipo, descricao, forma_pg, pagamento)
 
     # Inserir no lançamento de comissão
-    insert_lancamento_comissao(cursor, id_reserva_cliente, id_vendedor_pg, valor_receber, valor_pagar, situacao, id_titular_pagamento)
+    insert_lancamento_comissao(cursor, id_reserva_cliente, id_vendedor_pg, valor_receber, valor_pagar, id_titular_pagamento)
+
+    cursor.execute(f"UPDATE reserva set situaçao = 'Reserva Paga' where id_reserva = {id_reserva_cliente}")
 
     return valor_receber, valor_pagar, situacao
 

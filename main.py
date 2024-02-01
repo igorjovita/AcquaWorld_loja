@@ -660,7 +660,7 @@ if escolha == 'Pagamento':
                 st.write(id_titular_pagamento)
 
                 cursor.execute(
-                    f'SELECT id, nome_cliente, receber_loja from reserva where id_titular = {id_titular_pagamento}')
+                    f"SELECT id, nome_cliente, receber_loja from reserva where id_titular = {id_titular_pagamento} and situacao != 'Reserva Paga' ")
                 resultado_pg = cursor.fetchall()
                 for item in resultado_pg:
                     id_reserva_pg, nome_reserva_pg, receber_loja_pg = item
