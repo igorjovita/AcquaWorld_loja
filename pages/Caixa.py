@@ -79,7 +79,7 @@ if escolha == 'Caixa Diario':
 
     with open("planilha_caixa.html", "r", encoding="utf-8") as file:
         html_content = file.read()
-    st.components.v1.html(html_content, height=100, width=100, scrolling=True)
+    st.components.v1.html(html_content, height=500, width=500, scrolling=True)
 
 
     # col1, col2 = st.columns(2)
