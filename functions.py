@@ -132,7 +132,7 @@ def processar_pagamento(nome, cursor, data_reserva, check_in, forma_pg, parcela,
     # Inserir no lançamento de comissão
     insert_lancamento_comissao(cursor, id_reserva_cliente, id_vendedor_pg, valor_receber, valor_pagar, id_titular_pagamento)
 
-    cursor.execute(f"UPDATE reserva set situaçao = 'Reserva Paga' where id_reserva = {id_reserva_cliente}")
+    cursor.execute(f"UPDATE reserva set situaçao = 'Reserva Paga' where id = {id_reserva_cliente}")
 
     return valor_receber, valor_pagar, situacao
 
