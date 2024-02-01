@@ -878,7 +878,7 @@ if escolha == 'Pagamento':
 
                         mydb.close()
                         st.success('Pagamento lançado no sistema!')
-                        st.session_state.botao = False
+                        # st.session_state.botao = False
 
             else:
                 st.warning('Nenhuma reserva lançada para essa data!')
