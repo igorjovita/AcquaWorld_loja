@@ -5,6 +5,7 @@ import os
 from datetime import timedelta, date
 from functions import select_caixa, pesquisa_caixa, info_caixa,planilha_caixa
 import jinja2
+import streamlit.components.v1
 
 escolha = option_menu(menu_title=None, options=['Caixa Diario', 'Entrada', 'Saida'], orientation='horizontal')
 
@@ -75,7 +76,8 @@ if escolha == 'Caixa Diario':
         entrada_final = str(entradas).replace('.', ',')
         saidas = (str(dividido[3]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
         saida_final = str(saidas).replace('.', ',')
-    st.table(planilha_caixa())
+    tabela_html = planilha_caixa()
+    st.components.v1.html(tabela_html, height=1000, width=1000, scrolling=True)
 
 
     # col1, col2 = st.columns(2)
