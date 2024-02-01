@@ -7,7 +7,6 @@ from functions import select_caixa, pesquisa_caixa, abrir_detalhes
 
 escolha = option_menu(menu_title=None, options=['Caixa Diario', 'Entrada', 'Saida'], orientation='horizontal')
 
-
 mydb = mysql.connector.connect(
     host=os.getenv("DB_HOST"),
     user=os.getenv("DB_USERNAME"),
@@ -18,7 +17,6 @@ mydb = mysql.connector.connect(
     ssl_ca=r"C:\users\acqua\downloads\cacert-2023-08-22.pem")
 
 cursor = mydb.cursor(buffered=True)
-
 
 if escolha == 'Entrada':
     data = date.today()
@@ -74,10 +72,7 @@ if escolha == 'Caixa Diario':
 
         if st.markdown(f"<a href='#' onclick='{abrir_detalhes}(\"Saídas\")'>Saídas</a>", unsafe_allow_html=True):
             tipo_movimento = 'SAIDA'
-            pesquisa_caixa(data_caixa, tipo_movimento)
-
-
-
+            st.table(pesquisa_caixa(data_caixa, tipo_movimento))
 
         st.subheader(f'- Entradas: R$ {entrada_final}')
         st.subheader('- Total de Saidas : R$ 0')
@@ -106,4 +101,3 @@ if escolha == 'Saida':
         cursor.execute(
             'insert into caixa (id_conta,data, tipo, descricao, forma_pg, valor, tipo_movimento) values ('
             '%s,%s,%s,%s,%s,%s,%s)', (1, data, tipo, descrição, pagamento, valor, 'SAIDA'))
-
