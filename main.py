@@ -13,7 +13,7 @@ from datetime import date, datetime
 import streamlit.components.v1
 from functions import obter_valor_neto, obter_info_reserva, update_check_in, insert_pagamento, calcular_valores, \
     insert_lancamento_comissao, insert_caixa, processar_pagamento
-
+import time
 chars = "'),([]"
 chars2 = "')([]"
 
@@ -876,9 +876,12 @@ if escolha == 'Pagamento':
                         st.session_state.pagamentos = []
                         st.session_state.pagamentos2 = []
                         nome_cliente_reserva.remove(nome)
-
+                        time.sleep(0.5)
+                        st.rerun()
                         mydb.close()
                         st.success('Pagamento lançado no sistema!')
+
+
                         # st.session_state.botao = False
 
             else:
