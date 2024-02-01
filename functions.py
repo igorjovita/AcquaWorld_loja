@@ -1,5 +1,20 @@
+import os
+import mysql.connector
 
-def obter_valor_neto(cursor, tipo, valor_total_reserva, id_vendedor_pg):
+
+mydb = mysql.connector.connect(
+    host=os.getenv("DB_HOST"),
+    user=os.getenv("DB_USERNAME"),
+    passwd=os.getenv("DB_PASSWORD"),
+    db=os.getenv("DB_NAME"),
+    autocommit=True,
+    ssl_verify_identity=False,
+    ssl_ca=r"C:\users\acqua\downloads\cacert-2023-08-22.pem",
+    charset="utf8")
+
+cursor = mydb.cursor(buffered=True)
+
+def obter_valor_neto(tipo, valor_total_reserva, id_vendedor_pg):
     if tipo == 'BAT':
         cursor.execute(f"SELECT valor_neto FROM vendedores WHERE id = {id_vendedor_pg}")
     elif tipo == 'ACP':
@@ -17,19 +32,19 @@ def obter_valor_neto(cursor, tipo, valor_total_reserva, id_vendedor_pg):
     return valor_neto
 
 
-def obter_info_reserva(cursor, nome, data_reserva):
+def obter_info_reserva(nome, data_reserva):
     cursor.execute(
         f"SELECT id, id_cliente, tipo, valor_total, receber_loja, id_vendedor FROM reserva WHERE nome_cliente = '{nome}' and data = '{data_reserva}'")
     info_reserva = cursor.fetchone()
     return info_reserva
 
 
-def update_check_in(cursor, nome, check_in, data_reserva):
+def update_check_in(nome, check_in, data_reserva):
     cursor.execute(
         f"UPDATE reserva set check_in = '{check_in}' where nome_cliente = '{nome}' and data = '{data_reserva}'")
 
 
-def insert_pagamento(cursor, data_pagamento, id_reserva_cliente, recebedor, pagamento, forma_pg, parcela, id_titular_pagamento):
+def insert_pagamento(data_pagamento, id_reserva_cliente, recebedor, pagamento, forma_pg, parcela, id_titular_pagamento):
     cursor.execute(
         "INSERT INTO pagamentos (data ,id_reserva, recebedor, pagamento, forma_pg, parcela, id_titular) VALUES (%s, %s, %s, %s, %s, %s, %s)",
         (data_pagamento, id_reserva_cliente, recebedor, pagamento, forma_pg, parcela, id_titular_pagamento))
@@ -57,7 +72,7 @@ def calcular_valores(valor_neto, acquaworld_valor, vendedor_valor, reserva_neto)
     return valor_receber, valor_pagar, situacao
 
 
-def insert_lancamento_comissao(cursor, id_reserva_cliente, id_vendedor_pg, valor_receber, valor_pagar, id_titular_pagamento):
+def insert_lancamento_comissao(id_reserva_cliente, id_vendedor_pg, valor_receber, valor_pagar, id_titular_pagamento):
     cursor.execute(
         "INSERT INTO lancamento_comissao (id_reserva, id_vendedor, valor_receber, valor_pagar, "
         " id_titular) VALUES (%s, %s, %s, %s, %s)",
@@ -65,14 +80,14 @@ def insert_lancamento_comissao(cursor, id_reserva_cliente, id_vendedor_pg, valor
          valor_receber, valor_pagar, id_titular_pagamento))
 
 
-def insert_caixa(cursor, id_conta, data_pagamento, tipo_movimento, tipo, descricao, forma_pg, pagamento):
+def insert_caixa(id_conta, data_pagamento, tipo_movimento, tipo, descricao, forma_pg, pagamento):
     cursor.execute(
         "INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES "
         "(%s, %s, %s, %s, %s, %s, %s)",
         (id_conta, data_pagamento, tipo_movimento, tipo, descricao, forma_pg, pagamento))
 
 
-def processar_pagamento(nome, cursor, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg, id_titular_pagamento):
+def processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg, id_titular_pagamento):
     # Obter informações da reserva
     info_reserva = obter_info_reserva(cursor, nome, data_reserva)
 
@@ -90,7 +105,7 @@ def processar_pagamento(nome, cursor, data_reserva, check_in, forma_pg, parcela,
     recebedor_pagamento = 'AcquaWorld'
 
     # Inserir pagamento no banco de dados
-    id_pagamento = insert_pagamento(cursor, data_reserva, id_reserva_cliente, recebedor_pagamento, pagamento, forma_pg, parcela, id_titular_pagamento)
+    id_pagamento = insert_pagamento(data_reserva, id_reserva_cliente, recebedor_pagamento, pagamento, forma_pg, parcela, id_titular_pagamento)
 
     # Calcular soma dos pagamentos
     cursor.execute(
@@ -104,7 +119,7 @@ def processar_pagamento(nome, cursor, data_reserva, check_in, forma_pg, parcela,
     acquaworld_valor = None
 
     # Calcular valores relevantes
-    valor_neto = obter_valor_neto(cursor, tipo, valor_total_reserva, id_vendedor_pg)
+    valor_neto = obter_valor_neto(tipo, valor_total_reserva, id_vendedor_pg)
     reserva_neto = valor_total_reserva - valor_neto
 
     for result in resultado_soma:
@@ -127,14 +142,34 @@ def processar_pagamento(nome, cursor, data_reserva, check_in, forma_pg, parcela,
     tipo_movimento = 'Entrada'
     id_conta = 1
 
-    insert_caixa(cursor, id_conta, data_reserva, tipo_movimento, tipo, descricao, forma_pg, pagamento)
+    insert_caixa(id_conta, data_reserva, tipo_movimento, tipo, descricao, forma_pg, pagamento)
 
     # Inserir no lançamento de comissão
-    insert_lancamento_comissao(cursor, id_reserva_cliente, id_vendedor_pg, valor_receber, valor_pagar, id_titular_pagamento)
+    insert_lancamento_comissao( id_reserva_cliente, id_vendedor_pg, valor_receber, valor_pagar, id_titular_pagamento)
 
     cursor.execute(f"UPDATE reserva set situacao = 'Reserva Paga' where id = {id_reserva_cliente}")
 
     return valor_receber, valor_pagar, situacao
+
+
+def select_caixa(data_caixa):
+    cursor.execute(
+        f"""SELECT id_conta,
+                    SUM(CASE WHEN tipo_movimento = 'ENTRADA' 
+                        THEN valor 
+                        ELSE - valor 
+                    END) AS saldo
+            FROM caixa where data = '{data_caixa}'""")
+    dados = cursor.fetchall()
+    return dados
+
+
+def pesquisa_caixa(data_caixa, tipo_movimento):
+    cursor.execute(f"""SELECT SUM(CASE WHEN tipo_movimento = 'ENTRADA' THEN valor ELSE - valor END) AS saldo FROM caixa where
+    data = '{data_caixa}' and tipo_movimento = '{tipo_movimento}'""")
+    dados = cursor.fetchall()
+    return dados
+
 
 
 

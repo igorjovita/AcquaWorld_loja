@@ -3,6 +3,7 @@ from streamlit_option_menu import option_menu
 import mysql.connector
 import os
 from datetime import timedelta, date
+from functions import select_caixa, pesquisa_caixa
 
 escolha = option_menu(menu_title=None, options=['Caixa Diario', 'Entrada', 'Saida'], orientation='horizontal')
 
@@ -39,15 +40,8 @@ if escolha == 'Entrada':
 if escolha == 'Caixa Diario':
     st.header('Planilha do Caixa')
     data_caixa = st.date_input('Data', format='DD/MM/YYYY')
-    cursor.execute(
-        f"""SELECT id_conta,
-                SUM(CASE WHEN tipo_movimento = 'ENTRADA' 
-                    THEN valor 
-                    ELSE - valor 
-                END) AS saldo
-        FROM caixa where data = '{data_caixa}'""")
 
-    dados = cursor.fetchall()
+    dados = select_caixa(data_caixa)
 
     divido = str(dados).split(',')
     chars = "')([]"
@@ -63,6 +57,7 @@ if escolha == 'Caixa Diario':
                 END) AS saldo
         FROM caixa where data = '{data_caixa}'
         GROUP BY tipo_movimento""")
+
     controle = cursor.fetchall()
 
     dividido = str(controle).split(',')
@@ -71,7 +66,20 @@ if escolha == 'Caixa Diario':
     if contagem == 2:
         entradas = (str(dividido[1]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
         entrada_final = str(entradas).replace('.', ',')
-        st.subheader(f'- Total de Entradas : R$ {entrada_final}')
+        col1, col2 = st.columns(2)
+
+        if st.markdown("<a href='#' onclick='abrir_detalhes(\"Entradas\")'>Entradas</a>", unsafe_allow_html=True):
+            tipo_movimento = 'ENTRADA'
+            pesquisa_caixa(data_caixa, tipo_movimento)
+
+        if st.markdown("<a href='#' onclick='abrir_detalhes(\"Saídas\")'>Saídas</a>", unsafe_allow_html=True):
+            tipo_movimento = 'SAIDA'
+            pesquisa_caixa(data_caixa, tipo_movimento)
+
+
+
+
+        st.subheader(f'- Entradas: R$ {entrada_final}')
         st.subheader('- Total de Saidas : R$ 0')
 
     if contagem > 3:

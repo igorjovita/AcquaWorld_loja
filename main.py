@@ -652,7 +652,7 @@ if escolha == 'Pagamento':
         escolha_reserva_pendente = []
 
         with mydb.cursor() as cursor:
-            resultado2 = obter_info_reserva(cursor, nome=selectbox_cliente, data_reserva=data_reserva)
+            resultado2 = obter_info_reserva( nome=selectbox_cliente, data_reserva=data_reserva)
             if resultado2:
                 id_reserva = resultado2[0]
                 id_titular_pagamento = resultado2[1]
@@ -697,7 +697,7 @@ if escolha == 'Pagamento':
                     nome_formatado = str(nome).translate(str.maketrans('', '', chars))
                     id_formatado = int(str(id_pg).translate(str.maketrans('', '', chars)))
 
-                    info_cliente_pg = obter_info_reserva(cursor, nome=nome_formatado, data_reserva=data_reserva)
+                    info_cliente_pg = obter_info_reserva(nome=nome_formatado, data_reserva=data_reserva)
 
                     if receber_loja is not None:
                         receber_formatado = float(str(receber_loja).translate(str.maketrans('', '', chars)))
@@ -875,11 +875,11 @@ if escolha == 'Pagamento':
                     if st.button('Lançar Pagamento'):
                         if pagamento_escolha == 'Pagamento Grupo':
                             for nome in lista_nome_pagamento:
-                                processar_pagamento(nome, cursor, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg,
+                                processar_pagamento(nome,  data_reserva, check_in, forma_pg, parcela, id_vendedor_pg,
                                                     id_titular_pagamento)
                         else:
                             nome = escolha_client_input
-                            processar_pagamento(nome, cursor, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg,
+                            processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg,
                                                 id_titular_pagamento)
 
                         st.session_state.pagamentos = []
