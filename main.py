@@ -875,6 +875,7 @@ if escolha == 'Pagamento':
 
                         st.session_state.pagamentos = []
                         st.session_state.pagamentos2 = []
+                        nome_cliente_reserva.remove(nome)
 
                         mydb.close()
                         st.success('Pagamento lançado no sistema!')
