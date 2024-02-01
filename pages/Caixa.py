@@ -77,7 +77,7 @@ if escolha == 'Caixa Diario':
         saidas = (str(dividido[3]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
         saida_final = str(saidas).replace('.', ',')
 
-    with open("tabela_caixa.html", "r", encoding="utf-8") as file:
+    with open("planilha_caixa.html", "r", encoding="utf-8") as file:
         html_content = file.read()
     st.components.v1.html(html_content, height=1000, width=1000, scrolling=True)
 
