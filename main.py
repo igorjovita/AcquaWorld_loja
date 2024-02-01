@@ -809,7 +809,7 @@ if escolha == 'Pagamento':
 
                         for opcao in options_select_cliente:
                             if opcao[1] == 'Reserva Paga':
-                                options_select_cliente.remove(opcao)
+                                pass
                             else:
                                 escolha_reserva_pendente.append(opcao[0])
                         escolha_client_input = st.selectbox('Cliente', options=escolha_reserva_pendente)
