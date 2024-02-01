@@ -18,6 +18,12 @@ mydb = mysql.connector.connect(
 
 cursor = mydb.cursor(buffered=True)
 
+# Adicione isso para organizar o layout
+st.sidebar.header('Opções')
+data_caixa = st.sidebar.date_input('Selecione a Data', format='DD/MM/YYYY', key='date_input')
+
+# ... (código anterior)
+
 if escolha == 'Entrada':
     data = date.today()
     data_caixa = str(data).split('-')
