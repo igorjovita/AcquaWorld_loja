@@ -171,7 +171,11 @@ def pesquisa_caixa(data_caixa, tipo_movimento):
     return dados
 
 
-def abrir_detalhes():
-    dados = st.write('OI')
-    return dados
+def info_caixa(tipo_movimento):
+    if tipo_movimento == '':
+        pass
+    else:
+        cursor.execute(f"select data,descricao,forma_pg, valor from caixa where tipo_movimento = '{tipo_movimento}'")
+        dados = cursor.fetchall()
+        return dados
 

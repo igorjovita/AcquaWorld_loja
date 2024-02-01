@@ -3,7 +3,7 @@ from streamlit_option_menu import option_menu
 import mysql.connector
 import os
 from datetime import timedelta, date
-from functions import select_caixa, pesquisa_caixa, abrir_detalhes
+from functions import select_caixa, pesquisa_caixa, info_caixa
 
 escolha = option_menu(menu_title=None, options=['Caixa Diario', 'Entrada', 'Saida'], orientation='horizontal')
 
@@ -15,6 +15,9 @@ mydb = mysql.connector.connect(
     autocommit=True,
     ssl_verify_identity=False,
     ssl_ca=r"C:\users\acqua\downloads\cacert-2023-08-22.pem")
+
+if 'opcao_caixa' not in st.session_state:
+    st.session_state.opcao_caixa = ''
 
 cursor = mydb.cursor(buffered=True)
 
@@ -31,8 +34,7 @@ if escolha == 'Entrada':
             'insert into caixa (id_conta,data, tipo, descricao, forma_pg, valor, tipo_movimento) values ('
             '%s,%s,%s,%s,%s,%s,%s)', (1, data, tipo, descrição, pagamento, valor, 'ENTRADA'))
         mydb.commit()
-    cursor.execute("select data,descricao,forma_pg, valor from caixa where tipo_movimento = 'ENTRADA'")
-    dados = cursor.fetchall()
+
     st.dataframe(dados)
 
 if escolha == 'Caixa Diario':
@@ -64,26 +66,44 @@ if escolha == 'Caixa Diario':
     if contagem == 2:
         entradas = (str(dividido[1]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
         entrada_final = str(entradas).replace('.', ',')
-        col1, col2 = st.columns(2)
+        saida_final = 'R$ 0,00'
+
+
+    elif contagem > 3:
+        entradas = (str(dividido[1]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
+        entrada_final = str(entradas).replace('.', ',')
+        saidas = (str(dividido[3]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
+        saida_final = str(saidas).replace('.', ',')
+
+    col1, col2 = st.columns(2)
 
     with col1:
-        if st.markdown("<a href='#' onclick='abrir_detalhes(\"Entradas\")' style='font-size: 30px; color: white; text-decoration: none;'>Entradas</a>", unsafe_allow_html=True):
-            tipo_movimento = 'ENTRADA'
-            st.table(pesquisa_caixa(data_caixa, tipo_movimento))
+        st.subheader('ENTRADAS')
+        st.subheader(entrada_final)
+        if st.button('Abrir Entradas'):
+            if st.session_state.opcao_caixa == 'ENTRADA':
+                st.session_state.opcao_caixa = ''
+            else:
+                st.session_state.opcao_caixa = 'ENTRADA'
 
     with col2:
-        if st.markdown("<a href='#' onclick='abrir_detalhes(\"Saídas\")' style='font-size: 30px; color: white; text-decoration: none;'>Saídas</a>", unsafe_allow_html=True):
-            tipo_movimento = 'SAIDA'
-            st.table(pesquisa_caixa(data_caixa, tipo_movimento))
+        st.subheader('SAIDAS')
+        st.subheader(saida_final)
+        if st.button('Abrir Saidas'):
+            if st.session_state.opcao_caixa == 'SAIDAS':
+                st.session_state.opcao_caixa = ''
+            else:
+                st.session_state.opcao_caixa = 'SAIDAS'
+
+    st.data_editor(info_caixa(st.session_state.opcao_caixa))
+
+
+
 
     #     st.subheader(f'- Entradas: R$ {entrada_final}')
     #     st.subheader('- Total de Saidas : R$ 0')
     #
-    # if contagem > 3:
-    #     entradas = (str(dividido[1]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
-    #     entrada_final = str(entradas).replace('.', ',')
-    #     saidas = (str(dividido[3]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
-    #     saida_final = str(saidas).replace('.', ',')
+    #
     #     st.subheader(f'- Total de Entradas : R$ {entrada_final}')
     #     st.subheader(f'    - Total de Saidas : R$ {saida_final}')
     #
