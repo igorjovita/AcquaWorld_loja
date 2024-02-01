@@ -631,12 +631,12 @@ if escolha == 'Pagamento':
 
     lista_pagamento = []
     with mydb.cursor() as cursor:
-        cursor.execute(f"SELECT id_cliente FROM reserva WHERE data = '{data_reserva}' and id_titular = id_cliente")
-        id_cliente_pagamento = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+        cursor.execute(f"SELECT nome_cliente FROM reserva WHERE data = '{data_reserva}' and id_titular = id_cliente")
+        resultado_select = cursor.fetchall()
 
-        for item in id_cliente_pagamento:
-            cursor.execute(f"SELECT nome FROM cliente WHERE id = '{item}'")
-            nome_cliente_pagamento = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
+
+        for item in resultado_select:
+            nome_cliente_pagamento = item
             lista_pagamento.append(nome_cliente_pagamento)
 
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista_pagamento)
