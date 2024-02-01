@@ -885,8 +885,8 @@ if escolha == 'Pagamento':
                         st.session_state.pagamentos = []
                         st.session_state.pagamentos2 = []
                         nome_cliente_reserva.remove(nome)
-                        # time.sleep(0.5)
-                        # st.rerun()
+                        time.sleep(0.5)
+                        st.rerun()
                         mydb.close()
                         st.success('Pagamento lançado no sistema!')
 
