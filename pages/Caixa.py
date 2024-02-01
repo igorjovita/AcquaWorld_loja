@@ -75,7 +75,7 @@ if escolha == 'Caixa Diario':
         entrada_final = str(entradas).replace('.', ',')
         saidas = (str(dividido[3]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
         saida_final = str(saidas).replace('.', ',')
-    planilha_caixa()
+    st.table(planilha_caixa())
 
 
     # col1, col2 = st.columns(2)
