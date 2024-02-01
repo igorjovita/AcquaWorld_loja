@@ -846,7 +846,7 @@ if escolha == 'Pagamento':
                         if check_in_entry == 'Para o pier':
                             check_in = 'yellow'
 
-                    if pagamento_escolha == 'Pagamento Grupo':
+                    elif pagamento_escolha == 'Pagamento Grupo':
                         st.write('---')
 
                         st.subheader(f'Pagamento Grupo {selectbox_cliente}')
