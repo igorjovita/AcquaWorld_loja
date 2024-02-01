@@ -66,15 +66,15 @@ if escolha == 'Caixa Diario':
         entrada_final = str(entradas).replace('.', ',')
         col1, col2 = st.columns(2)
 
-        with col1:
-            if st.markdown("<a href='#' onclick='abrir_detalhes(\"Entradas\")' style='font-size: 30px; color: white; text-decoration: none;'>Entradas</a>", unsafe_allow_html=True):
-                tipo_movimento = 'ENTRADA'
-                st.table(pesquisa_caixa(data_caixa, tipo_movimento))
+    with col1:
+        if st.markdown("<a href='#' onclick='abrir_detalhes(\"Entradas\")' style='font-size: 30px; color: white; text-decoration: none;'>Entradas</a>", unsafe_allow_html=True):
+            tipo_movimento = 'ENTRADA'
+            st.table(pesquisa_caixa(data_caixa, tipo_movimento))
 
-        with col2:
-            if st.markdown("<a href='#' onclick='abrir_detalhes(\"Saídas\")' style='font-size: 30px; color: white; text-decoration: none;'>Saídas</a>", unsafe_allow_html=True):
-                tipo_movimento = 'SAIDA'
-                st.table(pesquisa_caixa(data_caixa, tipo_movimento))
+    with col2:
+        if st.markdown("<a href='#' onclick='abrir_detalhes(\"Saídas\")' style='font-size: 30px; color: white; text-decoration: none;'>Saídas</a>", unsafe_allow_html=True):
+            tipo_movimento = 'SAIDA'
+            st.table(pesquisa_caixa(data_caixa, tipo_movimento))
 
     #     st.subheader(f'- Entradas: R$ {entrada_final}')
     #     st.subheader('- Total de Saidas : R$ 0')
