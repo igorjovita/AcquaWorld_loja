@@ -648,6 +648,8 @@ if escolha == 'Pagamento':
         nome_cliente_reserva = []
         id_cliente_reserva = []
         receber_loja_reserva = []
+        options_select_cliente = []
+        escolha_reserva_pendente = []
 
         with mydb.cursor() as cursor:
             resultado2 = obter_info_reserva(cursor, nome=selectbox_cliente, data_reserva=data_reserva)
@@ -660,14 +662,15 @@ if escolha == 'Pagamento':
                 st.write(id_titular_pagamento)
 
                 cursor.execute(
-                    f"SELECT id, nome_cliente, receber_loja from reserva where id_titular = {id_titular_pagamento} and situacao != 'Reserva Paga' ")
+                    f"SELECT id, nome_cliente, receber_loja, situacao from reserva where id_titular = {id_titular_pagamento}")
                 resultado_pg = cursor.fetchall()
                 for item in resultado_pg:
-                    id_reserva_pg, nome_reserva_pg, receber_loja_pg = item
+                    id_reserva_pg, nome_reserva_pg, receber_loja_pg, situacao_reserva = item
 
                     nome_cliente_reserva.append(nome_reserva_pg)
                     id_cliente_reserva.append(id_reserva_pg)
                     receber_loja_reserva.append(receber_loja_pg)
+                    options_select_cliente.append((nome_reserva_pg, situacao_reserva))
                 receber_grupo = 0
                 total_sinal = 0
                 colun1, colun2, colun3, colun4 = st.columns(4)
@@ -803,7 +806,13 @@ if escolha == 'Pagamento':
                         pagamento_escolha = 'Pagamento Individual'
 
                     if pagamento_escolha == 'Pagamento Individual':
-                        escolha_client_input = st.selectbox('Cliente', options=nome_cliente_reserva)
+
+                        for opcao in options_select_cliente:
+                            if opcao[1] == 'Reserva Paga':
+                                options_select_cliente.remove(opcao)
+                            else:
+                                escolha_reserva_pendente.append(opcao[0])
+                        escolha_client_input = st.selectbox('Cliente', options=escolha_reserva_pendente)
                         st.write('---')
 
                         valor_a_receber_cliente = None
