@@ -66,11 +66,11 @@ if escolha == 'Caixa Diario':
         entrada_final = str(entradas).replace('.', ',')
         col1, col2 = st.columns(2)
 
-        if st.markdown("style = font-size: 3em; <a href='#' onclick='abrir_detalhes(\"Entradas\")'>Entradas</a>", unsafe_allow_html=True):
+        if st.markdown(f"<a href='#' onclick='{abrir_detalhes}(\"Entradas\")' style='font-size: 15px;'>Entradas</a>", unsafe_allow_html=True):
             tipo_movimento = 'ENTRADA'
             st.table(pesquisa_caixa(data_caixa, tipo_movimento))
 
-        if st.markdown(f"<a href='#' onclick='{abrir_detalhes}(\"Saídas\")'>Saídas</a>", unsafe_allow_html=True):
+        if st.markdown(f"<a href='#' onclick='{abrir_detalhes}(\"Saídas\")' style='font-size: 15px;'>Entradas</a>", unsafe_allow_html=True):
             tipo_movimento = 'SAIDA'
             st.table(pesquisa_caixa(data_caixa, tipo_movimento))
 
