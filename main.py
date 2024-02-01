@@ -636,7 +636,7 @@ if escolha == 'Pagamento':
 
 
         for item in resultado_select:
-            nome_cliente_pagamento = item
+            nome_cliente_pagamento = str(item).translate(str.maketrans('', '', chars))
             lista_pagamento.append(nome_cliente_pagamento)
 
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista_pagamento)
