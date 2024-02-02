@@ -83,13 +83,13 @@ if escolha == 'Caixa Diario':
         if st.button('Abrir Entrada'):
             with open("planilha_caixa_entrada.html", "r", encoding="utf-8") as file:
                 html_content = file.read()
-            st.components.v1.html(html_content, height=1000, width=1000, scrolling=True)
-
     with col2:
         if st.button('Abrir Saida'):
             with open("planilha_caixa_saida.html", "r", encoding="utf-8") as file:
                 html_content = file.read()
-            st.components.v1.html(html_content, height=1000, width=1000, scrolling=True)
+
+    if html_content:
+        st.components.v1.html(html_content, height=1000, width=1000, scrolling=True)
 
 
 
