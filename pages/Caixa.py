@@ -78,7 +78,7 @@ if escolha == 'Caixa Diario':
         saida_final = str(saidas).replace('.', ',')
 
     col1, col2 = st.columns(2)
-
+    html_content = None
     with col1:
         if st.button('Abrir Entrada'):
             with open("planilha_caixa_entrada.html", "r", encoding="utf-8") as file:
