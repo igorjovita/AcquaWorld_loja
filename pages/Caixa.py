@@ -43,39 +43,39 @@ if escolha == 'Caixa Diario':
     st.header('Planilha do Caixa')
     data_caixa = st.date_input('Data', format='DD/MM/YYYY')
 
-    dados = select_caixa(data_caixa)
-
-    divido = str(dados).split(',')
-    chars = "')([]"
-    formatado = (str(divido[1]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
-    final = str(formatado).replace('.', ',')
-    st.subheader(f'Saldo total do caixa : R$ {final}')
-
-    cursor.execute(
-        f"""SELECT tipo_movimento,
-                SUM(CASE WHEN tipo_movimento = 'ENTRADA' 
-                    THEN valor 
-                    ELSE  valor 
-                END) AS saldo
-        FROM caixa where data = '{data_caixa}'
-        GROUP BY tipo_movimento""")
-
-    controle = cursor.fetchall()
-
-    dividido = str(controle).split(',')
-    contagem = (len(dividido))
-
-    if contagem == 2:
-        entradas = (str(dividido[1]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
-        entrada_final = str(entradas).replace('.', ',')
-        saida_final = 'R$ 0,00'
-
-
-    elif contagem > 3:
-        entradas = (str(dividido[1]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
-        entrada_final = str(entradas).replace('.', ',')
-        saidas = (str(dividido[3]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
-        saida_final = str(saidas).replace('.', ',')
+    # dados = select_caixa(data_caixa)
+    #
+    # divido = str(dados).split(',')
+    # chars = "')([]"
+    # formatado = (str(divido[1]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
+    # final = str(formatado).replace('.', ',')
+    # st.subheader(f'Saldo total do caixa : R$ {final}')
+    #
+    # cursor.execute(
+    #     f"""SELECT tipo_movimento,
+    #             SUM(CASE WHEN tipo_movimento = 'ENTRADA'
+    #                 THEN valor
+    #                 ELSE  valor
+    #             END) AS saldo
+    #     FROM caixa where data = '{data_caixa}'
+    #     GROUP BY tipo_movimento""")
+    #
+    # controle = cursor.fetchall()
+    #
+    # dividido = str(controle).split(',')
+    # contagem = (len(dividido))
+    #
+    # if contagem == 2:
+    #     entradas = (str(dividido[1]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
+    #     entrada_final = str(entradas).replace('.', ',')
+    #     saida_final = 'R$ 0,00'
+    #
+    #
+    # elif contagem > 3:
+    #     entradas = (str(dividido[1]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
+    #     entrada_final = str(entradas).replace('.', ',')
+    #     saidas = (str(dividido[3]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
+    #     saida_final = str(saidas).replace('.', ',')
 
     col1, col2, col3 = st.columns(3)
     html_content = None
