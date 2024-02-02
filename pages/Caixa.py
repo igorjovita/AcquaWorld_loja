@@ -77,13 +77,18 @@ if escolha == 'Caixa Diario':
         saidas = (str(dividido[3]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
         saida_final = str(saidas).replace('.', ',')
 
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
     html_content = None
-    with col1:
+
+    with col1():
+        if st.button('Abrir Total'):
+            with open("planilha_caixa_total.html", "r", encoding="utf-8") as file:
+                html_content = file.read()
+    with col2:
         if st.button('Abrir Entrada'):
             with open("planilha_caixa_entrada.html", "r", encoding="utf-8") as file:
                 html_content = file.read()
-    with col2:
+    with col3:
         if st.button('Abrir Saida'):
             with open("planilha_caixa_saida.html", "r", encoding="utf-8") as file:
                 html_content = file.read()
