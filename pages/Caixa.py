@@ -14,8 +14,16 @@ mydb = mysql.connector.connect(
 
 
 st.header('Planilha do Caixa')
-data_caixa = st.date_input('Data', format='DD/MM/YYYY')
 
+col1, col2, col3 = st.columns(3)
+with col1:
+    data_caixa = st.date_input('Data', format='DD/MM/YYYY')
+
+with col2:
+    lancamento = st.selectbox('Lançamento', ['ENTRADA', 'SAIDA'], index=None)
+
+with col3:
+    pass
 
 col1, col2, col3 = st.columns(3)
 html_content = None

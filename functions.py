@@ -89,10 +89,10 @@ def insert_caixa(id_conta, data_pagamento, tipo_movimento, tipo, descricao, form
 
 def processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg, id_titular_pagamento):
     # Obter informações da reserva
-    info_reserva = obter_info_reserva(cursor, nome, data_reserva)
+    info_reserva = obter_info_reserva(nome, data_reserva)
 
     # Atualizar o check-in
-    update_check_in(cursor, nome, check_in, data_reserva)
+    update_check_in(nome, check_in, data_reserva)
 
     # Extrair informações relevantes
     id_reserva_cliente = info_reserva[0]
@@ -145,7 +145,7 @@ def processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vend
     insert_caixa(id_conta, data_reserva, tipo_movimento, tipo, descricao, forma_pg, pagamento)
 
     # Inserir no lançamento de comissão
-    insert_lancamento_comissao( id_reserva_cliente, id_vendedor_pg, valor_receber, valor_pagar, id_titular_pagamento)
+    insert_lancamento_comissao(id_reserva_cliente, id_vendedor_pg, valor_receber, valor_pagar, id_titular_pagamento)
 
     cursor.execute(f"UPDATE reserva set situacao = 'Reserva Paga' where id = {id_reserva_cliente}")
 

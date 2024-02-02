@@ -652,7 +652,7 @@ if escolha == 'Pagamento':
         escolha_reserva_pendente = []
 
         with mydb.cursor() as cursor:
-            resultado2 = obter_info_reserva( nome=selectbox_cliente, data_reserva=data_reserva)
+            resultado2 = obter_info_reserva(nome=selectbox_cliente, data_reserva=data_reserva)
             if resultado2:
                 id_reserva = resultado2[0]
                 id_titular_pagamento = resultado2[1]
