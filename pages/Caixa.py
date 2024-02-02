@@ -77,14 +77,22 @@ if escolha == 'Caixa Diario':
         saidas = (str(dividido[3]).replace('Decimal', '').translate(str.maketrans('', '', chars)))
         saida_final = str(saidas).replace('.', ',')
 
-    with open("planilha_caixa.html", "r", encoding="utf-8") as file:
-        html_content = file.read()
-    st.components.v1.html(html_content, height=500, width=500, scrolling=True)
+    col1, col2 = st.columns(2)
+
+    with col1:
+        if st.button('Abrir Entrada'):
+            with open("planilha_caixa_entrada.html", "r", encoding="utf-8") as file:
+                html_content = file.read()
+            st.components.v1.html(html_content, height=1000, width=1000, scrolling=True)
+
+    with col2:
+        if st.button('Abrir Entrada'):
+            with open("planilha_caixa_saida.html", "r", encoding="utf-8") as file:
+                html_content = file.read()
+            st.components.v1.html(html_content, height=1000, width=1000, scrolling=True)
 
 
-    # col1, col2 = st.columns(2)
-    #
-    # with col1:
+
     #     st.subheader('ENTRADAS')
     #     st.subheader(entrada_final)
     #     if st.button('Abrir Entradas'):

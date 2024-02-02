@@ -182,7 +182,7 @@ def info_caixa(tipo_movimento):
 def planilha_caixa():
     planilha_loader = jinja2.FileSystemLoader('./')
     planilha_env = jinja2.Environment(loader=planilha_loader)
-    planilha = planilha_env.get_template('planilha_caixa.html')
+    planilha = planilha_env.get_template('planilha_caixa_entrada.html')
     planilha_caixa = planilha.render
     return planilha_caixa
 
