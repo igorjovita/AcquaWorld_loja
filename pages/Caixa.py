@@ -80,7 +80,7 @@ if escolha == 'Caixa Diario':
     col1, col2, col3 = st.columns(3)
     html_content = None
 
-    with col1():
+    with col1:
         if st.button('Abrir Total'):
             with open("planilha_caixa_total.html", "r", encoding="utf-8") as file:
                 html_content = file.read()
