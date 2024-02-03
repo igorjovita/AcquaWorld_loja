@@ -677,20 +677,20 @@ if escolha == 'Pagamento':
 
                 with colun1:
                     st.markdown(
-                        f"<h2 style='color: white; text-align: center; font-size: 1.5em; font-weight: bold;'>Nome</h2>",
+                        f"<h2 style='color: black; text-align: center; font-size: 1.5em; font-weight: bold;'>Nome</h2>",
                         unsafe_allow_html=True)
                 with colun2:
                     st.markdown(
-                        f"<h2 style='color: white; font-size: 1.5em; text-align: center; font-weight: bold;'>Valor Pago</h2>",
+                        f"<h2 style='color: black; font-size: 1.5em; text-align: center; font-weight: bold;'>Valor Pago</h2>",
                         unsafe_allow_html=True)
 
                 with colun3:
                     st.markdown(
-                        f"<h2 style='color: white; font-size: 1.5em; text-align: center; font-weight: bold;'>Valor a Receber</h2>",
+                        f"<h2 style='color: black; font-size: 1.5em; text-align: center; font-weight: bold;'>Valor a Receber</h2>",
                         unsafe_allow_html=True)
                 with colun4:
                     st.markdown(
-                        f"<h2 style='color: white; font-size: 1.5em; text-align: center; font-weight: bold;'>Situação</h2>",
+                        f"<h2 style='color: black; font-size: 1.5em; text-align: center; font-weight: bold;'>Situação</h2>",
                         unsafe_allow_html=True)
 
                 for nome, id_pg, receber_loja in zip(nome_cliente_reserva, id_cliente_reserva, receber_loja_reserva):
@@ -724,7 +724,7 @@ if escolha == 'Pagamento':
 
                     with coluna1:
                         st.markdown(
-                            f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>{nome_formatado}</h2>",
+                            f"<h2 style='color: black; text-align: center; font-size: 1.2em;'>{nome_formatado}</h2>",
                             unsafe_allow_html=True)
 
                     if recebedor is not None:
@@ -733,14 +733,14 @@ if escolha == 'Pagamento':
                                                                                                         ",").replace(
                                 "X", ".")
                             st.markdown(
-                                f"<h2 style='color: white; text-align: center; font-size: 1em;'>{recebedor} -  R$ {pagamento_formatado}</h2>",
+                                f"<h2 style='color: black; text-align: center; font-size: 1em;'>{recebedor} -  R$ {pagamento_formatado}</h2>",
                                 unsafe_allow_html=True)
                         total_sinal += pagamento
 
                     else:
                         with coluna2:
                             st.markdown(
-                                f"<h2 style='color: white; text-align: center; font-size: 1em;'>Nenhum sinal foi pago</h2>",
+                                f"<h2 style='color: black; text-align: center; font-size: 1em;'>Nenhum sinal foi pago</h2>",
                                 unsafe_allow_html=True)
                             pagamento = 0
 
@@ -758,13 +758,13 @@ if escolha == 'Pagamento':
                                 "X", ".")
                             situacao = 'Pendente'
                         st.markdown(
-                            f"<h2 style='color: white; text-align: center; font-size: 1em;'>R$ {receber_formatado_individual}</h2>",
+                            f"<h2 style='color: black; text-align: center; font-size: 1em;'>R$ {receber_formatado_individual}</h2>",
                             unsafe_allow_html=True)
 
                     receber_grupo += receber_formatado
                     with coluna4:
                         st.markdown(
-                            f"<h2 style='color: white; text-align: center; font-size: 1em;'>{situacao}</h2>",
+                            f"<h2 style='color: black; text-align: center; font-size: 1em;'>{situacao}</h2>",
                             unsafe_allow_html=True)
 
                 if receber_grupo == 0.00:
@@ -778,7 +778,7 @@ if escolha == 'Pagamento':
                         colum1, colum2, colum3, colum4 = st.columns(4)
 
                         with colum1:
-                            st.markdown(f"<h2 style='color: white; text-align: center; font-size: 1.2em;'>Total</h2>",
+                            st.markdown(f"<h2 style='color: black; text-align: center; font-size: 1.2em;'>Total</h2>",
                                         unsafe_allow_html=True)
 
                         with colum2:
