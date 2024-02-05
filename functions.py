@@ -71,7 +71,7 @@ def calculo_restricao(data):
         vaga_total = int(restricoes[2])
 
     mydb.close()
-    
+
     return contagem, restricao, contagem_cred, vaga_bat, vaga_cred, vaga_total
 
 
@@ -95,6 +95,7 @@ def seleciona_vendedores_apelido(comissario):
 
 def obter_valor_neto(tipo, valor_total_reserva, id_vendedor_pg):
     mydb.connect()
+
     if tipo == 'BAT':
         cursor.execute(f"SELECT valor_neto FROM vendedores WHERE id = {id_vendedor_pg}")
     elif tipo == 'ACP':
@@ -104,13 +105,23 @@ def obter_valor_neto(tipo, valor_total_reserva, id_vendedor_pg):
     elif tipo == 'TUR2':
         cursor.execute(f"SELECT neto_tur2 FROM vendedores WHERE id = {id_vendedor_pg}")
     else:
+        # Se o tipo não for 'BAT', 'ACP', 'TUR1' ou 'TUR2', calcula o valor líquido
         comissao = valor_total_reserva * 10 / 100
         valor_neto = valor_total_reserva - comissao
-
+        mydb.close()
         return valor_neto
+
+    # Verifica se a consulta retornou resultados antes de acessar o valor
+    resultado = cursor.fetchone()
     mydb.close()
-    valor_neto = int(cursor.fetchone()[0])
-    return valor_neto
+
+    if resultado is not None:
+        valor_neto = int(resultado[0])
+        return valor_neto
+    else:
+        # Trate o caso em que a consulta não retornou resultados
+        # Aqui você pode decidir o que fazer se não houver correspondência no banco de dados
+        return None
 
 
 def obter_info_reserva(nome, data_reserva):
