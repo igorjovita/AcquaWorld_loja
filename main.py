@@ -337,7 +337,7 @@ if escolha == 'Reservar':
                 if 'botao_clicado' in st.session_state:
                     st.session_state.botao_clicado = False
 
-                st.rerun()
+                
 
 if escolha == 'Editar':
 
