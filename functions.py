@@ -67,9 +67,10 @@ def calculo_restricao(data):
 
 
 def seleciona_vendedores():
-    with mydb.cursor() as cursor:
-        cursor.execute("SELECT apelido FROM vendedores")
-        lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+    mydb.connect()
+    cursor.execute("SELECT apelido FROM vendedores")
+    lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+    mydb.close()
     return lista_vendedor
 
 
