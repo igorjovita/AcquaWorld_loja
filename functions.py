@@ -169,14 +169,16 @@ def calcular_valores(valor_neto, acquaworld_valor, vendedor_valor, reserva_neto)
 
     return valor_receber, valor_pagar, situacao
 
+
 def insert_lancamento_comissao(id_reserva_cliente, id_vendedor_pg, valor_receber, valor_pagar, id_titular_pagamento):
     try:
         mydb.connect()
+        situacao = 'Pendente'
         cursor.execute(
             "INSERT INTO lancamento_comissao (id_reserva, id_vendedor, valor_receber, valor_pagar, "
-            " id_titular) VALUES (%s, %s, %s, %s, %s)",
+            " id_titular, situacao) VALUES (%s, %s, %s, %s, %s, %s)",
             (id_reserva_cliente, id_vendedor_pg,
-             valor_receber, valor_pagar, id_titular_pagamento))
+             valor_receber, valor_pagar, id_titular_pagamento, situacao))
         mydb.commit()  # Certifique-se de commitar a transação
     except Exception as e:
         st.write(f"Erro ao inserir lancamento_comissao: {e}")
@@ -264,7 +266,7 @@ def processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vend
     mydb.connect()
     cursor.execute(f"UPDATE reserva set situacao = 'Reserva Paga' where id = {id_reserva_cliente}")
     mydb.close()
-    
+
     return valor_receber, valor_pagar, situacao
 
 
