@@ -262,7 +262,7 @@ def processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vend
 
     cursor.execute(f"UPDATE reserva set situacao = 'Reserva Paga' where id = {id_reserva_cliente}")
 
-return valor_receber, valor_pagar, situacao
+    return valor_receber, valor_pagar, situacao
 
 
 def select_caixa(data_caixa):
