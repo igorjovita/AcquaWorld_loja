@@ -69,9 +69,11 @@ def calculo_restricao(data):
         vaga_bat = int(restricoes[0])
         vaga_cred = int(restricoes[1])
         vaga_total = int(restricoes[2])
-        mydb.close()
 
-        return contagem, restricao, contagem_cred, vaga_bat, vaga_cred, vaga_total
+    mydb.close()
+    
+    return contagem, restricao, contagem_cred, vaga_bat, vaga_cred, vaga_total
+
 
 
 def seleciona_vendedores():
