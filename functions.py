@@ -19,7 +19,6 @@ mydb = mysql.connector.connect(
 
 cursor = mydb.cursor(buffered=True)
 
-mydb.connect()
 
 def insert_reserva(reserva):
     sql = (
@@ -68,8 +67,9 @@ def calculo_restricao(data):
 
 
 def seleciona_vendedores():
-    cursor.execute("SELECT apelido FROM vendedores")
-    lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+    with mydb.cursor() as cursor:
+        cursor.execute("SELECT apelido FROM vendedores")
+        lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
     return lista_vendedor
 
 
