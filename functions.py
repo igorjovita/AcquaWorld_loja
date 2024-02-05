@@ -19,6 +19,7 @@ mydb = mysql.connector.connect(
 
 cursor = mydb.cursor(buffered=True)
 
+mydb.connect()
 
 def insert_reserva(reserva):
     sql = (
