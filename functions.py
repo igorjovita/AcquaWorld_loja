@@ -221,10 +221,11 @@ def processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vend
                                     id_titular_pagamento)
 
     # Calcular soma dos pagamentos
+    mydb.connect()
     cursor.execute(
         f"SELECT recebedor, sum(pagamento) FROM pagamentos WHERE id_reserva = {id_reserva_cliente} GROUP BY recebedor")
     resultado_soma = cursor.fetchall()
-
+    mydb.close()
     # Inicializar variáveis
     vendedor_nome = None
     vendedor_valor = None
@@ -260,8 +261,10 @@ def processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vend
     # Inserir no lançamento de comissão
     insert_lancamento_comissao(id_reserva_cliente, id_vendedor_pg, valor_receber, valor_pagar, id_titular_pagamento)
 
+    mydb.connect()
     cursor.execute(f"UPDATE reserva set situacao = 'Reserva Paga' where id = {id_reserva_cliente}")
-
+    mydb.close()
+    
     return valor_receber, valor_pagar, situacao
 
 
