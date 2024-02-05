@@ -169,24 +169,34 @@ def calcular_valores(valor_neto, acquaworld_valor, vendedor_valor, reserva_neto)
 
     return valor_receber, valor_pagar, situacao
 
-
 def insert_lancamento_comissao(id_reserva_cliente, id_vendedor_pg, valor_receber, valor_pagar, id_titular_pagamento):
-    mydb.connect()
-    cursor.execute(
-        "INSERT INTO lancamento_comissao (id_reserva, id_vendedor, valor_receber, valor_pagar, "
-        " id_titular) VALUES (%s, %s, %s, %s, %s)",
-        (id_reserva_cliente, id_vendedor_pg,
-         valor_receber, valor_pagar, id_titular_pagamento))
-    mydb.close()
+    try:
+        mydb.connect()
+        cursor.execute(
+            "INSERT INTO lancamento_comissao (id_reserva, id_vendedor, valor_receber, valor_pagar, "
+            " id_titular) VALUES (%s, %s, %s, %s, %s)",
+            (id_reserva_cliente, id_vendedor_pg,
+             valor_receber, valor_pagar, id_titular_pagamento))
+        mydb.commit()  # Certifique-se de commitar a transação
+    except Exception as e:
+        st.write(f"Erro ao inserir lancamento_comissao: {e}")
+    finally:
+        mydb.close()
 
 
 def insert_caixa(id_conta, data_pagamento, tipo_movimento, tipo, descricao, forma_pg, pagamento):
-    mydb.connect()
-    cursor.execute(
-        "INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES "
-        "(%s, %s, %s, %s, %s, %s, %s)",
-        (id_conta, data_pagamento, tipo_movimento, tipo, descricao, forma_pg, pagamento))
-    mydb.close()
+    try:
+        mydb.connect()
+        cursor.execute(
+            "INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES "
+            "(%s, %s, %s, %s, %s, %s, %s)",
+            (id_conta, data_pagamento, tipo_movimento, tipo, descricao, forma_pg, pagamento))
+        mydb.commit()  # Certifique-se de commitar a transação
+    except Exception as e:
+        st.write(f"Erro ao inserir caixa: {e}")
+    finally:
+        mydb.close()
+
 
 def processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg, id_titular_pagamento):
     mydb.connect()
