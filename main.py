@@ -12,8 +12,10 @@ import mysql.connector
 from datetime import date, datetime
 import streamlit.components.v1
 from functions import obter_valor_neto, obter_info_reserva, update_check_in, insert_pagamento, calcular_valores, \
-    insert_lancamento_comissao, insert_caixa, processar_pagamento
+    insert_lancamento_comissao, insert_caixa, processar_pagamento, gerar_pdf, gerar_html, seleciona_vendedores, \
+    calculo_restricao, insert_cliente, insert_reserva, seleciona_vendedores_apelido
 import time
+
 chars = "'),([]"
 chars2 = "')([]"
 
@@ -34,185 +36,6 @@ escolha = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visual
                       orientation='horizontal')
 
 pasta = os.path.dirname(__file__)
-
-
-# Inicializar listas
-
-
-def gerar_pdf(self):
-    mydb.connect()
-    cliente = []
-    cpf = []
-    roupa = []
-    cert = []
-    foto = []
-    dm = []
-    background_colors = []
-    # Consulta ao banco de dados para obter os dados
-    cursor.execute(
-        f"SELECT nome_cliente, tipo, fotos, dm, check_in FROM reserva WHERE data = '{data_para_pdf}'")
-    lista_dados_reserva = cursor.fetchall()
-
-    for dados in lista_dados_reserva:
-        if dados[0] is None:
-            cliente.append('')
-        else:
-            cliente.append(
-                str(dados[0].encode('utf-8').decode('utf-8')).upper().translate(str.maketrans('', '', chars)))
-
-        if dados[1] is None:
-            cert.append('')
-        else:
-            cert.append(str(dados[1]).upper().translate(str.maketrans('', '', chars)))
-        if dados[2] is None:
-            foto.append('')
-        else:
-            foto.append(str(dados[2]).upper().translate(str.maketrans('', '', chars)))
-
-        if dados[3] is None:
-            dm.append('')
-        else:
-            dm.append(str(dados[3]).upper().translate(str.maketrans('', '', chars)))
-
-        background_colors.append(str(dados[4]).translate(str.maketrans('', '', chars)))
-
-    for nome in cliente:
-        cursor.execute(
-            f"SELECT cpf, roupa FROM cliente WHERE nome = '{nome}'")
-        lista_dados_cliente = cursor.fetchall()
-
-        for item in lista_dados_cliente:
-            cpf.append(str(item[0]).translate(str.maketrans('', '', chars)))
-            roupa.append(str(item[1]).translate(str.maketrans('', '', chars)))
-
-    mydb.close()
-
-    # Processar a data
-    data_selecionada = str(data_para_pdf).split('-')
-    dia, mes, ano = data_selecionada[2], data_selecionada[1], data_selecionada[0]
-    data_completa = f'{dia}/{mes}/{ano}'
-
-    # Criar o contexto
-    contexto = {'cliente': cliente, 'cpf': cpf, 'c': cert, 'f': foto,
-                'r': roupa, 'data_reserva': data_completa, 'background_colors': background_colors, 'dm': dm}
-
-    # Renderizar o template HTML
-    planilha_loader = jinja2.FileSystemLoader('./')
-    planilha_env = jinja2.Environment(loader=planilha_loader)
-    planilha = planilha_env.get_template('planilha.html')
-    output_text = planilha.render(contexto)
-
-    # Nome do arquivo PDF
-    pdf_filename = f"reservas_{data_para_pdf}.pdf"
-
-    # Gerar PDF
-    config = pdfkit.configuration()
-    options = {
-        'encoding': 'utf-8',
-        'no-images': None,
-        'quiet': '',
-    }
-    pdfkit.from_string(output_text, pdf_filename, configuration=config, options=options)
-
-    return pdf_filename
-
-
-def gerar_html(self):
-    mydb.connect()
-    cliente = []
-    cpf = []
-    telefone = []
-    roupa = []
-    id_vendedor = []
-    cert = []
-    foto = []
-    dm = []
-    background_colors = []
-    lista_id_vendedor = []
-    comissario = []
-    # Consulta ao banco de dados para obter os dados
-    cursor.execute(
-        f"SELECT nome_cliente,id_vendedor, tipo, fotos, dm, check_in FROM reserva WHERE data = '{data_para_pdf}'")
-    lista_dados_reserva = cursor.fetchall()
-
-    for dados in lista_dados_reserva:
-        if dados[0] is None:
-            cliente.append('')
-        else:
-            cliente.append(str(dados[0]).upper().translate(str.maketrans('', '', chars)))
-
-        id_vendedor.append(str(dados[1]).translate(str.maketrans('', '', chars)))
-
-        if dados[2] is None:
-            cert.append('')
-        else:
-            cert.append(str(dados[2]).upper().translate(str.maketrans('', '', chars)))
-        if dados[3] is None:
-            foto.append('')
-        else:
-            foto.append(str(dados[3]).upper().translate(str.maketrans('', '', chars)))
-
-        if dados[4] is None:
-            dm.append('')
-        else:
-            dm.append(str(dados[4]).upper().translate(str.maketrans('', '', chars)))
-
-        background_colors.append(str(dados[5]).translate(str.maketrans('', '', chars)))
-
-    for nome in cliente:
-        cursor.execute(
-            f"SELECT cpf, telefone, roupa FROM cliente WHERE nome = '{nome}'")
-        lista_dados_cliente = cursor.fetchall()
-
-        for item in lista_dados_cliente:
-            if item[0] is None:
-                cpf.append('')
-            else:
-                cpf.append(str(item[0]).translate(str.maketrans('', '', chars)))
-
-            if item[1] is None:
-                telefone.append('')
-            else:
-                telefone.append(str(item[1]).translate(str.maketrans('', '', chars)))
-
-            if item[2] is None:
-                roupa.append('')
-            else:
-                roupa.append(str(item[2]).translate(str.maketrans('', '', chars)))
-
-    for item in id_vendedor:
-        lista_id_vendedor.append(str(item).translate(str.maketrans('', '', chars)))
-
-    for id_v in lista_id_vendedor:
-        cursor.execute(f"SELECT apelido from vendedores where id = '{id_v}'")
-        comissario.append(str(cursor.fetchone()).upper().translate(str.maketrans('', '', chars)))
-
-    mydb.close()
-
-    # Processar a data
-    data_selecionada = str(data_para_pdf).split('-')
-    dia, mes, ano = data_selecionada[2], data_selecionada[1], data_selecionada[0]
-    data_completa = f'{dia}/{mes}/{ano}'
-
-    # Criar o contexto
-    contexto = {'cliente': cliente, 'cpf': cpf, 'tel': telefone, 'comissario': comissario, 'c': cert, 'f': foto,
-                'r': roupa, 'data_reserva': data_completa, 'background_colors': background_colors, 'dm': dm}
-
-    # Renderizar o template HTML
-    planilha_loader = jinja2.FileSystemLoader('./')
-    planilha_env = jinja2.Environment(loader=planilha_loader)
-    planilha = planilha_env.get_template('planilha2.html')
-    output_text = planilha.render(contexto)
-
-    # Nome do arquivo PDF
-    pdf_filename = f"reservas_{data_para_pdf}.pdf"
-
-    # Gerar PDF
-    config = pdfkit.configuration()
-    pdfkit.from_string(output_text, pdf_filename, configuration=config)
-
-    return output_text
-
 
 if escolha == 'Visualizar':
     # Função para obter cores com base no valor da coluna 'check_in'
@@ -267,8 +90,7 @@ if escolha == 'Reservar':
 
     # Capturar nome dos vendedores cadastrados no sistema
     mydb.connect()
-    cursor.execute("SELECT apelido FROM vendedores")
-    lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+    lista_vendedor = seleciona_vendedores()
 
     st.subheader('Reservar Cliente')
 
@@ -313,34 +135,11 @@ if escolha == 'Reservar':
         st.session_state.botao_clicado = True
 
     if st.session_state.botao_clicado:
-        with mydb.cursor() as cursor:
-            cursor.execute(f"SELECT COUNT(*) FROM reserva where data = '{data}'")
-            contagem = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
 
-            cursor.execute(f"SELECT * FROM restricao WHERE data = '{data}'")
-            restricao = cursor.fetchone()
+        contagem, restricao, contagem_cred, vaga_bat, vaga_cred, vaga_total = calculo_restricao(data)
 
-            cursor.execute(
-                f"SELECT COUNT(*) FROM reserva WHERE (tipo = 'TUR2' or tipo = 'OWD' or tipo = 'ADV' or tipo = "
-                f"'RESCUE' or tipo = 'REVIEW') and data = '{data}'")
-            contagem_cred = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
-
-            lista_cred = ['TUR2', 'OWD', 'ADV', 'RESCUE', 'REVIEW']
-
-            if restricao is None:
-                vaga_cred = 8
-                vaga_total = 40
-                vaga_bat = vaga_total - contagem_cred
-            else:
-                cursor.execute(
-                    f"SELECT vaga_bat, vaga_cred, vaga_total FROM restricao WHERE data = '{data}'")
-                restricoes = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split()
-                vaga_bat = int(restricoes[0])
-                vaga_cred = int(restricoes[1])
-                vaga_total = int(restricoes[2])
-
-            if contagem >= vaga_total:
-                st.error('Planilha está lotada nessa data!')
+        if contagem >= vaga_total:
+            st.error('Planilha está lotada nessa data!')
 
         if comissario is None:
             st.error('Insira o vendedor dessa reserva!')
@@ -401,10 +200,8 @@ if escolha == 'Reservar':
 
                         with mydb.cursor() as cursor:
                             try:
-                                cursor.execute(
-                                    "INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
-                                    (cpf, nome_cliente, telefone, roupa))
-                                id_cliente = cursor.lastrowid
+
+                                id_cliente = insert_cliente(cpf, nome_cliente, telefone, roupa)
                                 st.session_state.ids_clientes.append(id_cliente)
                                 mydb.commit()
 
@@ -427,8 +224,8 @@ if escolha == 'Reservar':
                     pass
 
                 with mydb.cursor() as cursor:
-                    cursor.execute(f"SELECT id FROM vendedores WHERE nome = '{comissario}'")
-                    id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
+
+                    id_vendedor = seleciona_vendedores_apelido(comissario)
 
                     if reserva_conjunta == 'Sim':
 
@@ -445,6 +242,9 @@ if escolha == 'Reservar':
                 st.write('---')
 
         if st.button('Reservar'):
+
+            lista_cred = ['TUR2', 'OWD', 'ADV', 'RESCUE', 'REVIEW']
+
             if tipo in lista_cred and contagem_cred >= vaga_cred:
                 st.write(contagem_cred)
                 st.write(vaga_cred)
@@ -462,12 +262,8 @@ if escolha == 'Reservar':
 
                     else:
                         for reserva in reservas:
-                            sql = (
-                                "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, check_in, id_titular, receber_loja) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s)")
 
-                            # Executar a inserção de múltiplos valores
-                            cursor.execute(sql, reserva)
-                            id_reserva = cursor.lastrowid
+                            id_reserva = insert_reserva(reserva)
 
                             st.session_state.pagamentos2.append((id_titular, id_reserva))
 
@@ -556,8 +352,10 @@ if escolha == 'Editar':
 
     if selectbox_cliente is not None:
         st.subheader(f'Editar a reserva de {selectbox_cliente}')
+
         cursor.execute(f"SELECT id, cpf, telefone, roupa FROM cliente WHERE nome = '{selectbox_cliente}'")
         info_cliente = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+
         cursor.execute(f"SELECT tipo, id_vendedor from reserva where id_cliente = '{info_cliente[0]}'")
         info_reserva = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
 
@@ -589,15 +387,16 @@ if escolha == 'Editar':
                 st.success('Reserva Atualizada')
         if escolha_editar == 'Vendedor':
             mydb.connect()
-            cursor.execute("SELECT apelido FROM vendedores")
-            lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+            lista_vendedor = seleciona_vendedores()
+
             cursor.execute(f"SELECT apelido FROM vendedores WHERE id = '{info_reserva[1]}'")
             comissario_antigo = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
             st.subheader(f'Vendedor : {comissario_antigo}')
             comissario_novo = st.selectbox('Selecione o novo vendedor', lista_vendedor)
             if st.button('Atualizar Reserva'):
-                cursor.execute(f"SELECT id FROM vendedores WHERE apelido = '{comissario_novo}'")
-                id_vendedor_editar = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
+
+                id_vendedor_editar = seleciona_vendedores_apelido(comissario=comissario_novo)
+
                 cursor.execute(
                     f"UPDATE reserva SET id_vendedor = '{id_vendedor_editar}' WHERE id_cliente = '{info_cliente[0]}'")
                 mydb.close()
@@ -633,7 +432,6 @@ if escolha == 'Pagamento':
     with mydb.cursor() as cursor:
         cursor.execute(f"SELECT nome_cliente FROM reserva WHERE data = '{data_reserva}' and id_titular = id_cliente")
         resultado_select = cursor.fetchall()
-
 
         for item in resultado_select:
             nome_cliente_pagamento = str(item).translate(str.maketrans('', '', chars))
@@ -875,7 +673,7 @@ if escolha == 'Pagamento':
                     if st.button('Lançar Pagamento'):
                         if pagamento_escolha == 'Pagamento Grupo':
                             for nome in lista_nome_pagamento:
-                                processar_pagamento(nome,  data_reserva, check_in, forma_pg, parcela, id_vendedor_pg,
+                                processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg,
                                                     id_titular_pagamento)
                         else:
                             nome = escolha_client_input
@@ -889,7 +687,6 @@ if escolha == 'Pagamento':
                         st.rerun()
                         mydb.close()
                         st.success('Pagamento lançado no sistema!')
-
 
                         # st.session_state.botao = False
 

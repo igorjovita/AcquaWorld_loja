@@ -2,6 +2,11 @@ import os
 import mysql.connector
 import streamlit as st
 import jinja2
+import pdfkit
+
+chars = "'),([]"
+chars2 = "')([]"
+
 mydb = mysql.connector.connect(
     host=os.getenv("DB_HOST"),
     user=os.getenv("DB_USERNAME"),
@@ -14,6 +19,66 @@ mydb = mysql.connector.connect(
 
 cursor = mydb.cursor(buffered=True)
 
+
+def insert_reserva(reserva):
+    sql = (
+        "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, check_in, id_titular, receber_loja) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s)")
+
+    # Executar a inserção de múltiplos valores
+    cursor.execute(sql, reserva)
+    id_reserva = cursor.lastrowid
+    return id_reserva
+
+
+def insert_cliente(cpf, nome_cliente, telefone, roupa):
+    cursor.execute(
+        "INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
+        (cpf, nome_cliente, telefone, roupa))
+    id_cliente = cursor.lastrowid
+
+    return id_cliente
+
+
+def calculo_restricao(data):
+    cursor.execute(f"SELECT COUNT(*) FROM reserva where data = '{data}'")
+    contagem = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
+
+    cursor.execute(f"SELECT * FROM restricao WHERE data = '{data}'")
+    restricao = cursor.fetchone()
+
+    cursor.execute(
+        f"SELECT COUNT(*) FROM reserva WHERE (tipo = 'TUR2' or tipo = 'OWD' or tipo = 'ADV' or tipo = "
+        f"'RESCUE' or tipo = 'REVIEW') and data = '{data}'")
+    contagem_cred = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
+
+    if restricao is None:
+        vaga_cred = 8
+        vaga_total = 40
+        vaga_bat = vaga_total - contagem_cred
+    else:
+        cursor.execute(
+            f"SELECT vaga_bat, vaga_cred, vaga_total FROM restricao WHERE data = '{data}'")
+        restricoes = str(cursor.fetchone()).translate(str.maketrans('', '', chars)).split()
+        vaga_bat = int(restricoes[0])
+        vaga_cred = int(restricoes[1])
+        vaga_total = int(restricoes[2])
+
+        return contagem, restricao, contagem_cred, vaga_bat, vaga_cred, vaga_total
+
+
+def seleciona_vendedores():
+    cursor.execute("SELECT apelido FROM vendedores")
+    lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+    return lista_vendedor
+
+
+def seleciona_vendedores_apelido(comissario):
+    cursor.execute(f"SELECT id FROM vendedores WHERE apelido = '{comissario}'")
+    id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
+
+    return id_vendedor
+
+
 def obter_valor_neto(tipo, valor_total_reserva, id_vendedor_pg):
     if tipo == 'BAT':
         cursor.execute(f"SELECT valor_neto FROM vendedores WHERE id = {id_vendedor_pg}")
@@ -24,7 +89,7 @@ def obter_valor_neto(tipo, valor_total_reserva, id_vendedor_pg):
     elif tipo == 'TUR2':
         cursor.execute(f"SELECT neto_tur2 FROM vendedores WHERE id = {id_vendedor_pg}")
     else:
-        comissao = valor_total_reserva * 10/100
+        comissao = valor_total_reserva * 10 / 100
         valor_neto = valor_total_reserva - comissao
         return valor_neto
 
@@ -53,7 +118,6 @@ def insert_pagamento(data_pagamento, id_reserva_cliente, recebedor, pagamento, f
 
 
 def calcular_valores(valor_neto, acquaworld_valor, vendedor_valor, reserva_neto):
-
     situacao = 'Pendente'
 
     if acquaworld_valor < valor_neto:
@@ -105,7 +169,8 @@ def processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vend
     recebedor_pagamento = 'AcquaWorld'
 
     # Inserir pagamento no banco de dados
-    id_pagamento = insert_pagamento(data_reserva, id_reserva_cliente, recebedor_pagamento, pagamento, forma_pg, parcela, id_titular_pagamento)
+    id_pagamento = insert_pagamento(data_reserva, id_reserva_cliente, recebedor_pagamento, pagamento, forma_pg, parcela,
+                                    id_titular_pagamento)
 
     # Calcular soma dos pagamentos
     cursor.execute(
@@ -179,6 +244,7 @@ def info_caixa(tipo_movimento):
         dados = cursor.fetchall()
         return dados
 
+
 def planilha_caixa():
     planilha_loader = jinja2.FileSystemLoader('./')
     planilha_env = jinja2.Environment(loader=planilha_loader)
@@ -186,3 +252,177 @@ def planilha_caixa():
     planilha_caixa = planilha.render
     return planilha_caixa
 
+
+def gerar_pdf(data_para_pdf):
+    mydb.connect()
+    cliente = []
+    cpf = []
+    roupa = []
+    cert = []
+    foto = []
+    dm = []
+    background_colors = []
+    # Consulta ao banco de dados para obter os dados
+    cursor.execute(
+        f"SELECT nome_cliente, tipo, fotos, dm, check_in FROM reserva WHERE data = '{data_para_pdf}'")
+    lista_dados_reserva = cursor.fetchall()
+
+    for dados in lista_dados_reserva:
+        if dados[0] is None:
+            cliente.append('')
+        else:
+            cliente.append(
+                str(dados[0].encode('utf-8').decode('utf-8')).upper().translate(str.maketrans('', '', chars)))
+
+        if dados[1] is None:
+            cert.append('')
+        else:
+            cert.append(str(dados[1]).upper().translate(str.maketrans('', '', chars)))
+        if dados[2] is None:
+            foto.append('')
+        else:
+            foto.append(str(dados[2]).upper().translate(str.maketrans('', '', chars)))
+
+        if dados[3] is None:
+            dm.append('')
+        else:
+            dm.append(str(dados[3]).upper().translate(str.maketrans('', '', chars)))
+
+        background_colors.append(str(dados[4]).translate(str.maketrans('', '', chars)))
+
+    for nome in cliente:
+        cursor.execute(
+            f"SELECT cpf, roupa FROM cliente WHERE nome = '{nome}'")
+        lista_dados_cliente = cursor.fetchall()
+
+        for item in lista_dados_cliente:
+            cpf.append(str(item[0]).translate(str.maketrans('', '', chars)))
+            roupa.append(str(item[1]).translate(str.maketrans('', '', chars)))
+
+    mydb.close()
+
+    # Processar a data
+    data_selecionada = str(data_para_pdf).split('-')
+    dia, mes, ano = data_selecionada[2], data_selecionada[1], data_selecionada[0]
+    data_completa = f'{dia}/{mes}/{ano}'
+
+    # Criar o contexto
+    contexto = {'cliente': cliente, 'cpf': cpf, 'c': cert, 'f': foto,
+                'r': roupa, 'data_reserva': data_completa, 'background_colors': background_colors, 'dm': dm}
+
+    # Renderizar o template HTML
+    planilha_loader = jinja2.FileSystemLoader('./')
+    planilha_env = jinja2.Environment(loader=planilha_loader)
+    planilha = planilha_env.get_template('planilha.html')
+    output_text = planilha.render(contexto)
+
+    # Nome do arquivo PDF
+    pdf_filename = f"reservas_{data_para_pdf}.pdf"
+
+    # Gerar PDF
+    config = pdfkit.configuration()
+    options = {
+        'encoding': 'utf-8',
+        'no-images': None,
+        'quiet': '',
+    }
+    pdfkit.from_string(output_text, pdf_filename, configuration=config, options=options)
+
+    return pdf_filename
+
+
+def gerar_html(data_para_pdf):
+    mydb.connect()
+    cliente = []
+    cpf = []
+    telefone = []
+    roupa = []
+    id_vendedor = []
+    cert = []
+    foto = []
+    dm = []
+    background_colors = []
+    lista_id_vendedor = []
+    comissario = []
+    # Consulta ao banco de dados para obter os dados
+    cursor.execute(
+        f"SELECT nome_cliente,id_vendedor, tipo, fotos, dm, check_in FROM reserva WHERE data = '{data_para_pdf}'")
+    lista_dados_reserva = cursor.fetchall()
+
+    for dados in lista_dados_reserva:
+        if dados[0] is None:
+            cliente.append('')
+        else:
+            cliente.append(str(dados[0]).upper().translate(str.maketrans('', '', chars)))
+
+        id_vendedor.append(str(dados[1]).translate(str.maketrans('', '', chars)))
+
+        if dados[2] is None:
+            cert.append('')
+        else:
+            cert.append(str(dados[2]).upper().translate(str.maketrans('', '', chars)))
+        if dados[3] is None:
+            foto.append('')
+        else:
+            foto.append(str(dados[3]).upper().translate(str.maketrans('', '', chars)))
+
+        if dados[4] is None:
+            dm.append('')
+        else:
+            dm.append(str(dados[4]).upper().translate(str.maketrans('', '', chars)))
+
+        background_colors.append(str(dados[5]).translate(str.maketrans('', '', chars)))
+
+    for nome in cliente:
+        cursor.execute(
+            f"SELECT cpf, telefone, roupa FROM cliente WHERE nome = '{nome}'")
+        lista_dados_cliente = cursor.fetchall()
+
+        for item in lista_dados_cliente:
+            if item[0] is None:
+                cpf.append('')
+            else:
+                cpf.append(str(item[0]).translate(str.maketrans('', '', chars)))
+
+            if item[1] is None:
+                telefone.append('')
+            else:
+                telefone.append(str(item[1]).translate(str.maketrans('', '', chars)))
+
+            if item[2] is None:
+                roupa.append('')
+            else:
+                roupa.append(str(item[2]).translate(str.maketrans('', '', chars)))
+
+    for item in id_vendedor:
+        lista_id_vendedor.append(str(item).translate(str.maketrans('', '', chars)))
+
+    for id_v in lista_id_vendedor:
+        cursor.execute(f"SELECT apelido from vendedores where id = '{id_v}'")
+        comissario.append(str(cursor.fetchone()).upper().translate(str.maketrans('', '', chars)))
+
+    mydb.close()
+
+    # Processar a data
+    data_selecionada = str(data_para_pdf).split('-')
+    dia, mes, ano = data_selecionada[2], data_selecionada[1], data_selecionada[0]
+    data_completa = f'{dia}/{mes}/{ano}'
+
+    # Criar o contexto
+    contexto = {'cliente': cliente, 'cpf': cpf, 'tel': telefone, 'comissario': comissario, 'c': cert, 'f': foto,
+                'r': roupa, 'data_reserva': data_completa, 'background_colors': background_colors, 'dm': dm}
+
+    # Renderizar o template HTML
+    planilha_loader = jinja2.FileSystemLoader('./')
+    planilha_env = jinja2.Environment(loader=planilha_loader)
+    planilha = planilha_env.get_template('planilha2.html')
+    output_text = planilha.render(contexto)
+
+    # Nome do arquivo PDF
+    pdf_filename = f"reservas_{data_para_pdf}.pdf"
+
+    # Gerar PDF
+    config = pdfkit.configuration()
+    pdfkit.from_string(output_text, pdf_filename, configuration=config)
+
+    return output_text
