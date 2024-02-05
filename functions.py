@@ -21,25 +21,30 @@ cursor = mydb.cursor(buffered=True)
 
 
 def insert_reserva(reserva):
+    mydb.connect()
     sql = (
         "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, check_in, id_titular, receber_loja) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s)")
 
     # Executar a inserção de múltiplos valores
     cursor.execute(sql, reserva)
     id_reserva = cursor.lastrowid
+    mydb.close()
     return id_reserva
 
 
 def insert_cliente(cpf, nome_cliente, telefone, roupa):
+    mydb.connect()
     cursor.execute(
         "INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
         (cpf, nome_cliente, telefone, roupa))
     id_cliente = cursor.lastrowid
+    mydb.close()
 
     return id_cliente
 
 
 def calculo_restricao(data):
+    mydb.connect()
     cursor.execute(f"SELECT COUNT(*) FROM reserva where data = '{data}'")
     contagem = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
 
@@ -62,6 +67,7 @@ def calculo_restricao(data):
         vaga_bat = int(restricoes[0])
         vaga_cred = int(restricoes[1])
         vaga_total = int(restricoes[2])
+        mydb.close()
 
         return contagem, restricao, contagem_cred, vaga_bat, vaga_cred, vaga_total
 
@@ -75,13 +81,16 @@ def seleciona_vendedores():
 
 
 def seleciona_vendedores_apelido(comissario):
+    mydb.connect()
     cursor.execute(f"SELECT id FROM vendedores WHERE apelido = '{comissario}'")
     id_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars))
+    mydb.close()
 
     return id_vendedor
 
 
 def obter_valor_neto(tipo, valor_total_reserva, id_vendedor_pg):
+    mydb.connect()
     if tipo == 'BAT':
         cursor.execute(f"SELECT valor_neto FROM vendedores WHERE id = {id_vendedor_pg}")
     elif tipo == 'ACP':
@@ -93,29 +102,37 @@ def obter_valor_neto(tipo, valor_total_reserva, id_vendedor_pg):
     else:
         comissao = valor_total_reserva * 10 / 100
         valor_neto = valor_total_reserva - comissao
-        return valor_neto
 
+        return valor_neto
+    mydb.close()
     valor_neto = int(cursor.fetchone()[0])
     return valor_neto
 
 
 def obter_info_reserva(nome, data_reserva):
+    mydb.connect()
     cursor.execute(
         f"SELECT id, id_cliente, tipo, valor_total, receber_loja, id_vendedor FROM reserva WHERE nome_cliente = '{nome}' and data = '{data_reserva}'")
     info_reserva = cursor.fetchone()
+    mydb.close()
+
     return info_reserva
 
 
 def update_check_in(nome, check_in, data_reserva):
+    mydb.connect()
     cursor.execute(
         f"UPDATE reserva set check_in = '{check_in}' where nome_cliente = '{nome}' and data = '{data_reserva}'")
-
+    mydb.close()
 
 def insert_pagamento(data_pagamento, id_reserva_cliente, recebedor, pagamento, forma_pg, parcela, id_titular_pagamento):
+    mydb.connect()
     cursor.execute(
         "INSERT INTO pagamentos (data ,id_reserva, recebedor, pagamento, forma_pg, parcela, id_titular) VALUES (%s, %s, %s, %s, %s, %s, %s)",
         (data_pagamento, id_reserva_cliente, recebedor, pagamento, forma_pg, parcela, id_titular_pagamento))
     id_pagamento = cursor.lastrowid
+    mydb.close()
+
     return id_pagamento
 
 
@@ -139,21 +156,25 @@ def calcular_valores(valor_neto, acquaworld_valor, vendedor_valor, reserva_neto)
 
 
 def insert_lancamento_comissao(id_reserva_cliente, id_vendedor_pg, valor_receber, valor_pagar, id_titular_pagamento):
+    mydb.connect()
     cursor.execute(
         "INSERT INTO lancamento_comissao (id_reserva, id_vendedor, valor_receber, valor_pagar, "
         " id_titular) VALUES (%s, %s, %s, %s, %s)",
         (id_reserva_cliente, id_vendedor_pg,
          valor_receber, valor_pagar, id_titular_pagamento))
+    mydb.close()
 
 
 def insert_caixa(id_conta, data_pagamento, tipo_movimento, tipo, descricao, forma_pg, pagamento):
+    mydb.connect()
     cursor.execute(
         "INSERT INTO caixa (id_conta, data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES "
         "(%s, %s, %s, %s, %s, %s, %s)",
         (id_conta, data_pagamento, tipo_movimento, tipo, descricao, forma_pg, pagamento))
-
+    mydb.close()
 
 def processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg, id_titular_pagamento):
+    mydb.connect()
     # Obter informações da reserva
     info_reserva = obter_info_reserva(nome, data_reserva)
 
@@ -216,10 +237,13 @@ def processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vend
 
     cursor.execute(f"UPDATE reserva set situacao = 'Reserva Paga' where id = {id_reserva_cliente}")
 
+    mydb.close()
+
     return valor_receber, valor_pagar, situacao
 
 
 def select_caixa(data_caixa):
+    mydb.connect()
     cursor.execute(
         f"""SELECT id_conta,
                     SUM(CASE WHEN tipo_movimento = 'ENTRADA' 
@@ -228,23 +252,30 @@ def select_caixa(data_caixa):
                     END) AS saldo
             FROM caixa where data = '{data_caixa}'""")
     dados = cursor.fetchall()
+
+    mydb.close()
     return dados
 
 
 def pesquisa_caixa(data_caixa, tipo_movimento):
+    mydb.connect()
+
     cursor.execute(f"""SELECT SUM(CASE WHEN tipo_movimento = 'ENTRADA' THEN valor ELSE - valor END) AS saldo FROM caixa where
     data = '{data_caixa}' and tipo_movimento = '{tipo_movimento}'""")
     dados = cursor.fetchall()
+    mydb.close()
     return dados
 
 
 def info_caixa(tipo_movimento):
+    mydb.connect()
     if tipo_movimento == '':
         pass
     else:
         cursor.execute(f"select data,descricao,forma_pg, valor from caixa where tipo_movimento = '{tipo_movimento}'")
         dados = cursor.fetchall()
         return dados
+    mydb.close()
 
 
 def planilha_caixa():
