@@ -199,70 +199,69 @@ def insert_caixa(id_conta, data_pagamento, tipo_movimento, tipo, descricao, form
 
 
 def processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg, id_titular_pagamento):
-    mydb.connect()
-    # Obter informações da reserva
-    info_reserva = obter_info_reserva(nome, data_reserva)
+    with mydb.connect() as cursor:
+        # Obter informações da reserva
+        info_reserva = obter_info_reserva(nome, data_reserva)
 
-    # Atualizar o check-in
-    update_check_in(nome, check_in, data_reserva)
+        # Atualizar o check-in
+        update_check_in(nome, check_in, data_reserva)
 
-    # Extrair informações relevantes
-    id_reserva_cliente = info_reserva[0]
-    tipo = info_reserva[2]
-    valor_total_reserva = info_reserva[3]
-    receber_loja_individual = info_reserva[4]
+        # Extrair informações relevantes
+        id_reserva_cliente = info_reserva[0]
+        tipo = info_reserva[2]
+        valor_total_reserva = info_reserva[3]
+        receber_loja_individual = info_reserva[4]
 
-    # Configurar dados de pagamento
-    pagamento = receber_loja_individual
-    recebedor_pagamento = 'AcquaWorld'
+        # Configurar dados de pagamento
+        pagamento = receber_loja_individual
+        recebedor_pagamento = 'AcquaWorld'
 
-    # Inserir pagamento no banco de dados
-    id_pagamento = insert_pagamento(data_reserva, id_reserva_cliente, recebedor_pagamento, pagamento, forma_pg, parcela,
-                                    id_titular_pagamento)
+        # Inserir pagamento no banco de dados
+        id_pagamento = insert_pagamento(data_reserva, id_reserva_cliente, recebedor_pagamento, pagamento, forma_pg, parcela,
+                                        id_titular_pagamento)
 
-    # Calcular soma dos pagamentos
-    cursor.execute(
-        f"SELECT recebedor, sum(pagamento) FROM pagamentos WHERE id_reserva = {id_reserva_cliente} GROUP BY recebedor")
-    resultado_soma = cursor.fetchall()
+        # Calcular soma dos pagamentos
+        cursor.execute(
+            f"SELECT recebedor, sum(pagamento) FROM pagamentos WHERE id_reserva = {id_reserva_cliente} GROUP BY recebedor")
+        resultado_soma = cursor.fetchall()
 
-    # Inicializar variáveis
-    vendedor_nome = None
-    vendedor_valor = None
-    acquaworld_nome = None
-    acquaworld_valor = None
+        # Inicializar variáveis
+        vendedor_nome = None
+        vendedor_valor = None
+        acquaworld_nome = None
+        acquaworld_valor = None
 
-    # Calcular valores relevantes
-    valor_neto = obter_valor_neto(tipo, valor_total_reserva, id_vendedor_pg)
-    reserva_neto = valor_total_reserva - valor_neto
+        # Calcular valores relevantes
+        valor_neto = obter_valor_neto(tipo, valor_total_reserva, id_vendedor_pg)
+        reserva_neto = valor_total_reserva - valor_neto
 
-    for result in resultado_soma:
-        nome_result = result[0]
-        valor = result[1]
+        for result in resultado_soma:
+            nome_result = result[0]
+            valor = result[1]
 
-        if nome_result == 'Vendedor':
-            vendedor_nome = nome_result
-            vendedor_valor = valor
-        elif nome_result == 'AcquaWorld':
-            acquaworld_nome = nome_result
-            acquaworld_valor = valor
+            if nome_result == 'Vendedor':
+                vendedor_nome = nome_result
+                vendedor_valor = valor
+            elif nome_result == 'AcquaWorld':
+                acquaworld_nome = nome_result
+                acquaworld_valor = valor
 
-    # Calcular valores a receber/pagar
-    valor_receber, valor_pagar, situacao = calcular_valores(valor_neto, acquaworld_valor, vendedor_valor, reserva_neto)
+        # Calcular valores a receber/pagar
+        valor_receber, valor_pagar, situacao = calcular_valores(valor_neto, acquaworld_valor, vendedor_valor, reserva_neto)
 
-    # Criar descrição e inserir no caixa
-    data_completa = str(data_reserva).split('-')
-    descricao = f'{nome} do dia {data_completa[2]}/{data_completa[1]}/{data_completa[0]}'
-    tipo_movimento = 'Entrada'
-    id_conta = 1
+        # Criar descrição e inserir no caixa
+        data_completa = str(data_reserva).split('-')
+        descricao = f'{nome} do dia {data_completa[2]}/{data_completa[1]}/{data_completa[0]}'
+        tipo_movimento = 'Entrada'
+        id_conta = 1
 
-    insert_caixa(id_conta, data_reserva, tipo_movimento, tipo, descricao, forma_pg, pagamento)
+        insert_caixa(id_conta, data_reserva, tipo_movimento, tipo, descricao, forma_pg, pagamento)
 
-    # Inserir no lançamento de comissão
-    insert_lancamento_comissao(id_reserva_cliente, id_vendedor_pg, valor_receber, valor_pagar, id_titular_pagamento)
+        # Inserir no lançamento de comissão
+        insert_lancamento_comissao(id_reserva_cliente, id_vendedor_pg, valor_receber, valor_pagar, id_titular_pagamento)
 
-    cursor.execute(f"UPDATE reserva set situacao = 'Reserva Paga' where id = {id_reserva_cliente}")
+        cursor.execute(f"UPDATE reserva set situacao = 'Reserva Paga' where id = {id_reserva_cliente}")
 
-    mydb.close()
 
     return valor_receber, valor_pagar, situacao
 
