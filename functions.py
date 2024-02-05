@@ -56,6 +56,8 @@ def calculo_restricao(data):
         f"'RESCUE' or tipo = 'REVIEW') and data = '{data}'")
     contagem_cred = int(str(cursor.fetchone()).translate(str.maketrans('', '', chars)))
 
+    vaga_bat, vaga_cred, vaga_total = 0, 0, 0  # Inicializa as variáveis
+
     if restricao is None:
         vaga_cred = 8
         vaga_total = 40
