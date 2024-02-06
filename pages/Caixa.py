@@ -2,7 +2,7 @@ import streamlit as st
 import mysql.connector
 import os
 import streamlit.components.v1
-from functions import gerar_html_caixa
+from functions import gerar_html_entrada_caixa, gerar_html_total
 mydb = mysql.connector.connect(
     host=os.getenv("DB_HOST"),
     user=os.getenv("DB_USERNAME"),
@@ -31,12 +31,12 @@ output_text, output_text2 = gerar_html_caixa(data_caixa)
 with col1:
     if st.button('Abrir Total'):
         with open("planilha_caixa_total.html", "r", encoding="utf-8") as file:
-            html_content = output_text
+            html_content = gerar_html_total(data_caixa)
 
 with col2:
     if st.button('Abrir Entrada'):
         with open("planilha_caixa_entrada.html", "r", encoding="utf-8") as file:
-            html_content = output_text2
+            html_content = gerar_html_entrada_caixa(data_caixa)
 with col3:
     if st.button('Abrir Saida'):
         with open("planilha_caixa_saida.html", "r", encoding="utf-8") as file:

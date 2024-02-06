@@ -493,26 +493,17 @@ def gerar_html(data_para_pdf):
     return output_text
 
 
-def gerar_html_caixa(data_caixa):
+def gerar_html_entrada_caixa(data_caixa):
     tipo_movimento = []
     tipo = []
     descricao = []
     forma_pg = []
     valor = []
-    soma_pix = 0
-    soma_dinheiro = 0
-    soma_credito = 0
-    soma_debito = 0
-    soma_saida_pix = 0
-    soma_saida_dinheiro = 0
-    soma_reembolso = 0
-    soma_cofre = 0
-    mydb.connect()
+
     cursor.execute(f"SELECT tipo_movimento, tipo, descricao, forma_pg, valor FROM caixa WHERE data = '{data_caixa}'")
     dados = cursor.fetchall()
 
     for dado in dados:
-
         if dado[0] == 'ENTRADA':
 
             if dado[0] is None:
@@ -541,6 +532,41 @@ def gerar_html_caixa(data_caixa):
                 valor_formatado = format_currency(dado[4], 'BRL', locale='pt_BR')
                 valor.append(valor_formatado)
 
+    contexto_entrada = {'tipo': tipo, 'descricao': descricao, 'forma_pg': forma_pg, 'valor': valor}
+
+    planilha_loader2 = jinja2.FileSystemLoader('./')
+    planilha_env2 = jinja2.Environment(loader=planilha_loader2)
+    planilha2 = planilha_env2.get_template('planilha_caixa_entrada.html')
+    output_text2 = planilha2.render(contexto_entrada)
+
+    # Nome do arquivo PDF
+    pdf_filename2 = f"reservas_{data_caixa}.pdf"
+
+    # Gerar PDF
+    config2 = pdfkit.configuration()
+    pdfkit.from_string(output_text2, pdf_filename2, configuration=config2)
+    mydb.close()
+
+    return output_text2
+
+
+
+def gerar_html_total(data_caixa):
+
+    soma_pix = 0
+    soma_dinheiro = 0
+    soma_credito = 0
+    soma_debito = 0
+    soma_saida_pix = 0
+    soma_saida_dinheiro = 0
+    soma_reembolso = 0
+    soma_cofre = 0
+    mydb.connect()
+    cursor.execute(f"SELECT tipo_movimento, tipo, descricao, forma_pg, valor FROM caixa WHERE data = '{data_caixa}'")
+    dados = cursor.fetchall()
+
+    for dado in dados:
+        if dado[0] == 'ENTRADA':
             if dado[3] == 'Pix':
                 soma_pix += float(dado[4])
 
@@ -587,10 +613,6 @@ def gerar_html_caixa(data_caixa):
                       'soma_saida_dinheiro': soma_saida_dinheiro, 'soma_cofre': soma_cofre,
                       'soma_total_saida': soma_total_saida}
 
-    contexto_entrada = {'tipo': tipo, 'descricao': descricao, 'forma_pg': forma_pg, 'valor': valor}
-
-    # HTML CAIXA TOTAL ------------------------------------------------------------------
-
     # Renderizar o template HTML
     planilha_loader = jinja2.FileSystemLoader('./')
     planilha_env = jinja2.Environment(loader=planilha_loader)
@@ -604,18 +626,4 @@ def gerar_html_caixa(data_caixa):
     config = pdfkit.configuration()
     pdfkit.from_string(output_text, pdf_filename, configuration=config)
 
-    # HTML CAIXA ENTRADA -------------------------------------------------------------------------
-    planilha_loader2 = jinja2.FileSystemLoader('./')
-    planilha_env2 = jinja2.Environment(loader=planilha_loader2)
-    planilha2 = planilha_env2.get_template('planilha_caixa_entrada.html')
-    output_text2 = planilha2.render(contexto_entrada)
-
-    # Nome do arquivo PDF
-    pdf_filename2 = f"reservas_{data_caixa}.pdf"
-
-    # Gerar PDF
-    config2 = pdfkit.configuration()
-    pdfkit.from_string(output_text2, pdf_filename2, configuration=config2)
-    mydb.close()
-
-    return output_text, output_text2
+    return output_text
