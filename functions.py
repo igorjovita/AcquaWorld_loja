@@ -559,7 +559,7 @@ def gerar_html_saida_caixa(data_caixa):
     dados = cursor.fetchall()
 
     for dado in dados:
-        if dado[0] == 'ENTRADA':
+        if dado[0] == 'SAIDA':
 
             if dado[1] is None:
                 tipo2.append('')
