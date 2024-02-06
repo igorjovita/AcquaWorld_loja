@@ -282,7 +282,9 @@ if escolha == 'Reservar':
                             valor_neto = obter_valor_neto(tipo, valor_total_reserva=valor_mergulho,
                                                           id_vendedor_pg=id_vendedor)
 
-                            lista_ids = st.session_state.pagamentos2[1][1]
+                            lista_ids = []
+                            for tupla in st.session_state.pagamentos2:
+                                lista_ids.append(tupla[1])
 
                             for item in lista_ids:
                                 insert_lancamento_comissao(id_reserva_cliente=item, id_vendedor_pg=id_vendedor,
