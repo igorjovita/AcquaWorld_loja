@@ -271,6 +271,7 @@ if escolha == 'Reservar':
                                                              st.session_state.pagamentos2[i]
 
                         if recebedor_sinal != '':
+                            st.write(st.session_state.pagamentos)
                             for pagamento in st.session_state.pagamentos:
                                 cursor.execute(
                                     "INSERT INTO pagamentos (data, recebedor, pagamento, forma_pg, id_titular, id_reserva) VALUES (%s,%s, %s, %s, %s, %s)",
