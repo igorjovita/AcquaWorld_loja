@@ -524,12 +524,12 @@ def gerar_html_caixa(data_caixa):
             if dado[2] is None:
                 descricao.append('')
             else:
-                descricao.append(str(dado[2]).translate(str.maketrans('', '', chars)))
+                descricao.append(str(dado[2]).translate(str.maketrans('', '', chars)).upper())
 
             if dado[3] is None:
                 forma_pg.append('')
             else:
-                forma_pg.append(str(dado[3]).translate(str.maketrans('', '', chars)))
+                forma_pg.append(str(dado[3]).translate(str.maketrans('', '', chars)).upper())
 
             if dado[4] is None:
                 valor.append('')
