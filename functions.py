@@ -559,6 +559,15 @@ def gerar_html_caixa(data_caixa):
             if dado[1] == 'Reembolso':
                 soma_reembolso += float(dado[4])
 
+    soma_pix = format_currency(soma_pix, 'BRL', locale='pt_BR')
+    soma_dinheiro = format_currency(soma_dinheiro, 'BRL', locale='pt_BR')
+    soma_debito = format_currency(soma_debito, 'BRL', locale='pt_BR')
+    soma_credito = format_currency(soma_credito, 'BRL', locale='pt_BR')
+    soma_cofre = format_currency(soma_cofre, 'BRL', locale='pt_BR')
+    soma_reembolso = format_currency(soma_reembolso, 'BRL', locale='pt_BR')
+    soma_saida_pix = format_currency(soma_saida_pix, 'BRL', locale='pt_BR')
+    soma_saida_dinheiro = format_currency(soma_saida_dinheiro, 'BRL', locale='pt_BR')
+    
     soma_total_entrada = soma_pix + soma_dinheiro + soma_credito + soma_debito
     soma_total_saida = soma_saida_dinheiro + soma_saida_pix + soma_cofre + soma_reembolso
 
