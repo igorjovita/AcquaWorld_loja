@@ -503,7 +503,7 @@ def gerar_html_caixa(data_caixa):
     soma_reembolso = 0
     soma_cofre = 0
 
-    cursor.execute(f"SELECT tipo_movimento, tipo, descricao, forma_pg, valor FROM caixa WHERE data = {data_caixa}")
+    cursor.execute(f"SELECT tipo_movimento, tipo, descricao, forma_pg, valor FROM caixa WHERE data = '{data_caixa}'")
     dados = cursor.fetchall()
 
     for dado in dados:
@@ -568,3 +568,4 @@ def gerar_html_caixa(data_caixa):
     st.write(f'Soma Credito - {soma_credito}')
     st.write(f'Soma Entrada - {soma_total_entrada}')
     st.write(f'Soma Saida - {soma_total_saida}')
+    
