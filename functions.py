@@ -8,6 +8,10 @@ from babel.numbers import format_currency
 chars = "'),([]"
 chars2 = "')([]"
 
+
+
+# Exemplo de utilização
+
 mydb = mysql.connector.connect(
     host=os.getenv("DB_HOST"),
     user=os.getenv("DB_USERNAME"),

@@ -292,7 +292,7 @@ if escolha == 'Reservar':
                         tipo_sinal = 'SINAL'
                         if recebedor_sinal == 'AcquaWorld':
                             cursor.execute(
-                                "INSERT INTO caixa (tipo, data, tipo_movimento, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s, %s)",
+                                "INSERT INTO caixa (tipo, data, tipo_movimento, descricao, forma_pg, valor) VALUES (%s,     %s, %s, %s, %s, %s)",
                                 (tipo_sinal, data, 'ENTRADA', descricao, forma_pg, st.session_state.valor_sinal))
 
                         # Na hora de exibir, utilize a vírgula para juntar os nomes dos dependentes
