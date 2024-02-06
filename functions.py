@@ -75,7 +75,6 @@ def calculo_restricao(data):
     return contagem, restricao, contagem_cred, vaga_bat, vaga_cred, vaga_total
 
 
-
 def seleciona_vendedores():
     mydb.connect()
     cursor.execute("SELECT apelido FROM vendedores")
@@ -140,6 +139,7 @@ def update_check_in(nome, check_in, data_reserva):
         f"UPDATE reserva set check_in = '{check_in}' where nome_cliente = '{nome}' and data = '{data_reserva}'")
     mydb.close()
 
+
 def insert_pagamento(data_pagamento, id_reserva_cliente, recebedor, pagamento, forma_pg, parcela, id_titular_pagamento):
     mydb.connect()
     cursor.execute(
@@ -201,7 +201,6 @@ def insert_caixa(id_conta, data_pagamento, tipo_movimento, tipo, descricao, form
 
 
 def processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg, id_titular_pagamento):
-
     # Obter informações da reserva
     info_reserva = obter_info_reserva(nome, data_reserva)
 
@@ -255,7 +254,7 @@ def processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vend
     # Criar descrição e inserir no caixa
     data_completa = str(data_reserva).split('-')
     descricao = f'{nome} do dia {data_completa[2]}/{data_completa[1]}/{data_completa[0]}'
-    tipo_movimento = 'Entrada'
+    tipo_movimento = 'ENTRADA'
     id_conta = 1
 
     insert_caixa(id_conta, data_reserva, tipo_movimento, tipo, descricao, forma_pg, pagamento)
@@ -487,3 +486,85 @@ def gerar_html(data_para_pdf):
     pdfkit.from_string(output_text, pdf_filename, configuration=config)
 
     return output_text
+
+
+def gerar_html_caixa(data_caixa):
+    tipo_movimento = []
+    tipo = []
+    descricao = []
+    forma_pg = []
+    valor = []
+    soma_pix = 0
+    soma_dinheiro = 0
+    soma_credito = 0
+    soma_debito = 0
+    soma_saida_pix = 0
+    soma_saida_dinheiro = 0
+    soma_reembolso = 0
+    soma_cofre = 0
+
+    cursor.execute(f"SELECT tipo_movimento, tipo, descricao, forma_pg, valor FROM caixa WHERE data = {data_caixa}")
+    dados = cursor.fetchall()
+
+    for dado in dados:
+
+        if dado[0] is None:
+            tipo_movimento.append('')
+        else:
+            tipo_movimento.append(str(dado[0]).translate(str.maketrans('', '', chars)))
+
+        if dado[1] is None:
+            tipo.append('')
+        else:
+            tipo.append(str(dado[1]).translate(str.maketrans('', '', chars)))
+
+        if dado[2] is None:
+            descricao.append('')
+        else:
+            descricao.append(str(dado[2]).translate(str.maketrans('', '', chars)))
+
+        if dado[3] is None:
+            forma_pg.append('')
+        else:
+            forma_pg.append(str(dado[3]).translate(str.maketrans('', '', chars)))
+
+        if dado[4] is None:
+            valor.append('')
+        else:
+            valor.append(str(dado[4]).translate(str.maketrans('', '', chars)))
+
+        if dado[0] == 'ENTRADA':
+            if dado[3] == 'Pix':
+                soma_pix += float(dado[4])
+
+            if dado[3] == 'Dinheiro':
+                soma_dinheiro += float(dado[4])
+
+            if dado[3] == 'Debito':
+                soma_debito += float(dado[4])
+
+            if dado[3] == 'Credito':
+                soma_credito += float(dado[4])
+
+        if dado[0] == 'SAIDA':
+            if dado[3] == 'Pix':
+                soma_saida_pix += float(dado[4])
+
+            if dado[3] == 'Dinheiro':
+                soma_saida_dinheiro += float(dado[4])
+
+            if dado[1] == 'Cofre':
+                soma_cofre += float(dado[4])
+
+            if dado[1] == 'Reembolso':
+                soma_reembolso += float(dado[4])
+
+    soma_total_entrada = soma_pix + soma_dinheiro + soma_credito + soma_debito
+    soma_total_saida = soma_saida_dinheiro + soma_saida_pix + soma_cofre + soma_reembolso
+
+    st.write(f'Soma Pix - {soma_pix}')
+    st.write(f'Soma Dinheiro - {soma_dinheiro}')
+    st.write(f'Soma Debito - {soma_debito}')
+    st.write(f'Soma Credito - {soma_credito}')
+    st.write(f'Soma Entrada - {soma_total_entrada}')
+    st.write(f'Soma Saida - {soma_total_saida}')
