@@ -187,6 +187,10 @@ if escolha == 'Reservar':
                         forma_pg = 'Pix'
                         st.session_state.pagamentos.append((data, recebedor_sinal, sinal, forma_pg))
                         st.session_state.valor_sinal += float(sinal)
+                        if valor_loja is None:
+                            valor_loja = 0
+                        else:
+                            valor_loja = valor_loja
                         st.session_state.valor_mergulho_receber += float(valor_loja)
                         st.session_state.valor_mergulho_total += float(valor_mergulho)
 
