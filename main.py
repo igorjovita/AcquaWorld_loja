@@ -289,10 +289,11 @@ if escolha == 'Reservar':
                         valor_mergulho_total_formatado = format_currency(st.session_state.valor_mergulho_total,
                                                                          'BRL',
                                                                          locale='pt_BR')
+                        tipo_sinal = 'SINAL'
                         if recebedor_sinal == 'AcquaWorld':
                             cursor.execute(
-                                "INSERT INTO caixa (data, tipo_movimento, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s)",
-                                (data, 'ENTRADA', descricao, forma_pg, st.session_state.valor_sinal))
+                                "INSERT INTO caixa (tipo, data, tipo_movimento, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s, %s)",
+                                (tipo_sinal, data, 'ENTRADA', descricao, forma_pg, st.session_state.valor_sinal))
 
                         # Na hora de exibir, utilize a vírgula para juntar os nomes dos dependentes
                         nomes_dependentes_formatados = ', '.join(st.session_state.nome_dependente)
