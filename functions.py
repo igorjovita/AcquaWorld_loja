@@ -562,6 +562,22 @@ def gerar_html_caixa(data_caixa):
     soma_total_entrada = soma_pix + soma_dinheiro + soma_credito + soma_debito
     soma_total_saida = soma_saida_dinheiro + soma_saida_pix + soma_cofre + soma_reembolso
 
+    contexto_total = {'soma_pix': soma_pix, 'soma_dinheiro': soma_dinheiro, 'soma_debito': soma_debito, 'soma_credito': soma_credito, 'soma_total_entrada': soma_total_entrada, 'soma_reembolso': soma_reembolso, 'soma_saida_pix': soma_saida_pix, 'soma_saida_dinheiro': soma_saida_dinheiro, 'soma_cofre': soma_cofre, 'soma_total_saida': soma_total_saida}
+
+    # Renderizar o template HTML
+    planilha_loader = jinja2.FileSystemLoader('./')
+    planilha_env = jinja2.Environment(loader=planilha_loader)
+    planilha = planilha_env.get_template('planilha_caixa_total.html')
+    output_text = planilha.render(contexto_total)
+
+    # Nome do arquivo PDF
+    pdf_filename = f"reservas_{data_caixa}.pdf"
+
+    # Gerar PDF
+    config = pdfkit.configuration()
+    pdfkit.from_string(output_text, pdf_filename, configuration=config)
+
+
     st.write(f'Soma Pix - {soma_pix}')
     st.write(f'Soma Dinheiro - {soma_dinheiro}')
     st.write(f'Soma Debito - {soma_debito}')
@@ -571,4 +587,6 @@ def gerar_html_caixa(data_caixa):
     st.write(f'Saida Pix - {soma_saida_pix}')
     st.write(f'Soma Saida - {soma_total_saida}')
     mydb.close()
+
+    return output_text
 
