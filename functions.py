@@ -567,5 +567,7 @@ def gerar_html_caixa(data_caixa):
     st.write(f'Soma Debito - {soma_debito}')
     st.write(f'Soma Credito - {soma_credito}')
     st.write(f'Soma Entrada - {soma_total_entrada}')
+    st.write(f'Saida Dinheiro - {soma_saida_dinheiro}')
+    st.write(f'Saida Pix - {soma_saida_pix}')
     st.write(f'Soma Saida - {soma_total_saida}')
-    
+
