@@ -497,7 +497,7 @@ def gerar_html_entrada_caixa(data_caixa):
     descricao = []
     forma_pg = []
     valor = []
-
+    mydb.connect()
     cursor.execute(f"SELECT tipo_movimento, tipo, descricao, forma_pg, valor FROM caixa WHERE data = '{data_caixa}'")
     dados = cursor.fetchall()
 

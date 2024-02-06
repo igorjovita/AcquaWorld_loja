@@ -242,7 +242,6 @@ if escolha == 'Reservar':
                 st.write('---')
 
         if st.button('Reservar'):
-            st.write(reservas)
 
             lista_cred = ['TUR2', 'OWD', 'ADV', 'RESCUE', 'REVIEW']
 
