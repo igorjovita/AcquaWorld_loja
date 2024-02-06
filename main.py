@@ -123,7 +123,7 @@ if escolha == 'Reservar':
         # Loop para os demais clientes
         for i in range(quantidade_reserva):
             # Campo de entrada para o nome do cliente
-            nome_cliente = st.text_input(f'Nome do Cliente {i + 1}:').upper()
+            nome_cliente = st.text_input(f'Nome do Cliente {i + 1}:').title()
             nomes_clientes.append(nome_cliente)
 
     if st.button('Inserir dados do cliente'):
