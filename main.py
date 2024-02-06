@@ -1,18 +1,13 @@
 import base64
-import locale
-import pdfkit
-import jinja2
 from babel.numbers import format_currency
 from mysql.connector import IntegrityError
 import streamlit as st
-import pandas as pd
 from streamlit_option_menu import option_menu
 import os
 import mysql.connector
-from datetime import date, datetime
+from datetime import date
 import streamlit.components.v1
-from functions import obter_valor_neto, obter_info_reserva, update_check_in, insert_pagamento, calcular_valores, \
-    insert_lancamento_comissao, insert_caixa, processar_pagamento, gerar_pdf, gerar_html, seleciona_vendedores, \
+from functions import obter_info_reserva, processar_pagamento, gerar_pdf, gerar_html, seleciona_vendedores, \
     calculo_restricao, insert_cliente, insert_reserva, seleciona_vendedores_apelido
 import time
 
