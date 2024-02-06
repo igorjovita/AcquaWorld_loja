@@ -602,7 +602,7 @@ def gerar_html_caixa(data_caixa):
     # HTML CAIXA ENTRADA -------------------------------------------------------------------------
     planilha_loader2 = jinja2.FileSystemLoader('./')
     planilha_env2 = jinja2.Environment(loader=planilha_loader2)
-    planilha2 = planilha_env.get_template('planilha_caixa_entrada.html')
+    planilha2 = planilha_env2.get_template('planilha_caixa_entrada.html')
     output_text2 = planilha2.render(contexto_entrada)
 
     # Nome do arquivo PDF
