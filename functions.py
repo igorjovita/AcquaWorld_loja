@@ -8,8 +8,6 @@ from babel.numbers import format_currency
 chars = "'),([]"
 chars2 = "')([]"
 
-
-
 # Exemplo de utilização
 
 mydb = mysql.connector.connect(
@@ -550,9 +548,59 @@ def gerar_html_entrada_caixa(data_caixa):
     return output_text2
 
 
+def gerar_html_saida_caixa(data_caixa):
+    tipo_movimento = []
+    tipo2 = []
+    descricao2 = []
+    forma_pg2 = []
+    valor2 = []
+
+    cursor.execute(f"SELECT tipo_movimento, tipo, descricao, forma_pg, valor FROM caixa WHERE data = '{data_caixa}'")
+    dados = cursor.fetchall()
+
+    for dado in dados:
+        if dado[0] == 'ENTRADA':
+
+            if dado[1] is None:
+                tipo2.append('')
+            else:
+                tipo2.append(str(dado[1]).translate(str.maketrans('', '', chars)))
+
+            if dado[2] is None:
+                descricao2.append('')
+            else:
+                descricao2.append(str(dado[2]).translate(str.maketrans('', '', chars)).upper())
+
+            if dado[3] is None:
+                forma_pg2.append('')
+            else:
+                forma_pg2.append(str(dado[3]).translate(str.maketrans('', '', chars)).upper())
+
+            if dado[4] is None:
+                valor2.append('')
+            else:
+                valor_formatado = format_currency(dado[4], 'BRL', locale='pt_BR')
+                valor2.append(valor_formatado)
+
+    contexto_entrada = {'tipo': tipo2, 'descricao': descricao2, 'forma_pg': forma_pg2, 'valor': valor2}
+
+    planilha_loader2 = jinja2.FileSystemLoader('./')
+    planilha_env2 = jinja2.Environment(loader=planilha_loader2)
+    planilha2 = planilha_env2.get_template('planilha_caixa_saida.html')
+    output_text2 = planilha2.render(contexto_entrada)
+
+    # Nome do arquivo PDF
+    pdf_filename2 = f"reservas_{data_caixa}.pdf"
+
+    # Gerar PDF
+    config2 = pdfkit.configuration()
+    pdfkit.from_string(output_text2, pdf_filename2, configuration=config2)
+    mydb.close()
+
+    return output_text2
+
 
 def gerar_html_total(data_caixa):
-
     soma_pix = 0
     soma_dinheiro = 0
     soma_credito = 0
