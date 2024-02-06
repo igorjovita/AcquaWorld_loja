@@ -613,4 +613,4 @@ def gerar_html_caixa(data_caixa):
     pdfkit.from_string(output_text2, pdf_filename2, configuration=config2)
     mydb.close()
 
-    return output_text, output_text2
+    return output_text2
