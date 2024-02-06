@@ -502,7 +502,7 @@ def gerar_html_caixa(data_caixa):
     soma_saida_dinheiro = 0
     soma_reembolso = 0
     soma_cofre = 0
-
+    mydb.connect()
     cursor.execute(f"SELECT tipo_movimento, tipo, descricao, forma_pg, valor FROM caixa WHERE data = '{data_caixa}'")
     dados = cursor.fetchall()
 
@@ -570,4 +570,5 @@ def gerar_html_caixa(data_caixa):
     st.write(f'Saida Dinheiro - {soma_saida_dinheiro}')
     st.write(f'Saida Pix - {soma_saida_pix}')
     st.write(f'Soma Saida - {soma_total_saida}')
+    mydb.close()
 
