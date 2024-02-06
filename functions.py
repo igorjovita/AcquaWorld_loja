@@ -534,7 +534,8 @@ def gerar_html_caixa(data_caixa):
             if dado[4] is None:
                 valor.append('')
             else:
-                valor.append(str(dado[4]).translate(str.maketrans('', '', chars)))
+                valor_formatado = format_currency(dado[4], 'BRL', locale='pt_BR')
+                valor.append(valor_formatado)
 
             if dado[3] == 'Pix':
                 soma_pix += float(dado[4])
