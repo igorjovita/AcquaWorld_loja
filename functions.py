@@ -559,6 +559,10 @@ def gerar_html_caixa(data_caixa):
             if dado[1] == 'Reembolso':
                 soma_reembolso += float(dado[4])
 
+    soma_total_entrada = soma_pix + soma_dinheiro + soma_credito + soma_debito
+    soma_total_saida = soma_saida_dinheiro + soma_saida_pix + soma_cofre + soma_reembolso
+
+
     soma_pix = format_currency(soma_pix, 'BRL', locale='pt_BR')
     soma_dinheiro = format_currency(soma_dinheiro, 'BRL', locale='pt_BR')
     soma_debito = format_currency(soma_debito, 'BRL', locale='pt_BR')
@@ -567,9 +571,8 @@ def gerar_html_caixa(data_caixa):
     soma_reembolso = format_currency(soma_reembolso, 'BRL', locale='pt_BR')
     soma_saida_pix = format_currency(soma_saida_pix, 'BRL', locale='pt_BR')
     soma_saida_dinheiro = format_currency(soma_saida_dinheiro, 'BRL', locale='pt_BR')
-    
-    soma_total_entrada = soma_pix + soma_dinheiro + soma_credito + soma_debito
-    soma_total_saida = soma_saida_dinheiro + soma_saida_pix + soma_cofre + soma_reembolso
+
+
 
     soma_total_saida = format_currency(soma_total_saida, 'BRL', locale='pt_BR')
     soma_total_entrada = format_currency(soma_total_entrada, 'BRL', locale='pt_BR')
@@ -589,15 +592,6 @@ def gerar_html_caixa(data_caixa):
     config = pdfkit.configuration()
     pdfkit.from_string(output_text, pdf_filename, configuration=config)
 
-
-    st.write(f'Soma Pix - {soma_pix}')
-    st.write(f'Soma Dinheiro - {soma_dinheiro}')
-    st.write(f'Soma Debito - {soma_debito}')
-    st.write(f'Soma Credito - {soma_credito}')
-    st.write(f'Soma Entrada - {soma_total_entrada}')
-    st.write(f'Saida Dinheiro - {soma_saida_dinheiro}')
-    st.write(f'Saida Pix - {soma_saida_pix}')
-    st.write(f'Soma Saida - {soma_total_saida}')
     mydb.close()
 
     return output_text
