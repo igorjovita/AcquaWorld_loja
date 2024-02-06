@@ -31,7 +31,7 @@ html_content = None
 with col1:
     if st.button('Abrir Total'):
         with open("planilha_caixa_total.html", "r", encoding="utf-8") as file:
-            html_content = gerar_html_caixa(data_caixa)
+            html_content = file.read()
 
 with col2:
     if st.button('Abrir Entrada'):
