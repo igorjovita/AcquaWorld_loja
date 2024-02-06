@@ -4,6 +4,7 @@ import streamlit as st
 import jinja2
 import pdfkit
 from babel.numbers import format_currency
+
 chars = "'),([]"
 chars2 = "')([]"
 
@@ -508,32 +509,33 @@ def gerar_html_caixa(data_caixa):
 
     for dado in dados:
 
-        if dado[0] is None:
-            tipo_movimento.append('')
-        else:
-            tipo_movimento.append(str(dado[0]).translate(str.maketrans('', '', chars)))
-
-        if dado[1] is None:
-            tipo.append('')
-        else:
-            tipo.append(str(dado[1]).translate(str.maketrans('', '', chars)))
-
-        if dado[2] is None:
-            descricao.append('')
-        else:
-            descricao.append(str(dado[2]).translate(str.maketrans('', '', chars)))
-
-        if dado[3] is None:
-            forma_pg.append('')
-        else:
-            forma_pg.append(str(dado[3]).translate(str.maketrans('', '', chars)))
-
-        if dado[4] is None:
-            valor.append('')
-        else:
-            valor.append(str(dado[4]).translate(str.maketrans('', '', chars)))
-
         if dado[0] == 'ENTRADA':
+
+            if dado[0] is None:
+                tipo_movimento.append('')
+            else:
+                tipo_movimento.append(str(dado[0]).translate(str.maketrans('', '', chars)))
+
+            if dado[1] is None:
+                tipo.append('')
+            else:
+                tipo.append(str(dado[1]).translate(str.maketrans('', '', chars)))
+
+            if dado[2] is None:
+                descricao.append('')
+            else:
+                descricao.append(str(dado[2]).translate(str.maketrans('', '', chars)))
+
+            if dado[3] is None:
+                forma_pg.append('')
+            else:
+                forma_pg.append(str(dado[3]).translate(str.maketrans('', '', chars)))
+
+            if dado[4] is None:
+                valor.append('')
+            else:
+                valor.append(str(dado[4]).translate(str.maketrans('', '', chars)))
+
             if dado[3] == 'Pix':
                 soma_pix += float(dado[4])
 
@@ -562,7 +564,6 @@ def gerar_html_caixa(data_caixa):
     soma_total_entrada = soma_pix + soma_dinheiro + soma_credito + soma_debito
     soma_total_saida = soma_saida_dinheiro + soma_saida_pix + soma_cofre + soma_reembolso
 
-
     soma_pix = format_currency(soma_pix, 'BRL', locale='pt_BR')
     soma_dinheiro = format_currency(soma_dinheiro, 'BRL', locale='pt_BR')
     soma_debito = format_currency(soma_debito, 'BRL', locale='pt_BR')
@@ -572,12 +573,18 @@ def gerar_html_caixa(data_caixa):
     soma_saida_pix = format_currency(soma_saida_pix, 'BRL', locale='pt_BR')
     soma_saida_dinheiro = format_currency(soma_saida_dinheiro, 'BRL', locale='pt_BR')
 
-
-
     soma_total_saida = format_currency(soma_total_saida, 'BRL', locale='pt_BR')
     soma_total_entrada = format_currency(soma_total_entrada, 'BRL', locale='pt_BR')
 
-    contexto_total = {'soma_pix': soma_pix, 'soma_dinheiro': soma_dinheiro, 'soma_debito': soma_debito, 'soma_credito': soma_credito, 'soma_total_entrada': soma_total_entrada, 'soma_reembolso': soma_reembolso, 'soma_saida_pix': soma_saida_pix, 'soma_saida_dinheiro': soma_saida_dinheiro, 'soma_cofre': soma_cofre, 'soma_total_saida': soma_total_saida}
+    contexto_total = {'soma_pix': soma_pix, 'soma_dinheiro': soma_dinheiro, 'soma_debito': soma_debito,
+                      'soma_credito': soma_credito, 'soma_total_entrada': soma_total_entrada,
+                      'soma_reembolso': soma_reembolso, 'soma_saida_pix': soma_saida_pix,
+                      'soma_saida_dinheiro': soma_saida_dinheiro, 'soma_cofre': soma_cofre,
+                      'soma_total_saida': soma_total_saida}
+
+    contexto_entrada = {'tipo': tipo, 'descricao': descricao, 'forma_pg': forma_pg, 'valor': valor}
+
+    # HTML CAIXA TOTAL ------------------------------------------------------------------
 
     # Renderizar o template HTML
     planilha_loader = jinja2.FileSystemLoader('./')
@@ -592,7 +599,18 @@ def gerar_html_caixa(data_caixa):
     config = pdfkit.configuration()
     pdfkit.from_string(output_text, pdf_filename, configuration=config)
 
+    # HTML CAIXA ENTRADA -------------------------------------------------------------------------
+    planilha_loader2 = jinja2.FileSystemLoader('./')
+    planilha_env2 = jinja2.Environment(loader=planilha_loader2)
+    planilha2 = planilha_env.get_template('planilha_caixa_entrada.html')
+    output_text2 = planilha.render(contexto_entrada)
+
+    # Nome do arquivo PDF
+    pdf_filename2 = f"reservas_{data_caixa}.pdf"
+
+    # Gerar PDF
+    config2 = pdfkit.configuration()
+    pdfkit.from_string(output_text2, pdf_filename2, configuration=config2)
     mydb.close()
 
-    return output_text
-
+    return output_text, output_text2

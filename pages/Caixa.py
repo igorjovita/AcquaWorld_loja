@@ -30,13 +30,14 @@ html_content = None
 
 with col1:
     if st.button('Abrir Total'):
+        output_text, output_text2 =gerar_html_caixa(data_caixa)
         with open("planilha_caixa_total.html", "r", encoding="utf-8") as file:
-            html_content = gerar_html_caixa(data_caixa)
+            html_content = output_text
 
 with col2:
     if st.button('Abrir Entrada'):
         with open("planilha_caixa_entrada.html", "r", encoding="utf-8") as file:
-            html_content = file.read()
+            html_content = output_text2
 with col3:
     if st.button('Abrir Saida'):
         with open("planilha_caixa_saida.html", "r", encoding="utf-8") as file:
