@@ -3,7 +3,7 @@ import mysql.connector
 import streamlit as st
 import jinja2
 import pdfkit
-
+from babel.numbers import format_currency
 chars = "'),([]"
 chars2 = "')([]"
 
@@ -561,6 +561,9 @@ def gerar_html_caixa(data_caixa):
 
     soma_total_entrada = soma_pix + soma_dinheiro + soma_credito + soma_debito
     soma_total_saida = soma_saida_dinheiro + soma_saida_pix + soma_cofre + soma_reembolso
+
+    soma_total_saida = format_currency(soma_total_saida, 'BRL', locale='pt_BR')
+    soma_total_entrada = format_currency(soma_total_entrada, 'BRL', locale='pt_BR')
 
     contexto_total = {'soma_pix': soma_pix, 'soma_dinheiro': soma_dinheiro, 'soma_debito': soma_debito, 'soma_credito': soma_credito, 'soma_total_entrada': soma_total_entrada, 'soma_reembolso': soma_reembolso, 'soma_saida_pix': soma_saida_pix, 'soma_saida_dinheiro': soma_saida_dinheiro, 'soma_cofre': soma_cofre, 'soma_total_saida': soma_total_saida}
 
