@@ -30,9 +30,7 @@ html_content = None
 
 with col1:
     if st.button('Abrir Total'):
-        with open("planilha_caixa_total.html", "r", encoding="utf-8") as file:
-            html_content = file.read()
-            gerar_html_caixa(data_caixa)
+        st.components.v1.html(gerar_html_caixa(data_caixa), height=1000, width=1000, scrolling=True)
 
 with col2:
     if st.button('Abrir Entrada'):
