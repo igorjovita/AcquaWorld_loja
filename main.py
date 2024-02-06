@@ -8,7 +8,8 @@ import mysql.connector
 from datetime import date
 import streamlit.components.v1
 from functions import obter_info_reserva, processar_pagamento, gerar_pdf, gerar_html, seleciona_vendedores, \
-    calculo_restricao, insert_cliente, insert_reserva, seleciona_vendedores_apelido
+    calculo_restricao, insert_cliente, insert_reserva, seleciona_vendedores_apelido, insert_lancamento_comissao, \
+    obter_valor_neto
 import time
 
 chars = "'),([]"
@@ -261,7 +262,6 @@ if escolha == 'Reservar':
 
                     else:
                         for reserva in reservas:
-
                             id_reserva = insert_reserva(reserva)
 
                             st.session_state.pagamentos2.append((id_titular, id_reserva))
@@ -276,6 +276,18 @@ if escolha == 'Reservar':
                                     "INSERT INTO pagamentos (data, recebedor, pagamento, forma_pg, id_titular, id_reserva) VALUES (%s,%s, %s, %s, %s, %s)",
                                     pagamento)
                             st.session_state['ids_clientes'] = []
+
+                        if recebedor_sinal == 'Vendedor' and valor_mergulho == sinal:
+
+                            valor_neto = obter_valor_neto(tipo, valor_total_reserva=valor_mergulho,
+                                                          id_vendedor_pg=id_vendedor)
+
+                            lista_ids = st.session_state.pagamentos2[1][1]
+
+                            for item in lista_ids:
+                                insert_lancamento_comissao(id_reserva_cliente=item, id_vendedor_pg=id_vendedor,
+                                                           valor_receber=valor_neto, valor_pagar=0,
+                                                           id_titular_pagamento=id_titular)
 
                             reservas = []
 
@@ -337,8 +349,6 @@ if escolha == 'Reservar':
                 if 'botao_clicado' in st.session_state:
                     st.session_state.botao_clicado = False
 
-
-
 if escolha == 'Editar':
 
     data_editar = st.date_input('Data da Reserva', format='DD/MM/YYYY')
@@ -396,7 +406,6 @@ if escolha == 'Editar':
             st.subheader(f'Vendedor : {comissario_antigo}')
             comissario_novo = st.selectbox('Selecione o novo vendedor', lista_vendedor)
             if st.button('Atualizar Reserva'):
-
                 id_vendedor_editar = seleciona_vendedores_apelido(comissario=comissario_novo)
 
                 cursor.execute(
