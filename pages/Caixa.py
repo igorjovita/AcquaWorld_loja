@@ -27,7 +27,7 @@ with col3:
 
 col1, col2, col3 = st.columns(3)
 html_content = None
-output_text, output_text2 = gerar_html_caixa(data_caixa)
+
 with col1:
     if st.button('Abrir Total'):
         with open("planilha_caixa_total.html", "r", encoding="utf-8") as file:
