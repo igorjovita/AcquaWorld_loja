@@ -95,6 +95,7 @@ def seleciona_vendedores_apelido(comissario):
 
     return id_vendedor
 
+@st.cache_data
 def obter_valor_neto(tipo, valor_total_reserva, id_vendedor_pg):
     mydb.connect()
 
