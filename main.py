@@ -147,74 +147,76 @@ if escolha == 'Reservar':
                     nome_titular = titular
 
                 if i == 0 and reserva_conjunta == 'Não':
-                    st.subheader(f'Reserva Titular: {nome_cliente}')
-                    st.text('Para acessar essa reserva posteriormente use o nome do titular!')
+                    titulo = f'Reserva Titular: {nome_cliente}'
+                    subtitulo = 'Para acessar essa reserva posteriormente use o nome do titular!'
                     nome_titular = nome_cliente
                 else:
-                    st.subheader(f'Reserva  Cliente: {nome_cliente}')
+                    titulo = f'Reserva  Cliente: {nome_cliente}'
+                    subtitulo = ''
+                with st.form(titulo):
+                    st.text(subtitulo)
+                    colu1, colu2, colu3 = st.columns(3)
 
-                colu1, colu2, colu3 = st.columns(3)
+                    with colu1:
+                        cpf = st.text_input(f'Cpf', help='Apenas números',
+                                            key=f'cpf{nome_cliente}{i}')
+                        altura = st.slider(f'Altura', 1.50, 2.10,
+                                           key=f'altura{nome_cliente}{i}')
+                        sinal = st.text_input(f'Valor do Sinal', key=f'sinal{nome_cliente}{i}')
 
-                with colu1:
-                    cpf = st.text_input(f'Cpf', help='Apenas números',
-                                        key=f'cpf{nome_cliente}{i}')
-                    altura = st.slider(f'Altura', 1.50, 2.10,
-                                       key=f'altura{nome_cliente}{i}')
-                    sinal = st.text_input(f'Valor do Sinal', key=f'sinal{nome_cliente}{i}')
+                    with colu2:
+                        telefone = st.text_input(f'Telefone:',
+                                                 key=f'telefone{nome_cliente}{i}')
+                        peso = st.slider(f'Peso', 40, 160, key=f'peso{nome_cliente}{i}')
+                        recebedor_sinal = st.selectbox(f'Recebedor do Sinal',
+                                                       ['AcquaWorld', 'Vendedor'],
+                                                       index=None,
+                                                       placeholder='Recebedor do Sinal',
+                                                       key=f'recebedor{nome_cliente}{i}')
+                    with colu3:
+                        tipo = st.selectbox(f'Certificação: ',
+                                            ('BAT', 'ACP', 'TUR1', 'TUR2', 'OWD', 'ADV'),
+                                            index=None, placeholder='Certificação', key=f'tipo{nome_cliente}{i}')
+                        valor_mergulho = st.text_input(f'Valor do Mergulho',
+                                                       key=f'valor{nome_cliente}{i}')
+                        valor_loja = st.text_input(f'Valor a receber:', key=f'loja{nome_cliente}{i}')
 
-                with colu2:
-                    telefone = st.text_input(f'Telefone:',
-                                             key=f'telefone{nome_cliente}{i}')
-                    peso = st.slider(f'Peso', 40, 160, key=f'peso{nome_cliente}{i}')
-                    recebedor_sinal = st.selectbox(f'Recebedor do Sinal',
-                                                   ['AcquaWorld', 'Vendedor'],
-                                                   index=None,
-                                                   placeholder='Recebedor do Sinal',
-                                                   key=f'recebedor{nome_cliente}{i}')
-                with colu3:
-                    tipo = st.selectbox(f'Certificação: ',
-                                        ('BAT', 'ACP', 'TUR1', 'TUR2', 'OWD', 'ADV'),
-                                        index=None, placeholder='Certificação', key=f'tipo{nome_cliente}{i}')
-                    valor_mergulho = st.text_input(f'Valor do Mergulho',
-                                                   key=f'valor{nome_cliente}{i}')
-                    valor_loja = st.text_input(f'Valor a receber:', key=f'loja{nome_cliente}{i}')
+                        roupa = f'{altura}/{peso}'
+                        if valor_loja == '':
+                            valor_loja = 0.00
+                        else:
+                            valor_loja = valor_loja
+                    if st.form_submit_button(f'Cadastrar {nome_cliente}'):
 
-                    roupa = f'{altura}/{peso}'
-                    if valor_loja == '':
-                        valor_loja = 0.00
-                    else:
-                        valor_loja = valor_loja
-                if st.button(f'Cadastrar {nome_cliente}', key=f'button{i}'):
+                        if nome_cliente not in st.session_state.nome_cadastrado:
+                            st.session_state.nome_cadastrado.append(nome_cliente)
+                            forma_pg = 'Pix'
+                            st.session_state.pagamentos.append((data, recebedor_sinal, sinal, forma_pg))
+                            st.session_state.valor_sinal += float(sinal)
 
-                    if nome_cliente not in st.session_state.nome_cadastrado:
-                        st.session_state.nome_cadastrado.append(nome_cliente)
-                        forma_pg = 'Pix'
-                        st.session_state.pagamentos.append((data, recebedor_sinal, sinal, forma_pg))
-                        st.session_state.valor_sinal += float(sinal)
+                            st.session_state.valor_mergulho_receber += float(valor_loja)
+                            st.session_state.valor_mergulho_total += float(valor_mergulho)
 
-                        st.session_state.valor_mergulho_receber += float(valor_loja)
-                        st.session_state.valor_mergulho_total += float(valor_mergulho)
+                            if i != 0:
+                                st.session_state.nome_dependente.append(nome_cliente)
 
-                        if i != 0:
-                            st.session_state.nome_dependente.append(nome_cliente)
+                            with mydb.cursor() as cursor:
+                                try:
 
-                        with mydb.cursor() as cursor:
-                            try:
-
-                                id_cliente = insert_cliente(cpf, nome_cliente, telefone, roupa)
-                                st.session_state.ids_clientes.append(id_cliente)
-                                mydb.commit()
-
-                            except IntegrityError:
-                                cursor.execute(f"SELECT id from cliente where cpf = %s and nome = %s",
-                                               (cpf, nome_cliente))
-                                info_registro = cursor.fetchone()
-
-                                if info_registro:
-                                    id_cliente = info_registro[0]
+                                    id_cliente = insert_cliente(cpf, nome_cliente, telefone, roupa)
                                     st.session_state.ids_clientes.append(id_cliente)
-                    else:
-                        st.error(f'{nome_cliente} já foi cadastrado no sistema!')
+                                    mydb.commit()
+
+                                except IntegrityError:
+                                    cursor.execute(f"SELECT id from cliente where cpf = %s and nome = %s",
+                                                   (cpf, nome_cliente))
+                                    info_registro = cursor.fetchone()
+
+                                    if info_registro:
+                                        id_cliente = info_registro[0]
+                                        st.session_state.ids_clientes.append(id_cliente)
+                        else:
+                            st.error(f'{nome_cliente} já foi cadastrado no sistema!')
 
                 # Adicione esta verificação antes de tentar acessar a lista
                 if i < len(st.session_state['ids_clientes']):
