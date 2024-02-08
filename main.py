@@ -487,6 +487,7 @@ if escolha == 'Pagamento':
                     f"SELECT id, nome_cliente, receber_loja, situacao, id_vendedor from reserva where id_titular = {id_titular_pagamento}")
                 resultado_pg = cursor.fetchall()
                 id_vendedor_pg = resultado_pg[0][4]
+                st.write(st.session_state.id_pagamento)
                 st.write(id_titular_pagamento)
                 st.write(id_vendedor_pg)
                 for item in resultado_pg:
