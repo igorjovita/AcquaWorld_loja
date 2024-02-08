@@ -475,14 +475,19 @@ if escolha == 'Pagamento':
         escolha_reserva_pendente = []
 
         with mydb.cursor() as cursor:
-            resultado2 = obter_info_reserva(nome=selectbox_cliente, data_reserva=data_reserva)
-            if resultado2:
-                id_reserva = resultado2[0]
-                id_titular_pagamento = resultado2[1]
-                tipo = resultado2[2]
-                valor_total = resultado2[3]
-                id_vendedor_pg = resultado2[5]
-                st.write(id_titular_pagamento)
+            # resultado2 = obter_info_reserva(nome=selectbox_cliente, data_reserva=data_reserva)
+            # if resultado2:
+            #     id_reserva = resultado2[0]
+            #     id_titular_pagamento = resultado2[1]
+            #     tipo = resultado2[2]
+            #     valor_total = resultado2[3]
+            #     id_vendedor_pg = resultado2[5]
+            #     st.write(id_titular_pagamento)
+            #
+                for nome, id_titular_pg in st.session_state.id_pagamento:
+                    if nome == selectbox_cliente:
+                        id_titular_pagamento = id_titular_pg
+
 
                 cursor.execute(
                     f"SELECT id, nome_cliente, receber_loja, situacao from reserva where id_titular = {id_titular_pagamento}")
