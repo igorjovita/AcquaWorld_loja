@@ -78,7 +78,7 @@ def calculo_restricao(data):
     return contagem, restricao, contagem_cred, vaga_bat, vaga_cred, vaga_total
 
 
-@st.cache
+@st.cache_resource
 def seleciona_vendedores():
     mydb.connect()
     cursor.execute("SELECT apelido FROM vendedores")
@@ -95,7 +95,7 @@ def seleciona_vendedores_apelido(comissario):
 
     return id_vendedor
 
-
+@st.cache_data
 def obter_valor_neto(tipo, valor_total_reserva, id_vendedor_pg):
     mydb.connect()
 
@@ -126,7 +126,7 @@ def obter_valor_neto(tipo, valor_total_reserva, id_vendedor_pg):
         # Aqui você pode decidir o que fazer se não houver correspondência no banco de dados
         return None
 
-
+@st.cache_resource
 def obter_info_reserva(nome, data_reserva):
     mydb.connect()
     cursor.execute(
@@ -154,7 +154,7 @@ def insert_pagamento(data_pagamento, id_reserva_cliente, recebedor, pagamento, f
 
     return id_pagamento
 
-
+@st.cache_data
 def calcular_valores(valor_neto, acquaworld_valor, vendedor_valor, reserva_neto):
     situacao = 'Pendente'
 
