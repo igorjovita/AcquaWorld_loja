@@ -487,6 +487,7 @@ if escolha == 'Pagamento':
             for nome, id_titular_pg in st.session_state.id_pagamento:
                 if nome == selectbox_cliente:
                     id_titular_pagamento = id_titular_pg
+            st.session_state.id_pagamento = []
 
             cursor.execute(
                 f"SELECT id, nome_cliente, receber_loja, situacao, id_vendedor from reserva where id_titular = {id_titular_pagamento}")
