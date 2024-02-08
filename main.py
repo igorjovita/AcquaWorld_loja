@@ -481,16 +481,13 @@ if escolha == 'Pagamento':
                 for nome, id_titular_pg in st.session_state.id_pagamento:
                     if nome == selectbox_cliente:
                         id_titular_pagamento = id_titular_pg
-                        st.write(st.session_state.id_pagamento)
-                        st.write(id_titular_pagamento)
                 st.session_state.id_pagamento = []
 
                 cursor.execute(
                     f"SELECT id, nome_cliente, receber_loja, situacao, id_vendedor from reserva where id_titular = {id_titular_pagamento}")
                 resultado_pg = cursor.fetchall()
                 id_vendedor_pg = resultado_pg[0][4]
-                st.write(id_titular_pagamento)
-                st.write(id_vendedor_pg)
+
                 for item in resultado_pg:
                     id_reserva_pg, nome_reserva_pg, receber_loja_pg, situacao_reserva, id_vendedor = item
 
