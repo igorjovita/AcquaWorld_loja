@@ -166,6 +166,9 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
         lista_titular = st.session_state.df_state.loc[
             st.session_state.df_state['Selecionar'], 'Nome Titular'].tolist()
 
+        lista_data = st.session_state.df_state.loc[
+            st.session_state.df_state['Selecionar'], 'Data'].tolist()
+
         total = str(total_pagar).replace('R$', '').replace('.', '').replace(',', '.').split()
         for valor in total:
             total_pagar_somado += float(valor)
@@ -191,8 +194,8 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
             lista_ids = []
             st.write(lista_titular)
             with mydb.cursor() as cursor:
-                for titular in lista_titular:
-                    cursor.execute(f"SELECT id_cliente from reserva where nome_cliente = '{titular}'")
+                for titular, data in lista_titular, lista_data:
+                    cursor.execute(f"SELECT id_cliente from reserva where nome_cliente = '{titular} and data = '{data}'")
                     id_titular = cursor.fetchone()[0]
                     st.write(id_titular)
 
