@@ -153,7 +153,8 @@ if escolha == 'Reservar':
                 else:
                     titulo = f'Reserva  Cliente: {nome_cliente}'
                     subtitulo = ''
-                with st.form(titulo):
+                with st.form(f'Fomulario - {nome_cliente}'):
+                    st.subheader(titulo)
                     st.text(subtitulo)
                     colu1, colu2, colu3 = st.columns(3)
 
