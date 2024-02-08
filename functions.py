@@ -99,6 +99,7 @@ def seleciona_vendedores_apelido(comissario):
 def obter_valor_neto(tipo, valor_total_reserva, id_vendedor_pg):
     mydb.connect()
     st.write(f'tipo - {tipo}')
+    st.write(valor_total_reserva)
     if tipo == 'BAT':
         cursor.execute(f"SELECT valor_neto FROM vendedores WHERE id = {id_vendedor_pg}")
     elif tipo == 'ACP':
