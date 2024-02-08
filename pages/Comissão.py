@@ -195,7 +195,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
             st.write(lista_titular)
             st.write(lista_data)
             with mydb.cursor() as cursor:
-                for titular, data in lista_titular, lista_data:
+                for titular, data in zip(lista_titular, lista_data):
                     cursor.execute(f"SELECT id_cliente from reserva where nome_cliente = '{titular} and data = '{data}'")
                     id_titular = cursor.fetchone()[0]
                     st.write(id_titular)
