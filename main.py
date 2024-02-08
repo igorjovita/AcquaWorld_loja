@@ -491,6 +491,7 @@ if escolha == 'Pagamento':
             cursor.execute(
                 f"SELECT id, nome_cliente, receber_loja, situacao, id_vendedor from reserva where id_titular = {id_titular_pagamento}")
             resultado_pg = cursor.fetchall()
+            id_vendedor_pg = resultado_pg[0][4]
             for item in resultado_pg:
                 id_reserva_pg, nome_reserva_pg, receber_loja_pg, situacao_reserva, id_vendedor = item
 
@@ -498,7 +499,6 @@ if escolha == 'Pagamento':
                 id_cliente_reserva.append(id_reserva_pg)
                 receber_loja_reserva.append(receber_loja_pg)
                 options_select_cliente.append((nome_reserva_pg, situacao_reserva))
-            id_vendedor_pg = id_vendedor
             receber_grupo = 0
             total_sinal = 0
             colun1, colun2, colun3, colun4 = st.columns(4)
