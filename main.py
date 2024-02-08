@@ -11,9 +11,6 @@ from functions import obter_info_reserva, processar_pagamento, gerar_pdf, gerar_
     calculo_restricao, insert_cliente, insert_reserva, seleciona_vendedores_apelido, insert_lancamento_comissao, \
     obter_valor_neto
 import time
-from memory_profiler import profile
-
-
 
 chars = "'),([]"
 chars2 = "')([]"
