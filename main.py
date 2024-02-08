@@ -456,7 +456,7 @@ if escolha == 'Pagamento':
 
         for item in resultado_select:
             nome_cliente_pagamento = str(item[0]).translate(str.maketrans('', '', chars))
-            id_titular_pagamento = str(item).translate(str.maketrans('', '', chars))
+            id_titular_pagamento = str(item).translate(str.maketrans('', '', chars2)).split(',')
             lista_pagamento.append(nome_cliente_pagamento)
             st.session_state.id_pagamento.append(id_titular_pagamento)
 
