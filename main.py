@@ -726,8 +726,8 @@ if escolha == 'Pagamento':
 
                         # st.session_state.botao = False
 
-            else:
-                st.warning('Nenhuma reserva lançada para essa data!')
+            # else:
+            #     st.warning('Nenhuma reserva lançada para essa data!')
 
 #     st.write('---')
 #
