@@ -239,7 +239,10 @@ def processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vend
     acquaworld_valor = None
 
     # Calcular valores relevantes
+    st.write(tipo, valor_total_reserva, id_vendedor_pg)
     valor_neto = obter_valor_neto(tipo, valor_total_reserva, id_vendedor_pg)
+    st.write(valor_neto)
+
     reserva_neto = valor_total_reserva - valor_neto
 
     for result in resultado_soma:

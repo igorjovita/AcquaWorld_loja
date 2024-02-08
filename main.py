@@ -286,6 +286,7 @@ if escolha == 'Reservar':
                             valor_neto = obter_valor_neto(tipo, valor_total_reserva=valor_mergulho,
                                                           id_vendedor_pg=id_vendedor)
 
+
                             lista_ids = []
                             for tupla in st.session_state.pagamentos2:
                                 lista_ids.append(tupla[1])
@@ -475,15 +476,7 @@ if escolha == 'Pagamento':
         escolha_reserva_pendente = []
 
         with mydb.cursor() as cursor:
-            # resultado2 = obter_info_reserva(nome=selectbox_cliente, data_reserva=data_reserva)
-            # if resultado2:
-            #     id_reserva = resultado2[0]
-            #     id_titular_pagamento = resultado2[1]
-            #     tipo = resultado2[2]
-            #     valor_total = resultado2[3]
-            #     id_vendedor_pg = resultado2[5]
-            #     st.write(id_titular_pagamento)
-            #
+
             if selectbox_cliente is not None:
                 for nome, id_titular_pg in st.session_state.id_pagamento:
                     if nome == selectbox_cliente:
