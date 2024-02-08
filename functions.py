@@ -205,7 +205,8 @@ def insert_caixa(id_conta, data_pagamento, tipo_movimento, tipo, descricao, form
 
 
 def processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg, id_titular_pagamento):
-    # Obter informações da reserva
+
+    # Obter informações da reserva id, id_cliente, tipo, valor_total, receber_loja, id_vendedor
     info_reserva = obter_info_reserva(nome, data_reserva)
 
     # Atualizar o check-in

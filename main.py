@@ -442,23 +442,30 @@ if escolha == 'Pagamento':
     if 'botao' not in st.session_state:
         st.session_state.botao = False
 
+    if 'id_pagamento' not in st.session_state:
+        st.session_state.id_pagamento = []
+
     data_pagamento = date.today()
     data_reserva = st.date_input('Data da reserva', format='DD/MM/YYYY')
 
     lista_pagamento = []
     with mydb.cursor() as cursor:
         cursor.execute(
-            f"SELECT nome_cliente FROM reserva WHERE data = '{data_reserva}' and id_titular = id_cliente")
+            f"SELECT nome_cliente, id_cliente FROM reserva WHERE data = '{data_reserva}' and id_titular = id_cliente")
         resultado_select = cursor.fetchall()
 
         for item in resultado_select:
-            nome_cliente_pagamento = str(item).translate(str.maketrans('', '', chars))
+            nome_cliente_pagamento = str(item[0]).translate(str.maketrans('', '', chars))
+            id_titular_pagamento = str(item).translate(str.maketrans('', '', chars))
             lista_pagamento.append(nome_cliente_pagamento)
+            st.session_state.id_pagamento.append(id_titular_pagamento)
 
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista_pagamento)
 
     if st.button('Selecionar Titular'):
+        st.write(st.session_state.id_pagamento)
         st.session_state.botao = True
+
     if st.session_state.botao:
         lista_nome_pagamento = []
         nome_cliente_reserva = []
@@ -693,6 +700,8 @@ if escolha == 'Pagamento':
                             check_in = 'yellow'
 
                     if st.button('Lançar Pagamento'):
+
+                        id_cliente_reserva
                         if pagamento_escolha == 'Pagamento Grupo':
                             for nome in lista_nome_pagamento:
                                 processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg,
