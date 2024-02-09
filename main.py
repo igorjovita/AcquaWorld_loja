@@ -468,10 +468,15 @@ if escolha == 'Pagamento':
 
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista_pagamento)
 
+    if 'contador' not in st.session_state:
+        st.session_state.contador = 0
+
     if st.button('Selecionar Titular'):
         st.session_state.botao = True
 
     if st.session_state.botao:
+        st.session_state.contador += 1
+        st.write(st.session_state.contador)
         lista_nome_pagamento = []
         nome_cliente_reserva = []
         id_reserva_pagamento = []
