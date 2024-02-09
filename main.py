@@ -498,7 +498,8 @@ if escolha == 'Pagamento':
                     receber_loja_reserva.append(receber_loja_pg)
                     options_select_cliente.append((nome_reserva_pg, situacao_reserva))
                     st.session_state.dados_pagamento.append(
-                        (nome_reserva_pg, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg, id_vendedor))
+                        (nome_reserva_pg, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg,
+                         id_vendedor))
                 receber_grupo = 0
                 total_sinal = 0
                 colun1, colun2, colun3, colun4 = st.columns(4)
@@ -707,9 +708,21 @@ if escolha == 'Pagamento':
                     if st.button('Lançar Pagamento'):
 
                         if pagamento_escolha == 'Pagamento Grupo':
+                            for dados_pagamento in st.session_state.dados_pagamento:
+                                nome_cliente, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg, id_vendedor = dados_pagamento
+
                             for nome in lista_nome_pagamento:
+                                if nome in st.session_state.dados_pagamento:
+                                    id_reserva_selecionada = id_reserva_pg
+                                    id_cliente_selecionado = id_cliente_pg
+                                    tipo_selecionado = tipo_pg
+                                    valor_total_selecionado = valor_total
+                                    receber_loja_selecionado = receber_loja_pg
+                                    
                                 processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg,
-                                                    id_titular_pagamento)
+                                                    id_titular_pagamento, id_reserva_selecionada,
+                                                    id_cliente_selecionado, tipo_selecionado, valor_total_selecionado,
+                                                    receber_loja_selecionado)
                         else:
                             for dados_pagamento in st.session_state.dados_pagamento:
                                 nome_cliente, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg, id_vendedor = dados_pagamento
@@ -722,7 +735,8 @@ if escolha == 'Pagamento':
                                     receber_loja_selecionado = receber_loja_pg
                             nome = escolha_client_input
                             processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg,
-                                                id_titular_pagamento, id_reserva_selecionada, id_cliente_selecionado, tipo_selecionado, valor_total_selecionado, receber_loja_selecionado)
+                                                id_titular_pagamento, id_reserva_selecionada, id_cliente_selecionado,
+                                                tipo_selecionado, valor_total_selecionado, receber_loja_selecionado)
 
                         st.session_state.pagamentos = []
                         st.session_state.pagamentos2 = []
