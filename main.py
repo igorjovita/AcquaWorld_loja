@@ -719,6 +719,7 @@ if escolha == 'Pagamento':
                             for dados_pagamento in st.session_state.dados_pagamento:
                                 nome_cliente, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg, id_vendedor = dados_pagamento
 
+                            st.write(f'Nome Cliente - {nome_cliente}')
                             for reserva in st.session_state.escolha_reserva_pendente:
                                 st.write(nome_cliente)
                                 st.write(reserva)
