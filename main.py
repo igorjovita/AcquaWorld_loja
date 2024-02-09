@@ -646,10 +646,13 @@ if escolha == 'Pagamento':
                     else:
                         pagamento_escolha = 'Pagamento Individual'
 
+                    st.write(f'Opçao - {options_select_cliente}')
                     for opcao in options_select_cliente:
                         if opcao[1] == 'Reserva Paga':
                             pass
                         else:
+                            st.write(f'1 session -  {st.session_state.escolha_reserva_pendente}')
+                            st.write(opcao[0])
                             st.session_state.escolha_reserva_pendente.append(opcao[0])
 
                     if pagamento_escolha == 'Pagamento Individual':
