@@ -722,8 +722,7 @@ if escolha == 'Pagamento':
                     if st.button('Lançar Pagamento'):
 
                         if pagamento_escolha == 'Pagamento Grupo':
-                            st.write(st.session_state.dados_pagamento)
-                            st.write(st.session_state.escolha_reserva_pendente)
+                            
                             for dados_pagamento in st.session_state.dados_pagamento:
                                 nome_cliente, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg, id_vendedor = dados_pagamento
 

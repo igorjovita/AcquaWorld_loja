@@ -235,7 +235,7 @@ def processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vend
     valor_neto = obter_valor_neto(tipo_selecionado, valor_total_selecionado, id_vendedor_pg)
 
     reserva_neto = valor_total_selecionado - valor_neto
-    
+
 
     for result in resultado_soma:
         nome_result = result[0]
