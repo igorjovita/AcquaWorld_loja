@@ -654,7 +654,7 @@ if escolha == 'Pagamento':
                             st.write(f'1 session -  {st.session_state.escolha_reserva_pendente}')
                             st.write(opcao[0])
                             st.session_state.escolha_reserva_pendente.append(opcao[0])
-
+                        st.write(st.write(f'ultima session -  {st.session_state.escolha_reserva_pendente}'))
                     if pagamento_escolha == 'Pagamento Individual':
 
                         escolha_client_input = st.selectbox('Cliente',
