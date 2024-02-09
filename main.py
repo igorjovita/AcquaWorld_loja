@@ -741,6 +741,7 @@ if escolha == 'Pagamento':
 
                         st.session_state.pagamentos = []
                         st.session_state.pagamentos2 = []
+                        st.session_state.dados_pagamento = []
                         nome_cliente_reserva.remove(nome)
                         # time.sleep(0.5)
                         # st.rerun()
