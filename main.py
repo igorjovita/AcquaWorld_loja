@@ -727,16 +727,12 @@ if escolha == 'Pagamento':
                             for dados_pagamento in st.session_state.dados_pagamento:
                                 nome_cliente, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg, id_vendedor = dados_pagamento
 
-                                st.write(f'Nome Cliente - {nome_cliente}')
-
                                 if nome_cliente in st.session_state.escolha_reserva_pendente:
                                     # Processa o pagamento apenas para o cliente selecionado
                                     processar_pagamento(nome_cliente, data_reserva, check_in, forma_pg, parcela,
                                                         id_vendedor_pg,
                                                         id_titular_pagamento, id_reserva_pg, id_cliente_pg,
                                                         tipo_pg, valor_total, receber_loja_pg)
-
-
 
                         else:
                             for dados_pagamento in st.session_state.dados_pagamento:
@@ -759,8 +755,8 @@ if escolha == 'Pagamento':
                         st.session_state.escolha_reserva_pendente = []
 
                         nome_cliente_reserva.remove(nome)
-                        # time.sleep(0.5)
-                        # st.rerun()
+                        time.sleep(0.5)
+                        st.rerun()
                         mydb.close()
                         st.success('Pagamento lançado no sistema!')
 
