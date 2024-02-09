@@ -724,17 +724,17 @@ if escolha == 'Pagamento':
                         if pagamento_escolha == 'Pagamento Grupo':
                             st.write(st.session_state.dados_pagamento)
                             st.write(st.session_state.escolha_reserva_pendente)
-                            # for dados_pagamento in st.session_state.dados_pagamento:
-                            #     nome_cliente, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg, id_vendedor = dados_pagamento
-                            #
-                            #     st.write(f'Nome Cliente - {nome_cliente}')
-                            #
-                            #     if nome_cliente in st.session_state.escolha_reserva_pendente:
-                            #         # Processa o pagamento apenas para o cliente selecionado
-                            #         processar_pagamento(nome_cliente, data_reserva, check_in, forma_pg, parcela,
-                            #                             id_vendedor_pg,
-                            #                             id_titular_pagamento, id_reserva_pg, id_cliente_pg,
-                            #                             tipo_pg, valor_total, receber_loja_pg)
+                            for dados_pagamento in st.session_state.dados_pagamento:
+                                nome_cliente, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg, id_vendedor = dados_pagamento
+
+                                st.write(f'Nome Cliente - {nome_cliente}')
+
+                                if nome_cliente in st.session_state.escolha_reserva_pendente:
+                                    # Processa o pagamento apenas para o cliente selecionado
+                                    processar_pagamento(nome_cliente, data_reserva, check_in, forma_pg, parcela,
+                                                        id_vendedor_pg,
+                                                        id_titular_pagamento, id_reserva_pg, id_cliente_pg,
+                                                        tipo_pg, valor_total, receber_loja_pg)
 
 
 
