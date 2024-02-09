@@ -646,16 +646,13 @@ if escolha == 'Pagamento':
                     else:
                         pagamento_escolha = 'Pagamento Individual'
 
-                    st.write(f'Opçao - {options_select_cliente}')
                     for opcao in options_select_cliente:
                         if opcao[1] == 'Reserva Paga':
                             pass
                         else:
-                            st.write(f'1 session -  {st.session_state.escolha_reserva_pendente}')
-                            st.write(opcao[0])
                             if opcao[0] not in st.session_state.escolha_reserva_pendente:
                                 st.session_state.escolha_reserva_pendente.append(opcao[0])
-                        st.write(st.write(f'ultima session -  {st.session_state.escolha_reserva_pendente}'))
+
                     if pagamento_escolha == 'Pagamento Individual':
 
                         escolha_client_input = st.selectbox('Cliente',
@@ -722,7 +719,7 @@ if escolha == 'Pagamento':
                     if st.button('Lançar Pagamento'):
 
                         if pagamento_escolha == 'Pagamento Grupo':
-                            
+
                             for dados_pagamento in st.session_state.dados_pagamento:
                                 nome_cliente, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg, id_vendedor = dados_pagamento
 
