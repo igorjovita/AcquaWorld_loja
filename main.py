@@ -502,7 +502,6 @@ if escolha == 'Pagamento':
                     options_select_cliente.append((nome_reserva_pg, situacao_reserva))
                     if (nome_reserva_pg, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg,
                         id_vendedor) not in st.session_state.dados_pagamento:
-
                         st.session_state.dados_pagamento.append(
                             (nome_reserva_pg, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg,
                              id_vendedor))
@@ -651,7 +650,8 @@ if escolha == 'Pagamento':
                                 pass
                             else:
                                 st.session_state.escolha_reserva_pendente.append(opcao[0])
-                        escolha_client_input = st.selectbox('Cliente', options=st.session_state.escolha_reserva_pendente)
+                        escolha_client_input = st.selectbox('Cliente',
+                                                            options=st.session_state.escolha_reserva_pendente)
                         st.write('---')
 
                         valor_a_receber_cliente = None
@@ -719,12 +719,9 @@ if escolha == 'Pagamento':
                             for dados_pagamento in st.session_state.dados_pagamento:
                                 nome_cliente, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg, id_vendedor = dados_pagamento
 
-                            st.write(f'Nome Cliente - {nome_cliente}')
-                            for reserva in st.session_state.escolha_reserva_pendente:
-                                st.write(nome_cliente)
-                                st.write(reserva)
-                            # Verifica se o nome do cliente corresponde a algum nome na lista_nome_pagamento
-                                if nome_cliente == reserva[0]:
+                                st.write(f'Nome Cliente - {nome_cliente}')
+
+                                if nome_cliente in st.session_state.escolha_reserva_pendente:
                                     # Processa o pagamento apenas para o cliente selecionado
                                     processar_pagamento(nome_cliente, data_reserva, check_in, forma_pg, parcela,
                                                         id_vendedor_pg,
@@ -750,7 +747,7 @@ if escolha == 'Pagamento':
                         st.session_state.pagamentos = []
                         st.session_state.pagamentos2 = []
                         st.session_state.dados_pagamento = []
-                        st.session_state.escolha_reserva_pendente = []
+
                         nome_cliente_reserva.remove(nome)
                         # time.sleep(0.5)
                         # st.rerun()
