@@ -497,9 +497,12 @@ if escolha == 'Pagamento':
                     id_reserva_pagamento.append(id_reserva_pg)
                     receber_loja_reserva.append(receber_loja_pg)
                     options_select_cliente.append((nome_reserva_pg, situacao_reserva))
-                    st.session_state.dados_pagamento.append(
-                        (nome_reserva_pg, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg,
-                         id_vendedor))
+                    if (nome_reserva_pg, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg,
+                        id_vendedor) not in st.session_state.dados_pagamento:
+
+                        st.session_state.dados_pagamento.append(
+                            (nome_reserva_pg, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg,
+                             id_vendedor))
                 receber_grupo = 0
                 total_sinal = 0
                 colun1, colun2, colun3, colun4 = st.columns(4)
