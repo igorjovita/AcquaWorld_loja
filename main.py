@@ -718,9 +718,9 @@ if escolha == 'Pagamento':
                                     tipo_selecionado = tipo_pg
                                     valor_total_selecionado = valor_total
                                     receber_loja_selecionado = receber_loja_pg
-                                    
+
                                 processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg,
-                                                    id_titular_pagamento, id_reserva_selecionada,
+                                                    st.session_state.id_pagamento, id_reserva_selecionada,
                                                     id_cliente_selecionado, tipo_selecionado, valor_total_selecionado,
                                                     receber_loja_selecionado)
                         else:
