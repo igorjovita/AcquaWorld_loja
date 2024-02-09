@@ -723,7 +723,7 @@ if escolha == 'Pagamento':
                                 st.write(nome_cliente)
                                 st.write(reserva)
                             # Verifica se o nome do cliente corresponde a algum nome na lista_nome_pagamento
-                                if nome_cliente == reserva:
+                                if nome_cliente == reserva[0]:
                                     # Processa o pagamento apenas para o cliente selecionado
                                     processar_pagamento(nome_cliente, data_reserva, check_in, forma_pg, parcela,
                                                         id_vendedor_pg,
