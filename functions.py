@@ -205,7 +205,7 @@ def insert_caixa(id_conta, data_pagamento, tipo_movimento, tipo, descricao, form
 
 def processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg, id_titular_pagamento, id_reserva_selecionada, id_cliente_selecionado, tipo_selecionado, valor_total_selecionado, receber_loja_selecionado):
 
-
+    st.write(nome, check_in, data_reserva)
     # Atualizar o check-in
     update_check_in(nome, check_in, data_reserva)
     id_cliente = id_cliente_selecionado
