@@ -205,32 +205,25 @@ def insert_caixa(id_conta, data_pagamento, tipo_movimento, tipo, descricao, form
         mydb.close()
 
 
-def processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg, id_titular_pagamento):
+def processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg, id_titular_pagamento, id_reserva_selecionada, id_cliente_selecionado, tipo_selecionado, valor_total_selecionado, receber_loja_selecionado):
 
-    # Obter informações da reserva id, id_cliente, tipo, valor_total, receber_loja, id_vendedor
-    info_reserva = obter_info_reserva(nome, data_reserva)
 
     # Atualizar o check-in
     update_check_in(nome, check_in, data_reserva)
-
-    # Extrair informações relevantes
-    id_reserva_cliente = info_reserva[0]
-    tipo = info_reserva[2]
-    valor_total_reserva = info_reserva[3]
-    receber_loja_individual = info_reserva[4]
-
+    id_cliente = id_cliente_selecionado
+    st.write(id_cliente)
     # Configurar dados de pagamento
-    pagamento = receber_loja_individual
+    pagamento = receber_loja_selecionado
     recebedor_pagamento = 'AcquaWorld'
 
     # Inserir pagamento no banco de dados
-    id_pagamento = insert_pagamento(data_reserva, id_reserva_cliente, recebedor_pagamento, pagamento, forma_pg, parcela,
+    id_pagamento = insert_pagamento(data_reserva, id_reserva_selecionada, recebedor_pagamento, pagamento, forma_pg, parcela,
                                     id_titular_pagamento)
 
     # Calcular soma dos pagamentos
     mydb.connect()
     cursor.execute(
-        f"SELECT recebedor, sum(pagamento) FROM pagamentos WHERE id_reserva = {id_reserva_cliente} GROUP BY recebedor")
+        f"SELECT recebedor, sum(pagamento) FROM pagamentos WHERE id_reserva = {id_reserva_selecionada} GROUP BY recebedor")
     resultado_soma = cursor.fetchall()
     mydb.close()
     # Inicializar variáveis
@@ -240,11 +233,11 @@ def processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vend
     acquaworld_valor = None
 
     # Calcular valores relevantes
-    st.write(tipo, valor_total_reserva, id_vendedor_pg)
-    valor_neto = obter_valor_neto(tipo, valor_total_reserva, id_vendedor_pg)
+    st.write(tipo_selecionado, valor_total_selecionado, id_vendedor_pg)
+    valor_neto = obter_valor_neto(tipo_selecionado, valor_total_selecionado, id_vendedor_pg)
     st.write(valor_neto)
 
-    reserva_neto = valor_total_reserva - valor_neto
+    reserva_neto = valor_total_selecionado - valor_neto
 
     for result in resultado_soma:
         nome_result = result[0]
@@ -266,13 +259,13 @@ def processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vend
     tipo_movimento = 'ENTRADA'
     id_conta = 1
 
-    insert_caixa(id_conta, data_reserva, tipo_movimento, tipo, descricao, forma_pg, pagamento)
+    insert_caixa(id_conta, data_reserva, tipo_movimento, tipo_selecionado, descricao, forma_pg, pagamento)
 
     # Inserir no lançamento de comissão
-    insert_lancamento_comissao(id_reserva_cliente, id_vendedor_pg, valor_receber, valor_pagar, id_titular_pagamento)
+    insert_lancamento_comissao(id_reserva_selecionada, id_vendedor_pg, valor_receber, valor_pagar, id_titular_pagamento)
 
     mydb.connect()
-    cursor.execute(f"UPDATE reserva set situacao = 'Reserva Paga' where id = {id_reserva_cliente}")
+    cursor.execute(f"UPDATE reserva set situacao = 'Reserva Paga' where id = {id_reserva_selecionada}")
     mydb.close()
 
     return valor_receber, valor_pagar, situacao

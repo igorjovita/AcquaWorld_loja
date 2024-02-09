@@ -286,7 +286,6 @@ if escolha == 'Reservar':
                             valor_neto = obter_valor_neto(tipo, valor_total_reserva=valor_mergulho,
                                                           id_vendedor_pg=id_vendedor)
 
-
                             lista_ids = []
                             for tupla in st.session_state.pagamentos2:
                                 lista_ids.append(tupla[1])
@@ -446,6 +445,9 @@ if escolha == 'Pagamento':
     if 'id_pagamento' not in st.session_state:
         st.session_state.id_pagamento = []
 
+    if 'dados_pagamento' not in st.session_state:
+        st.session_state.dados_pagamento = []
+
     data_pagamento = date.today()
     data_reserva = st.date_input('Data da reserva', format='DD/MM/YYYY')
 
@@ -464,13 +466,12 @@ if escolha == 'Pagamento':
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista_pagamento)
 
     if st.button('Selecionar Titular'):
-        
         st.session_state.botao = True
 
     if st.session_state.botao:
         lista_nome_pagamento = []
         nome_cliente_reserva = []
-        id_cliente_reserva = []
+        id_reserva_pagamento = []
         receber_loja_reserva = []
         options_select_cliente = []
         escolha_reserva_pendente = []
@@ -483,18 +484,21 @@ if escolha == 'Pagamento':
                         id_titular_pagamento = id_titular_pg
                 st.session_state.id_pagamento = []
 
+                # id, id_cliente, tipo, valor_total, receber_loja, id_vendedor
                 cursor.execute(
-                    f"SELECT id, nome_cliente, receber_loja, situacao, id_vendedor from reserva where id_titular = {id_titular_pagamento}")
+                    f"SELECT id, nome_cliente, receber_loja, situacao, id_vendedor, id_cliente, tipo, valor_total from reserva where id_titular = {id_titular_pagamento}")
                 resultado_pg = cursor.fetchall()
                 id_vendedor_pg = resultado_pg[0][4]
 
                 for item in resultado_pg:
-                    id_reserva_pg, nome_reserva_pg, receber_loja_pg, situacao_reserva, id_vendedor = item
+                    id_reserva_pg, nome_reserva_pg, receber_loja_pg, situacao_reserva, id_vendedor, id_cliente_pg, tipo_pg, valor_total = item
 
                     nome_cliente_reserva.append(nome_reserva_pg)
-                    id_cliente_reserva.append(id_reserva_pg)
+                    id_reserva_pagamento.append(id_reserva_pg)
                     receber_loja_reserva.append(receber_loja_pg)
                     options_select_cliente.append((nome_reserva_pg, situacao_reserva))
+                    st.session_state.dados_pagamento.append(
+                        (nome_reserva_pg, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg, id_vendedor))
                 receber_grupo = 0
                 total_sinal = 0
                 colun1, colun2, colun3, colun4 = st.columns(4)
@@ -517,7 +521,7 @@ if escolha == 'Pagamento':
                         f"<h2 style='color: black; font-size: 1.5em; text-align: center; font-weight: bold;'>Situação</h2>",
                         unsafe_allow_html=True)
 
-                for nome, id_pg, receber_loja in zip(nome_cliente_reserva, id_cliente_reserva,
+                for nome, id_pg, receber_loja in zip(nome_cliente_reserva, id_reserva_pagamento,
                                                      receber_loja_reserva):
                     nome_formatado = str(nome).translate(str.maketrans('', '', chars))
                     id_formatado = int(str(id_pg).translate(str.maketrans('', '', chars)))
@@ -644,7 +648,7 @@ if escolha == 'Pagamento':
                         st.write('---')
 
                         valor_a_receber_cliente = None
-                        for nome, id_pg, receber_loja in zip(nome_cliente_reserva, id_cliente_reserva,
+                        for nome, id_pg, receber_loja in zip(nome_cliente_reserva, id_reserva_pagamento,
                                                              receber_loja_reserva):
                             if nome == escolha_client_input:
                                 valor_a_receber_cliente = receber_loja
@@ -702,15 +706,23 @@ if escolha == 'Pagamento':
 
                     if st.button('Lançar Pagamento'):
 
-                        id_cliente_reserva
                         if pagamento_escolha == 'Pagamento Grupo':
                             for nome in lista_nome_pagamento:
                                 processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg,
                                                     id_titular_pagamento)
                         else:
+                            for dados_pagamento in st.session_state.dados_pagamento:
+                                nome_cliente, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg, id_vendedor = dados_pagamento
+
+                                if nome_cliente == escolha_client_input:
+                                    id_reserva_selecionada = id_reserva_pg
+                                    id_cliente_selecionado = id_cliente_pg
+                                    tipo_selecionado = tipo_pg
+                                    valor_total_selecionado = valor_total
+                                    receber_loja_selecionado = receber_loja_pg
                             nome = escolha_client_input
                             processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg,
-                                                id_titular_pagamento)
+                                                id_titular_pagamento, id_reserva_selecionada, id_cliente_selecionado, tipo_selecionado, valor_total_selecionado, receber_loja_selecionado)
 
                         st.session_state.pagamentos = []
                         st.session_state.pagamentos2 = []
