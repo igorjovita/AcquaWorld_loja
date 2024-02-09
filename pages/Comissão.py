@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import streamlit as st
 import pandas as pd
 from streamlit_option_menu import option_menu
@@ -196,7 +198,11 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
             st.write(lista_data)
             with mydb.cursor() as cursor:
                 for titular, data in zip(lista_titular, lista_data):
-                    cursor.execute(f"SELECT id_cliente from reserva where nome_cliente = '{titular}' and data = '{data}'")
+                    data_datetime = datetime.strptime(data, "%d/%m/%Y")
+
+                    # Formate a data no formato americano com "-"
+                    data_formatada = data_datetime.strftime("%Y-%m-%d")
+                    cursor.execute(f"SELECT id_cliente from reserva where nome_cliente = '{titular}' and data = '{data_formatada}'")
                     id_titular = cursor.fetchone()[0]
                     st.write(id_titular)
 
