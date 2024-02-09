@@ -499,7 +499,10 @@ if escolha == 'Pagamento':
                     nome_cliente_reserva.append(nome_reserva_pg)
                     id_reserva_pagamento.append(id_reserva_pg)
                     receber_loja_reserva.append(receber_loja_pg)
-                    options_select_cliente.append((nome_reserva_pg, situacao_reserva))
+
+                    if (nome_reserva_pg, situacao_reserva) not in options_select_cliente:
+                        options_select_cliente.append((nome_reserva_pg, situacao_reserva))
+
                     if (nome_reserva_pg, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg,
                         id_vendedor) not in st.session_state.dados_pagamento:
                         st.session_state.dados_pagamento.append(
