@@ -643,13 +643,14 @@ if escolha == 'Pagamento':
                     else:
                         pagamento_escolha = 'Pagamento Individual'
 
+                    for opcao in options_select_cliente:
+                        if opcao[1] == 'Reserva Paga':
+                            pass
+                        else:
+                            st.session_state.escolha_reserva_pendente.append(opcao[0])
+
                     if pagamento_escolha == 'Pagamento Individual':
 
-                        for opcao in options_select_cliente:
-                            if opcao[1] == 'Reserva Paga':
-                                pass
-                            else:
-                                st.session_state.escolha_reserva_pendente.append(opcao[0])
                         escolha_client_input = st.selectbox('Cliente',
                                                             options=st.session_state.escolha_reserva_pendente)
                         st.write('---')
