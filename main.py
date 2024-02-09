@@ -448,6 +448,9 @@ if escolha == 'Pagamento':
     if 'dados_pagamento' not in st.session_state:
         st.session_state.dados_pagamento = []
 
+    if 'escolha_reserva_pendente' not in st.session_state:
+        st.session_state.escolha_reserva_pendente = []
+
     data_pagamento = date.today()
     data_reserva = st.date_input('Data da reserva', format='DD/MM/YYYY')
 
@@ -712,7 +715,7 @@ if escolha == 'Pagamento':
 
                         if pagamento_escolha == 'Pagamento Grupo':
                             st.write(st.session_state.dados_pagamento)
-                            st.write(escolha_reserva_pendente)
+                            st.write(st.session_state.escolha_reserva_pendente)
                             # for dados_pagamento in st.session_state.dados_pagamento:
                             #     nome_cliente, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg, id_vendedor = dados_pagamento
                             #
