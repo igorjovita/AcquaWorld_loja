@@ -716,7 +716,7 @@ if escolha == 'Pagamento':
                                     # Processa o pagamento apenas para o cliente selecionado
                                     processar_pagamento(nome_cliente, data_reserva, check_in, forma_pg, parcela,
                                                         id_vendedor_pg,
-                                                        st.session_state.id_pagamento, id_reserva_pg, id_cliente_pg,
+                                                        id_titular_pagamento, id_reserva_pg, id_cliente_pg,
                                                         tipo_pg, valor_total, receber_loja_pg)
                                 else:
                                     st.write('Não Funcionou')
