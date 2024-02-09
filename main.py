@@ -713,7 +713,7 @@ if escolha == 'Pagamento':
 
                             for variavel in escolha_reserva_pendente:
                                 # Verifica se o nome do cliente corresponde a algum nome na lista_nome_pagamento
-                                if nome_cliente == variavel:
+                                if nome_cliente in escolha_reserva_pendente:
                                     # Processa o pagamento apenas para o cliente selecionado
                                     processar_pagamento(nome_cliente, data_reserva, check_in, forma_pg, parcela,
                                                         id_vendedor_pg,
