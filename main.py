@@ -650,8 +650,8 @@ if escolha == 'Pagamento':
                             if opcao[1] == 'Reserva Paga':
                                 pass
                             else:
-                                escolha_reserva_pendente.append(opcao[0])
-                        escolha_client_input = st.selectbox('Cliente', options=escolha_reserva_pendente)
+                                st.session_state.escolha_reserva_pendente.append(opcao[0])
+                        escolha_client_input = st.selectbox('Cliente', options=st.session_state.escolha_reserva_pendente)
                         st.write('---')
 
                         valor_a_receber_cliente = None
