@@ -731,6 +731,7 @@ if escolha == 'Pagamento':
                                                         id_vendedor_pg,
                                                         id_titular_pagamento, id_reserva_pg, id_cliente_pg,
                                                         tipo_pg, valor_total, receber_loja_pg)
+                                    st.session_state.escolha_reserva_pendente.remove(nome_cliente)
 
 
                         else:
@@ -751,7 +752,7 @@ if escolha == 'Pagamento':
                         st.session_state.pagamentos = []
                         st.session_state.pagamentos2 = []
                         st.session_state.dados_pagamento = []
-
+                    
                         nome_cliente_reserva.remove(nome)
                         # time.sleep(0.5)
                         # st.rerun()
