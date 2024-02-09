@@ -711,12 +711,15 @@ if escolha == 'Pagamento':
                             for dados_pagamento in st.session_state.dados_pagamento:
                                 nome_cliente, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg, id_vendedor = dados_pagamento
 
-                                # Verifica se o nome do cliente está na lista_nome_pagamento
-                                if nome_cliente in lista_nome_pagamento:
+                                # Verifica se o nome do cliente corresponde a algum nome na lista_nome_pagamento
+                                if nome_cliente in escolha_reserva_pendente:
+                                    # Processa o pagamento apenas para o cliente selecionado
                                     processar_pagamento(nome_cliente, data_reserva, check_in, forma_pg, parcela,
                                                         id_vendedor_pg,
-                                                        id_titular_pagamento, id_reserva_pg, id_cliente_pg, tipo_pg,
-                                                        valor_total, receber_loja_pg)
+                                                        st.session_state.id_pagamento, id_reserva_pg, id_cliente_pg,
+                                                        tipo_pg, valor_total, receber_loja_pg)
+                                else:
+                                    st.write('Não Funcionou')
                         else:
                             for dados_pagamento in st.session_state.dados_pagamento:
                                 nome_cliente, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg, id_vendedor = dados_pagamento

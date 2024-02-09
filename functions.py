@@ -211,7 +211,6 @@ def processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vend
     # Atualizar o check-in
     update_check_in(nome, check_in, data_reserva)
     id_cliente = id_cliente_selecionado
-    st.write(id_cliente)
     # Configurar dados de pagamento
     pagamento = receber_loja_selecionado
     recebedor_pagamento = 'AcquaWorld'
@@ -233,9 +232,7 @@ def processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vend
     acquaworld_valor = None
 
     # Calcular valores relevantes
-    st.write(tipo_selecionado, valor_total_selecionado, id_vendedor_pg)
     valor_neto = obter_valor_neto(tipo_selecionado, valor_total_selecionado, id_vendedor_pg)
-    st.write(valor_neto)
 
     reserva_neto = valor_total_selecionado - valor_neto
 
