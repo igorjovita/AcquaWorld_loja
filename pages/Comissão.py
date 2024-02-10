@@ -247,6 +247,7 @@ st.write('----')
 
 boolean = False
 if st.button('Lista Vendedores'):
+    st.write(boolean)
     if not boolean:
         boolean = True
 
