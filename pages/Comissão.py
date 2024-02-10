@@ -257,19 +257,18 @@ with col1:
 with col2:
     st.subheader('Valor Neto')
 
+# Criando a tabela em HTML
+html_table = "<table><tr><th>Coluna 1</th><th>Coluna 2</th></tr>"
+
+# Adicionando cada tupla da lista como uma linha na tabela HTML
 for vendedor in vendedores:
+    html_table += f"<tr><td>{vendedor[0]}</td><td>{select_vendedores()[1]}</td></tr>"
 
-    with col1:
+# Fechando a tabela
+html_table += "</table>"
 
-        st.markdown(
-            f"<h2 style='color: black; font-size: 1.6em;'>{vendedor[0]}</h2>",
-            unsafe_allow_html=True)
-
-    with col2:
-
-        st.markdown(
-            f"<h2 style='color: black; font-size: 1.6em;'>{vendedor[1]}</h2>",
-            unsafe_allow_html=True)
+# Exibindo a tabela no Streamlit
+st.write(html_table, unsafe_allow_html=True)
 
 
 
