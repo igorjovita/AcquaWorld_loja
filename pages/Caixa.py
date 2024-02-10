@@ -26,7 +26,6 @@ with st.form('Lancamento Caixa'):
     with col3:
         if lancamento is not None and lancamento == 'ENTRADA':
             tipo = st.selectbox('Tipo', tipo1, index=None)
-
         else:
             tipo = st.selectbox('Tipo', tipo2, index=None)
 
