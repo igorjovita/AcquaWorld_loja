@@ -247,13 +247,12 @@ st.write('----')
 
 boolean = False
 if st.button('Lista Vendedores'):
-    st.write(boolean)
     if not boolean:
         boolean = True
 
     else:
         boolean = False
-
+    st.write(boolean)
     if boolean:
         st.write(lista_vendedores(), unsafe_allow_html=True)
 
