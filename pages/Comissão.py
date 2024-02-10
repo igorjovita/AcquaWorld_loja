@@ -249,8 +249,15 @@ st.header('Vendedores')
 
 vendedores = select_vendedores()
 
-st.subheader(vendedores)
+col1, col2 = st.columns(2)
 
+for vendedor in vendedores:
+
+    with col1:
+        st.subheader(vendedor[0])
+
+    with col2:
+        st.subheader(vendedor[1])
 
 
 
