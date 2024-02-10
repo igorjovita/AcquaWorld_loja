@@ -47,15 +47,18 @@ col1, col2, col3 = st.columns(3)
 html_content = None
 
 with col1:
+    st.write('')
     if st.button('Abrir Total'):
         with open("planilha_caixa_total.html", "r", encoding="utf-8") as file:
             html_content = gerar_html_total(data_caixa)
 
 with col2:
+    st.write('')
     if st.button('Abrir Entrada'):
         with open("planilha_caixa_entrada.html", "r", encoding="utf-8") as file:
             html_content = gerar_html_entrada_caixa(data_caixa)
 with col3:
+    st.write('')
     if st.button('Abrir Saida'):
         with open("planilha_caixa_saida.html", "r", encoding="utf-8") as file:
             html_content = gerar_html_saida_caixa(data_caixa)
