@@ -245,8 +245,6 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
 
 st.write('----')
 
-st.header('Vendedores')
-
 vendedores = select_vendedores()
 
 # Criando a tabela em HTML
