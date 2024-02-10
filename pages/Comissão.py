@@ -258,7 +258,7 @@ with col2:
     st.subheader('Valor Neto')
 
 # Criando a tabela em HTML
-html_table = "<table style='font-size: 15px;'><tr><th>Nome</th><th>Valor Neto</th></tr>"
+html_table = "<table style='font-size: 30px;'><tr><th>Nome</th><th>Valor Neto</th></tr>"
 
 
 # Adicionando cada tupla da lista como uma linha na tabela HTML
