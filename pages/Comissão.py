@@ -252,7 +252,7 @@ vendedores = select_vendedores()
 col1, col2 = st.columns(2)
 
 with col1:
-    st.subheader('Vendedor')
+    st.subheader('Nome')
 
 with col2:
     st.subheader('Valor Neto')
@@ -262,13 +262,13 @@ for vendedor in vendedores:
     with col1:
 
         st.markdown(
-            f"<h2 style='color: black; font-size: 2em;'>{vendedor[0]}</h2>",
+            f"<h2 style='color: black; font-size: 1em;'>{vendedor[0]}</h2>",
             unsafe_allow_html=True)
 
     with col2:
 
         st.markdown(
-            f"<h2 style='color: black; font-size: 2em;'>{vendedor[1]}</h2>",
+            f"<h2 style='color: black; font-size: 1em;'>{vendedor[1]}</h2>",
             unsafe_allow_html=True)
 
 
