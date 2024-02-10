@@ -261,21 +261,20 @@ with col1:
     nome = st.text_input('Nome do Parceiro')
     neto_bat = st.number_input('Neto Batismo', value=180)
     neto_tur2 = st.number_input('Neto Turismo 2 imersões', value=380)
-
+    botao1 = st.button('Cadastrar Vendedor')
 with col2:
     apelido = st.text_input('Apelido do Parceiro', help='Nome que o pareceiro será chamado no sistema')
     neto_acp = st.number_input('Neto Acompanhante', value=90)
+    botao2 = st.button('Lista Vendedores')
 with col3:
     telefone = st.text_input('Telefone')
     neto_tur1 = st.number_input('Neto Turismo 1 imersão', value=330)
-if st.button('Cadastrar Vendedor'):
+
+
+if botao1:
     insert_vendedores(nome, apelido, telefone, neto_bat, neto_acp, neto_tur1, neto_tur2)
 
-
-st.write('---')
-botao = st.button('Lista Vendedores')
-
-if botao:
+if botao2:
     st.session_state.boolean = not st.session_state.boolean
 
     if st.session_state.boolean:
