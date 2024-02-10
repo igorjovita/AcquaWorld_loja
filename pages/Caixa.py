@@ -18,26 +18,26 @@ mydb = mysql.connector.connect(
 tipo1 = ['ENTRADA', 'BAT', 'TUR', 'ACP', 'CURSO', 'PGT PARCEIRO', 'OUTROS']
 tipo2 = ['CAFÉ DA MANHÃ', 'DESPESA OPERACIONAL', 'SALARIO', 'SANGRIA', 'CONTAS']
 
-with st.form('Lancamento Caixa'):
-    st.header('Planilha do Caixa')
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        data_caixa = st.date_input('Data', format='DD/MM/YYYY')
-        valor = st.text_input('Valor')
-    with col2:
-        lancamento = st.selectbox('Lançamento', ['ENTRADA', 'SAIDA'], index=None)
-        forma_pg = st.selectbox('Forma do Pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None)
 
-    with col3:
-        if lancamento == 'ENTRADA':
-            tipo = st.selectbox('Tipo', tipo1, index=None)
-        else:
-            tipo = st.selectbox('Tipo', tipo2, index=None)
+st.header('Lançamento Caixa')
+col1, col2, col3 = st.columns(3)
+with col1:
+    data_caixa = st.date_input('Data', format='DD/MM/YYYY')
+    valor = st.text_input('Valor')
+with col2:
+    lancamento = st.selectbox('Lançamento', ['ENTRADA', 'SAIDA'], index=None)
+    if lancamento == 'ENTRADA':
+        tipo = st.selectbox('Tipo', tipo1, index=None)
+    else:
+        tipo = st.selectbox('Tipo', tipo2, index=None)
 
-    descricao = st.text_area('Descriçao')
-    if st.form_submit_button('Lançar Pagamento'):
-        insert_caixa(1, data_caixa, lancamento, tipo, descricao, forma_pg, valor)
-        st.success('Lançamento inserido no caixa')
+with col3:
+    forma_pg = st.selectbox('Forma do Pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None)
+
+descricao = st.text_area('Descriçao')
+if st.button('Lançar Pagamento'):
+    insert_caixa(1, data_caixa, lancamento, tipo, descricao, forma_pg, valor)
+    st.success('Lançamento inserido no caixa')
 
 col1, col2, col3 = st.columns(3)
 html_content = None
