@@ -258,7 +258,7 @@ botao = st.button('Lista Vendedores')
 if botao:
     st.session_state.boolean = not st.session_state.boolean
 
-   if st.session_state.boolean:
-       st.write(lista_vendedores(), unsafe_allow_html=True)
+    if st.session_state.boolean:
+        st.write(lista_vendedores(), unsafe_allow_html=True)
 
 st.write(st.session_state.boolean)
