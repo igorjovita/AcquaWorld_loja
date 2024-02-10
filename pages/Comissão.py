@@ -8,7 +8,7 @@ import os
 import mysql.connector
 from decimal import Decimal
 from functions import select_vendedores
-import streamlit.components.v1
+
 
 chars = "'),([]"
 chars2 = "')([]"
@@ -258,7 +258,8 @@ with col2:
     st.subheader('Valor Neto')
 
 # Criando a tabela em HTML
-html_table = "<table><tr><th>Coluna 1</th><th>Coluna 2</th></tr>"
+html_table = "<table style='font-size: 15px;'><tr><th>Nome</th><th>Valor Neto</th></tr>"
+
 
 # Adicionando cada tupla da lista como uma linha na tabela HTML
 for vendedor in vendedores:
@@ -268,7 +269,6 @@ for vendedor in vendedores:
 html_table += "</table>"
 
 # Exibindo a tabela no Streamlit
-st.components.v1.html(html_table, height=1000, width=1000, scrolling=True)
 st.write(html_table, unsafe_allow_html=True)
 
 
