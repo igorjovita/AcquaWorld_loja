@@ -270,7 +270,7 @@ with col3:
     telefone = st.text_input('Telefone')
     neto_tur1 = st.number_input('Neto Turismo 1 imersão', value=330)
 
-colun1, colun2, colun3 = st.columns(3)
+colun1, colun2 = st.columns(2)
 
 with colun1:
     botao1 = st.button('Cadastrar Vendedor')
