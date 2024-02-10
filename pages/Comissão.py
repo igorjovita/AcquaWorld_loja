@@ -249,16 +249,17 @@ st.header('Vendedores')
 
 vendedores = select_vendedores()
 
-col1, col2 = st.columns(2)
 
-with col1:
-    st.subheader('Nome')
 
-with col2:
-    st.subheader('Valor Neto')
+# Criando a tabela em HTML com estilo CSS para a largura e tamanho do texto
+html_table = f"<div style='width: 600px;'><table style='width:100%;'>"
+
+# Adicionando uma linha de cabeçalho
+html_table += "<tr><th style='width:70%;'>Nome</th><th style='width:30%;'>Valor Neto</th></tr>"
+
 
 # Criando a tabela em HTML
-html_table = "<table style= 'width: 600px; font-size: 30px; text-align: center;'><tr><th>Nome</th><th>Valor Neto</th></tr>"
+# html_table = "<table style= 'width: 600px; font-size: 30px; text-align: center;'><tr><th>Nome</th><th>Valor Neto</th></tr>"
 
 
 # Adicionando cada tupla da lista como uma linha na tabela HTML
