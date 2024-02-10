@@ -88,7 +88,7 @@ def seleciona_vendedores():
 
 
 def select_vendedores():
-    cursor.execute("SELECT apelido, valor_neto FROM vendedores order by desc(valor_neto)")
+    cursor.execute("SELECT apelido, valor_neto FROM vendedores order by desc ")
     lista = cursor.fetchall()
     return lista
 
