@@ -29,7 +29,7 @@ with st.form('Lancamento Caixa'):
 
         if lancamento == 'ENTRADA':
             tipo = st.selectbox('Tipo', tipo1, index=None)
-        elif lancamento == 'SAIDA':
+        else:
             tipo = st.selectbox('Tipo', tipo2, index=None)
     with col3:
         forma_pg = st.selectbox('Forma do Pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None)
