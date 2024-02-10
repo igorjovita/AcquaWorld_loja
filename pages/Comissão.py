@@ -8,7 +8,7 @@ import os
 import mysql.connector
 from decimal import Decimal
 from functions import select_vendedores
-
+import streamlit.components.v1
 
 chars = "'),([]"
 chars2 = "')([]"
@@ -268,6 +268,7 @@ for vendedor in vendedores:
 html_table += "</table>"
 
 # Exibindo a tabela no Streamlit
+st.components.v1.html(html_table, height=1000, width=1000, scrolling=True)
 st.write(html_table, unsafe_allow_html=True)
 
 
