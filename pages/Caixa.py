@@ -3,6 +3,9 @@ import mysql.connector
 import os
 import streamlit.components.v1
 from functions import gerar_html_entrada_caixa, gerar_html_total, gerar_html_saida_caixa
+from functions import insert_caixa
+
+
 mydb = mysql.connector.connect(
     host=os.getenv("DB_HOST"),
     user=os.getenv("DB_USERNAME"),
@@ -22,16 +25,16 @@ with st.form('Lancamento Caixa'):
         valor = st.text_input('Valor')
     with col2:
         lancamento = st.selectbox('Lançamento', ['ENTRADA', 'SAIDA'], index=None)
-        forma_pg = st.selectbox('Forma do Pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None)
-    with col3:
         if lancamento is not None and lancamento == 'ENTRADA':
             tipo = st.selectbox('Tipo', tipo1, index=None)
         else:
             tipo = st.selectbox('Tipo', tipo2, index=None)
-
+    with col3:
+        forma_pg = st.selectbox('Forma do Pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None)
     descricao = st.text_area('Descriçao')
     if st.form_submit_button('Lançar Pagamento'):
-        pass
+        insert_caixa(1, data_caixa, lancamento, tipo, descricao, forma_pg, valor)
+        st.success('Lançamento inserido no caixa')
 
 col1, col2, col3 = st.columns(3)
 html_content = None
