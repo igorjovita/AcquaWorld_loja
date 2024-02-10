@@ -262,7 +262,7 @@ html_table = "<table><tr><th>Coluna 1</th><th>Coluna 2</th></tr>"
 
 # Adicionando cada tupla da lista como uma linha na tabela HTML
 for vendedor in vendedores:
-    html_table += f"<tr><td>{vendedor[0]}</td><td>{select_vendedores()[1]}</td></tr>"
+    html_table += f"<tr><td>{vendedor[0]}</td><td>{vendedor[1]}</td></tr>"
 
 # Fechando a tabela
 html_table += "</table>"
