@@ -121,7 +121,8 @@ def lista_vendedores():
     # Fechando a tabela
     html_table += "</table>"
 
-    return html_table
+    return st.write(html_table, unsafe_allow_html=True)
+
 
 
 
