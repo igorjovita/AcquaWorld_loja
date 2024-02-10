@@ -245,7 +245,7 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
 
 st.write('----')
 
-st.write(lista_vendedores(), unsafe_allow_html=False)
+st.write(lista_vendedores(), unsafe_allow_html=True)
 
 
 
