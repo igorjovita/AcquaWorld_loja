@@ -40,6 +40,9 @@ if st.button('Lançar Pagamento'):
     st.success('Lançamento inserido no caixa')
 
 st.write('---')
+
+st.header('Planilha Caixa')
+
 col1, col2, col3 = st.columns(3)
 html_content = None
 
