@@ -253,6 +253,25 @@ st.write('----')
 if 'boolean' not in st.session_state:
     st.session_state.boolean = False
 
+st.subheader('Cadastrar Vendedores')
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    nome = st.text_input('Insira o Nome do Parceiro')
+    neto_bat = st.number_input('Neto Batismo', value=180)
+    neto_tur2 = st.number_input('Neto Turismo 2 imersões', value=380)
+
+with col2:
+    apelido = st.text_input('Insira o Apelido do Parceiro', help='Nome que o pareceiro será chamado no sistema')
+    neto_apc = st.number_input('Neto Acompanhante', value=90)
+with col3:
+    telefone = st.text_input('Telefone')
+    neto_tur1 = st.number_input('Neto Turismo 1 imersão', value=330)
+
+
+
+
 botao = st.button('Lista Vendedores')
 
 if botao:
