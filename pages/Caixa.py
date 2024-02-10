@@ -22,11 +22,11 @@ with st.form('Lancamento Caixa'):
         valor = st.text_input('Valor')
     with col2:
         lancamento = st.selectbox('Lançamento', ['ENTRADA', 'SAIDA'], index=None)
-
+        forma_pg = st.selectbox('Forma do Pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None)
     with col3:
         if lancamento is not None and lancamento == 'ENTRADA':
             tipo = st.selectbox('Tipo', tipo1, index=None)
-            forma_pg = st.selectbox('Forma do Pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None)
+
         else:
             tipo = st.selectbox('Tipo', tipo2, index=None)
 
