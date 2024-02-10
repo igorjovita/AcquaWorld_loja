@@ -4,7 +4,7 @@ import streamlit as st
 import jinja2
 import pdfkit
 from babel.numbers import format_currency
-
+from mysql.connector import Error
 chars = "'),([]"
 chars2 = "')([]"
 
@@ -44,6 +44,20 @@ def insert_cliente(cpf, nome_cliente, telefone, roupa):
     mydb.close()
 
     return id_cliente
+
+
+def insert_vendedores(nome, apelido, telefone, neto_bat, neto_acp, neto_tur1, neto_tur2):
+
+    mydb.connect()
+    try:
+        cursor.execute("INSERT INTO vendedores (nome, apelido, telefone, valor_neto, neto_acp, neto_tur1, neto_tur2) VALUES (%s, %s, %s, %s, %s, %s, %s)", (nome, apelido, telefone, neto_bat, neto_acp, neto_tur1, neto_tur2))
+        st.success(f'{apelido} foi cadastrado no sistema com sucesso')
+
+    except Erro as e:
+        st.error(f"Ocorreu um erro ao cadastrar  {apelido}: {e}")
+
+    finally:
+        mydb.close()
 
 
 def calculo_restricao(data):

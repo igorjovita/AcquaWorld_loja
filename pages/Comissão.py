@@ -7,7 +7,7 @@ from babel.numbers import format_currency
 import os
 import mysql.connector
 from decimal import Decimal
-from functions import lista_vendedores
+from functions import lista_vendedores, insert_vendedores
 
 chars = "'),([]"
 chars2 = "')([]"
@@ -258,20 +258,21 @@ st.subheader('Cadastrar Vendedores')
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    nome = st.text_input('Insira o Nome do Parceiro')
+    nome = st.text_input('Nome do Parceiro')
     neto_bat = st.number_input('Neto Batismo', value=180)
     neto_tur2 = st.number_input('Neto Turismo 2 imersões', value=380)
 
 with col2:
-    apelido = st.text_input('Insira o Apelido do Parceiro', help='Nome que o pareceiro será chamado no sistema')
+    apelido = st.text_input('Apelido do Parceiro', help='Nome que o pareceiro será chamado no sistema')
     neto_apc = st.number_input('Neto Acompanhante', value=90)
 with col3:
     telefone = st.text_input('Telefone')
     neto_tur1 = st.number_input('Neto Turismo 1 imersão', value=330)
+if st.button('Cadastrar Vendedor'):
+    insert_vendedores(nome, apelido, telefone, neto_bat, neto_acp, neto_tur1, neto_tur2)
 
 
-
-
+st.write('---')
 botao = st.button('Lista Vendedores')
 
 if botao:
