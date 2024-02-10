@@ -251,7 +251,7 @@ if st.button('Lista Vendedores'):
     if not boolean:
         boolean = True
 
-    elif boolean:
+    else:
         boolean = False
 
     if boolean:
