@@ -9,7 +9,6 @@ import mysql.connector
 from decimal import Decimal
 from functions import lista_vendedores
 
-
 chars = "'),([]"
 chars2 = "')([]"
 
@@ -29,7 +28,8 @@ state = st.session_state
 
 # Crie um DataFrame vazio para armazenar os dados
 if 'df_state' not in state:
-    state.df_state = pd.DataFrame(columns=['Selecionar', 'Data', 'Nome Cliente', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
+    state.df_state = pd.DataFrame(
+        columns=['Selecionar', 'Data', 'Nome Cliente', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Situação'])
 
 # Comissario, Data da reserva, Nome cliente, Tipo, Pago comissario, Pago Loja
 
@@ -51,6 +51,7 @@ def pressionar():
     st.session_state.botao_pressionado = True
     # Atualize a lista de itens selecionados com os IDs correspondentes
     st.session_state.selected_items = st.session_state.df_state[st.session_state.df_state['Selecionar']].index.tolist()
+
 
 total_pagar_somado = 0
 total_receber_somado = 0
@@ -128,7 +129,8 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
 
         resultados = cursor.fetchall()
     df = pd.DataFrame(resultados,
-                      columns=['Data', 'Nome Titular', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Pago Loja', 'Situação'])
+                      columns=['Data', 'Nome Titular', 'Tipo', 'Valor a Receber', 'Valor a Pagar', 'Pago Loja',
+                               'Situação'])
 
     # Adicionar coluna de seleção e formatar valores
     df.insert(0, 'Selecionar', [False] * len(df))
@@ -191,10 +193,10 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
 
         pagamento_input = st.text_input(label=recebedor, value=pagamento)
         data_pagamento = st.date_input("Data do Pagamento", format='DD/MM/YYYY', key="data_pagamento")
-        forma_pagamento = st.selectbox("Forma de Pagamento", options=['Pix', 'Dinheiro'], key="forma_pagamento", index=None)
+        forma_pagamento = st.selectbox("Forma de Pagamento", options=['Pix', 'Dinheiro'], key="forma_pagamento",
+                                       index=None)
 
-
-    # Botão para lançar pagamento
+        # Botão para lançar pagamento
         if st.button("Lançar Pagamento"):
             lista_ids = []
             st.write(lista_titular)
@@ -205,7 +207,8 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
 
                     # Formate a data no formato americano com "-"
                     data_formatada = data_datetime.strftime("%Y-%m-%d")
-                    cursor.execute(f"SELECT id_cliente from reserva where nome_cliente = '{titular}' and data = '{data_formatada}'")
+                    cursor.execute(
+                        f"SELECT id_cliente from reserva where nome_cliente = '{titular}' and data = '{data_formatada}'")
                     id_titular = cursor.fetchone()[0]
                     st.write(id_titular)
 
@@ -234,7 +237,9 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
 
                 if pagador == 'AcquaWorld':
                     descricao = f'ACERTO COMISSÃO {comissario}'
-                    cursor.execute("INSERT INTO caixa (data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s, %s)", (data_pagamento, 'SAIDA', 'PGT VENDEDOR', descricao, 'Pix', pagamento))
+                    cursor.execute(
+                        "INSERT INTO caixa (data, tipo_movimento, tipo, descricao, forma_pg, valor) VALUES (%s, %s, %s, %s, %s, %s)",
+                        (data_pagamento, 'SAIDA', 'PGT VENDEDOR', descricao, 'Pix', pagamento))
                 else:
                     descricao = f'ACERTO {comissario}'
                     cursor.execute(
@@ -245,12 +250,13 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
 
 st.write('----')
 
-boolean = 0
-st.button('Lista Vendedores', on_click=lista_vendedores())
+if 'boolean' not in st.session_state:
+    st.session_state.boolean = False
 
+botao = st.button('Lista Vendedores')
 
+if botao:
+    st.session_state.boolean = not st.session_state.boolean
+   
 
-
-
-
-
+st.write(st.session_state.boolean)
