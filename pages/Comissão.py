@@ -249,22 +249,13 @@ st.header('Vendedores')
 
 vendedores = select_vendedores()
 
-
-
-# Criando a tabela em HTML com estilo CSS para a largura e tamanho do texto
-html_table = f"<div style='width: 600px;'><table style=' font-size: 30px; text-align: center;'>"
-
-# Adicionando uma linha de cabeçalho
-html_table += "<tr><th style='font_size: 40px;'>Nome</th><th style='font_size: 40px;'>Valor Neto</th></tr>"
-
-
 # Criando a tabela em HTML
-# html_table = "<table style= 'width: 600px; font-size: 30px; text-align: center;'><tr><th>Nome</th><th>Valor Neto</th></tr>"
+html_table = "<table style= 'width: 600px; font-size: 30px; text-align: center;'><tr><th>Nome</th><th>Valor Neto</th></tr>"
 
 
 # Adicionando cada tupla da lista como uma linha na tabela HTML
 for vendedor in vendedores:
-    html_table += f"<tr><td>{vendedor[0]}</td><td>{vendedor[1]}</td></tr>"
+    html_table += f"<tr><td style='font-size:20px';>{vendedor[0]}</td><td style='font-size: 20px'>{vendedor[1]}</td></tr>"
 
 # Fechando a tabela
 html_table += "</table>"
