@@ -7,6 +7,9 @@ from babel.numbers import format_currency
 import os
 import mysql.connector
 from decimal import Decimal
+from functions import select_vendedores
+
+
 chars = "'),([]"
 chars2 = "')([]"
 
@@ -239,8 +242,16 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
                         (data_pagamento, 'ENTRADA', 'PGT VENDEDOR', descricao, 'Pix', pagamento))
 
                 st.write(pagador)
-                #
-                # st.write(lista_titular)
+
+st.write('----')
+
+st.header('Vendedores')
+
+vendedores = select_vendedores()
+
+st.subheader(vendedores)
+
+
 
 
 

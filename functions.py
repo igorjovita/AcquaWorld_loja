@@ -87,6 +87,12 @@ def seleciona_vendedores():
     return lista_vendedor
 
 
+def select_vendedores():
+    cursor.execute("SELECT apelido, valor_neto FROM vendedores")
+    lista = cursor.fetchall()
+    return lista
+
+
 def seleciona_vendedores_apelido(comissario):
     mydb.connect()
     cursor.execute(f"SELECT id FROM vendedores WHERE apelido = '{comissario}'")
