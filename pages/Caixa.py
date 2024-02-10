@@ -14,16 +14,21 @@ mydb = mysql.connector.connect(
 
 
 st.header('Planilha do Caixa')
-
+tipo1 = ['ENTRADA', 'BAT', 'TUR', 'ACP', 'CURSO', 'PGT PARCEIRO', 'OUTROS']
+tipo2 = ['CAFÉ DA MANHÃ', 'DESPESA OPERACIONAL', 'SALARIO', 'SANGRIA', 'CONTAS']
 col1, col2, col3 = st.columns(3)
 with col1:
     data_caixa = st.date_input('Data', format='DD/MM/YYYY')
-
+    valor = st.text_input('Valor')
 with col2:
     lancamento = st.selectbox('Lançamento', ['ENTRADA', 'SAIDA'], index=None)
-
+    if lancamento is not None and lancamento == 'ENTRADA':
+        tipo = st.selectbox('Tipo', tipo1, index=None)
+    else:
+        tipo = st.selectbox('Tipo', tipo2, index=None)
 with col3:
-    pass
+    descricao = st.text_input('Descriçao')
+    forma_pg = st.selectbox('Forma do Pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None)
 
 col1, col2, col3 = st.columns(3)
 html_content = None
