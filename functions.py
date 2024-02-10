@@ -101,6 +101,30 @@ def seleciona_vendedores_apelido(comissario):
 
     return id_vendedor
 
+
+def lista_vendedores():
+    vendedores = select_vendedores()
+
+    # Criando a tabela em HTML
+    html_table = "<table style='width: 600px; font-size: 20px; text-align: center;'>"
+
+    # Adicionando a linha do cabeçalho adicional
+    html_table += "<tr><td colspan='2' style='font-size: 24px;'>Vendedores</td></tr>"
+
+    # Adicionando a linha de cabeçalho
+    html_table += "<tr><th>Nome</th><th>Valor Neto</th></tr>"
+
+    # Adicionando cada tupla da lista como uma linha na tabela HTML
+    for vendedor in vendedores:
+        html_table += f"<tr><td style='font-size:20px';>{vendedor[0]}</td><td style='font-size: 20px'>{format_currency(float(vendedor[1]), 'BRL', locale='pt_BR')}</td></tr>"
+
+    # Fechando a tabela
+    html_table += "</table>"
+
+    return html_table
+
+
+
 @st.cache_data
 def obter_valor_neto(tipo, valor_total_reserva, id_vendedor_pg):
     mydb.connect()

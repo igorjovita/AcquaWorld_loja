@@ -7,7 +7,7 @@ from babel.numbers import format_currency
 import os
 import mysql.connector
 from decimal import Decimal
-from functions import select_vendedores
+from functions import lista_vendedores
 
 
 chars = "'),([]"
@@ -245,27 +245,8 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
 
 st.write('----')
 
-vendedores = select_vendedores()
 
-# Criando a tabela em HTML
-html_table = "<table style='width: 600px; font-size: 20px; text-align: center;'>"
-
-# Adicionando a linha do cabeçalho adicional
-html_table += "<tr><td colspan='2' style='font-size: 24px;'>Vendedores</td></tr>"
-
-# Adicionando a linha de cabeçalho
-html_table += "<tr><th>Nome</th><th>Valor Neto</th></tr>"
-
-# Adicionando cada tupla da lista como uma linha na tabela HTML
-for vendedor in vendedores:
-    html_table += f"<tr><td style='font-size:20px';>{vendedor[0]}</td><td style='font-size: 20px'>{format_currency(float(vendedor[1]), 'BRL', locale='pt_BR')}</td></tr>"
-
-# Fechando a tabela
-html_table += "</table>"
-
-# Exibindo a tabela no Streamlit
-st.write(html_table, unsafe_allow_html=True)
-
+st.write(lista_vendedores())
 
 
 
