@@ -245,15 +245,15 @@ if st.button('Pesquisar Comissão', on_click=pressionar) or st.session_state.bot
 
 st.write('----')
 
-boolean = False
+boolean = 0
 if st.button('Lista Vendedores'):
-    if not boolean:
-        boolean = True
+    if boolean == 0:
+        boolean = 1
 
     else:
-        boolean = False
+        boolean = 0
     st.write(boolean)
-    if boolean:
+    if boolean == 1:
         st.write(lista_vendedores(), unsafe_allow_html=True)
 
 
