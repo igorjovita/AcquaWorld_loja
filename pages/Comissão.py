@@ -264,7 +264,7 @@ with col1:
 
 with col2:
     apelido = st.text_input('Apelido do Parceiro', help='Nome que o pareceiro será chamado no sistema')
-    neto_apc = st.number_input('Neto Acompanhante', value=90)
+    neto_acp = st.number_input('Neto Acompanhante', value=90)
 with col3:
     telefone = st.text_input('Telefone')
     neto_tur1 = st.number_input('Neto Turismo 1 imersão', value=330)
