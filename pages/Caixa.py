@@ -42,40 +42,26 @@ if st.button('Lançar Pagamento'):
 st.write('---')
 
 st.header('Planilha Caixa')
-if 'boolean1' not in st.session_state:
-    st.session_state.boolean1 = False
 
-if 'boolean2' not in st.session_state:
-    st.session_state.boolean2 = False
-
-if 'boolean3' not in st.session_state:
-    st.session_state.boolean3 = False
 col1, col2, col3 = st.columns(3)
 html_content = None
 
 with col1:
     st.write('')
     if st.button('Abrir Total'):
-        st.session_state.boolean1 = not st.session_state.boolean1
-        if st.session_state.boolean1:
-            with open("planilha_caixa_total.html", "r", encoding="utf-8") as file:
-                html_content = gerar_html_total(data_caixa)
+        with open("planilha_caixa_total.html", "r", encoding="utf-8") as file:
+            html_content = gerar_html_total(data_caixa)
 
 with col2:
     st.write('')
     if st.button('Abrir Entrada'):
-        st.session_state.boolean2 = not st.session_state.boolean2
-        if st.session_state.boolean2:
-            with open("planilha_caixa_entrada.html", "r", encoding="utf-8") as file:
-                html_content = gerar_html_entrada_caixa(data_caixa)
+        with open("planilha_caixa_entrada.html", "r", encoding="utf-8") as file:
+            html_content = gerar_html_entrada_caixa(data_caixa)
 with col3:
     st.write('')
-
     if st.button('Abrir Saida'):
-        st.session_state.boolean3 = not st.session_state.boolean3
-        if st.session_state.boolean3:
-            with open("planilha_caixa_saida.html", "r", encoding="utf-8") as file:
-                html_content = gerar_html_saida_caixa(data_caixa)
+        with open("planilha_caixa_saida.html", "r", encoding="utf-8") as file:
+            html_content = gerar_html_saida_caixa(data_caixa)
 
 if html_content:
     st.components.v1.html(html_content, height=1000, width=1000, scrolling=True)
