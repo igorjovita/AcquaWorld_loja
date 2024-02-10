@@ -254,10 +254,17 @@ col1, col2 = st.columns(2)
 for vendedor in vendedores:
 
     with col1:
-        st.subheader(vendedor[0])
+        st.subheader('Vendedor')
+        st.markdown(
+            f"<h2 style='color: black; text-align: center; font-size: 2em;'>{vendedor[0]}</h2>",
+            unsafe_allow_html=True)
 
     with col2:
-        st.subheader(vendedor[1])
+        st.subheader('Valor Neto')
+
+        st.markdown(
+            f"<h2 style='color: black; text-align: center; font-size: 2em;'>{vendedor[1]}</h2>",
+            unsafe_allow_html=True)
 
 
 
