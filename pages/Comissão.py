@@ -252,10 +252,10 @@ vendedores = select_vendedores()
 
 
 # Criando a tabela em HTML com estilo CSS para a largura e tamanho do texto
-html_table = f"<div style='width: 600px;'><table style='width:100%;'>"
+html_table = f"<div style='width: 600px;'><table style=' font-size: 30px; text-align: center;'>"
 
 # Adicionando uma linha de cabeçalho
-html_table += "<tr><th style='width:70%;'>Nome</th><th style='width:30%;'>Valor Neto</th></tr>"
+html_table += "<tr><th style='font_size: 40px;'>Nome</th><th style='font_size: 40px;'>Valor Neto</th></tr>"
 
 
 # Criando a tabela em HTML
