@@ -262,13 +262,13 @@ for vendedor in vendedores:
     with col1:
 
         st.markdown(
-            f"<h2 style='color: black; font-size: 1em;'>{vendedor[0]}</h2>",
+            f"<h2 style='color: black; font-size: 1.6em;'>{vendedor[0]}</h2>",
             unsafe_allow_html=True)
 
     with col2:
 
         st.markdown(
-            f"<h2 style='color: black; font-size: 1em;'>{vendedor[1]}</h2>",
+            f"<h2 style='color: black; font-size: 1.6em;'>{vendedor[1]}</h2>",
             unsafe_allow_html=True)
 
 
