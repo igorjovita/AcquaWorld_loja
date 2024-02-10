@@ -109,7 +109,7 @@ def lista_vendedores():
     html_table = "<table style='width: 600px; font-size: 20px; text-align: center;'>"
 
     # Adicionando a linha do cabeçalho adicional
-    html_table += "<tr><td colspan='2' style='font-size: 24px;'>Vendedores</td></tr>"
+    html_table += "<tr><th colspan='2' style='font-size: 24px;'>Vendedores</th></tr>"
 
     # Adicionando a linha de cabeçalho
     html_table += "<tr><th>Nome</th><th>Valor Neto</th></tr>"
