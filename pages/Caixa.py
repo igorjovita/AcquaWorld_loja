@@ -27,9 +27,8 @@ with st.form('Lancamento Caixa'):
         else:
             tipo = st.selectbox('Tipo', tipo2, index=None)
     with col3:
-        descricao = st.text_input('Descriçao')
         forma_pg = st.selectbox('Forma do Pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None)
-
+    descricao = st.text_area('Descriçao')
     if st.form_submit_button('Lançar Pagamento'):
         pass
 
