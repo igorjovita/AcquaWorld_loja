@@ -39,6 +39,7 @@ if st.button('Lançar Pagamento'):
     insert_caixa(1, data_caixa, lancamento, tipo, descricao, forma_pg, valor)
     st.success('Lançamento inserido no caixa')
 
+st.write('---')
 col1, col2, col3 = st.columns(3)
 html_content = None
 
