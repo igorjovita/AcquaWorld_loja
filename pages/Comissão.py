@@ -265,6 +265,7 @@ with col1:
 with col2:
     apelido = st.text_input('Apelido do Parceiro', help='Nome que o pareceiro será chamado no sistema')
     neto_acp = st.number_input('Neto Acompanhante', value=90)
+    botao3 = st.button('Lista Vendedores3', disabled=True)
     botao2 = st.button('Lista Vendedores')
 with col3:
     telefone = st.text_input('Telefone')
