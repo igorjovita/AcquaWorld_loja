@@ -100,7 +100,9 @@ def seleciona_vendedores():
     lista = cursor.fetchall()
 
     for vendedor in lista:
+        vendedor = str(vendedor).translate(str.maketrans('', '', chars))
         lista_vendedor.append(vendedor)
+    
     mydb.close()
     return lista_vendedor
 
