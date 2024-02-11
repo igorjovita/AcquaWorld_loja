@@ -92,7 +92,7 @@ def calculo_restricao(data):
     return contagem, restricao, contagem_cred, vaga_bat, vaga_cred, vaga_total
 
 
-@st.cache_resource
+
 def seleciona_vendedores():
     mydb.connect()
     cursor.execute("SELECT apelido FROM vendedores")
