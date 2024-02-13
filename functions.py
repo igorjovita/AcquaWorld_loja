@@ -102,7 +102,7 @@ def seleciona_vendedores():
     for vendedor in lista:
         vendedor = str(vendedor).translate(str.maketrans('', '', chars))
         lista_vendedor.append(vendedor)
-    
+
     mydb.close()
     return lista_vendedor
 
