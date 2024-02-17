@@ -35,7 +35,7 @@ pasta = os.path.dirname(__file__)
 
 if escolha == 'Visualizar':
     # Função para obter cores com base no valor da coluna 'check_in'
-    data_para_pdf = st.date_input("Data para gerar PDF:")
+    data_para_pdf = st.date_input("Data para gerar PDF:", format='DD/MM/YYYY')
     if st.button('Gerar Html'):
         tabela_html = gerar_html(data_para_pdf)
         st.components.v1.html(tabela_html, height=1000, width=1000, scrolling=True)
