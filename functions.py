@@ -108,8 +108,10 @@ def seleciona_vendedores():
 
 
 def select_vendedores():
+    mydb.connect()
     cursor.execute("SELECT apelido, valor_neto FROM vendedores order by valor_neto asc ")
     lista = cursor.fetchall()
+    mydb.close()
     return lista
 
 
@@ -123,6 +125,7 @@ def seleciona_vendedores_apelido(comissario):
 
 
 def lista_vendedores():
+    mydb.connect()
     vendedores = select_vendedores()
 
     # Criando a tabela em HTML
@@ -140,7 +143,7 @@ def lista_vendedores():
 
     # Fechando a tabela
     html_table += "</table>"
-
+    mydb.close()
     return html_table
 
 
