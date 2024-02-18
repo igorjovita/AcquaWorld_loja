@@ -163,7 +163,7 @@ if escolha == 'Reservar':
                                             key=f'cpf{nome_cliente}{i}')
                         altura = st.slider(f'Altura', 1.50, 2.10,
                                            key=f'altura{nome_cliente}{i}')
-                        sinal = st.text_input(f'Valor do Sinal', key=f'sinal{nome_cliente}{i}')
+                        sinal = st.text_input(f'Valor do Sinal', key=f'sinal{nome_cliente}{i}', value=0)
 
                     with colu2:
                         telefone = st.text_input(f'Telefone:',
