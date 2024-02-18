@@ -443,7 +443,7 @@ def gerar_pdf(data_para_pdf):
 
 def gerar_html(data_para_pdf):
     mydb.connect()
-    cursor.execute(f"SELECT c.nome AS nome_cliente, c.cpf, c.telefone, v.nome AS nome_vendedor, r.tipo, r.fotos, r.dm, c.roupa FROM reserva AS r INNER JOIN cliente AS c ON r.id_cliente = c.id INNER JOIN vendedores AS v ON r.id_vendedor = v.id WHERE r.data = '{data_para_pdf}'")
+    cursor.execute(f"SELECT c.nome AS nome_cliente, c.cpf, c.telefone, v.apelido AS nome_vendedor, r.tipo, r.fotos, r.dm, c.roupa FROM reserva AS r INNER JOIN cliente AS c ON r.id_cliente = c.id INNER JOIN vendedores AS v ON r.id_vendedor = v.id WHERE r.data = '{data_para_pdf}'")
     dados = cursor.fetchall()
 
     # Inicialize a variável html_table fora do loop
