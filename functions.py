@@ -447,20 +447,20 @@ def gerar_html(data_para_pdf):
     dados = cursor.fetchall()
 
     # Inicialize a variável html_table fora do loop
-    # Criando a tabela em HTML com bordas
+    # Criando a tabela em HTML com bordas e estilo de layout automático
     html_table = """
-    <table style="border-collapse: collapse; width: 99.1213%; height: 1138px;" border="1">
+    <table style="border-collapse: collapse; width: auto;" border="1">
         <tbody>
             <tr style="height: 18px;">
-                <th style="text-align: center; max-width: 18px;">#</th>
-                <th style="max-width: 20px;">Nome Cliente</th>
-                <th style="max-width: 15px;">CPF</th>
-                <th style="max-width: 15px;">Telefone</th>
-                <th style="max-width: 15px;">Vendedor</th>
-                <th style="max-width: 10px;">Tipo</th>
-                <th style="max-width: 10px;">Fotos</th>
-                <th style="max-width: 10px;">DM</th>
-                <th style="max-width: 10px;">Roupa</th>
+                <th style="text-align: center;">#</th>
+                <th>Nome Cliente</th>
+                <th>CPF</th>
+                <th>Telefone</th>
+                <th>Vendedor</th>
+                <th>Tipo</th>
+                <th>Fotos</th>
+                <th>DM</th>
+                <th>Roupa</th>
             </tr>
     """
 
@@ -477,15 +477,15 @@ def gerar_html(data_para_pdf):
 
         html_table += f"""
             <tr style="height: 18px;">
-                <td style="text-align: center; max-width: 10px;">{i + 1}</td>
-                <td style="max-width: 20px;">{nome_cliente}</td> 
-                <td style="max-width: 15px;">{cpf}</td> 
-                <td style="max-width: 15px;">{telefone}</td>
-                <td style="max-width: 15px;">{comissario}</td>
-                <td style="max-width: 10px;">{tipo}</td>
-                <td style="max-width: 10px;">{fotos}</td>
-                <td style="max-width: 10px;">{dm}</td>
-                <td style="max-width: 10px;">{roupa}</td>
+                <td style="text-align: center;">{i + 1}</td>
+                <td>{nome_cliente}</td> 
+                <td>{cpf}</td> 
+                <td>{telefone}</td>
+                <td>{comissario}</td>
+                <td>{tipo}</td>
+                <td>{fotos}</td>
+                <td>{dm}</td>
+                <td>{roupa}</td>
             </tr>
         """
 
@@ -494,6 +494,7 @@ def gerar_html(data_para_pdf):
     html_table += "</tbody></table>"
 
     return html_table
+
 
 
 
