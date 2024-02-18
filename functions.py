@@ -446,14 +446,14 @@ def gerar_html(data_para_pdf):
     dados = cursor.fetchall()
 
     # Inicialize a variável html_row fora do loop
-    # Criando a tabela em HTML
-    html_table = "<table style='width: 1000px; font-size: 20px; text-align: center;'>"
+    # Criando a tabela em HTML com bordas
+    html_table = "<table style='width: 1000px; font-size: 20px; text-align: center; border-collapse: collapse; border: 1px solid black;'>"
 
-    # Adicionando a linha do cabeçalho
-    html_table += "<tr><th>#</th><th>Nome Cliente</th><th>CPF</th><th>Telefone</th><th>Vendedor</th><th>Tipo</th><th>Fotos</th><th>DM</th><th>Roupa</th></tr>"
+    # Adicionando a linha do cabeçalho com bordas
+    html_table += "<tr style='border: 1px solid black;'><th>#</th><th>Nome Cliente</th><th>CPF</th><th>Telefone</th><th>Vendedor</th><th>Tipo</th><th>Fotos</th><th>DM</th><th>Roupa</th></tr>"
 
-    # Adicionando cada tupla da lista como uma linha na tabela HTML
-    for i,dado in enumerate(dados):
+    # Adicionando cada tupla da lista como uma linha na tabela HTML com bordas
+    for i, dado in enumerate(dados):
         nome_cliente = dado[0]
         cpf = dado[1]
         telefone = dado[2]
@@ -464,22 +464,23 @@ def gerar_html(data_para_pdf):
         roupa = dado[7]
 
         html_table += f"""
-              <tr style="height: 18px;">
-                  <td style="width: 1.22094%; height: 18px; text-align: center;">{i}</td>
-                  <td style="width: 21.8416%; height: 18px;">{nome_cliente}</td>
-                  <td style="width: 9.33849%; height: 18px;">{cpf}</td>
-                  <td style="width: 9.35344%; height: 18px;">{telefone}</td>
-                  <td style="width: 6.13493%; height: 18px;">{comissario}</td>
-                  <td style="width: 4.25743%; height: 18px;">{tipo}</td>
-                  <td style="width: 5.57182%; height: 18px;">{fotos}</td>
-                  <td style="width: 4.36565%; height: 18px;">{dm}</td>
-                  <td style="width: 5.0513%; height: 18px;">{roupa}</td>
+              <tr style='border: 1px solid black;'>
+                  <td style="width: 1.22094%; text-align: center;">{i}</td>
+                  <td style="width: 21.8416%;">{nome_cliente}</td>
+                  <td style="width: 9.33849%;">{cpf}</td>
+                  <td style="width: 9.35344%;">{telefone}</td>
+                  <td style="width: 6.13493%;">{comissario}</td>
+                  <td style="width: 4.25743%;">{tipo}</td>
+                  <td style="width: 5.57182%;">{fotos}</td>
+                  <td style="width: 4.36565%;">{dm}</td>
+                  <td style="width: 5.0513%;">{roupa}</td>
               </tr>
               """
 
     # Fechando a tabela
     html_table += "</table>"
     return html_table
+
 
     # mydb.connect()
     # cliente = []
