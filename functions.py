@@ -451,7 +451,7 @@ def gerar_html(data_para_pdf):
     html_table = """
     <table style="border-collapse: collapse; width: 99.1213%; height: 1138px;" border="1">
         <tbody>
-            <tr>
+            <tr style="height: 18px;">
                 <th style="text-align: center;">#</th>
                 <th>Nome Cliente</th>
                 <th>CPF</th>
