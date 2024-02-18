@@ -452,15 +452,15 @@ def gerar_html(data_para_pdf):
     <table style="border-collapse: collapse; width: 99.1213%; height: 1138px;" border="1">
         <tbody>
             <tr style="height: 18px;">
-                <th style="width: 1.22094%; text-align: center;">#</th>
-                <th style="width: 21.8416%;">Nome Cliente</th>
-                <th style="width: 9.33849%;">CPF</th>
-                <th style="width: 9.35344%;">Telefone</th>
-                <th style="width: 6.13493%;">Vendedor</th>
-                <th style="width: 4.25743%;">Tipo</th>
-                <th style="width: 5.57182%;">Fotos</th>
-                <th style="width: 4.36565%;">DM</th>
-                <th style="width: 5.0513%;">Roupa</th>
+                <th style="text-align: center;">#</th>
+                <th>Nome Cliente</th>
+                <th>CPF</th>
+                <th>Telefone</th>
+                <th>Vendedor</th>
+                <th>Tipo</th>
+                <th>Fotos</th>
+                <th>DM</th>
+                <th>Roupa</th>
             </tr>
     """
 
@@ -477,17 +477,18 @@ def gerar_html(data_para_pdf):
 
         html_table += f"""
             <tr style="height: 18px;">
-                <td style="width: 1.22094%; text-align: center;">{i+1}</td>
-                <td style="width: 21.8416%;">{nome_cliente}</td>
-                <td style="width: 9.33849%;">{cpf}</td>
-                <td style="width: 9.35344%;">{telefone}</td>
-                <td style="width: 6.13493%;">{comissario}</td>
-                <td style="width: 4.25743%;">{tipo}</td>
-                <td style="width: 5.57182%;">{fotos}</td>
-                <td style="width: 4.36565%;">{dm}</td>
-                <td style="width: 5.0513%;">{roupa}</td>
+                <td style="text-align: center;">{i + 1}</td>
+                <td>{nome_cliente}</td> 
+                <td>{cpf}</td> 
+                <td>{telefone}</td>
+                <td>{comissario}</td>
+                <td>{tipo}</td>
+                <td>{fotos}</td>
+                <td>{dm}</td>
+                <td>{roupa}</td>
             </tr>
         """
+
     mydb.close()
     # Fechando a tabela
     html_table += "</tbody></table>"
