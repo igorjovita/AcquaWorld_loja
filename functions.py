@@ -476,7 +476,6 @@ def gerar_html(data_para_pdf):
                   <td style="width: 5.0513%; height: 18px;">{roupa}</td>
               </tr>
               """
-           """
 
     # Fechando a tabela
     html_table += "</table>"
