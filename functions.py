@@ -447,7 +447,7 @@ def gerar_html(data_para_pdf):
 
     # Inicialize a variável html_row fora do loop
     # Criando a tabela em HTML com bordas
-    html_table = "<table style='width: 1000px; font-size: 20px; text-align: center; border-collapse: collapse;'>"
+    html_table = "<table style='width: 1000px; font-size: 20px; border-collapse: collapse;'>"
 
     # Adicionando a linha do cabeçalho com bordas
     html_table += "<tr><th style='border: 1px solid black;'>#</th><th style='border: 1px solid black;'>Nome Cliente</th><th style='border: 1px solid black;'>CPF</th><th style='border: 1px solid black;'>Telefone</th><th style='border: 1px solid black;'>Vendedor</th><th style='border: 1px solid black;'>Tipo</th><th style='border: 1px solid black;'>Fotos</th><th style='border: 1px solid black;'>DM</th><th style='border: 1px solid black;'>Roupa</th></tr>"
