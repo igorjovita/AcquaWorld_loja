@@ -442,100 +442,133 @@ def gerar_pdf(data_para_pdf):
 
 
 def gerar_html(data_para_pdf):
-    mydb.connect()
-    cliente = []
-    cpf = []
-    telefone = []
-    roupa = []
-    id_vendedor = []
-    cert = []
-    foto = []
-    dm = []
-    background_colors = []
-    lista_id_vendedor = []
-    comissario = []
-    # Consulta ao banco de dados para obter os dados
-    cursor.execute(
-        f"SELECT nome_cliente,id_vendedor, tipo, fotos, dm, check_in FROM reserva WHERE data = '{data_para_pdf}'")
-    lista_dados_reserva = cursor.fetchall()
 
-    for dados in lista_dados_reserva:
-        if dados[0] is None:
-            cliente.append('')
-        else:
-            cliente.append(str(dados[0]).upper().translate(str.maketrans('', '', chars)))
+    cursor.execute(f"SELECT c.nome AS nome_cliente, c.cpf, c.telefone, v.nome AS nome_vendedor, r.tipo,r.fotos, r.dm, c.roupa FROM reserva AS r INNER JOIN cliente AS c ON r.id_cliente = c.id INNER JOIN vendedores AS v ON r.id_vendedor = v.id where r.data = '{data_para_pdf}'")
+    dados = cursor.fetchall()
+    # Supondo que dados seja uma lista de tuplas onde cada tupla contém os dados de um cliente
+    for dado in dados:
+        nome_cliente = dado[0]
+        cpf = dado[1]
+        telefone = dado[2]
+        comissario = dado[3]
+        c = dado[4]
+        f = dado[5]
+        dm = dado[6]
+        r = dado[7]
 
-        id_vendedor.append(str(dados[1]).translate(str.maketrans('', '', chars)))
+        # Aqui dentro do loop, você pode gerar a estrutura HTML para cada cliente
+        html_row = f"""
+        <tr style="height: 18px;">
+            <td style="width: 1.22094%; height: 18px; text-align: center;">1</td>
+            <td style="width: 21.8416%; height: 18px;">{nome_cliente}</td>
+            <td style="width: 9.33849%; height: 18px;">{cpf}</td>
+            <td style="width: 9.35344%; height: 18px;">{telefone}</td>
+            <td style="width: 6.13493%; height: 18px;">{comissario}</td>
+            <td style="width: 4.25743%; height: 18px;">{c}</td>
+            <td style="width: 5.57182%; height: 18px;">{f}</td>
+            <td style="width: 4.36565%; height: 18px;">{dm}</td>
+            <td style="width: 5.0513%; height: 18px;">{r}</td>
+        </tr>
+        """
 
-        if dados[2] is None:
-            cert.append('')
-        else:
-            cert.append(str(dados[2]).upper().translate(str.maketrans('', '', chars)))
-        if dados[3] is None:
-            foto.append('')
-        else:
-            foto.append(str(dados[3]).upper().translate(str.maketrans('', '', chars)))
+        # Você pode fazer o que quiser com a linha HTML gerada aqui, como imprimir ou armazenar em uma lista para uso posterior
+          # Ou faça qualquer outra coisa com a linha HTML
+        return html_row
 
-        if dados[4] is None:
-            dm.append('')
-        else:
-            dm.append(str(dados[4]).upper().translate(str.maketrans('', '', chars)))
-
-        background_colors.append(str(dados[5]).translate(str.maketrans('', '', chars)))
-
-    for nome in cliente:
-        cursor.execute(
-            f"SELECT cpf, telefone, roupa FROM cliente WHERE nome = '{nome}'")
-        lista_dados_cliente = cursor.fetchall()
-
-        for item in lista_dados_cliente:
-            if item[0] is None:
-                cpf.append('')
-            else:
-                cpf.append(str(item[0]).translate(str.maketrans('', '', chars)))
-
-            if item[1] is None:
-                telefone.append('')
-            else:
-                telefone.append(str(item[1]).translate(str.maketrans('', '', chars)))
-
-            if item[2] is None:
-                roupa.append('')
-            else:
-                roupa.append(str(item[2]).translate(str.maketrans('', '', chars)))
-
-    for item in id_vendedor:
-        lista_id_vendedor.append(str(item).translate(str.maketrans('', '', chars)))
-
-    for id_v in lista_id_vendedor:
-        cursor.execute(f"SELECT apelido from vendedores where id = '{id_v}'")
-        comissario.append(str(cursor.fetchone()).upper().translate(str.maketrans('', '', chars)))
-
-    mydb.close()
-
-    # Processar a data
-    data_selecionada = str(data_para_pdf).split('-')
-    dia, mes, ano = data_selecionada[2], data_selecionada[1], data_selecionada[0]
-    data_completa = f'{dia}/{mes}/{ano}'
-
-    # Criar o contexto
-    contexto = {'cliente': cliente, 'cpf': cpf, 'tel': telefone, 'comissario': comissario, 'c': cert, 'f': foto,
-                'r': roupa, 'data_reserva': data_completa, 'background_colors': background_colors, 'dm': dm}
-
-    # Renderizar o template HTML
-    planilha_loader = jinja2.FileSystemLoader('./')
-    planilha_env = jinja2.Environment(loader=planilha_loader)
-    planilha = planilha_env.get_template('planilha2.html')
-    output_text = planilha.render(contexto)
-
-    # Nome do arquivo PDF
-    pdf_filename = f"reservas_{data_para_pdf}.pdf"
-
-    # Gerar PDF
-    config = pdfkit.configuration()
-    pdfkit.from_string(output_text, pdf_filename, configuration=config)
-
-    return output_text
+    # mydb.connect()
+    # cliente = []
+    # cpf = []
+    # telefone = []
+    # roupa = []
+    # id_vendedor = []
+    # cert = []
+    # foto = []
+    # dm = []
+    # background_colors = []
+    # lista_id_vendedor = []
+    # comissario = []
+    # # Consulta ao banco de dados para obter os dados
+    # cursor.execute(
+    #     f"SELECT nome_cliente,id_vendedor, tipo, fotos, dm, check_in FROM reserva WHERE data = '{data_para_pdf}'")
+    # lista_dados_reserva = cursor.fetchall()
+    #
+    # for dados in lista_dados_reserva:
+    #     if dados[0] is None:
+    #         cliente.append('')
+    #     else:
+    #         cliente.append(str(dados[0]).upper().translate(str.maketrans('', '', chars)))
+    #
+    #     id_vendedor.append(str(dados[1]).translate(str.maketrans('', '', chars)))
+    #
+    #     if dados[2] is None:
+    #         cert.append('')
+    #     else:
+    #         cert.append(str(dados[2]).upper().translate(str.maketrans('', '', chars)))
+    #     if dados[3] is None:
+    #         foto.append('')
+    #     else:
+    #         foto.append(str(dados[3]).upper().translate(str.maketrans('', '', chars)))
+    #
+    #     if dados[4] is None:
+    #         dm.append('')
+    #     else:
+    #         dm.append(str(dados[4]).upper().translate(str.maketrans('', '', chars)))
+    #
+    #     background_colors.append(str(dados[5]).translate(str.maketrans('', '', chars)))
+    #
+    # for nome in cliente:
+    #     cursor.execute(
+    #         f"SELECT cpf, telefone, roupa FROM cliente WHERE nome = '{nome}'")
+    #     lista_dados_cliente = cursor.fetchall()
+    #
+    #     for item in lista_dados_cliente:
+    #         if item[0] is None:
+    #             cpf.append('')
+    #         else:
+    #             cpf.append(str(item[0]).translate(str.maketrans('', '', chars)))
+    #
+    #         if item[1] is None:
+    #             telefone.append('')
+    #         else:
+    #             telefone.append(str(item[1]).translate(str.maketrans('', '', chars)))
+    #
+    #         if item[2] is None:
+    #             roupa.append('')
+    #         else:
+    #             roupa.append(str(item[2]).translate(str.maketrans('', '', chars)))
+    #
+    # for item in id_vendedor:
+    #     lista_id_vendedor.append(str(item).translate(str.maketrans('', '', chars)))
+    #
+    # for id_v in lista_id_vendedor:
+    #     cursor.execute(f"SELECT apelido from vendedores where id = '{id_v}'")
+    #     comissario.append(str(cursor.fetchone()).upper().translate(str.maketrans('', '', chars)))
+    #
+    # mydb.close()
+    #
+    # # Processar a data
+    # data_selecionada = str(data_para_pdf).split('-')
+    # dia, mes, ano = data_selecionada[2], data_selecionada[1], data_selecionada[0]
+    # data_completa = f'{dia}/{mes}/{ano}'
+    #
+    # # Criar o contexto
+    # contexto = {'cliente': cliente, 'cpf': cpf, 'tel': telefone, 'comissario': comissario, 'c': cert, 'f': foto,
+    #             'r': roupa, 'data_reserva': data_completa, 'background_colors': background_colors, 'dm': dm}
+    #
+    # # Renderizar o template HTML
+    # planilha_loader = jinja2.FileSystemLoader('./')
+    # planilha_env = jinja2.Environment(loader=planilha_loader)
+    # planilha = planilha_env.get_template('planilha2.html')
+    # output_text = planilha.render(contexto)
+    #
+    # # Nome do arquivo PDF
+    # pdf_filename = f"reservas_{data_para_pdf}.pdf"
+    #
+    # # Gerar PDF
+    # config = pdfkit.configuration()
+    # pdfkit.from_string(output_text, pdf_filename, configuration=config)
+    #
+    # return output_text
 
 
 def gerar_html_entrada_caixa(data_caixa):
