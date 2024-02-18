@@ -449,7 +449,7 @@ def gerar_html(data_para_pdf):
     # Inicialize a variável html_table fora do loop
     # Criando a tabela em HTML com bordas
     html_table = """
-    <table style="border-collapse: collapse; height: 1138px;" border="1">
+    <table style="border-collapse: collapse;" border="1">
         <tbody>
             <tr style="height: 18px;">
                 <th style="text-align: center;">#</th>
