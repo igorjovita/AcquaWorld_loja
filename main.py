@@ -1,4 +1,6 @@
 import base64
+
+import pandas as pd
 from babel.numbers import format_currency
 from mysql.connector import IntegrityError
 import streamlit as st
@@ -38,8 +40,7 @@ if escolha == 'Visualizar':
     data_para_pdf = st.date_input("Data para gerar PDF:", format='DD/MM/YYYY')
     if st.button('Gerar Html'):
         tabela_html = gerar_html(data_para_pdf)
-        st.table(tabela_html)
-        # st.components.v1.html(tabela_html, height=1000, width=1000, scrolling=True)
+        st.components.v1.html(tabela_html, height=1000, width=1000, scrolling=True)
     st.write('---')
 
     # Formulário para gerar PDF

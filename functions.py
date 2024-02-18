@@ -446,37 +446,39 @@ def gerar_html(data_para_pdf):
     dados = cursor.fetchall()
 
     # Inicialize a variável html_row fora do loop
-    html_row = ""
+    # Criando a tabela em HTML
+    html_table = "<table style='width: 1000px; font-size: 20px; text-align: center;'>"
 
-    # Supondo que dados seja uma lista de tuplas onde cada tupla contém os dados de um cliente
+    # Adicionando a linha do cabeçalho
+    html_table += "<tr><th>Nome Cliente</th><th>CPF</th><th>Telefone</th><th>Nome Vendedor</th><th>Tipo</th><th>Fotos</th><th>DM</th><th>Roupa</th></tr>"
+
+    # Adicionando cada tupla da lista como uma linha na tabela HTML
     for dado in dados:
         nome_cliente = dado[0]
         cpf = dado[1]
         telefone = dado[2]
-        comissario = dado[3]
-        c = dado[4]
-        f = dado[5]
+        nome_vendedor = dado[3]
+        tipo = dado[4]
+        fotos = dado[5]
         dm = dado[6]
-        r = dado[7]
+        roupa = dado[7]
 
-        # Aqui dentro do loop, você pode gerar a estrutura HTML para cada cliente
-        html_row += f"""
-        <tr style="height: 18px;">
-            <td style="width: 1.22094%; height: 18px; text-align: center;">1</td>
-            <td style="width: 21.8416%; height: 18px;">{nome_cliente}</td>
-            <td style="width: 9.33849%; height: 18px;">{cpf}</td>
-            <td style="width: 9.35344%; height: 18px;">{telefone}</td>
-            <td style="width: 6.13493%; height: 18px;">{comissario}</td>
-            <td style="width: 4.25743%; height: 18px;">{c}</td>
-            <td style="width: 5.57182%; height: 18px;">{f}</td>
-            <td style="width: 4.36565%; height: 18px;">{dm}</td>
-            <td style="width: 5.0513%; height: 18px;">{r}</td>
-        </tr>
-        """
+        html_table += f"""
+           <tr>
+               <td style='width: 20%;'>{nome_cliente}</td>
+               <td style='width: 10%;'>{cpf}</td>
+               <td style='width: 10%;'>{telefone}</td>
+               <td style='width: 20%;'>{nome_vendedor}</td>
+               <td style='width: 10%;'>{tipo}</td>
+               <td style='width: 10%;'>{fotos}</td>
+               <td style='width: 10%;'>{dm}</td>
+               <td style='width: 10%;'>{roupa}</td>
+           </tr>
+           """
 
-    # Fora do loop, retorne o HTML completo da tabela
-    return html_row
-
+    # Fechando a tabela
+    html_table += "</table>"
+    return html_table
 
     # mydb.connect()
     # cliente = []
