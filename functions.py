@@ -451,7 +451,7 @@ def gerar_html(data_para_pdf):
     html_table = """
     <table style="border-collapse: collapse; width: 100%;" border="1">
         <tbody>
-            <tr style="height: 40px;">
+            <tr style="height: 30px;">
                 <th style="text-align: center;">#</th>
                 <th>Nome Cliente</th>
                 <th>CPF</th>
@@ -476,7 +476,7 @@ def gerar_html(data_para_pdf):
         roupa = dado[7] if dado[7] is not None else ''
 
         html_table += f"""
-            <tr style="height: 40px;">
+            <tr style="height: 30px;">
                 <td style="text-align: center;">{i + 1}</td>
                 <td>{nome_cliente}</td> 
                 <td>{cpf}</td> 
