@@ -450,7 +450,7 @@ def gerar_html(data_para_pdf):
     html_table = "<table style='width: 1000px; font-size: 20px; text-align: center;'>"
 
     # Adicionando a linha do cabeçalho
-    html_table += "<tr><th>Nome Cliente</th><th>CPF</th><th>Telefone</th><th>Nome Vendedor</th><th>Tipo</th><th>Fotos</th><th>DM</th><th>Roupa</th></tr>"
+    html_table += "<tr><th>Nome Cliente</th><th>CPF</th><th>Telefone</th><th>Vendedor</th><th>Tipo</th><th>Fotos</th><th>DM</th><th>Roupa</th></tr>"
 
     # Adicionando cada tupla da lista como uma linha na tabela HTML
     for dado in dados:
