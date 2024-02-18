@@ -473,7 +473,7 @@ def gerar_html(data_para_pdf):
 
         # Você pode fazer o que quiser com a linha HTML gerada aqui, como imprimir ou armazenar em uma lista para uso posterior
           # Ou faça qualquer outra coisa com a linha HTML
-        return html_row
+    return html_row
 
     # mydb.connect()
     # cliente = []
