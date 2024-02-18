@@ -445,14 +445,25 @@ def gerar_html(data_para_pdf):
     cursor.execute(f"SELECT c.nome AS nome_cliente, c.cpf, c.telefone, v.nome AS nome_vendedor, r.tipo, r.fotos, r.dm, c.roupa FROM reserva AS r INNER JOIN cliente AS c ON r.id_cliente = c.id INNER JOIN vendedores AS v ON r.id_vendedor = v.id WHERE r.data = '{data_para_pdf}'")
     dados = cursor.fetchall()
 
-    # Inicialize a variável html_row fora do loop
+    # Inicialize a variável html_table fora do loop
     # Criando a tabela em HTML com bordas
-    html_table = "<table style='width: 1000px; font-size: 20px; border-collapse: collapse;'>"
+    html_table = """
+    <table style="border-collapse: collapse; width: 99.1213%; height: 1138px;" border="1">
+        <tbody>
+            <tr style="height: 18px;">
+                <th style="width: 1.22094%; text-align: center;">#</th>
+                <th style="width: 21.8416%;">Nome Cliente</th>
+                <th style="width: 9.33849%;">CPF</th>
+                <th style="width: 9.35344%;">Telefone</th>
+                <th style="width: 6.13493%;">Vendedor</th>
+                <th style="width: 4.25743%;">Tipo</th>
+                <th style="width: 5.57182%;">Fotos</th>
+                <th style="width: 4.36565%;">DM</th>
+                <th style="width: 5.0513%;">Roupa</th>
+            </tr>
+    """
 
-    # Adicionando a linha do cabeçalho com bordas
-    html_table += "<tr><th style='border: 1px solid black;'>#</th><th style='border: 1px solid black;'>Nome Cliente</th><th style='border: 1px solid black;'>CPF</th><th style='border: 1px solid black;'>Telefone</th><th style='border: 1px solid black;'>Vendedor</th><th style='border: 1px solid black;'>Tipo</th><th style='border: 1px solid black;'>Fotos</th><th style='border: 1px solid black;'>DM</th><th style='border: 1px solid black;'>Roupa</th></tr>"
-
-    # Adicionando cada tupla da lista como uma linha na tabela HTML com bordas
+    # Adicionando cada tupla da lista como uma linha na tabela HTML
     for i, dado in enumerate(dados):
         nome_cliente = dado[0]
         cpf = dado[1]
@@ -464,22 +475,24 @@ def gerar_html(data_para_pdf):
         roupa = dado[7]
 
         html_table += f"""
-              <tr>
-                  <td style='border: 1px solid black; text-align: center;'>{i+1}</td>
-                  <td style='border: 1px solid black;'>{nome_cliente}</td>
-                  <td style='border: 1px solid black;'>{cpf}</td>
-                  <td style='border: 1px solid black;'>{telefone}</td>
-                  <td style='border: 1px solid black;'>{comissario}</td>
-                  <td style='border: 1px solid black;'>{tipo}</td>
-                  <td style='border: 1px solid black;'>{fotos}</td>
-                  <td style='border: 1px solid black;'>{dm}</td>
-                  <td style='border: 1px solid black;'>{roupa}</td>
-              </tr>
-              """
+            <tr style="height: 18px;">
+                <td style="width: 1.22094%; text-align: center;">{i}</td>
+                <td style="width: 21.8416%;">{nome_cliente}</td>
+                <td style="width: 9.33849%;">{cpf}</td>
+                <td style="width: 9.35344%;">{telefone}</td>
+                <td style="width: 6.13493%;">{comissario}</td>
+                <td style="width: 4.25743%;">{tipo}</td>
+                <td style="width: 5.57182%;">{fotos}</td>
+                <td style="width: 4.36565%;">{dm}</td>
+                <td style="width: 5.0513%;">{roupa}</td>
+            </tr>
+        """
 
     # Fechando a tabela
-    html_table += "</table>"
+    html_table += "</tbody></table>"
+
     return html_table
+
 
 
 
