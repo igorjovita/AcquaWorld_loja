@@ -477,15 +477,15 @@ def gerar_html(data_para_pdf):
 
         html_table += f"""
             <tr style="height: 18px;">
-                <td style="text-align: center;">{i + 1}</td>
-                <td>{nome_cliente}</td> 
-                <td>{cpf}</td> 
-                <td>{telefone}</td>
-                <td>{comissario}</td>
-                <td>{tipo}</td>
-                <td>{fotos}</td>
-                <td>{dm}</td>
-                <td>{roupa}</td>
+                <td style="text-align: center; max-width: 100px;">{i + 1}</td>
+                <td style="max-width: 200px;">{nome_cliente}</td> 
+                <td style="max-width: 150px;">{cpf}</td> 
+                <td style="max-width: 150px;">{telefone}</td>
+                <td style="max-width: 150px;">{comissario}</td>
+                <td style="max-width: 100px;">{tipo}</td>
+                <td style="max-width: 100px;">{fotos}</td>
+                <td style="max-width: 100px;">{dm}</td>
+                <td style="max-width: 100px;">{roupa}</td>
             </tr>
         """
 
