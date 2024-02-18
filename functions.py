@@ -442,9 +442,12 @@ def gerar_pdf(data_para_pdf):
 
 
 def gerar_html(data_para_pdf):
-
-    cursor.execute(f"SELECT c.nome AS nome_cliente, c.cpf, c.telefone, v.nome AS nome_vendedor, r.tipo,r.fotos, r.dm, c.roupa FROM reserva AS r INNER JOIN cliente AS c ON r.id_cliente = c.id INNER JOIN vendedores AS v ON r.id_vendedor = v.id where r.data = '{data_para_pdf}'")
+    cursor.execute(f"SELECT c.nome AS nome_cliente, c.cpf, c.telefone, v.nome AS nome_vendedor, r.tipo, r.fotos, r.dm, c.roupa FROM reserva AS r INNER JOIN cliente AS c ON r.id_cliente = c.id INNER JOIN vendedores AS v ON r.id_vendedor = v.id WHERE r.data = '{data_para_pdf}'")
     dados = cursor.fetchall()
+
+    # Inicialize a variável html_row fora do loop
+    html_row = ""
+
     # Supondo que dados seja uma lista de tuplas onde cada tupla contém os dados de um cliente
     for dado in dados:
         nome_cliente = dado[0]
@@ -457,7 +460,7 @@ def gerar_html(data_para_pdf):
         r = dado[7]
 
         # Aqui dentro do loop, você pode gerar a estrutura HTML para cada cliente
-        html_row = f"""
+        html_row += f"""
         <tr style="height: 18px;">
             <td style="width: 1.22094%; height: 18px; text-align: center;">1</td>
             <td style="width: 21.8416%; height: 18px;">{nome_cliente}</td>
@@ -471,9 +474,9 @@ def gerar_html(data_para_pdf):
         </tr>
         """
 
-        # Você pode fazer o que quiser com a linha HTML gerada aqui, como imprimir ou armazenar em uma lista para uso posterior
-          # Ou faça qualquer outra coisa com a linha HTML
+    # Fora do loop, retorne o HTML completo da tabela
     return html_row
+
 
     # mydb.connect()
     # cliente = []
