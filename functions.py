@@ -457,23 +457,25 @@ def gerar_html(data_para_pdf):
         nome_cliente = dado[0]
         cpf = dado[1]
         telefone = dado[2]
-        nome_vendedor = dado[3]
+        comissario = dado[3]
         tipo = dado[4]
         fotos = dado[5]
         dm = dado[6]
         roupa = dado[7]
 
         html_table += f"""
-           <tr>
-               <td style='width: 20%;'>{nome_cliente}</td>
-               <td style='width: 10%;'>{cpf}</td>
-               <td style='width: 10%;'>{telefone}</td>
-               <td style='width: 20%;'>{nome_vendedor}</td>
-               <td style='width: 10%;'>{tipo}</td>
-               <td style='width: 10%;'>{fotos}</td>
-               <td style='width: 10%;'>{dm}</td>
-               <td style='width: 10%;'>{roupa}</td>
-           </tr>
+              <tr style="height: 18px;">
+                  <td style="width: 1.22094%; height: 18px; text-align: center;">1</td>
+                  <td style="width: 21.8416%; height: 18px;">{nome_cliente}</td>
+                  <td style="width: 9.33849%; height: 18px;">{cpf}</td>
+                  <td style="width: 9.35344%; height: 18px;">{telefone}</td>
+                  <td style="width: 6.13493%; height: 18px;">{comissario}</td>
+                  <td style="width: 4.25743%; height: 18px;">{tipo}</td>
+                  <td style="width: 5.57182%; height: 18px;">{fotos}</td>
+                  <td style="width: 4.36565%; height: 18px;">{dm}</td>
+                  <td style="width: 5.0513%; height: 18px;">{roupa}</td>
+              </tr>
+              """
            """
 
     # Fechando a tabela
