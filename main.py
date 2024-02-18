@@ -38,8 +38,7 @@ if escolha == 'Visualizar':
     data_para_pdf = st.date_input("Data para gerar PDF:", format='DD/MM/YYYY')
     if st.button('Gerar Html'):
         tabela_html = gerar_html(data_para_pdf)
-        st.write(tabela_html)
-        # st.components.v1.html(tabela_html, height=1000, width=1000, scrolling=True)
+        st.components.v1.html(tabela_html, height=1000, width=1000, scrolling=True)
     st.write('---')
 
     # Formulário para gerar PDF
