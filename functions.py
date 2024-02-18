@@ -452,15 +452,15 @@ def gerar_html(data_para_pdf):
     <table style="border-collapse: collapse; width: 99.1213%; height: 1138px;" border="1">
         <tbody>
             <tr style="height: 18px;">
-                <th style="text-align: center;">#</th>
-                <th>Nome Cliente</th>
-                <th>CPF</th>
-                <th>Telefone</th>
-                <th>Vendedor</th>
-                <th>Tipo</th>
-                <th>Fotos</th>
-                <th>DM</th>
-                <th>Roupa</th>
+                <th style="text-align: center; max-width: 100px;">#</th>
+                <th style="max-width: 200px;">Nome Cliente</th>
+                <th style="max-width: 150px;">CPF</th>
+                <th style="max-width: 150px;">Telefone</th>
+                <th style="max-width: 150px;">Vendedor</th>
+                <th style="max-width: 100px;">Tipo</th>
+                <th style="max-width: 100px;">Fotos</th>
+                <th style="max-width: 100px;">DM</th>
+                <th style="max-width: 100px;">Roupa</th>
             </tr>
     """
 
@@ -494,6 +494,7 @@ def gerar_html(data_para_pdf):
     html_table += "</tbody></table>"
 
     return html_table
+
 
 
 
