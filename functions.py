@@ -466,14 +466,14 @@ def gerar_html(data_para_pdf):
 
     # Adicionando cada tupla da lista como uma linha na tabela HTML
     for i, dado in enumerate(dados):
-        nome_cliente = dado[0]
-        cpf = dado[1]
-        telefone = dado[2]
-        comissario = dado[3]
-        tipo = dado[4]
-        fotos = dado[5]
-        dm = dado[6]
-        roupa = dado[7]
+        nome_cliente = dado[0] if dado[0] is not None else ''
+        cpf = dado[1] if dado[1] is not None else ''
+        telefone = dado[2] if dado[2] is not None else ''
+        comissario = dado[3] if dado[3] is not None else ''
+        tipo = dado[4] if dado[4] is not None else ''
+        fotos = dado[5] if dado[5] is not None else ''
+        dm = dado[6] if dado[6] is not None else ''
+        roupa = dado[7] if dado[7] is not None else ''
 
         html_table += f"""
             <tr style="height: 18px;">
