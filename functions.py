@@ -476,7 +476,7 @@ def gerar_html(data_para_pdf):
 
         html_table += f"""
             <tr style="height: 18px;">
-                <td style="width: 1.22094%; text-align: center;">{i}</td>
+                <td style="width: 1.22094%; text-align: center;">{i+1}</td>
                 <td style="width: 21.8416%;">{nome_cliente}</td>
                 <td style="width: 9.33849%;">{cpf}</td>
                 <td style="width: 9.35344%;">{telefone}</td>
