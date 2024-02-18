@@ -452,15 +452,15 @@ def gerar_html(data_para_pdf):
     <table style="border-collapse: collapse; width: 99.1213%; height: 1138px;" border="1">
         <tbody>
             <tr style="height: 18px;">
-                <th style="text-align: center; max-width: 100px;">#</th>
-                <th style="max-width: 200px;">Nome Cliente</th>
-                <th style="max-width: 150px;">CPF</th>
-                <th style="max-width: 150px;">Telefone</th>
-                <th style="max-width: 150px;">Vendedor</th>
-                <th style="max-width: 100px;">Tipo</th>
-                <th style="max-width: 100px;">Fotos</th>
-                <th style="max-width: 100px;">DM</th>
-                <th style="max-width: 100px;">Roupa</th>
+                <th style="text-align: center; max-width: 18px;">#</th>
+                <th style="max-width: 20px;">Nome Cliente</th>
+                <th style="max-width: 15px;">CPF</th>
+                <th style="max-width: 15px;">Telefone</th>
+                <th style="max-width: 15px;">Vendedor</th>
+                <th style="max-width: 10px;">Tipo</th>
+                <th style="max-width: 10px;">Fotos</th>
+                <th style="max-width: 10px;">DM</th>
+                <th style="max-width: 10px;">Roupa</th>
             </tr>
     """
 
@@ -477,15 +477,15 @@ def gerar_html(data_para_pdf):
 
         html_table += f"""
             <tr style="height: 18px;">
-                <td style="text-align: center; max-width: 100px;">{i + 1}</td>
-                <td style="max-width: 200px;">{nome_cliente}</td> 
-                <td style="max-width: 150px;">{cpf}</td> 
-                <td style="max-width: 150px;">{telefone}</td>
-                <td style="max-width: 150px;">{comissario}</td>
-                <td style="max-width: 100px;">{tipo}</td>
-                <td style="max-width: 100px;">{fotos}</td>
-                <td style="max-width: 100px;">{dm}</td>
-                <td style="max-width: 100px;">{roupa}</td>
+                <td style="text-align: center; max-width: 10px;">{i + 1}</td>
+                <td style="max-width: 20px;">{nome_cliente}</td> 
+                <td style="max-width: 15px;">{cpf}</td> 
+                <td style="max-width: 15px;">{telefone}</td>
+                <td style="max-width: 15px;">{comissario}</td>
+                <td style="max-width: 10px;">{tipo}</td>
+                <td style="max-width: 10px;">{fotos}</td>
+                <td style="max-width: 10px;">{dm}</td>
+                <td style="max-width: 10px;">{roupa}</td>
             </tr>
         """
 
