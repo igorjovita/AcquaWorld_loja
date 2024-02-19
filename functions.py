@@ -443,7 +443,7 @@ def gerar_pdf(data_para_pdf):
 
 def gerar_html(data_para_pdf):
     mydb.connect()
-    cursor.execute(f"SELECT c.nome AS nome_cliente, c.cpf, c.telefone, v.apelido AS nome_vendedor, r.tipo, r.fotos, r.dm, c.roupa FROM reserva AS r INNER JOIN cliente AS c ON r.id_cliente = c.id INNER JOIN vendedores AS v ON r.id_vendedor = v.id WHERE r.data = '{data_para_pdf}'")
+    cursor.execute(f"SELECT c.nome AS nome_cliente, c.cpf, c.telefone, v.apelido AS nome_vendedor, r.tipo, r.fotos, c.roupa FROM reserva AS r INNER JOIN cliente AS c ON r.id_cliente = c.id INNER JOIN vendedores AS v ON r.id_vendedor = v.id WHERE r.data = '{data_para_pdf}'")
     dados = cursor.fetchall()
 
 
@@ -461,7 +461,6 @@ def gerar_html(data_para_pdf):
                 <th>Vendedor</th>
                 <th>Tipo</th>
                 <th>Fotos</th>
-                <th>DM</th>
                 <th>Roupa</th>
             </tr>
     """
@@ -474,8 +473,7 @@ def gerar_html(data_para_pdf):
         comissario = dado[3] if dado[3] is not None else ''
         tipo = dado[4] if dado[4] is not None else ''
         fotos = dado[5] if dado[5] is not None else ''
-        dm = dado[6] if dado[6] is not None else ''
-        roupa = dado[7] if dado[7] is not None else ''
+        roupa = dado[6] if dado[6] is not None else ''
 
         html_table += f"""
             <tr style="height: 30px;">
@@ -486,7 +484,6 @@ def gerar_html(data_para_pdf):
                 <td>{comissario}</td>
                 <td>{tipo}</td>
                 <td>{fotos}</td>
-                <td>{dm}</td>
                 <td>{roupa}</td>
             </tr>
         """
@@ -494,7 +491,6 @@ def gerar_html(data_para_pdf):
         html_table += """
         <tr style="height: 30px;">
             <td style="text-align: center;"></td>
-            <td></td>
             <td></td>
             <td></td>
             <td></td>
