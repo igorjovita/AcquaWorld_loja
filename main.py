@@ -359,6 +359,7 @@ if escolha == 'Reservar':
 if escolha == 'Editar':
 
     data_editar = st.date_input('Data da Reserva', format='DD/MM/YYYY')
+    opcoes = st.radio('Filtro', ['Editar Grupo', 'Editar Reserva'], horizontal=True)
     mydb.connect()
     cursor.execute(f"SELECT nome_cliente FROM reserva WHERE data = '{data_editar}'")
     id_cliente_editar = cursor.fetchall()
