@@ -492,7 +492,7 @@ def gerar_html(data_para_pdf):
         """
     if len(dados) < 9:
         html_table += """
-        <tr style="height: 18px;">
+        <tr style="height: 30px;">
             <td style="text-align: center;"></td>
             <td></td>
             <td></td>
