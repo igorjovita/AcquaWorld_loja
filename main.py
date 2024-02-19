@@ -368,12 +368,13 @@ if escolha == 'Editar':
         for item in id_cliente_editar:
             lista.append(str(item).translate(str.maketrans('', '', chars)))
     else:
-        cursor.execute(f"SELECT nome_cliente FROM reserva WHERE data = '{data_editar}' and id_cliente = id_titular")
+        cursor.execute(f"SELECT nome_cliente, id_cliente FROM reserva WHERE data = '{data_editar}' and id_cliente = id_titular")
         id_cliente_editar = cursor.fetchall()
         for item in id_cliente_editar:
-            lista.append(str(item).translate(str.maketrans('', '', chars)))
+            lista.append(str(item[0]).translate(str.maketrans('', '', chars)))
+        numero_id = id_cliente_editar[1]
+        st.write(numero_id)
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista)
-
 
     if selectbox_cliente is not None:
         if opcoes == 'Editar Reserva':
