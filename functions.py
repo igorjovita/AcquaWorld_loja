@@ -480,7 +480,7 @@ def gerar_html(data_para_pdf):
         html_table += f"""
             <tr style="height: 30px;">
                 <td style="text-align: center;">{i + 1}</td>
-                <td style= "background_color: {cor_fundo};">{nome_cliente}</td> 
+                <td style= "background_color: '{cor_fundo}';">{nome_cliente}</td> 
                 <td>{cpf}</td> 
                 <td>{telefone}</td>
                 <td>{comissario}</td>
