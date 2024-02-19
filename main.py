@@ -361,11 +361,17 @@ if escolha == 'Editar':
     data_editar = st.date_input('Data da Reserva', format='DD/MM/YYYY')
     opcoes = st.radio('Filtro', ['Editar Grupo', 'Editar Reserva'], horizontal=True)
     mydb.connect()
-    cursor.execute(f"SELECT nome_cliente FROM reserva WHERE data = '{data_editar}'")
-    id_cliente_editar = cursor.fetchall()
     lista = []
-    for item in id_cliente_editar:
-        lista.append(str(item).translate(str.maketrans('', '', chars)))
+    if opcoes == 'Editar Reserva':
+        cursor.execute(f"SELECT nome_cliente FROM reserva WHERE data = '{data_editar}'")
+        id_cliente_editar = cursor.fetchall()
+        for item in id_cliente_editar:
+            lista.append(str(item).translate(str.maketrans('', '', chars)))
+    else:
+        cursor.execute(f"SELECT nome_cliente FROM reserva WHERE data = '{data_editar}' and id_cliente = id_titular")
+        id_cliente_editar = cursor.fetchall()
+        for item in id_cliente_editar:
+            lista.append(str(item).translate(str.maketrans('', '', chars)))
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista)
 
     if selectbox_cliente is not None:
