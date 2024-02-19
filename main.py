@@ -190,7 +190,6 @@ if escolha == 'Reservar':
                         else:
                             valor_loja = valor_loja
                     if st.form_submit_button(f'Cadastrar {nome_cliente}'):
-                        st.write(altura)
                         if nome_cliente not in st.session_state.nome_cadastrado:
                             st.session_state.nome_cadastrado.append(nome_cliente)
                             forma_pg = 'Pix'
@@ -361,13 +360,11 @@ if escolha == 'Editar':
 
     data_editar = st.date_input('Data da Reserva', format='DD/MM/YYYY')
     mydb.connect()
-    cursor.execute(f"SELECT id_cliente FROM reserva WHERE data = '{data_editar}'")
+    cursor.execute(f"SELECT nome_cliente FROM reserva WHERE data = '{data_editar}'")
     id_cliente_editar = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
     lista = []
     for item in id_cliente_editar:
-        cursor.execute(f"SELECT nome FROM cliente WHERE id = '{item}'")
-        nome_cliente_editar = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
-        lista.append(nome_cliente_editar)
+        lista.append(item)
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista)
 
     if selectbox_cliente is not None:
