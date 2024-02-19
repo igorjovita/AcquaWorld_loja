@@ -364,7 +364,7 @@ if escolha == 'Editar':
     id_cliente_editar = cursor.fetchall()
     lista = []
     for item in id_cliente_editar:
-        lista.append(item)
+        lista.append(str(item).translate(str.maketrans('', '', chars)))
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista)
 
     if selectbox_cliente is not None:
