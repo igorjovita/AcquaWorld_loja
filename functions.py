@@ -443,7 +443,7 @@ def gerar_pdf(data_para_pdf):
 
 def gerar_html(data_para_pdf):
     mydb.connect()
-    cursor.execute(f"SELECT c.nome AS nome_cliente, c.cpf, c.telefone, v.apelido AS nome_vendedor, r.tipo, r.fotos, c.roupa FROM reserva AS r INNER JOIN cliente AS c ON r.id_cliente = c.id INNER JOIN vendedores AS v ON r.id_vendedor = v.id WHERE r.data = '{data_para_pdf}'")
+    cursor.execute(f"SELECT c.nome AS nome_cliente, c.cpf, c.telefone, v.apelido AS nome_vendedor, r.tipo, r.fotos, c.roupa, r.check_in FROM reserva AS r INNER JOIN cliente AS c ON r.id_cliente = c.id INNER JOIN vendedores AS v ON r.id_vendedor = v.id WHERE r.data = '{data_para_pdf}'")
     dados = cursor.fetchall()
     minimo = 10
 
@@ -474,11 +474,12 @@ def gerar_html(data_para_pdf):
         tipo = dado[4] if dado[4] is not None else ''
         fotos = dado[5] if dado[5] is not None else ''
         roupa = dado[6] if dado[6] is not None else ''
+        cor_fundo = dado[7] if dado[7] is not None else ''
 
         html_table += f"""
             <tr style="height: 30px;">
                 <td style="text-align: center;">{i + 1}</td>
-                <td>{nome_cliente}</td> 
+                <td style= "background_color: {cor_fundo};">{nome_cliente}</td> 
                 <td>{cpf}</td> 
                 <td>{telefone}</td>
                 <td>{comissario}</td>
