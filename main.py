@@ -184,13 +184,13 @@ if escolha == 'Reservar':
                                                        key=f'valor{nome_cliente}{i}')
                         valor_loja = st.text_input(f'Valor a receber:', key=f'loja{nome_cliente}{i}')
 
-                        roupa = f'{altura}/{peso}'
+                        roupa = f'{altura:.2f}/{peso}'
                         if valor_loja == '':
                             valor_loja = 0.00
                         else:
                             valor_loja = valor_loja
                     if st.form_submit_button(f'Cadastrar {nome_cliente}'):
-
+                        st.write(altura)
                         if nome_cliente not in st.session_state.nome_cadastrado:
                             st.session_state.nome_cadastrado.append(nome_cliente)
                             forma_pg = 'Pix'
