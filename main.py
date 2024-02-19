@@ -375,7 +375,7 @@ if escolha == 'Editar':
             lista.append(str(item[0]).translate(str.maketrans('', '', chars)))
             lista2.append(item)
 
-        st.write(lista2[1])
+        st.write(lista2)
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista)
 
     if selectbox_cliente is not None:
