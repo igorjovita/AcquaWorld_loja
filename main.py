@@ -374,8 +374,12 @@ if escolha == 'Editar':
             lista.append(str(item).translate(str.maketrans('', '', chars)))
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista)
 
+
     if selectbox_cliente is not None:
-        st.subheader(f'Editar a reserva de {selectbox_cliente}')
+        if opcoes == 'Editar Reserva':
+            st.subheader(f'Editar a reserva de {selectbox_cliente}')
+        else:
+            st.subheader(f'Editar reservas do grupo de {selectbox_cliente}')
 
         cursor.execute(f"SELECT id, cpf, telefone, roupa FROM cliente WHERE nome = '{selectbox_cliente}'")
         info_cliente = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
