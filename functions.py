@@ -475,6 +475,7 @@ def gerar_html(data_para_pdf):
         fotos = dado[5] if dado[5] is not None else ''
         roupa = dado[6] if dado[6] is not None else ''
         cor_fundo = dado[7] if dado[7] is not None else ''
+        st.write(cor_fundo)
 
         html_table += f"""
             <tr style="height: 30px;">
