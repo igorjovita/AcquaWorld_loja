@@ -362,6 +362,7 @@ if escolha == 'Editar':
     opcoes = st.radio('Filtro', ['Editar Grupo', 'Editar Reserva'], horizontal=True)
     mydb.connect()
     lista = []
+    lista2 = []
     if opcoes == 'Editar Reserva':
         cursor.execute(f"SELECT nome_cliente FROM reserva WHERE data = '{data_editar}'")
         id_cliente_editar = cursor.fetchall()
@@ -372,8 +373,9 @@ if escolha == 'Editar':
         id_cliente_editar = cursor.fetchall()
         for item in id_cliente_editar:
             lista.append(str(item[0]).translate(str.maketrans('', '', chars)))
-        numero_id = id_cliente_editar[1]
-        st.write(numero_id)
+            lista2.append(str(item).translate(str.maketrans('', '', chars2)))
+
+        st.write(lista2)
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista)
 
     if selectbox_cliente is not None:
