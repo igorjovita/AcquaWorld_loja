@@ -9,9 +9,9 @@ import os
 import mysql.connector
 from datetime import date
 import streamlit.components.v1
-from functions import obter_info_reserva, processar_pagamento, gerar_pdf, gerar_html, seleciona_vendedores, \
-    calculo_restricao, insert_cliente, insert_reserva, seleciona_vendedores_apelido, insert_lancamento_comissao, \
-    obter_valor_neto, select_cliente
+from functions import select_reserva, processar_pagamento, gerar_pdf, gerar_html, select_apelido_vendedores, \
+    calculo_restricao, insert_cliente, insert_reserva, select_id_vendedores, insert_lancamento_comissao, \
+    select_valor_neto, select_cliente
 import time
 
 chars = "'),([]"
@@ -88,7 +88,7 @@ if escolha == 'Reservar':
 
     # Capturar nome dos vendedores cadastrados no sistema
     mydb.connect()
-    lista_vendedor = seleciona_vendedores()
+    lista_vendedor = select_apelido_vendedores()
 
     st.subheader('Reservar Cliente')
 
@@ -229,7 +229,7 @@ if escolha == 'Reservar':
 
                 with mydb.cursor() as cursor:
 
-                    id_vendedor = seleciona_vendedores_apelido(comissario)
+                    id_vendedor = select_id_vendedores(comissario)
 
                     if reserva_conjunta == 'Sim':
 
@@ -284,8 +284,8 @@ if escolha == 'Reservar':
 
                         if recebedor_sinal == 'Vendedor' and valor_mergulho == sinal:
 
-                            valor_neto = obter_valor_neto(tipo, valor_total_reserva=valor_mergulho,
-                                                          id_vendedor_pg=id_vendedor)
+                            valor_neto = select_valor_neto(tipo, valor_total_reserva=valor_mergulho,
+                                                           id_vendedor_pg=id_vendedor)
 
                             lista_ids = []
                             for tupla in st.session_state.pagamentos2:
@@ -386,9 +386,8 @@ if escolha == 'Editar':
         else:
             st.subheader(f'Editar reservas do grupo de {selectbox_cliente}')
 
-        # cursor.execute(f"SELECT id, cpf, telefone, roupa FROM cliente WHERE nome = '{selectbox_cliente}'")
-        # info_cliente = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
-        info_reserva = obter_info_reserva(selectbox_cliente, data_editar)
+
+        info_reserva = select_reserva(selectbox_cliente, data_editar)
         id_cliente = info_reserva[1]
         cpf_cliente, telefone_cliente, roupa_cliente = select_cliente(id_cliente)
 
@@ -399,9 +398,15 @@ if escolha == 'Editar':
             nova_data = st.date_input('Nova Data da reserva', format='DD/MM/YYYY')
             if st.button('Atualizar Reserva'):
                 mydb.connect()
-                cursor.execute(f"UPDATE reserva SET data = '{nova_data}' WHERE id_cliente = {id_cliente}")
+
+                if opcoes == 'Editar Reserva':
+                    cursor.execute(f"UPDATE reserva SET data = '{nova_data}' WHERE id_cliente = {id_cliente}")
+                    st.success('Reserva Atualizada')
+                else:
+                    cursor.execute(f"UPDATE reserva SET data = '{nova_data}' WHERE id_titular = {id_cliente}")
+                    st.success('Reserva do Grupo Atualizada')
                 mydb.close()
-                st.success('Reserva Atualizada')
+
         if escolha_editar == 'Nome':
 
             nome_novo = st.text_input('Nome do Cliente', value=selectbox_cliente)
@@ -423,14 +428,14 @@ if escolha == 'Editar':
 
         if escolha_editar == 'Vendedor':
             mydb.connect()
-            lista_vendedor = seleciona_vendedores()
+            lista_vendedor = select_apelido_vendedores()
 
             cursor.execute(f"SELECT apelido FROM vendedores WHERE id = '{info_reserva[5]}'")
             comissario_antigo = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
             st.subheader(f'Vendedor : {comissario_antigo}')
             comissario_novo = st.selectbox('Selecione o novo vendedor', lista_vendedor)
             if st.button('Atualizar Reserva'):
-                id_vendedor_editar = seleciona_vendedores_apelido(comissario=comissario_novo)
+                id_vendedor_editar = select_id_vendedores(comissario=comissario_novo)
 
                 cursor.execute(
                     f"UPDATE reserva SET id_vendedor = '{id_vendedor_editar}' WHERE id_cliente = {id_cliente}")
@@ -558,7 +563,7 @@ if escolha == 'Pagamento':
                     nome_formatado = str(nome).translate(str.maketrans('', '', chars))
                     id_formatado = int(str(id_pg).translate(str.maketrans('', '', chars)))
 
-                    info_cliente_pg = obter_info_reserva(nome=nome_formatado, data_reserva=data_reserva)
+                    info_cliente_pg = select_reserva(nome=nome_formatado, data_reserva=data_reserva)
 
                     if receber_loja is not None:
                         receber_formatado = float(str(receber_loja).translate(str.maketrans('', '', chars)))
