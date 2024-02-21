@@ -109,10 +109,6 @@ def select_cliente(id_cliente):
     mydb.connect()
     cursor.execute(f"SELECT cpf, telefone, roupa FROM cliente WHERE id = {id_cliente}")
     cliente = cursor.fetchone()
-    st.write(cliente)
-    st.write(cliente[0])
-    st.write(cliente[1])
-    st.write(cliente[2])
     if cliente:
         # Verifica se o primeiro elemento (CPF) existe e não é nulo
         cpf_cliente = cliente[0] if cliente[0] else ''
