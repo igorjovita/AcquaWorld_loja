@@ -391,7 +391,7 @@ if escolha == 'Editar':
             for id_cliente in id_grupo_reserva:
                 st.write(id_cliente)
                 if id_cliente:
-                    cliente = select_cliente(id_cliente)
+                    cliente = select_cliente(id_cliente[0])
                     # Verifica se o primeiro elemento (CPF) existe e não é nulo
                     cpf = cliente[0] if cliente[0] else ''
                     # Verifica se o segundo elemento (telefone) existe e não é nulo
