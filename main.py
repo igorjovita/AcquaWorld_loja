@@ -389,6 +389,7 @@ if escolha == 'Editar':
             id_titular_reserva = info_titular[1]
             id_grupo_reserva = select_grupo_reserva(id_titular_reserva)
             for id_cliente in id_grupo_reserva:
+                st.write(id_cliente)
                 if id_cliente:
                     cliente = select_cliente(id_cliente)
                     # Verifica se o primeiro elemento (CPF) existe e não é nulo
