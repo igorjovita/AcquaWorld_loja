@@ -388,8 +388,9 @@ if escolha == 'Editar':
             info_titular = select_reserva(selectbox_cliente, data_editar)
             id_titular_reserva = info_titular[1]
             id_grupo_reserva = select_grupo_reserva(id_titular_reserva)
-            for cliente in id_grupo_reserva:
+            for id_cliente in id_grupo_reserva:
                 if cliente:
+                    cliente = select_cliente(id_cliente)
                     # Verifica se o primeiro elemento (CPF) existe e não é nulo
                     cpf = cliente[0] if cliente[0] else ''
                     # Verifica se o segundo elemento (telefone) existe e não é nulo

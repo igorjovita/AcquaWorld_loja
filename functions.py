@@ -99,7 +99,7 @@ def select_reserva(nome, data_reserva):
 
 def select_grupo_reserva(id_titular):
     mydb.connect()
-    cursor.execute(f"SELECT id_cliente nome_cliente FROM reserva WHERE id_titular = {id_titular}")
+    cursor.execute(f"SELECT id_cliente, nome_cliente, tipo FROM reserva WHERE id_titular = {id_titular}")
     id_mesma_reserva = cursor.fetchall()
     return id_mesma_reserva
 
