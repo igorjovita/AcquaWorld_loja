@@ -447,7 +447,7 @@ if escolha == 'Editar':
                 mydb.close()
                 st.success('Reserva Atualizada')
         if escolha_editar == 'Peso e Altura':
-            roupa_novo = st.text_input('Peso do Cliente', value=int(roupa_cliente))
+            roupa_novo = st.text_input('Peso do Cliente', value=roupa_cliente)
             if st.button('Atualizar Reserva'):
                 mydb.connect()
                 cursor.execute(
