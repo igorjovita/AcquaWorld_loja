@@ -371,7 +371,8 @@ if escolha == 'Editar':
         for item in id_cliente_editar:
             lista.append(str(item).translate(str.maketrans('', '', chars)))
     else:
-        cursor.execute(f"SELECT nome_cliente, id_cliente FROM reserva WHERE data = '{data_editar}' and id_cliente = id_titular")
+        cursor.execute(
+            f"SELECT nome_cliente, id_cliente FROM reserva WHERE data = '{data_editar}' and id_cliente = id_titular")
         id_cliente_editar = cursor.fetchall()
         for item in id_cliente_editar:
             lista.append(str(item[0]).translate(str.maketrans('', '', chars)))
@@ -387,10 +388,9 @@ if escolha == 'Editar':
 
         # cursor.execute(f"SELECT id, cpf, telefone, roupa FROM cliente WHERE nome = '{selectbox_cliente}'")
         # info_cliente = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
-        id_cliente, cpf_cliente, telefone_cliente, roupa_cliente = select_cliente(nome=selectbox_cliente)
-
-        cursor.execute(f"SELECT tipo, id_vendedor from reserva where id_cliente = {id_cliente}")
-        info_reserva = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+        info_reserva = obter_info_reserva(selectbox_cliente, data_editar)
+        id_cliente = info_reserva[1]
+        cpf_cliente, telefone_cliente, roupa_cliente = select_cliente(id_cliente)
 
         escolha_editar = st.radio('Escolha o que deseja editar',
                                   ['Data', 'Nome', 'CPF e Telefone', 'Vendedor', 'Certificação', 'Peso e Altura'])
@@ -425,7 +425,7 @@ if escolha == 'Editar':
             mydb.connect()
             lista_vendedor = seleciona_vendedores()
 
-            cursor.execute(f"SELECT apelido FROM vendedores WHERE id = '{info_reserva[1]}'")
+            cursor.execute(f"SELECT apelido FROM vendedores WHERE id = '{info_reserva[5]}'")
             comissario_antigo = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
             st.subheader(f'Vendedor : {comissario_antigo}')
             comissario_novo = st.selectbox('Selecione o novo vendedor', lista_vendedor)
@@ -438,7 +438,7 @@ if escolha == 'Editar':
                 st.success('Reserva Atualizada')
 
         if escolha_editar == 'Certificação':
-            st.subheader(f'Certificação: {info_reserva[0]}')
+            st.subheader(f'Certificação: {info_reserva[2]}')
             tipo_novo = st.selectbox('Nova Certificação', ['', 'BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'])
             if st.button('Atualizar Reserva'):
                 mydb.connect()

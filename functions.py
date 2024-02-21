@@ -53,7 +53,7 @@ def insert_vendedores(nome, apelido, telefone, neto_bat, neto_acp, neto_tur1, ne
         cursor.execute("INSERT INTO vendedores (nome, apelido, telefone, valor_neto, neto_acp, neto_tur1, neto_tur2) VALUES (%s, %s, %s, %s, %s, %s, %s)", (nome, apelido, telefone, neto_bat, neto_acp, neto_tur1, neto_tur2))
         st.success(f'{apelido} foi cadastrado no sistema com sucesso')
 
-    except Erro as e:
+    except Error as e:
         st.error(f"Ocorreu um erro ao cadastrar  {apelido}: {e}")
 
     finally:
@@ -189,15 +189,26 @@ def obter_info_reserva(nome, data_reserva):
     return info_reserva
 
 @st.cache_resource
-def select_cliente(nome):
-    cursor.execute(f"SELECT id, cpf, telefone, roupa FROM cliente WHERE nome = '{nome}'")
+def select_cliente(id_cliente):
+    cursor.execute(f"SELECT cpf, telefone, roupa FROM cliente WHERE id = {id_cliente}")
     info_cliente = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
-    id_cliente = info_cliente[0]
-    cpf_cliente = info_cliente[1]
-    telefone_cliente = info_cliente[2]
-    roupa_cliente = info_cliente[3]
 
-    return id_cliente, cpf_cliente, telefone_cliente, roupa_cliente
+    if info_cliente[0] is not None:
+        cpf_cliente = info_cliente[0]
+    else:
+        cpf_cliente = ''
+
+    if info_cliente[1] is not None:
+        telefone_cliente = info_cliente[1]
+    else:
+        telefone_cliente = ''
+
+    if info_cliente[2] is not None:
+        roupa_cliente = info_cliente[2]
+    else:
+        roupa_cliente = ''
+
+    return cpf_cliente, telefone_cliente, roupa_cliente
 
 
 def update_check_in(nome, check_in, data_reserva):
