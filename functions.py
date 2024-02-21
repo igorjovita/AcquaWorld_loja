@@ -192,7 +192,7 @@ def obter_info_reserva(nome, data_reserva):
 def select_cliente(id_cliente):
     mydb.connect()
     cursor.execute(f"SELECT cpf, telefone, roupa FROM cliente WHERE id = {id_cliente}")
-    cliente = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+    cliente = cursor.fetchall()
     st.write(cliente)
 
     # Verifica se a lista cliente tem pelo menos um elemento e se o primeiro elemento é do tipo esperado (CPF)
