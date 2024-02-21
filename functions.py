@@ -190,6 +190,7 @@ def obter_info_reserva(nome, data_reserva):
 
 @st.cache_resource
 def select_cliente(id_cliente):
+    mydb.connect()
     cursor.execute(f"SELECT cpf, telefone, roupa FROM cliente WHERE id = {id_cliente}")
     info_cliente = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
 
@@ -208,6 +209,7 @@ def select_cliente(id_cliente):
     else:
         roupa_cliente = ''
 
+    mydb.close()
     return cpf_cliente, telefone_cliente, roupa_cliente
 
 
