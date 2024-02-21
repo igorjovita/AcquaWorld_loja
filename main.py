@@ -385,8 +385,15 @@ if escolha == 'Editar':
             st.subheader(f'Editar a reserva de {selectbox_cliente}')
         else:
             st.subheader(f'Editar reservas do grupo de {selectbox_cliente}')
-
-
+            info_titular = select_reserva(selectbox_cliente, data_editar)
+            id_titular_reserva = info_titular[1]
+            st.write(id_titular_reserva)
+            for cliente in id_titular_reserva:
+                cpf = cliente[0]
+                telefone = cliente[1]
+                roupa = cliente[2]
+                st.write(cliente, cpf, telefone, roupa)
+                
         info_reserva = select_reserva(selectbox_cliente, data_editar)
         id_cliente = info_reserva[1]
         cpf_cliente, telefone_cliente, roupa_cliente = select_cliente(id_cliente)
