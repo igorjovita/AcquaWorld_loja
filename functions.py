@@ -193,6 +193,7 @@ def select_cliente(id_cliente):
     mydb.connect()
     cursor.execute(f"SELECT cpf, telefone, roupa FROM cliente WHERE id = {id_cliente}")
     info_cliente = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+    st.write(info_cliente)
 
     if info_cliente[0] is not None:
         cpf_cliente = info_cliente[0]
