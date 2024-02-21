@@ -391,16 +391,16 @@ if escolha == 'Editar':
             for cliente in id_grupo_reserva:
                 if cliente:
                     # Verifica se o primeiro elemento (CPF) existe e não é nulo
-                    cpf_cliente = cliente[0] if cliente[0] else ''
+                    cpf = cliente[0] if cliente[0] else ''
                     # Verifica se o segundo elemento (telefone) existe e não é nulo
-                    telefone_cliente = cliente[1] if len(cliente) > 1 and cliente[1] else ''
+                    telefone = cliente[1] if len(cliente) > 1 and cliente[1] else ''
                     # Verifica se o terceiro elemento (roupa) existe e não é nulo
-                    roupa_cliente = cliente[2] if len(cliente) > 2 and cliente[2] else ''
+                    roupa = cliente[2] if len(cliente) > 2 and cliente[2] else ''
                 else:
                     # Caso a lista cliente esteja vazia ou nula, atribui valores padrão vazios
-                    cpf_cliente = ''
-                    telefone_cliente = ''
-                    roupa_cliente = ''
+                    cpf = ''
+                    telefone = ''
+                    roupa = ''
                 st.write(cliente, cpf, telefone, roupa)
 
         info_reserva = select_reserva(selectbox_cliente, data_editar)
