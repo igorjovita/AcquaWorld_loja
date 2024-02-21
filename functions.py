@@ -192,21 +192,27 @@ def obter_info_reserva(nome, data_reserva):
 def select_cliente(id_cliente):
     mydb.connect()
     cursor.execute(f"SELECT cpf, telefone, roupa FROM cliente WHERE id = {id_cliente}")
-    info_cliente = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+    cliente = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
     st.write(info_cliente)
 
-    if info_cliente:
-        # Verifica se o primeiro elemento (CPF) existe e não é nulo
-        cpf_cliente = info_cliente[0] if info_cliente[0] else ''
-        # Verifica se o segundo elemento (telefone) existe e não é nulo
-        telefone_cliente = info_cliente[1] if len(info_cliente) > 1 and info_cliente[1] else ''
-        # Verifica se o terceiro elemento (roupa) existe e não é nulo
-        roupa_cliente = info_cliente[2] if len(info_cliente) > 2 and info_cliente[2] else ''
+    # Verifica se a lista cliente tem pelo menos um elemento e se o primeiro elemento é do tipo esperado (CPF)
+    if cliente and isinstance(cliente[0], str):
+        cpf_cliente = cliente[0]
     else:
-        # Caso a lista cliente esteja vazia ou nula, atribui valores padrão vazios
         cpf_cliente = ''
+
+    # Verifica se a lista cliente tem pelo menos dois elementos e se o segundo elemento é do tipo esperado (telefone)
+    if len(cliente) > 1 and isinstance(cliente[1], str):
+        telefone_cliente = cliente[1]
+    else:
         telefone_cliente = ''
+
+    # Verifica se a lista cliente tem pelo menos três elementos e se o terceiro elemento é do tipo esperado (roupa)
+    if len(cliente) > 2 and isinstance(cliente[2], str):
+        roupa_cliente = cliente[2]
+    else:
         roupa_cliente = ''
+
     mydb.close()
     return cpf_cliente, telefone_cliente, roupa_cliente
 
