@@ -195,21 +195,18 @@ def select_cliente(id_cliente):
     info_cliente = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
     st.write(info_cliente)
 
-    if info_cliente[0] is not None:
-        cpf_cliente = info_cliente[0]
+    if info_cliente:
+        # Verifica se o primeiro elemento (CPF) existe e não é nulo
+        cpf_cliente = info_cliente[0] if info_cliente[0] else ''
+        # Verifica se o segundo elemento (telefone) existe e não é nulo
+        telefone_cliente = info_cliente[1] if len(info_cliente) > 1 and info_cliente[1] else ''
+        # Verifica se o terceiro elemento (roupa) existe e não é nulo
+        roupa_cliente = info_cliente[2] if len(info_cliente) > 2 and info_cliente[2] else ''
     else:
+        # Caso a lista cliente esteja vazia ou nula, atribui valores padrão vazios
         cpf_cliente = ''
-
-    if info_cliente[1] is not None:
-        telefone_cliente = info_cliente[1]
-    else:
         telefone_cliente = ''
-
-    if info_cliente[2] is None or info_cliente[2] == '':
         roupa_cliente = ''
-    else:
-        roupa_cliente = info_cliente[2]
-
     mydb.close()
     return cpf_cliente, telefone_cliente, roupa_cliente
 
