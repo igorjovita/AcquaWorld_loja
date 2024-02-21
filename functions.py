@@ -188,6 +188,17 @@ def obter_info_reserva(nome, data_reserva):
 
     return info_reserva
 
+@st.cache_resource
+def select_cliente(nome):
+    cursor.execute(f"SELECT id, cpf, telefone, roupa FROM cliente WHERE nome = '{nome}'")
+    info_cliente = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
+    id_cliente = info_cliente[0]
+    cpf_cliente = info_cliente[1]
+    telefone_cliente = info_cliente[2]
+    roupa_cliente = info_cliente[3]
+
+    return id_cliente, cpf_cliente, telefone_cliente, roupa_cliente
+
 
 def update_check_in(nome, check_in, data_reserva):
     mydb.connect()
