@@ -192,7 +192,7 @@ def obter_info_reserva(nome, data_reserva):
 def select_cliente(id_cliente):
     mydb.connect()
     cursor.execute(f"SELECT cpf, telefone, roupa FROM cliente WHERE id = {id_cliente}")
-    cliente = cursor.fetchall()
+    cliente = cursor.fetchone()
     st.write(cliente)
     st.write(cliente[0])
     st.write(cliente[1])
