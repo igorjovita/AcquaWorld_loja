@@ -412,7 +412,7 @@ if escolha == 'Editar':
                 st.success('Reserva Atualizada')
 
         if escolha_editar == 'CPF e Telefone':
-            cpf_novo = st.text_input('Cpf do Cliente', value=id_cliente)
+            cpf_novo = st.text_input('Cpf do Cliente', value=cpf_cliente)
             telefone_novo = st.text_input('Telefone do Cliente', value=telefone_cliente)
             if st.button('Atualizar Reserva'):
                 mydb.connect()
