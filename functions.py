@@ -204,10 +204,10 @@ def select_cliente(id_cliente):
     else:
         telefone_cliente = ''
 
-    if info_cliente[2] is not None:
-        roupa_cliente = info_cliente[2]
-    else:
+    if info_cliente[2] is None or info_cliente[2] == '':
         roupa_cliente = ''
+    else:
+        roupa_cliente = info_cliente[2]
 
     mydb.close()
     return cpf_cliente, telefone_cliente, roupa_cliente
