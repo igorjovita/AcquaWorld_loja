@@ -11,7 +11,7 @@ from datetime import date
 import streamlit.components.v1
 from functions import select_reserva, processar_pagamento, gerar_pdf, gerar_html, select_apelido_vendedores, \
     calculo_restricao, insert_cliente, insert_reserva, select_id_vendedores, insert_lancamento_comissao, \
-    select_valor_neto, select_cliente
+    select_valor_neto, select_cliente, select_grupo_reserva
 import time
 
 chars = "'),([]"
@@ -387,13 +387,13 @@ if escolha == 'Editar':
             st.subheader(f'Editar reservas do grupo de {selectbox_cliente}')
             info_titular = select_reserva(selectbox_cliente, data_editar)
             id_titular_reserva = info_titular[1]
-            st.write(id_titular_reserva)
-            for cliente in id_titular_reserva:
+            id_grupo_reserva = select_grupo_reserva(id_titular_reserva)
+            for cliente in id_grupo_reserva:
                 cpf = cliente[0]
                 telefone = cliente[1]
                 roupa = cliente[2]
                 st.write(cliente, cpf, telefone, roupa)
-                
+
         info_reserva = select_reserva(selectbox_cliente, data_editar)
         id_cliente = info_reserva[1]
         cpf_cliente, telefone_cliente, roupa_cliente = select_cliente(id_cliente)
