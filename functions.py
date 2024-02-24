@@ -476,7 +476,7 @@ def gerar_html(data_para_pdf):
         nome_cliente = str(dado[0]).upper() if dado[0] is not None else ''
         cpf = dado[1] if dado[1] is not None else ''
         telefone = dado[2] if dado[2] is not None else ''
-        comissario = dado[3] if dado[3] is not None else ''
+        comissario = str(dado[3]).upper() if dado[3] is not None else ''
         tipo = dado[4] if dado[4] is not None else ''
         fotos = dado[5] if dado[5] is not None else ''
         roupa = dado[6] if dado[6] is not None else ''
