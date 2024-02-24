@@ -276,7 +276,7 @@ if escolha == 'Reservar':
                             st.session_state.pagamentos[i] = st.session_state.pagamentos[i] + \
                                                              st.session_state.pagamentos2[i]
 
-                        if recebedor_sinal != '':
+                        if recebedor_sinal is not None:
 
                             for pagamento in st.session_state.pagamentos:
                                 cursor.execute(
