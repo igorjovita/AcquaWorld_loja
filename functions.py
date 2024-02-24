@@ -144,7 +144,7 @@ def insert_reserva(reserva):
 def insert_cliente(cpf, nome_cliente, telefone, roupa):
     st.write(f'CPF : {cpf}')
     mydb.connect()
-    if cpf is None or '':
+    if cpf is None or cpf == '':
         cpf = 164
         cursor.execute(
             "INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
