@@ -145,6 +145,7 @@ def insert_cliente(cpf, nome_cliente, telefone, roupa):
     mydb.connect()
     if cpf is None:
         cpf = id
+        st.write('None')
 
     cursor.execute(
         "INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
