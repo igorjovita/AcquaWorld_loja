@@ -150,7 +150,7 @@ def insert_cliente(cpf, nome_cliente, telefone, roupa):
             "INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
             (cpf, nome_cliente, telefone, roupa))
         id_cliente = cursor.lastrowid
-        # cursor.execute(f"UPDATE cliente set cpf = id where id = {id_cliente}")
+        cursor.execute(f"UPDATE cliente set cpf = id where id = {id_cliente}")
     else:
         cursor.execute(
             "INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
