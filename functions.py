@@ -145,7 +145,7 @@ def insert_cliente(cpf, nome_cliente, telefone, roupa):
     mydb.connect()
     cursor.execute(
         "INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
-        (cpf, nome_cliente, telefone, roupa))
+        (id, nome_cliente, telefone, roupa))
     id_cliente = cursor.lastrowid
     mydb.close()
 
