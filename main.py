@@ -629,7 +629,7 @@ if escolha == 'Pagamento':
                             pagamento = 0
 
                     with coluna3:
-                        if info_cliente_pg[3] == pagamento:
+                        if info_cliente_pg[4] == pagamento:
                             receber_formatado_individual = 0.00
                             situacao = 'Pago'
                             pagamento = 0
