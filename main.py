@@ -391,7 +391,6 @@ if escolha == 'Editar':
             id_titular_reserva = info_titular[1]
             id_grupo_reserva = select_grupo_reserva(id_titular_reserva)
             for id_cliente in id_grupo_reserva:
-                st.write(id_cliente)
                 if id_cliente:
                     cliente = select_cliente(id_cliente[0])
                     # Verifica se o primeiro elemento (CPF) existe e não é nulo
@@ -405,7 +404,6 @@ if escolha == 'Editar':
                     cpf = ''
                     telefone = ''
                     roupa = ''
-                st.write(cliente, cpf, telefone, roupa)
 
         info_reserva = select_reserva(selectbox_cliente, data_editar)
         id_cliente = info_reserva[1]
@@ -453,7 +451,7 @@ if escolha == 'Editar':
             cursor.execute(f"SELECT apelido FROM vendedores WHERE id = '{info_reserva[5]}'")
             comissario_antigo = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
             st.subheader(f'Vendedor : {comissario_antigo}')
-            comissario_novo = st.selectbox('Selecione o novo vendedor', lista_vendedor)
+            comissario_novo = st.selectbox('Selecione o novo vendedor', lista_vendedor, index=None)
             if st.button('Atualizar Reserva'):
                 id_vendedor_editar = select_id_vendedores(comissario=comissario_novo)
 
@@ -464,7 +462,7 @@ if escolha == 'Editar':
 
         if escolha_editar == 'Certificação':
             st.subheader(f'Certificação: {info_reserva[2]}')
-            tipo_novo = st.selectbox('Nova Certificação', ['', 'BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'])
+            tipo_novo = st.selectbox('Nova Certificação', ['BAT', 'TUR1', 'TUR2', 'OWD', 'ADV'], index=None)
             if st.button('Atualizar Reserva'):
                 mydb.connect()
                 cursor.execute(
