@@ -28,10 +28,12 @@ mydb = mysql.connector.connect(
     charset="utf8")
 
 cursor = mydb.cursor(buffered=True)
+st.set_page_config(layout='wide', page_title='AcquaWorld', page_icon='🤿')
 
 escolha = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visualizar', 'Editar', 'Pagamento'],
                       icons=['book', 'card-checklist', 'pencil-square', 'currency-dollar'],
                       orientation='horizontal')
+
 
 pasta = os.path.dirname(__file__)
 
