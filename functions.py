@@ -143,9 +143,16 @@ def insert_reserva(reserva):
 
 def insert_cliente(cpf, nome_cliente, telefone, roupa):
     mydb.connect()
+    if cpf is None or '':
+        # Obtém o próximo ID disponível na tabela cliente
+        cursor.execute(
+            "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'zaitpacb8oi8ppgt' AND TABLE_NAME = 'cliente';")
+        id_cliente = cursor.fetchone()[0]
+        cpf = id_cliente
+
     cursor.execute(
         "INSERT INTO cliente (cpf, nome, telefone, roupa) VALUES (%s, %s, %s, %s)",
-        (id, nome_cliente, telefone, roupa))
+        (cpf, nome_cliente, telefone, roupa))
     id_cliente = cursor.lastrowid
     mydb.close()
 
