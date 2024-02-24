@@ -670,6 +670,7 @@ def gerar_html_total(data_caixa):
 
     soma_total_entrada = soma_pix + soma_dinheiro + soma_credito + soma_debito
     soma_total_saida = soma_saida_dinheiro + soma_saida_pix + soma_cofre + soma_reembolso
+    saldo_loja = format_currency(soma_dinheiro - (soma_saida_dinheiro + soma_cofre), 'BRL', locale='pt_BR')
 
     soma_pix = format_currency(soma_pix, 'BRL', locale='pt_BR')
     soma_dinheiro = format_currency(soma_dinheiro, 'BRL', locale='pt_BR')
@@ -687,7 +688,7 @@ def gerar_html_total(data_caixa):
                       'soma_credito': soma_credito, 'soma_total_entrada': soma_total_entrada,
                       'soma_reembolso': soma_reembolso, 'soma_saida_pix': soma_saida_pix,
                       'soma_saida_dinheiro': soma_saida_dinheiro, 'soma_cofre': soma_cofre,
-                      'soma_total_saida': soma_total_saida}
+                      'soma_total_saida': soma_total_saida, 'saldo_loja': saldo_loja}
 
     # Renderizar o template HTML
     planilha_loader = jinja2.FileSystemLoader('./')
