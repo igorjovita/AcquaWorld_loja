@@ -146,7 +146,7 @@ def insert_cliente(cpf, nome_cliente, telefone, roupa):
     if cpf is None or '':
         # Obtém o próximo ID disponível na tabela cliente
         cursor.execute(
-            "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'zaitpacb8oi8ppgt' AND TABLE_NAME = 'cliente';")
+            "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'zaitpacb8oi8ppgt' AND TABLE_NAME = 'zaitpacb8oi8ppgt.cliente';")
         id_cliente = cursor.fetchone()[0]
         cpf = id_cliente
 
