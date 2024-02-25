@@ -2,9 +2,9 @@ import streamlit as st
 import mysql.connector
 import os
 import streamlit.components.v1
-from functions import gerar_html_entrada_caixa, gerar_html_total, gerar_html_saida_caixa
+from functions import gerar_html_entrada_caixa, gerar_html_total, gerar_html_saida_caixa, select_caixa
 from functions import insert_caixa
-
+from babel.numbers import format_currency
 
 mydb = mysql.connector.connect(
     host=os.getenv("DB_HOST"),
@@ -15,28 +15,81 @@ mydb = mysql.connector.connect(
     ssl_verify_identity=False,
     ssl_ca=r"C:\users\acqua\downloads\cacert-2023-08-22.pem")
 
+if 'fechamento' not in st.session_state:
+    st.session_state.fechamento = False
+
 tipo1 = ['ENTRADA', 'BAT', 'TUR', 'ACP', 'CURSO', 'PGT PARCEIRO', 'OUTROS']
 tipo2 = ['CAFÉ DA MANHÃ', 'DESPESA OPERACIONAL', 'SALARIO', 'SANGRIA', 'CONTAS']
 
 
 st.header('Lançamento Caixa')
 col1, col2, col3 = st.columns(3)
-with col1:
-    data_caixa = st.date_input('Data', format='DD/MM/YYYY')
-    valor = st.text_input('Valor')
-with col2:
-    lancamento = st.selectbox('Lançamento', ['ENTRADA', 'SAIDA'], index=None)
-    forma_pg = st.selectbox('Forma do Pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None)
+if st.session_state.fechamento:
 
-with col3:
-    if lancamento == 'ENTRADA':
-        tipo = st.selectbox('Tipo', tipo1, index=None)
-    else:
-        tipo = st.selectbox('Tipo', tipo2, index=None)
+    with col1:
+        data_caixa = st.date_input('Data', format='DD/MM/YYYY')
 
-descricao = st.text_area('Descriçao')
-if st.button('Lançar Pagamento'):
-    insert_caixa(1, data_caixa, lancamento, tipo, descricao, forma_pg, valor)
+        dados = select_caixa(data_caixa)
+        soma_dinheiro = 0
+        soma_saida_dinheiro = 0
+        soma_cofre = 0
+
+        for dado in dados:
+            if dado[0] == 'ENTRADA':
+                if dado[3] == 'Dinheiro':
+                    soma_dinheiro += float(dado[4])
+
+            if dado[0] == 'SAIDA':
+                if dado[3] == 'Dinheiro':
+                    soma_saida_dinheiro += float(dado[4])
+                if dado[1] == 'Cofre':
+                    soma_cofre += float(dado[4])
+
+        saldo_loja = format_currency(soma_dinheiro - (soma_saida_dinheiro + soma_cofre), 'BRL', locale='pt_BR')
+        valor = st.text_input('Valor', value=saldo_loja)
+    with col2:
+        lancamento = st.selectbox('Lançamento', ['FECHAMENTO'])
+        forma_pg = st.selectbox('Forma do Pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None, disabled=True)
+
+    with col3:
+        tipo = st.selectbox('Tipo', tipo1, index=None, disabled=True)
+
+
+    colun1, colun2 = st.columns(2)
+
+    descricao = st.text_area('Descriçao')
+    with colun1:
+        if st.button('Lançar Pagamento'):
+            insert_caixa(1, data_caixa, lancamento, tipo, descricao, forma_pg, valor)
+
+    with colun2:
+        if st.button('Fechar Caixa'):
+            st.session_state.fechamento = not st.session_state.fechamento
+else:
+    with col1:
+        data_caixa = st.date_input('Data', format='DD/MM/YYYY')
+        valor = st.text_input('Valor')
+    with col2:
+        lancamento = st.selectbox('Lançamento', ['ENTRADA', 'SAIDA'], index=None)
+        forma_pg = st.selectbox('Forma do Pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None)
+
+    with col3:
+        if lancamento == 'ENTRADA':
+            tipo = st.selectbox('Tipo', tipo1, index=None)
+        else:
+            tipo = st.selectbox('Tipo', tipo2, index=None)
+
+    colun1, colun2 = st.columns(2)
+
+    descricao = st.text_area('Descriçao')
+    with colun1:
+        if st.button('Lançar Pagamento'):
+            insert_caixa(1, data_caixa, lancamento, tipo, descricao, forma_pg, valor)
+
+    with colun2:
+        if st.button('Fechar Caixa'):
+            st.session_state.fechamento = not st.session_state.fechamento
+
     st.success('Lançamento inserido no caixa')
 
 st.write('---')

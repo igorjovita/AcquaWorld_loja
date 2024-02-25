@@ -125,6 +125,13 @@ def select_cliente(id_cliente):
     mydb.close()
     return cpf_cliente, telefone_cliente, roupa_cliente
 
+@st.cache_resource
+def select_caixa(data_caixa):
+    mydb.connect()
+    cursor.execute(f"SELECT tipo_movimento, tipo, descricao, forma_pg, valor FROM caixa WHERE data = '{data_caixa}'")
+    dados = cursor.fetchall()
+    mydb.close()
+    return dados
 
 # INSERTS
 
@@ -524,9 +531,8 @@ def gerar_html_entrada_caixa(data_caixa):
     descricao = []
     forma_pg = []
     valor = []
-    mydb.connect()
-    cursor.execute(f"SELECT tipo_movimento, tipo, descricao, forma_pg, valor FROM caixa WHERE data = '{data_caixa}'")
-    dados = cursor.fetchall()
+
+    dados = select_caixa(data_caixa)
 
     for dado in dados:
         if dado[0] == 'ENTRADA':
@@ -581,10 +587,8 @@ def gerar_html_saida_caixa(data_caixa):
     descricao2 = []
     forma_pg2 = []
     valor2 = []
-    mydb.connect()
 
-    cursor.execute(f"SELECT tipo_movimento, tipo, descricao, forma_pg, valor FROM caixa WHERE data = '{data_caixa}'")
-    dados = cursor.fetchall()
+    dados = select_caixa(data_caixa)
 
     for dado in dados:
         if dado[0] == 'SAIDA':
@@ -637,9 +641,8 @@ def gerar_html_total(data_caixa):
     soma_saida_dinheiro = 0
     soma_reembolso = 0
     soma_cofre = 0
-    mydb.connect()
-    cursor.execute(f"SELECT tipo_movimento, tipo, descricao, forma_pg, valor FROM caixa WHERE data = '{data_caixa}'")
-    dados = cursor.fetchall()
+
+    dados = select_caixa(data_caixa)
 
     for dado in dados:
         if dado[0] == 'ENTRADA':
