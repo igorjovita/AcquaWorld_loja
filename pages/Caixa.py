@@ -27,19 +27,11 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
     data_caixa = st.date_input('Data', format='DD/MM/YYYY')
-    if lancamento == 'ENTRADA':
-        tipo = st.selectbox('Tipo', tipo1, index=None)
-    elif lancamento == 'SAIDA':
-        tipo = st.selectbox('Tipo', tipo2, index=None)
-    else:
-        tipo = st.selectbox('Tipo', tipo2, index=None, disabled=True)
+
 
 with col2:
     lancamento = st.selectbox('Lançamento', ['ENTRADA', 'SAIDA', 'FECHAMENTO'], index=None)
-    if lancamento == 'FECHAMENTO':
-        forma_pg = st.selectbox('Forma do Pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None, disabled=True)
-    else:
-        forma_pg = st.selectbox('Forma do Pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None)
+
 
 with col3:
     if lancamento == 'FECHAMENTO':
@@ -65,6 +57,23 @@ with col3:
     else:
         valor = st.text_input('Valor')
 
+colu1, colu2 = st.columns(2)
+
+with colu1:
+    if lancamento == 'ENTRADA':
+        tipo = st.selectbox('Tipo', tipo1, index=None)
+    elif lancamento == 'SAIDA':
+        tipo = st.selectbox('Tipo', tipo2, index=None)
+    else:
+        tipo = st.selectbox('Tipo', tipo2, index=None, disabled=True)
+
+
+with colu2:
+
+    if lancamento == 'FECHAMENTO':
+        forma_pg = st.selectbox('Forma do Pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None, disabled=True)
+    else:
+        forma_pg = st.selectbox('Forma do Pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None)
 
 
 if lancamento == 'FECHAMENTO':
