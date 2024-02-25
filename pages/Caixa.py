@@ -51,7 +51,8 @@ with col3:
                 if dado[1] == 'Cofre':
                     soma_cofre += float(dado[4])
 
-        saldo_loja = format_currency(soma_dinheiro - (soma_saida_dinheiro + soma_cofre), 'BRL', locale='pt_BR')
+        saldo = soma_dinheiro - (soma_saida_dinheiro + soma_cofre)
+        saldo_loja = format_currency(saldo, 'BRL', locale='pt_BR')
         valor = st.text_input('Valor', value=saldo_loja)
 
     else:
@@ -83,6 +84,8 @@ else:
 
 
 if st.button('Lançar Pagamento'):
+    if lancamento == 'FECHAMENTO':
+        valor = saldo
     insert_caixa(1, data_caixa, lancamento, tipo, descricao, forma_pg, valor)
     st.success('Lançamento inserido no caixa')
 
