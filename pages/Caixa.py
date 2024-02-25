@@ -95,6 +95,8 @@ if st.button('Lançar Pagamento'):
 
 st.write('---')
 
+data_caixa2 = st.date_input('Data', format='DD/MM/YYYY')
+
 st.header('Planilha Caixa')
 
 col1, col2, col3 = st.columns(3)
@@ -104,18 +106,18 @@ with col1:
     st.write('')
     if st.button('Abrir Total'):
         with open("planilha_caixa_total.html", "r", encoding="utf-8") as file:
-            html_content = gerar_html_total(data_caixa)
+            html_content = gerar_html_total(data_caixa2)
 
 with col2:
     st.write('')
     if st.button('Abrir Entrada'):
         with open("planilha_caixa_entrada.html", "r", encoding="utf-8") as file:
-            html_content = gerar_html_entrada_caixa(data_caixa)
+            html_content = gerar_html_entrada_caixa(data_caixa2)
 with col3:
     st.write('')
     if st.button('Abrir Saida'):
         with open("planilha_caixa_saida.html", "r", encoding="utf-8") as file:
-            html_content = gerar_html_saida_caixa(data_caixa)
+            html_content = gerar_html_saida_caixa(data_caixa2)
 
 if html_content:
     st.components.v1.html(html_content, height=1000, width=1000, scrolling=True)
