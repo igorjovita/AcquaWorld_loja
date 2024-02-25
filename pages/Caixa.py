@@ -24,11 +24,13 @@ tipo2 = ['CAFÉ DA MANHÃ', 'DESPESA OPERACIONAL', 'SALARIO', 'SANGRIA', 'CONTAS
 
 st.header('Lançamento Caixa')
 col1, col2, col3 = st.columns(3)
-if st.session_state.fechamento:
 
-    with col1:
-        data_caixa = st.date_input('Data', format='DD/MM/YYYY')
 
+
+with col1:
+    data_caixa = st.date_input('Data', format='DD/MM/YYYY')
+
+    if lancamento == 'FECHAMENTO':
         dados = select_caixa(data_caixa)
         soma_dinheiro = 0
         soma_saida_dinheiro = 0
@@ -47,51 +49,35 @@ if st.session_state.fechamento:
 
         saldo_loja = format_currency(soma_dinheiro - (soma_saida_dinheiro + soma_cofre), 'BRL', locale='pt_BR')
         valor = st.text_input('Valor', value=saldo_loja)
-    with col2:
-        lancamento = st.selectbox('Lançamento', ['FECHAMENTO'])
-        forma_pg = st.selectbox('Forma do Pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None, disabled=True)
 
-    with col3:
-        tipo = st.selectbox('Tipo', tipo1, index=None, disabled=True)
-
-
-    colun1, colun2 = st.columns(2)
-
-    descricao = st.text_area('Descriçao')
-    with colun1:
-        if st.button('Lançar Pagamento'):
-            insert_caixa(1, data_caixa, lancamento, tipo, descricao, forma_pg, valor)
-
-    with colun2:
-        if st.button('Fechar Caixa'):
-            st.session_state.fechamento = not st.session_state.fechamento
-else:
-    with col1:
-        data_caixa = st.date_input('Data', format='DD/MM/YYYY')
+    else:
         valor = st.text_input('Valor')
-    with col2:
-        lancamento = st.selectbox('Lançamento', ['ENTRADA', 'SAIDA'], index=None)
+with col2:
+    lancamento = st.selectbox('Lançamento', ['ENTRADA', 'SAIDA', 'FECHAMENTO'], index=None)
+    if lancamento == 'FECHAMENTO':
+        forma_pg = st.selectbox('Forma do Pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None, disabled=True)
+    else:
         forma_pg = st.selectbox('Forma do Pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None)
 
-    with col3:
-        if lancamento == 'ENTRADA':
-            tipo = st.selectbox('Tipo', tipo1, index=None)
-        else:
-            tipo = st.selectbox('Tipo', tipo2, index=None)
+with col3:
+    if lancamento == 'ENTRADA':
+        tipo = st.selectbox('Tipo', tipo1, index=None)
+    elif lancamento == 'SAIDA':
+        tipo = st.selectbox('Tipo', tipo2, index=None)
+    else:
+        tipo = st.selectbox('Tipo', tipo2, index=None, disabled=True)
 
+if lancamento == 'FECHAMENTO':
     descricao = st.text_area('Descriçao', disabled=True)
+else:
+    descricao = st.text_area('Descriçao')
 
-    colun1, colun2 = st.columns(2)
 
-    with colun1:
-        if st.button('Lançar Pagamento'):
-            insert_caixa(1, data_caixa, lancamento, tipo, descricao, forma_pg, valor)
-            st.success('Lançamento inserido no caixa')
+if st.button('Lançar Pagamento'):
+    insert_caixa(1, data_caixa, lancamento, tipo, descricao, forma_pg, valor)
+    st.success('Lançamento inserido no caixa')
 
-    with colun2:
-        if st.button('Fechar Caixa'):
-            st.session_state.fechamento = not st.session_state.fechamento
-            st.success('Caixa Fechado com Sucesso')
+
 
 
 
