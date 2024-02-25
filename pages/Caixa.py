@@ -95,7 +95,7 @@ if st.button('Lançar Pagamento'):
 
 st.write('---')
 
-data_caixa2 = st.date_input('Data', format='DD/MM/YYYY')
+data_caixa2 = st.date_input('Data do Caixa', format='DD/MM/YYYY')
 
 st.header('Planilha Caixa')
 
