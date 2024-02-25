@@ -687,7 +687,9 @@ def gerar_html_total(data_caixa):
     soma_total_saida = format_currency(soma_total_saida, 'BRL', locale='pt_BR')
     soma_total_entrada = format_currency(soma_total_entrada, 'BRL', locale='pt_BR')
 
+    mydb.connect()
     cursor.execute(f"select valor from caixa where tipo_movimento = 'FECHAMENTO'order by data < '{data_caixa}' desc limit 1;")
+    mydb.close()
     dado_fechamento = cursor.fetchone()[0]
     fechamento = format_currency(dado_fechamento, 'BRL', locale='pt_BR')
     contexto_total = {'soma_pix': soma_pix, 'soma_dinheiro': soma_dinheiro, 'soma_debito': soma_debito,
