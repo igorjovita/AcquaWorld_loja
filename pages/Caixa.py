@@ -80,17 +80,20 @@ else:
             tipo = st.selectbox('Tipo', tipo2, index=None)
 
     descricao = st.text_area('Descriçao', disabled=True)
+
     colun1, colun2 = st.columns(2)
 
     with colun1:
         if st.button('Lançar Pagamento'):
             insert_caixa(1, data_caixa, lancamento, tipo, descricao, forma_pg, valor)
+            st.success('Lançamento inserido no caixa')
 
     with colun2:
         if st.button('Fechar Caixa'):
             st.session_state.fechamento = not st.session_state.fechamento
+            st.success('Caixa Fechado com Sucesso')
 
-    st.success('Lançamento inserido no caixa')
+
 
 st.write('---')
 
