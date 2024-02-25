@@ -90,9 +90,6 @@ if st.button('Lançar Pagamento'):
     st.success('Lançamento inserido no caixa')
 
 
-
-
-
 st.write('---')
 
 data_caixa2 = st.date_input('Data do Caixa', format='DD/MM/YYYY')
