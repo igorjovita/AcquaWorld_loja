@@ -687,11 +687,14 @@ def gerar_html_total(data_caixa):
     soma_total_saida = format_currency(soma_total_saida, 'BRL', locale='pt_BR')
     soma_total_entrada = format_currency(soma_total_entrada, 'BRL', locale='pt_BR')
 
+    cursor.execute("SELECT valor FROM caixa WHERE tipo_movimento = 'FECHAMENTO' ORDER BY data DESC LIMIT 1")
+    fechamento = cursor.fetchone()[0]
+
     contexto_total = {'soma_pix': soma_pix, 'soma_dinheiro': soma_dinheiro, 'soma_debito': soma_debito,
                       'soma_credito': soma_credito, 'soma_total_entrada': soma_total_entrada,
                       'soma_reembolso': soma_reembolso, 'soma_saida_pix': soma_saida_pix,
                       'soma_saida_dinheiro': soma_saida_dinheiro, 'soma_cofre': soma_cofre,
-                      'soma_total_saida': soma_total_saida, 'saldo_loja': saldo_loja}
+                      'soma_total_saida': soma_total_saida, 'saldo_loja': saldo_loja, 'saldo_anterior': fechamento}
 
     # Renderizar o template HTML
     planilha_loader = jinja2.FileSystemLoader('./')
