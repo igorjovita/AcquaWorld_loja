@@ -79,9 +79,9 @@ else:
         else:
             tipo = st.selectbox('Tipo', tipo2, index=None)
 
+    descricao = st.text_area('Descriçao', disabled=True)
     colun1, colun2 = st.columns(2)
 
-    descricao = st.text_area('Descriçao')
     with colun1:
         if st.button('Lançar Pagamento'):
             insert_caixa(1, data_caixa, lancamento, tipo, descricao, forma_pg, valor)
