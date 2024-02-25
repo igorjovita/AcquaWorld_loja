@@ -20,7 +20,7 @@ if 'fechamento' not in st.session_state:
 
 tipo1 = ['ENTRADA', 'BAT', 'TUR', 'ACP', 'CURSO', 'PGT PARCEIRO', 'OUTROS']
 tipo2 = ['CAFÉ DA MANHÃ', 'DESPESA OPERACIONAL', 'SALARIO', 'SANGRIA', 'CONTAS']
-
+lancamento = ''
 
 st.header('Lançamento Caixa')
 col1, col2, col3 = st.columns(3)
