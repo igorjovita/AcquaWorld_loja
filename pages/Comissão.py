@@ -36,7 +36,7 @@ if 'df_state' not in state:
 st.subheader('Comissão')
 mydb.connect()
 lista_vendedor = select_apelido_vendedores()
-comissario = st.selectbox('Selecione o parceiro', options=lista_vendedor)
+comissario = st.selectbox('Selecione o parceiro', options=lista_vendedor, index=None)
 situacao = st.selectbox('Situação do Pagamento', ['Pendente', 'Pago', 'Todos'], index=None,
                         placeholder='Selecione o status do pagamento')
 
