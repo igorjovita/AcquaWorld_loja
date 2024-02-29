@@ -147,9 +147,16 @@ if escolha == 'Reservar':
         botao2 = st.button('Segurar vagas')
 
     if botao2:
+        if comissario is None:
+            st.error('Insira o nome do comissario')
+        else:
+            id_vendedor = select_id_vendedores(comissario)
+
         reserva_temporaria = []
         for i in range(quantidade_reserva):
-            reserva_temporaria.append((data, '', '',))
+            reserva_temporaria.append((data, '', '', id_vendedor, '', f'Reserva {comissario}{i}', '', '', ''))
+
+        insert_reserva(reserva_temporaria)
 
         st.success(f'{quantidade_reserva} vagas reservadas para  {comissario}')
 
