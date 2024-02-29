@@ -130,10 +130,15 @@ if escolha == 'Reservar':
             # Campo de entrada para o nome do cliente
             nome_cliente = st.text_input(f'Nome do Cliente {i + 1}:').title()
             nomes_clientes.append(nome_cliente)
+    coluna1, coluna2 = st.columns(2)
 
-    if st.button('Inserir dados do cliente'):
-        st.session_state.botao_clicado = True
+    with coluna1:
+        if st.button('Inserir dados do cliente'):
+            st.session_state.botao_clicado = True
 
+    with coluna2:
+        if st.button('Segurar vaga'):
+            st.write(f'{quantidade_reserva} vagas seguradas para o {comissario}')
     if st.session_state.botao_clicado:
 
         contagem, restricao, contagem_cred, vaga_bat, vaga_cred, vaga_total = calculo_restricao(data)
@@ -389,7 +394,7 @@ if escolha == 'Editar':
             st.subheader(f'Editar reservas do grupo de {selectbox_cliente}')
             info_titular = select_reserva(selectbox_cliente, data_editar)
             id_titular_reserva = info_titular[1]
-            id_grupo_reserva = select_grupo_reserva(id_titular_reserva)
+            id_grupo_reserva = select_grupo_reserva(id_titular_reserva, data_editar)
             for id_cliente in id_grupo_reserva:
                 if id_cliente:
                     cliente = select_cliente(id_cliente[0])
