@@ -154,9 +154,11 @@ if escolha == 'Reservar':
 
         reserva_temporaria = []
         for i in range(quantidade_reserva):
-            reserva_temporaria.append((data, '', '', id_vendedor, '', f'Reserva {comissario}{i}', '', '', ''))
+            id_cliente = insert_cliente('', f'Reserva {comissario}{i}', '', '')
+            reserva_temporaria.append((data, id_cliente, '', id_vendedor, '', f'Reserva {comissario}{i}', '', '', ''))
 
         for reserva in reserva_temporaria:
+
             insert_reserva(reserva)
 
         st.success(f'{quantidade_reserva} vagas reservadas para  {comissario}')
