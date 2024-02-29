@@ -132,15 +132,16 @@ if escolha == 'Reservar':
     coluna1, coluna2 = st.columns(2)
 
     with coluna1:
-        if st.button('Inserir dados do cliente'):
-            contagem, restricao, contagem_cred, vaga_bat, vaga_cred, vaga_total = calculo_restricao(data)
+        botao1 = st.button('Inserir dados do cliente')
+    if botao1:
+        contagem, restricao, contagem_cred, vaga_bat, vaga_cred, vaga_total = calculo_restricao(data)
 
-            if comissario is None:
-                st.error('Insira o nome do comissario')
-            elif contagem >= vaga_total:
-                st.error('Planilha está lotada nessa data!')
-            else:
-                st.session_state.botao_clicado = True
+        if comissario is None:
+            st.error('Insira o nome do comissario')
+        elif contagem >= vaga_total:
+            st.error('Planilha está lotada nessa data!')
+        else:
+            st.session_state.botao_clicado = True
 
     with coluna2:
         botao2 = st.button('Segurar vagas')
