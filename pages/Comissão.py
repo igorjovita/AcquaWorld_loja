@@ -7,7 +7,7 @@ from babel.numbers import format_currency
 import os
 import mysql.connector
 from decimal import Decimal
-from functions import lista_vendedores, insert_vendedores
+from functions import lista_vendedores, insert_vendedores, select_apelido_vendedores
 
 chars = "'),([]"
 chars2 = "')([]"
@@ -35,9 +35,7 @@ if 'df_state' not in state:
 
 st.subheader('Comissão')
 mydb.connect()
-cursor.execute("SELECT apelido FROM vendedores")
-lista_vendedor = str(cursor.fetchall()).translate(str.maketrans('', '', chars)).split()
-
+lista_vendedor = select_apelido_vendedores
 comissario = st.selectbox('Selecione o parceiro', lista_vendedor)
 situacao = st.selectbox('Situação do Pagamento', ['Pendente', 'Pago', 'Todos'], index=None,
                         placeholder='Selecione o status do pagamento')

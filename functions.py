@@ -25,7 +25,7 @@ cursor = mydb.cursor(buffered=True)
 
 
 # SELECTS
-
+@st.cache_resource
 def select_apelido_vendedores():
     lista_vendedor = []
     mydb.connect()
