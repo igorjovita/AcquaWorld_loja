@@ -137,8 +137,10 @@ if escolha == 'Reservar':
             st.session_state.botao_clicado = True
 
     with coluna2:
-        if st.button('Segurar vaga'):
-            st.write(f'{quantidade_reserva} vagas seguradas para o {comissario}')
+        botao2 = st.button('Segurar vagas')
+
+    if botao2:
+        st.success(f'{quantidade_reserva} vagas seguradas para o {comissario}')
     if st.session_state.botao_clicado:
 
         contagem, restricao, contagem_cred, vaga_bat, vaga_cred, vaga_total = calculo_restricao(data)
