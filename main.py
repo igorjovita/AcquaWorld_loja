@@ -34,7 +34,6 @@ escolha = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visual
                       icons=['book', 'card-checklist', 'pencil-square', 'currency-dollar'],
                       orientation='horizontal')
 
-
 pasta = os.path.dirname(__file__)
 
 if escolha == 'Visualizar':
@@ -134,125 +133,129 @@ if escolha == 'Reservar':
 
     with coluna1:
         if st.button('Inserir dados do cliente'):
-            st.session_state.botao_clicado = True
+            contagem, restricao, contagem_cred, vaga_bat, vaga_cred, vaga_total = calculo_restricao(data)
+
+            if comissario is None:
+                st.error('Insira o nome do comissario')
+            elif contagem >= vaga_total:
+                st.error('Planilha está lotada nessa data!')
+            else:
+                st.session_state.botao_clicado = True
 
     with coluna2:
         botao2 = st.button('Segurar vagas')
 
     if botao2:
+        reserva_temporaria = []
+        for i in range(quantidade_reserva):
+            reserva_temporaria.append((data, '', '',))
+
         st.success(f'{quantidade_reserva} vagas reservadas para  {comissario}')
+
     if st.session_state.botao_clicado:
 
-        contagem, restricao, contagem_cred, vaga_bat, vaga_cred, vaga_total = calculo_restricao(data)
+        # Exibir os campos adicionais para cada reserva
+        for i, nome_cliente in enumerate(nomes_clientes):
 
-        if contagem >= vaga_total:
-            st.error('Planilha está lotada nessa data!')
+            if reserva_conjunta == 'Sim':
+                nome_titular = titular
 
-        if comissario is None:
-            st.error('Insira o vendedor dessa reserva!')
-        else:
-            # Exibir os campos adicionais para cada reserva
-            for i, nome_cliente in enumerate(nomes_clientes):
+            if i == 0 and reserva_conjunta == 'Não':
+                titulo = f'Reserva Titular: {nome_cliente}'
+                subtitulo = 'Para acessar essa reserva posteriormente use o nome do titular!'
+                nome_titular = nome_cliente
+            else:
+                titulo = f'Reserva  Cliente: {nome_cliente}'
+                subtitulo = ''
+            with st.form(f'Fomulario - {nome_cliente}'):
+                st.subheader(titulo)
+                st.text(subtitulo)
+                colu1, colu2, colu3 = st.columns(3)
+
+                with colu1:
+                    cpf = st.text_input(f'Cpf', help='Apenas números',
+                                        key=f'cpf{nome_cliente}{i}')
+                    altura = st.slider(f'Altura', 1.50, 2.10,
+                                       key=f'altura{nome_cliente}{i}')
+                    sinal = st.text_input(f'Valor do Sinal', key=f'sinal{nome_cliente}{i}', value=0)
+
+                with colu2:
+                    telefone = st.text_input(f'Telefone:',
+                                             key=f'telefone{nome_cliente}{i}')
+                    peso = st.slider(f'Peso', 40, 160, key=f'peso{nome_cliente}{i}')
+                    recebedor_sinal = st.selectbox(f'Recebedor do Sinal',
+                                                   ['AcquaWorld', 'Vendedor'],
+                                                   index=None,
+                                                   placeholder='Recebedor do Sinal',
+                                                   key=f'recebedor{nome_cliente}{i}')
+                with colu3:
+                    tipo = st.selectbox(f'Certificação: ',
+                                        ('BAT', 'ACP', 'TUR1', 'TUR2', 'OWD', 'ADV'),
+                                        index=None, placeholder='Certificação', key=f'tipo{nome_cliente}{i}')
+                    valor_mergulho = st.text_input(f'Valor do Mergulho',
+                                                   key=f'valor{nome_cliente}{i}')
+                    valor_loja = st.text_input(f'Valor a receber:', key=f'loja{nome_cliente}{i}')
+
+                    roupa = f'{altura:.2f}/{peso}'
+                    if valor_loja == '':
+                        valor_loja = 0.00
+                    else:
+                        valor_loja = valor_loja
+                if st.form_submit_button(f'Cadastrar {nome_cliente}'):
+                    if nome_cliente not in st.session_state.nome_cadastrado:
+                        st.session_state.nome_cadastrado.append(nome_cliente)
+                        forma_pg = 'Pix'
+                        st.session_state.pagamentos.append((data, recebedor_sinal, sinal, forma_pg))
+                        st.session_state.valor_sinal += float(sinal)
+
+                        st.session_state.valor_mergulho_receber += float(valor_loja)
+                        st.session_state.valor_mergulho_total += float(valor_mergulho)
+
+                        if i != 0:
+                            st.session_state.nome_dependente.append(nome_cliente)
+
+                        with mydb.cursor() as cursor:
+                            try:
+
+                                id_cliente = insert_cliente(cpf, nome_cliente, telefone, roupa)
+                                st.session_state.ids_clientes.append(id_cliente)
+                                mydb.commit()
+
+                            except IntegrityError:
+                                cursor.execute(f"SELECT id from cliente where cpf = %s and nome = %s",
+                                               (cpf, nome_cliente))
+                                info_registro = cursor.fetchone()
+
+                                if info_registro:
+                                    id_cliente = info_registro[0]
+                                    st.session_state.ids_clientes.append(id_cliente)
+                    else:
+                        st.error(f'{nome_cliente} já foi cadastrado no sistema!')
+
+            # Adicione esta verificação antes de tentar acessar a lista
+            if i < len(st.session_state['ids_clientes']):
+                id_cliente = st.session_state['ids_clientes'][i]
+
+            else:
+                pass
+
+            with mydb.cursor() as cursor:
+
+                id_vendedor = select_id_vendedores(comissario)
 
                 if reserva_conjunta == 'Sim':
-                    nome_titular = titular
 
-                if i == 0 and reserva_conjunta == 'Não':
-                    titulo = f'Reserva Titular: {nome_cliente}'
-                    subtitulo = 'Para acessar essa reserva posteriormente use o nome do titular!'
-                    nome_titular = nome_cliente
-                else:
-                    titulo = f'Reserva  Cliente: {nome_cliente}'
-                    subtitulo = ''
-                with st.form(f'Fomulario - {nome_cliente}'):
-                    st.subheader(titulo)
-                    st.text(subtitulo)
-                    colu1, colu2, colu3 = st.columns(3)
-
-                    with colu1:
-                        cpf = st.text_input(f'Cpf', help='Apenas números',
-                                            key=f'cpf{nome_cliente}{i}')
-                        altura = st.slider(f'Altura', 1.50, 2.10,
-                                           key=f'altura{nome_cliente}{i}')
-                        sinal = st.text_input(f'Valor do Sinal', key=f'sinal{nome_cliente}{i}', value=0)
-
-                    with colu2:
-                        telefone = st.text_input(f'Telefone:',
-                                                 key=f'telefone{nome_cliente}{i}')
-                        peso = st.slider(f'Peso', 40, 160, key=f'peso{nome_cliente}{i}')
-                        recebedor_sinal = st.selectbox(f'Recebedor do Sinal',
-                                                       ['AcquaWorld', 'Vendedor'],
-                                                       index=None,
-                                                       placeholder='Recebedor do Sinal',
-                                                       key=f'recebedor{nome_cliente}{i}')
-                    with colu3:
-                        tipo = st.selectbox(f'Certificação: ',
-                                            ('BAT', 'ACP', 'TUR1', 'TUR2', 'OWD', 'ADV'),
-                                            index=None, placeholder='Certificação', key=f'tipo{nome_cliente}{i}')
-                        valor_mergulho = st.text_input(f'Valor do Mergulho',
-                                                       key=f'valor{nome_cliente}{i}')
-                        valor_loja = st.text_input(f'Valor a receber:', key=f'loja{nome_cliente}{i}')
-
-                        roupa = f'{altura:.2f}/{peso}'
-                        if valor_loja == '':
-                            valor_loja = 0.00
-                        else:
-                            valor_loja = valor_loja
-                    if st.form_submit_button(f'Cadastrar {nome_cliente}'):
-                        if nome_cliente not in st.session_state.nome_cadastrado:
-                            st.session_state.nome_cadastrado.append(nome_cliente)
-                            forma_pg = 'Pix'
-                            st.session_state.pagamentos.append((data, recebedor_sinal, sinal, forma_pg))
-                            st.session_state.valor_sinal += float(sinal)
-
-                            st.session_state.valor_mergulho_receber += float(valor_loja)
-                            st.session_state.valor_mergulho_total += float(valor_mergulho)
-
-                            if i != 0:
-                                st.session_state.nome_dependente.append(nome_cliente)
-
-                            with mydb.cursor() as cursor:
-                                try:
-
-                                    id_cliente = insert_cliente(cpf, nome_cliente, telefone, roupa)
-                                    st.session_state.ids_clientes.append(id_cliente)
-                                    mydb.commit()
-
-                                except IntegrityError:
-                                    cursor.execute(f"SELECT id from cliente where cpf = %s and nome = %s",
-                                                   (cpf, nome_cliente))
-                                    info_registro = cursor.fetchone()
-
-                                    if info_registro:
-                                        id_cliente = info_registro[0]
-                                        st.session_state.ids_clientes.append(id_cliente)
-                        else:
-                            st.error(f'{nome_cliente} já foi cadastrado no sistema!')
-
-                # Adicione esta verificação antes de tentar acessar a lista
-                if i < len(st.session_state['ids_clientes']):
-                    id_cliente = st.session_state['ids_clientes'][i]
+                    cursor.execute(f"SELECT id_cliente from reserva where nome_cliente = '{titular}'")
+                    id_titular = cursor.fetchone()[0]
 
                 else:
-                    pass
+                    if id_titular is None:
+                        id_titular = id_cliente
 
-                with mydb.cursor() as cursor:
-
-                    id_vendedor = select_id_vendedores(comissario)
-
-                    if reserva_conjunta == 'Sim':
-
-                        cursor.execute(f"SELECT id_cliente from reserva where nome_cliente = '{titular}'")
-                        id_titular = cursor.fetchone()[0]
-
-                    else:
-                        if id_titular is None:
-                            id_titular = id_cliente
-
-                reservas.append(
-                    (data, id_cliente, tipo, id_vendedor, valor_mergulho, nome_cliente, '#FFFFFF', id_titular,
-                     valor_loja))
-                st.write('---')
+            reservas.append(
+                (data, id_cliente, tipo, id_vendedor, valor_mergulho, nome_cliente, '#FFFFFF', id_titular,
+                 valor_loja))
+            st.write('---')
 
         if st.button('Reservar'):
 

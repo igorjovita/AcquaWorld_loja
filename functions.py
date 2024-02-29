@@ -28,6 +28,7 @@ cursor = mydb.cursor(buffered=True)
 @st.cache_resource
 def select_apelido_vendedores():
     lista_vendedor = []
+
     mydb.connect()
     cursor.execute("SELECT apelido FROM vendedores")
     lista = cursor.fetchall()
