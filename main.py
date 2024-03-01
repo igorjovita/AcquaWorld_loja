@@ -155,7 +155,7 @@ if escolha == 'Reservar':
         reserva_temporaria = []
         for i, valor in enumerate(range(quantidade_reserva)):
             id_cliente = insert_cliente('', f'{data}/{comissario}/{i}', '', '')
-            
+
             if valor == 0:
                 id_titular_vaga = id_cliente
             reserva_temporaria.append((data, id_cliente, '', id_vendedor, '', f'{data}/{comissario}/{i}', '', id_titular_vaga, ''))
@@ -165,6 +165,7 @@ if escolha == 'Reservar':
             insert_reserva(reserva)
 
         st.success(f'{quantidade_reserva} vagas reservadas para  {comissario}')
+        st.write(id_titular_vaga)
 
     if st.session_state.botao_clicado:
 
