@@ -239,11 +239,9 @@ def insert_vendedores(nome, apelido, telefone, neto_bat, neto_acp, neto_tur1, ne
 
 def update_vaga(lista, nome, cpf, telefone, peso, altura, valor_total, sinal, recebedor_sinal, receber_loja):
     mydb.connect()
-
     roupa = f'{altura}/{peso}'
-    for reserva in lista:
-        query = "UPDATE cliente SET nome = %s, cpf = %s, telefone = %s, roupa = %s WHERE id = %s"
-        cursor.execute(query, (nome, cpf, telefone, roupa, reserva))
+    query = "UPDATE cliente SET nome = %s, cpf = %s, telefone = %s, roupa = %s WHERE id = %s"
+    cursor.execute(query, (nome, cpf, telefone, roupa, reserva))
     mydb.close()
 
 
