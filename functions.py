@@ -229,8 +229,8 @@ def insert_vendedores(nome, apelido, telefone, neto_bat, neto_acp, neto_tur1, ne
 
 def update_vaga(nome_vaga, nome, cpf, telefone, peso, altura, valor_total, sinal, recebedor_sinal, receber_loja):
     mydb.connect()
-    
-    cursor.execute("SELECT id FROM cliente where nome LIKE %s", f'{nome_vaga}%')
+
+    cursor.execute(f"SELECT id FROM cliente where nome LIKE'{nome_vaga}%'")
     id_cliente = cursor.fetchall()
     roupa = f'{altura}/{peso}'
     for reserva in id_cliente:
