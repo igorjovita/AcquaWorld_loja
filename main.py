@@ -11,7 +11,7 @@ from datetime import date
 import streamlit.components.v1
 from functions import select_reserva, processar_pagamento, gerar_pdf, gerar_html, select_apelido_vendedores, \
     calculo_restricao, insert_cliente, insert_reserva, select_id_vendedores, insert_lancamento_comissao, \
-    select_valor_neto, select_cliente, select_grupo_reserva, update_vaga
+    select_valor_neto, select_cliente, select_grupo_reserva, update_vaga, select_nome_cliente_like
 import time
 
 chars = "'),([]"
@@ -507,13 +507,15 @@ if escolha == 'Editar':
     lista_vendedores = select_apelido_vendedores()
     data_vaga = st.date_input('Data da vaga reservada', format='DD/MM/YYYY')
     comissario_vaga = st.selectbox('Escolha o vendedor', lista_vendedores, index=None)
-    quantidade = st.text_input('Numero de vagas')
+
     if st.button('Pesquisar Vaga'):
+        mydb.connect()
+        lista_id_vaga = select_nome_cliente_like()
         st.session_state.botao_vaga = True
 
     if st.session_state.botao_vaga:
         nome_vaga = f'{data_vaga}/{comissario_vaga}'
-        for i in range(int(quantidade)):
+        for i in range(len(lista_id_vaga)):
             with st.form(f'Vaga {comissario_vaga}-{i}'):
                 col1, col2, col3 = st.columns(3)
                 with col1:
@@ -531,7 +533,7 @@ if escolha == 'Editar':
                     altura_vaga = st.slider('Altura', 1.50, 2.20)
                     recebedor_sinal_vaga = st.selectbox('Recebedor do Sinal', ['Vendedor', 'AcquaWorld'], index=None)
                 if st.form_submit_button(f'Atualizar Reserva{i}'):
-                    update_vaga(nome_vaga, nome_cliente_vaga, cpf_vaga, telefone_vaga, peso_vaga, altura_vaga, valor_vaga, sinal_vaga, recebedor_sinal_vaga, receber_vaga)
+                    update_vaga(lista_id_vaga, nome_cliente_vaga, cpf_vaga, telefone_vaga, peso_vaga, altura_vaga, valor_vaga, sinal_vaga, recebedor_sinal_vaga, receber_vaga)
 
 
 

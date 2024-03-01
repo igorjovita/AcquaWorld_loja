@@ -100,7 +100,8 @@ def select_reserva(nome, data_reserva):
 
 def select_grupo_reserva(id_titular, data):
     mydb.connect()
-    cursor.execute(f"SELECT id_cliente, nome_cliente, tipo FROM reserva WHERE id_titular = {id_titular} and data = '{data}'")
+    cursor.execute(
+        f"SELECT id_cliente, nome_cliente, tipo FROM reserva WHERE id_titular = {id_titular} and data = '{data}'")
     id_mesma_reserva = cursor.fetchall()
     return id_mesma_reserva
 
@@ -126,6 +127,7 @@ def select_cliente(id_cliente):
     mydb.close()
     return cpf_cliente, telefone_cliente, roupa_cliente
 
+
 @st.cache_resource
 def select_caixa(data_caixa):
     mydb.connect()
@@ -133,6 +135,17 @@ def select_caixa(data_caixa):
     dados = cursor.fetchall()
     mydb.close()
     return dados
+
+
+@st.cache_resource
+def select_nome_cliente_like(nome_vaga):
+    cursor.execute(f"SELECT id FROM cliente where nome LIKE'{nome_vaga}%'")
+    id_cliente = cursor.fetchall()
+    lista = []
+    for id_ in id_cliente:
+        st.write(id_)
+        lista.append(str(id_).translate(str.maketrans('', '', chars)))
+    return lista
 
 
 # INSERTS
@@ -227,16 +240,11 @@ def insert_vendedores(nome, apelido, telefone, neto_bat, neto_acp, neto_tur1, ne
 
 # FUNÇÕES NORMAIS
 
-def update_vaga(nome_vaga, nome, cpf, telefone, peso, altura, valor_total, sinal, recebedor_sinal, receber_loja):
+def update_vaga(lista, nome, cpf, telefone, peso, altura, valor_total, sinal, recebedor_sinal, receber_loja):
     mydb.connect()
 
-    cursor.execute(f"SELECT id FROM cliente where nome LIKE'{nome_vaga}%'")
-    id_cliente = cursor.fetchall()[0]
-    for id_ in id_cliente:
-        st.write(id_)
-    st.write(id_cliente)
     roupa = f'{altura}/{peso}'
-    for reserva in id_cliente:
+    for reserva in lista:
         query = "UPDATE cliente SET nome = %s, cpf = %s, telefone = %s, roupa = %s WHERE id = %s"
 
         cursor.execute(query, (nome, cpf, telefone, roupa, reserva))
@@ -704,7 +712,8 @@ def gerar_html_total(data_caixa):
     soma_total_entrada = format_currency(soma_total_entrada, 'BRL', locale='pt_BR')
 
     mydb.connect()
-    cursor.execute(f"select valor from caixa where tipo_movimento = 'FECHAMENTO'order by data < '{data_caixa}' desc limit 1;")
+    cursor.execute(
+        f"select valor from caixa where tipo_movimento = 'FECHAMENTO'order by data < '{data_caixa}' desc limit 1;")
     mydb.close()
     dado_fechamento = cursor.fetchone()[0]
     fechamento = format_currency(dado_fechamento, 'BRL', locale='pt_BR')
