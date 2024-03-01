@@ -231,7 +231,9 @@ def update_vaga(data, vendedor, nome, cpf, telefone, peso, altura, valor_total, 
     mydb.connect()
     roupa = f'{altura}/{peso}'
     nome_vaga = f'{data}/{vendedor}'
-    cursor.execute(f"UPDATE cliente set nome = {nome}, cpf = {cpf}, telefone = {telefone}, roupa = {roupa} where nome LIKE '{nome_vaga}%'")
+    query = "UPDATE cliente SET nome = %s, cpf = %s, telefone = %s, roupa = %s WHERE nome LIKE %s"
+
+    cursor.execute(query, (nome, cpf, telefone, roupa, nome_vaga))
     mydb.close()
 
 
