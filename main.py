@@ -512,7 +512,7 @@ if escolha == 'Editar':
         st.session_state.botao_vaga = True
 
     if st.session_state.botao_vaga:
-
+        nome_vaga = f'{data_vaga}/{comissario_vaga}'
         for i in range(int(quantidade)):
             with st.form(f'Vaga {comissario_vaga}-{i}'):
                 col1, col2, col3 = st.columns(3)
@@ -531,7 +531,7 @@ if escolha == 'Editar':
                     altura_vaga = st.slider('Altura', 1.50, 2.20)
                     recebedor_sinal_vaga = st.selectbox('Recebedor do Sinal', ['Vendedor', 'AcquaWorld'], index=None)
                 if st.form_submit_button(f'Atualizar Reserva{i}'):
-                    update_vaga(data_vaga, comissario_vaga, nome_cliente_vaga, cpf_vaga, telefone_vaga, peso_vaga, altura_vaga, valor_vaga, sinal_vaga, recebedor_sinal_vaga, receber_vaga)
+                    update_vaga(nome_vaga, nome_cliente_vaga, cpf_vaga, telefone_vaga, peso_vaga, altura_vaga, valor_vaga, sinal_vaga, recebedor_sinal_vaga, receber_vaga)
 
 
 
