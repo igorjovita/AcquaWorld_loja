@@ -543,7 +543,6 @@ if escolha == 'Editar':
                     update_vaga(st.session_state.lista_vaga, nome_cliente_vaga, cpf_vaga, telefone_vaga, peso_vaga, altura_vaga, valor_vaga, sinal_vaga, recebedor_sinal_vaga, receber_vaga)
 
 
-
 if escolha == 'Pagamento':
 
     if 'botao' not in st.session_state:

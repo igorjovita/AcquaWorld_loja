@@ -137,7 +137,7 @@ def select_caixa(data_caixa):
     return dados
 
 
-@st.cache_resource
+
 def select_nome_cliente_like(nome_vaga):
     mydb.connect()
     cursor.execute(f"SELECT id FROM cliente where nome LIKE'{nome_vaga}%'")
