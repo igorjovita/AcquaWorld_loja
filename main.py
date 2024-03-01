@@ -505,7 +505,7 @@ if escolha == 'Editar':
 
     st.subheader('Dados Vagas Reservadas')
     lista_vendedores = select_apelido_vendedores
-    data_vaga = st.date_input('Data da Reserva', format='DD/MM/YYYY')
+    data_vaga = st.date_input('Data da vaga reservada', format='DD/MM/YYYY')
     comissario_vaga = st.selectbox('Escolha o vendedor', lista_vendedores, index=None)
     quantidade = st.number_input('Numero de vagas')
     if st.button('Pesquisar Vaga'):
