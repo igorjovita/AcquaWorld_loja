@@ -500,7 +500,7 @@ if escolha == 'Editar':
                 st.success('Reserva Atualizada')
 
     st.write('---')
-    if 'botao_vaga' is not st.session_state:
+    if 'botao_vaga' not in st.session_state:
         st.session_state.botao_vaga = False
 
     st.subheader('Dados Vagas Reservadas')
