@@ -134,6 +134,10 @@ def select_caixa(data_caixa):
     mydb.close()
     return dados
 
+
+# def select_vaga_reservada():
+#     cursor.execute("SELECT ")
+
 # INSERTS
 
 

@@ -154,8 +154,8 @@ if escolha == 'Reservar':
 
         reserva_temporaria = []
         for i in range(quantidade_reserva):
-            id_cliente = insert_cliente('', f'{data}/{comissario}/{i}', '', '')
-            reserva_temporaria.append((data, id_cliente, '', id_vendedor, '', f'{data}/{comissario}/{i}', '', '', ''))
+            id_cliente = insert_cliente('', f'{data}/{id_vendedor}/{i}', '', '')
+            reserva_temporaria.append((data, id_cliente, '', id_vendedor, '', f'{data}/{id_vendedor}/{i}', '', '', ''))
 
         for reserva in reserva_temporaria:
 
@@ -498,6 +498,40 @@ if escolha == 'Editar':
                     f"UPDATE cliente SET roupa = '{roupa_novo}' WHERE id = {id_cliente}")
                 mydb.close()
                 st.success('Reserva Atualizada')
+
+    st.write('---')
+    if 'botao_vaga' is not st.session_state:
+        st.session_state.botao_vaga = False
+
+    st.subheader('Dados Vagas Reservadas')
+    lista_vendedores = select_apelido_vendedores
+    data_vaga = st.date_input('Data da Reserva', format='DD/MM/YYYY')
+    comissario_vaga = st.selectbox('Escolha o vendedor', lista_vendedores, index=None)
+    quantidade = st.number_input('Numero de vagas')
+    if st.button('Pesquisar Vaga'):
+        st.session_state.botao_vaga = True
+
+    if st.session_state.botao_vaga:
+
+        for i in range(quantidade):
+            with st.form(f'Vaga {comissario_vaga}-{i}'):
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    nome_cliente_vaga = st.text_input('Nome')
+                    tipo = st.selectbox('Certificação', ['BAT', 'ACP', 'TUR1', 'TUR2', 'OWD', 'ADV'], index=None)
+                    valor_vaga = st.text_input('Valor Total da reserva')
+                    receber_vaga = st.text_input('Receber na Loja')
+                with col2:
+                    cpf_vaga = st.text_input('CPF')
+                    peso_vaga = st.slider('Peso', 40, 160)
+                    sinal_vaga = st.text_input('Valor pago de sinal')
+
+                with col3:
+                    telefone = st.text_input('Telefone')
+                    altura_vaga = st.slider('Altura', 1.50, 2.20)
+                    recebedor_sinal_vaga = st.selectbox('Recebedor do Sinal', ['Vendedor', 'AcquaWorld'], index=None)
+
+
 
 if escolha == 'Pagamento':
 
