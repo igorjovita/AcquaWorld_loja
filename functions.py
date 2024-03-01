@@ -232,6 +232,7 @@ def update_vaga(nome_vaga, nome, cpf, telefone, peso, altura, valor_total, sinal
 
     cursor.execute(f"SELECT id FROM cliente where nome LIKE'{nome_vaga}%'")
     id_cliente = cursor.fetchall()
+    st.write(id_cliente)
     roupa = f'{altura}/{peso}'
     for reserva in id_cliente:
         query = "UPDATE cliente SET nome = %s, cpf = %s, telefone = %s, roupa = %s WHERE id = %s"
