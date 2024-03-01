@@ -11,7 +11,7 @@ from datetime import date
 import streamlit.components.v1
 from functions import select_reserva, processar_pagamento, gerar_pdf, gerar_html, select_apelido_vendedores, \
     calculo_restricao, insert_cliente, insert_reserva, select_id_vendedores, insert_lancamento_comissao, \
-    select_valor_neto, select_cliente, select_grupo_reserva
+    select_valor_neto, select_cliente, select_grupo_reserva, update_vaga
 import time
 
 chars = "'),([]"
@@ -530,6 +530,8 @@ if escolha == 'Editar':
                     telefone = st.text_input('Telefone')
                     altura_vaga = st.slider('Altura', 1.50, 2.20)
                     recebedor_sinal_vaga = st.selectbox('Recebedor do Sinal', ['Vendedor', 'AcquaWorld'], index=None)
+                if st.form_submit_button('Atualizar Reserva', key=f'cliente{i}'):
+                    update_vaga()
 
 
 

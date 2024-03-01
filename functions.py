@@ -135,9 +135,6 @@ def select_caixa(data_caixa):
     return dados
 
 
-# def select_vaga_reservada():
-#     cursor.execute("SELECT ")
-
 # INSERTS
 
 
@@ -229,6 +226,13 @@ def insert_vendedores(nome, apelido, telefone, neto_bat, neto_acp, neto_tur1, ne
 
 
 # FUNÇÕES NORMAIS
+
+def update_vaga(data, vendedor, nome, cpf, telefone, peso, altura, valor_total, sinal, recebedor_sinal, receber_loja):
+    mydb.connect()
+    roupa = f'{altura}/{peso}'
+    nome_vaga = f'{data/vendedor}'
+    cursor.execute(f"UPDATE cliente set nome = {nome}, cpf = {cpf}, telefone = {telefone}, roupa = {roupa} where nome LIKE '{nome_vaga}%'")
+    mydb.close()
 
 
 def calculo_restricao(data):
