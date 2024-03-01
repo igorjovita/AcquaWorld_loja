@@ -155,7 +155,9 @@ if escolha == 'Reservar':
         reserva_temporaria = []
         for i in range(quantidade_reserva):
             id_cliente = insert_cliente('', f'{data}/{comissario}/{i}', '', '')
-            reserva_temporaria.append((data, id_cliente, '', id_vendedor, '', f'{data}/{comissario}/{i}', '', '', ''))
+            if i == 0:
+                id_titular_vaga = id_cliente
+            reserva_temporaria.append((data, id_cliente, '', id_vendedor, '', f'{data}/{comissario}/{i}', '', id_titular_vaga, ''))
 
         for reserva in reserva_temporaria:
 
@@ -541,7 +543,7 @@ if escolha == 'Editar':
                     recebedor_sinal_vaga = st.selectbox('Recebedor do Sinal', ['Vendedor', 'AcquaWorld'], index=None)
                 if st.form_submit_button(f'Atualizar Reserva{i}'):
                     update_vaga(st.session_state.lista_vaga, nome_cliente_vaga, cpf_vaga, telefone_vaga, peso_vaga, altura_vaga, valor_vaga, sinal_vaga, recebedor_sinal_vaga, receber_vaga)
-
+                    st.session_state.lista_vaga.remove(st.session_state.lista_vaga[i])
 
 if escolha == 'Pagamento':
 
