@@ -540,7 +540,7 @@ if escolha == 'Editar':
                     altura_vaga = st.slider('Altura', 1.50, 2.20)
                     recebedor_sinal_vaga = st.selectbox('Recebedor do Sinal', ['Vendedor', 'AcquaWorld'], index=None)
                 if st.form_submit_button(f'Atualizar Reserva{i}'):
-                    update_vaga(lista_id_vaga, nome_cliente_vaga, cpf_vaga, telefone_vaga, peso_vaga, altura_vaga, valor_vaga, sinal_vaga, recebedor_sinal_vaga, receber_vaga)
+                    update_vaga(st.session_state.lista_vaga, nome_cliente_vaga, cpf_vaga, telefone_vaga, peso_vaga, altura_vaga, valor_vaga, sinal_vaga, recebedor_sinal_vaga, receber_vaga)
 
 
 
