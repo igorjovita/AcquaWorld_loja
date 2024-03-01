@@ -229,11 +229,14 @@ def insert_vendedores(nome, apelido, telefone, neto_bat, neto_acp, neto_tur1, ne
 
 def update_vaga(data, vendedor, nome, cpf, telefone, peso, altura, valor_total, sinal, recebedor_sinal, receber_loja):
     mydb.connect()
-    roupa = f'{altura}/{peso}'
     nome_vaga = f'{data}/{vendedor}'
-    query = "UPDATE cliente SET nome = %s, cpf = %s, telefone = %s, roupa = %s WHERE nome LIKE %s"
+    cursor.execute("SELECT id FROM cliente where nome LIKE %s", nome_vaga)
+    id_cliente = cursor.fetchone()[0]
+    roupa = f'{altura}/{peso}'
 
-    cursor.execute(query, (nome, cpf, telefone, roupa, nome_vaga))
+    query = "UPDATE cliente SET nome = %s, cpf = %s, telefone = %s, roupa = %s WHERE id = %s"
+
+    cursor.execute(query, (nome, cpf, telefone, roupa, id_cliente))
     mydb.close()
 
 
