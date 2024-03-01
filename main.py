@@ -153,9 +153,9 @@ if escolha == 'Reservar':
             id_vendedor = select_id_vendedores(comissario)
 
         reserva_temporaria = []
-        for i in range(quantidade_reserva):
+        for i, valor in enumerate(range(quantidade_reserva)):
             id_cliente = insert_cliente('', f'{data}/{comissario}/{i}', '', '')
-            valor = i
+            
             if valor == 0:
                 id_titular_vaga = id_cliente
             reserva_temporaria.append((data, id_cliente, '', id_vendedor, '', f'{data}/{comissario}/{i}', '', id_titular_vaga, ''))
