@@ -510,11 +510,12 @@ if escolha == 'Editar':
 
     if st.button('Pesquisar Vaga'):
         mydb.connect()
-        lista_id_vaga = select_nome_cliente_like()
+        nome_vaga = f'{data_vaga}/{comissario_vaga}'
+        lista_id_vaga = select_nome_cliente_like(nome_vaga)
         st.session_state.botao_vaga = True
 
     if st.session_state.botao_vaga:
-        nome_vaga = f'{data_vaga}/{comissario_vaga}'
+
         for i in range(len(lista_id_vaga)):
             with st.form(f'Vaga {comissario_vaga}-{i}'):
                 col1, col2, col3 = st.columns(3)
