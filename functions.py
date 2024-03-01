@@ -227,7 +227,7 @@ def insert_vendedores(nome, apelido, telefone, neto_bat, neto_acp, neto_tur1, ne
 
 # FUNÇÕES NORMAIS
 
-def update_vaga(data, vendedor, nome, cpf, telefone, peso, altura, valor_total, sinal, recebedor_sinal, receber_loja, quantidade):
+def update_vaga(data, vendedor, nome, cpf, telefone, peso, altura, valor_total, sinal, recebedor_sinal, receber_loja):
     mydb.connect()
     nome_vaga = f'{data}/{vendedor}'
     cursor.execute("SELECT id FROM cliente where nome LIKE %s", f'{nome_vaga}%')
