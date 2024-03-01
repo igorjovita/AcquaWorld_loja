@@ -137,7 +137,6 @@ def select_caixa(data_caixa):
     return dados
 
 
-
 def select_nome_cliente_like(nome_vaga):
     mydb.connect()
     cursor.execute(f"SELECT id FROM cliente where nome LIKE'{nome_vaga}%'")
@@ -244,8 +243,8 @@ def update_vaga(lista, nome, cpf, telefone, peso, altura, valor_total, sinal, re
     roupa = f'{altura}/{peso}'
     for reserva in lista:
         query = "UPDATE cliente SET nome = %s, cpf = %s, telefone = %s, roupa = %s WHERE id = %s"
-
         cursor.execute(query, (nome, cpf, telefone, roupa, reserva))
+        lista.remove(reserva)
     mydb.close()
 
 
