@@ -507,13 +507,13 @@ if escolha == 'Editar':
     lista_vendedores = select_apelido_vendedores()
     data_vaga = st.date_input('Data da vaga reservada', format='DD/MM/YYYY')
     comissario_vaga = st.selectbox('Escolha o vendedor', lista_vendedores, index=None)
-    quantidade = int(st.text_input('Numero de vagas'))
+    quantidade = st.text_input('Numero de vagas')
     if st.button('Pesquisar Vaga'):
         st.session_state.botao_vaga = True
 
     if st.session_state.botao_vaga:
 
-        for i in range(quantidade):
+        for i in range(int(quantidade)):
             with st.form(f'Vaga {comissario_vaga}-{i}'):
                 col1, col2, col3 = st.columns(3)
                 with col1:
