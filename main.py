@@ -503,20 +503,26 @@ if escolha == 'Editar':
     if 'botao_vaga' not in st.session_state:
         st.session_state.botao_vaga = False
 
+    if 'lista_vaga' not in st.session_state:
+        st.session_state.lista_vaga = []
+
     st.subheader('Dados Vagas Reservadas')
     lista_vendedores = select_apelido_vendedores()
-    data_vaga = st.date_input('Data da vaga reservada', format='DD/MM/YYYY')
+    data_vaga = st.date_input('Data da  vaga reservada', format='DD/MM/YYYY')
     comissario_vaga = st.selectbox('Escolha o vendedor', lista_vendedores, index=None)
 
     if st.button('Pesquisar Vaga'):
         mydb.connect()
         nome_vaga = f'{data_vaga}/{comissario_vaga}'
-        lista_id_vaga = select_nome_cliente_like(nome_vaga)
+        id_vaga = select_nome_cliente_like(nome_vaga)
+        for id_ in id_vaga:
+            st.session_state.lista_vaga.append(str(id_).translate(str.maketrans('', '', chars)))
         st.session_state.botao_vaga = True
+        st.write(st.session_state.lista_vaga)
 
     if st.session_state.botao_vaga:
 
-        for i in range(len(lista_id_vaga)):
+        for i in range(len(st.session_state.lista_vaga)):
             with st.form(f'Vaga {comissario_vaga}-{i}'):
                 col1, col2, col3 = st.columns(3)
                 with col1:
