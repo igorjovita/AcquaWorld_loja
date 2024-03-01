@@ -139,12 +139,14 @@ def select_caixa(data_caixa):
 
 @st.cache_resource
 def select_nome_cliente_like(nome_vaga):
+    mydb.connect()
     cursor.execute(f"SELECT id FROM cliente where nome LIKE'{nome_vaga}%'")
     id_cliente = cursor.fetchall()
     lista = []
     for id_ in id_cliente:
         st.write(id_)
         lista.append(str(id_).translate(str.maketrans('', '', chars)))
+    mydb.close()
     return lista
 
 
