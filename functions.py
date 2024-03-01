@@ -231,7 +231,7 @@ def update_vaga(nome_vaga, nome, cpf, telefone, peso, altura, valor_total, sinal
     mydb.connect()
 
     cursor.execute(f"SELECT id FROM cliente where nome LIKE'{nome_vaga}%'")
-    id_cliente = cursor.fetchall()
+    id_cliente = cursor.fetchall()[0]
     for id_ in id_cliente:
         st.write(id_)
     st.write(id_cliente)
