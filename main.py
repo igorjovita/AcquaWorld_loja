@@ -165,7 +165,7 @@ if escolha == 'Reservar':
             insert_reserva(reserva)
 
         st.success(f'{quantidade_reserva} vagas reservadas para  {comissario}')
-        st.write(id_titular_vaga)
+
 
     if st.session_state.botao_clicado:
 
@@ -519,9 +519,12 @@ if escolha == 'Editar':
         mydb.connect()
         nome_vaga = f'{data_vaga}/{comissario_vaga}'
         id_vaga = select_nome_cliente_like(nome_vaga)
-        for id_ in id_vaga:
-            st.session_state.lista_vaga.append(str(id_).translate(str.maketrans('', '', chars)))
-        st.session_state.botao_vaga = True
+        if not id_vaga:
+            for id_ in id_vaga:
+                st.session_state.lista_vaga.append(str(id_).translate(str.maketrans('', '', chars)))
+            st.session_state.botao_vaga = True
+        else:
+            st.error('Nenhuma vaga reservada para esse comissario na data informada!')
         st.write(st.session_state.lista_vaga)
 
     if st.session_state.botao_vaga:
