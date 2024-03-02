@@ -534,7 +534,7 @@ if escolha == 'Editar':
 
         for i in range(len(st.session_state.lista_vaga)):
             with st.form(f'Vaga {comissario_vaga}-{i}'):
-                st.subheader(f'Vaga Reservada {i+1}')
+                titulo = st.subheader(f'Vaga Reservada {i+1}')
                 col1, col2, col3 = st.columns(3)
                 with col1:
                     nome_cliente_vaga = st.text_input('Nome')
@@ -555,6 +555,7 @@ if escolha == 'Editar':
                     st.write(st.session_state.reserva_temporaria)
                     st.session_state.reserva_temporaria.append((st.session_state.lista_vaga[i], nome_cliente_vaga, cpf_vaga, telefone_vaga, peso_vaga, altura_vaga, valor_vaga, sinal_vaga, recebedor_sinal_vaga, receber_vaga))
                     st.write(st.session_state.lista_vaga)
+                    titulo.subheader(f'Reserva - {nome_vaga}')
                     # st.session_state.lista_vaga.remove(st.session_state.lista_vaga[i])
 
         botao3 = st.button('Atualizar Reserva', key='reserva_vaga')
