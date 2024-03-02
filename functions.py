@@ -252,6 +252,7 @@ def update_vaga(id_cliente, nome, cpf, telefone, tipo, peso, altura, valor_total
               "%s")
     cursor.execute(query2, (tipo, nome, valor_total, receber_loja, id_cliente))
     id_reserva = cursor.lastrowid
+    st.write(f'Id reserva - {id_reserva}')
 
     if recebedor_sinal is not None:
         insert_pagamento(data, id_reserva, recebedor_sinal, sinal, 'Pix', 0, id_titular)
