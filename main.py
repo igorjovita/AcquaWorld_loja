@@ -511,7 +511,7 @@ if escolha == 'Editar':
         st.session_state.lista_vaga = []
 
     if 'reserva_vaga' not in st.session_state:
-        st.session_state.reserva_vaga = []
+        st.session_state.reserva_temporaria = []
 
     st.subheader('Dados Vagas Reservadas')
     lista_vendedores = select_apelido_vendedores()
@@ -551,14 +551,14 @@ if escolha == 'Editar':
                     recebedor_sinal_vaga = st.selectbox('Recebedor do Sinal', ['Vendedor', 'AcquaWorld'], index=None)
 
                 if st.form_submit_button(f'Cadastrar Cliente{i}'):
-                    st.write(st.session_state.reserva_vaga)
-                    # st.session_state.reserva_vaga.append((st.session_state.lista_vaga, nome_cliente_vaga, cpf_vaga, telefone_vaga, peso_vaga, altura_vaga, valor_vaga, sinal_vaga, recebedor_sinal_vaga, receber_vaga))
+                    st.write(st.session_state.reserva_temporaria)
+                    # st.session_state.reserva_temporaria.append((st.session_state.lista_vaga, nome_cliente_vaga, cpf_vaga, telefone_vaga, peso_vaga, altura_vaga, valor_vaga, sinal_vaga, recebedor_sinal_vaga, receber_vaga))
                     # st.session_state.lista_vaga.remove(st.session_state.lista_vaga[i])
 
     botao3 = st.button('Atualizar Reserva', key='reserva_vaga')
 
     if botao3:
-        for reserva in st.session_state.reserva_vaga:
+        for reserva in st.session_state.reserva_temporaria:
             update_vaga(reserva[0], reserva[1], reserva[2], reserva[3], reserva[4], reserva[5], reserva[6], reserva[7], reserva[8], reserva[9])
 if escolha == 'Pagamento':
 
