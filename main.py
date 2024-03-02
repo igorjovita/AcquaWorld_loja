@@ -552,7 +552,7 @@ if escolha == 'Editar':
 
                 if st.form_submit_button(f'Cadastrar Cliente{i}'):
                     st.write(st.session_state.reserva_temporaria)
-                    st.session_state.reserva_temporaria.append((st.session_state.lista_vaga, nome_cliente_vaga, cpf_vaga, telefone_vaga, peso_vaga, altura_vaga, valor_vaga, sinal_vaga, recebedor_sinal_vaga, receber_vaga))
+                    st.session_state.reserva_temporaria.append((st.session_state.lista_vaga[i], nome_cliente_vaga, cpf_vaga, telefone_vaga, peso_vaga, altura_vaga, valor_vaga, sinal_vaga, recebedor_sinal_vaga, receber_vaga))
                     # st.session_state.lista_vaga.remove(st.session_state.lista_vaga[i])
 
         botao3 = st.button('Atualizar Reserva', key='reserva_vaga')
