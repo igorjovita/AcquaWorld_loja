@@ -534,6 +534,7 @@ if escolha == 'Editar':
 
         for i in range(len(st.session_state.lista_vaga)):
             with st.form(f'Vaga {comissario_vaga}-{i}'):
+                st.subheader(f'Vaga Reservada {i+1}')
                 col1, col2, col3 = st.columns(3)
                 with col1:
                     nome_cliente_vaga = st.text_input('Nome')
