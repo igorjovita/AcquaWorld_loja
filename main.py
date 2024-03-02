@@ -560,6 +560,7 @@ if escolha == 'Editar':
                     # st.session_state.lista_vaga.remove(st.session_state.lista_vaga[i])
 
         botao3 = st.button('Atualizar Reserva', key='reserva_vaga')
+        
 
         if botao3:
             id_titular = st.session_state.lista_id_vaga[0][0]
