@@ -11,7 +11,7 @@ from datetime import date
 import streamlit.components.v1
 from functions import select_reserva, processar_pagamento, gerar_pdf, gerar_html, select_apelido_vendedores, \
     calculo_restricao, insert_cliente, insert_reserva, select_id_vendedores, insert_lancamento_comissao, \
-    select_valor_neto, select_cliente, select_grupo_reserva, update_vaga, select_nome_cliente_like
+    select_valor_neto, select_cliente, select_grupo_reserva, update_vaga, select_id_cliente_like
 import time
 
 chars = "'),([]"
@@ -507,8 +507,8 @@ if escolha == 'Editar':
     if 'botao_vaga' not in st.session_state:
         st.session_state.botao_vaga = False
 
-    if 'lista_vaga' not in st.session_state:
-        st.session_state.lista_vaga = []
+    if 'lista_id_vaga' not in st.session_state:
+        st.session_state.lista_id_vaga = []
 
     if 'reserva_vaga' not in st.session_state:
         st.session_state.reserva_temporaria = []
@@ -521,18 +521,17 @@ if escolha == 'Editar':
     if st.button('Pesquisar Vaga'):
         mydb.connect()
         nome_vaga = f'{data_vaga}/{comissario_vaga}'
-        id_vaga = select_nome_cliente_like(nome_vaga)
-        if id_vaga:
-            for id_ in id_vaga:
-                st.session_state.lista_vaga.append(str(id_).translate(str.maketrans('', '', chars)))
+        id_cliente_vaga = select_id_cliente_like(nome_vaga)
+        if id_cliente_vaga:
+            for id_ in id_cliente_vaga:
+                st.session_state.lista_id_vaga.append(str(id_).translate(str.maketrans('', '', chars)))
             st.session_state.botao_vaga = True
         else:
             st.error('Nenhuma vaga reservada para esse comissario na data informada!')
 
-
     if st.session_state.botao_vaga:
 
-        for i in range(len(st.session_state.lista_vaga)):
+        for i in range(len(st.session_state.lista_id_vaga)):
             with st.form(f'Vaga {comissario_vaga}-{i}'):
                 st.subheader(f'Vaga Reservada {i+1}')
 
@@ -555,21 +554,23 @@ if escolha == 'Editar':
                 if st.form_submit_button(f'Cadastrar Cliente{i}'):
 
                     st.write(st.session_state.reserva_temporaria)
-                    st.session_state.reserva_temporaria.append((st.session_state.lista_vaga[i], nome_cliente_vaga, cpf_vaga, telefone_vaga, tipo, peso_vaga, altura_vaga, valor_vaga, sinal_vaga, recebedor_sinal_vaga, receber_vaga, id_titular_vaga, data_vaga))
-                    st.write(st.session_state.lista_vaga)
+                    st.session_state.reserva_temporaria.append((st.session_state.lista_id_vaga[i], nome_cliente_vaga, cpf_vaga, telefone_vaga, tipo, peso_vaga, altura_vaga, valor_vaga, sinal_vaga, recebedor_sinal_vaga, receber_vaga, data_vaga))
+                    st.write(st.session_state.lista_id_vaga)
 
                     # st.session_state.lista_vaga.remove(st.session_state.lista_vaga[i])
 
         botao3 = st.button('Atualizar Reserva', key='reserva_vaga')
 
         if botao3:
-            id_vendedor_vaga = select_id_vendedores(comissario_vaga)
-            for reserva in st.session_state.reserva_temporaria:
-                update_vaga(reserva[0], reserva[1], reserva[2], reserva[3], reserva[4], reserva[5], reserva[6], reserva[7], reserva[8], reserva[9], reserva[10], reserva[11], reserva[12], id_vendedor_vaga)
-            st.session_state.botao_vaga = False
-            st.success('Reservas atualizadas com sucesso!')
-            time.sleep(1.0)
-            st.rerun()
+            id_titular = st.session_state.lista_id_vaga[0][0][0]
+            st.write(id_titular)
+            # id_vendedor_vaga = select_id_vendedores(comissario_vaga)
+            # for reserva in st.session_state.reserva_temporaria:
+            #     update_vaga(reserva[0], reserva[1], reserva[2], reserva[3], reserva[4], reserva[5], reserva[6], reserva[7], reserva[8], reserva[9], reserva[10], reserva[11], reserva[12], id_vendedor_vaga)
+            # st.session_state.botao_vaga = False
+            # st.success('Reservas atualizadas com sucesso!')
+            # time.sleep(1.0)
+            # st.rerun()
 
 if escolha == 'Pagamento':
 

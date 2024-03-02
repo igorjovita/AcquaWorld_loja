@@ -98,6 +98,11 @@ def select_reserva(nome, data_reserva):
     return info_reserva
 
 
+def select_id_titular_vendedor():
+    mydb.connect()
+    cursor.execute("SELECT id_titular, id_vendedor FROM reserva WHERE id_cliente = %s ")
+
+
 def select_grupo_reserva(id_titular, data):
     mydb.connect()
     cursor.execute(
@@ -137,7 +142,7 @@ def select_caixa(data_caixa):
     return dados
 
 
-def select_nome_cliente_like(nome_vaga):
+def select_id_cliente_like(nome_vaga):
     mydb.connect()
     cursor.execute(f"SELECT id FROM cliente where nome LIKE'{nome_vaga}%'")
     id_cliente = cursor.fetchall()
