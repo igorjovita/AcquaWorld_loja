@@ -562,7 +562,7 @@ if escolha == 'Editar':
         botao3 = st.button('Atualizar Reserva', key='reserva_vaga')
 
         if botao3:
-            id_titular = st.session_state.lista_id_vaga[0][0][0]
+            id_titular = st.session_state.lista_id_vaga[0][0]
             st.write(id_titular)
             # id_vendedor_vaga = select_id_vendedores(comissario_vaga)
             # for reserva in st.session_state.reserva_temporaria:
