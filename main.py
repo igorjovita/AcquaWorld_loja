@@ -563,6 +563,9 @@ if escolha == 'Editar':
                 update_vaga(reserva[0], reserva[1], reserva[2], reserva[3], reserva[4], reserva[5], reserva[6], reserva[7], reserva[8], reserva[9])
             st.session_state.botao_vaga = False
             st.success('Reservas atualizadas com sucesso!')
+            time.sleep(1.0)
+            st.rerun()
+
 if escolha == 'Pagamento':
 
     if 'botao' not in st.session_state:
