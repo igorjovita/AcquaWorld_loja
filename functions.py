@@ -251,7 +251,10 @@ def update_vaga(id_cliente, nome, cpf, telefone, tipo, peso, altura, valor_total
     query2 = ("UPDATE reserva set tipo = %s, nome_cliente = %s, valor_total = %s, receber_loja = %s WHERE id_cliente = "
               "%s")
     cursor.execute(query2, (tipo, nome, valor_total, receber_loja, id_cliente))
-    id_reserva = cursor.lastrowid
+
+    query3 = "SELECT id FROM reserva where id_cliente = %s"
+    cursor.execute(query3, id_cliente)
+    id_reserva = cursor.fetchone()
     st.write(f'Id reserva - {id_reserva}')
 
     if recebedor_sinal is not None:
