@@ -253,7 +253,7 @@ def update_vaga(id_cliente, nome, cpf, telefone, tipo, peso, altura, valor_total
     cursor.execute(query2, (tipo, nome, valor_total, receber_loja, id_cliente))
 
     cursor.execute("SELECT id FROM reserva where id_cliente = %s", (id_cliente,))
-    id_reserva = cursor.fetchone()
+    id_reserva = str(cursor.fetchone()).translate(str.maketrans('', '', chars))
     st.write(f'Id reserva - {id_reserva}')
 
     if recebedor_sinal is not None:
