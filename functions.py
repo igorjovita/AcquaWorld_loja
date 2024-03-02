@@ -237,11 +237,28 @@ def insert_vendedores(nome, apelido, telefone, neto_bat, neto_acp, neto_tur1, ne
 
 # FUNÇÕES NORMAIS
 
-def update_vaga(id_cliente, nome, cpf, telefone, peso, altura, valor_total, sinal, recebedor_sinal, receber_loja):
+def update_vaga(id_cliente, nome, cpf, telefone, tipo, peso, altura, valor_total, sinal, recebedor_sinal, receber_loja,
+                id_titular, id_vendedor, data):
     mydb.connect()
     roupa = f'{altura}/{peso}'
     query = "UPDATE cliente SET nome = %s, cpf = %s, telefone = %s, roupa = %s WHERE id = %s"
     cursor.execute(query, (nome, cpf, telefone, roupa, id_cliente))
+
+    query2 = "UPDATE reserva set tipo = %s, nome_cliente = %s, valor_total = %s, receber_loja = %s WHERE id_cliente = %s"
+    cursor.execute(query2, (tipo, nome, valor_total, receber_loja, id_cliente))
+    id_reserva = cursor.lastrowid
+
+    if recebedor_sinal is not None:
+        insert_pagamento(data, id_reserva, recebedor_sinal, sinal, 'Pix', 0, id_titular)
+
+    elif recebedor_sinal == 'Vendedor' and valor_total == sinal:
+        valor_neto = select_valor_neto(tipo, valor_total_reserva=valor_total,
+                                       id_vendedor_pg=id_vendedor)
+
+        insert_lancamento_comissao(id_reserva_cliente=id_reserva, id_vendedor_pg=id_vendedor,
+                                   valor_receber=valor_neto, valor_pagar=0,
+                                   id_titular_pagamento=id_titular)
+
     mydb.close()
 
 
