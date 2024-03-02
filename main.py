@@ -564,13 +564,13 @@ if escolha == 'Editar':
         if botao3:
             id_titular = st.session_state.lista_id_vaga[0]
             st.write(id_titular)
-            # id_vendedor_vaga = select_id_vendedores(comissario_vaga)
-            # for reserva in st.session_state.reserva_temporaria:
-            #     update_vaga(reserva[0], reserva[1], reserva[2], reserva[3], reserva[4], reserva[5], reserva[6], reserva[7], reserva[8], reserva[9], reserva[10], reserva[11], reserva[12], id_vendedor_vaga)
-            # st.session_state.botao_vaga = False
-            # st.success('Reservas atualizadas com sucesso!')
-            # time.sleep(1.0)
-            # st.rerun()
+            id_vendedor_vaga = select_id_vendedores(comissario_vaga)
+            for reserva in st.session_state.reserva_temporaria:
+                update_vaga(reserva[0], reserva[1], reserva[2], reserva[3], reserva[4], reserva[5], reserva[6], reserva[7], reserva[8], reserva[9], reserva[10], reserva[11], id_titular, id_vendedor_vaga)
+            st.session_state.botao_vaga = False
+            st.success('Reservas atualizadas com sucesso!')
+            time.sleep(1.0)
+            st.rerun()
 
 if escolha == 'Pagamento':
 
