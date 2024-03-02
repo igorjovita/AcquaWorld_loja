@@ -237,11 +237,11 @@ def insert_vendedores(nome, apelido, telefone, neto_bat, neto_acp, neto_tur1, ne
 
 # FUNÇÕES NORMAIS
 
-def update_vaga(lista, nome, cpf, telefone, peso, altura, valor_total, sinal, recebedor_sinal, receber_loja):
+def update_vaga(id_cliente, nome, cpf, telefone, peso, altura, valor_total, sinal, recebedor_sinal, receber_loja):
     mydb.connect()
     roupa = f'{altura}/{peso}'
     query = "UPDATE cliente SET nome = %s, cpf = %s, telefone = %s, roupa = %s WHERE id = %s"
-    cursor.execute(query, (nome, cpf, telefone, roupa, reserva))
+    cursor.execute(query, (nome, cpf, telefone, roupa, id_cliente))
     mydb.close()
 
 
