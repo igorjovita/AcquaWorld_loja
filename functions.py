@@ -238,7 +238,7 @@ def insert_vendedores(nome, apelido, telefone, neto_bat, neto_acp, neto_tur1, ne
 # FUNÇÕES NORMAIS
 
 def update_vaga(id_cliente, nome, cpf, telefone, tipo, peso, altura, valor_total, sinal, recebedor_sinal, receber_loja,
-                id_titular, id_vendedor, data):
+                id_titular, data, id_vendedor ):
     mydb.connect()
     roupa = f'{altura}/{peso}'
     query = "UPDATE cliente SET nome = %s, cpf = %s, telefone = %s, roupa = %s WHERE id = %s"
