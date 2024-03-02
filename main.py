@@ -561,6 +561,7 @@ if escolha == 'Editar':
         if botao3:
             for reserva in st.session_state.reserva_temporaria:
                 update_vaga(reserva[0], reserva[1], reserva[2], reserva[3], reserva[4], reserva[5], reserva[6], reserva[7], reserva[8], reserva[9])
+            st.session_state.botao_vaga = False
 if escolha == 'Pagamento':
 
     if 'botao' not in st.session_state:
