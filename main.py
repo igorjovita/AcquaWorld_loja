@@ -743,8 +743,7 @@ if menu_main == 'Pagamento':
                         unsafe_allow_html=True)
                 receber_grupo += receber_formatado
 
-            lista = [st.session_state.dados_pagamento[0][0], st.session_state.dados_pagamento[-1]]
-            st.write(f'Lista - {lista}')
+
             if receber_grupo == 0.00:
                 st.write('---')
                 st.success('Todas os clientes dessa reserva efeturam o pagamento!')
@@ -800,7 +799,9 @@ if menu_main == 'Pagamento':
                     st.write('---')
 
                     valor_a_receber_cliente = None
-                    for nome, id_pg, receber_loja in dados_para_pagamento:
+                    lista_teste = [sublista[:3] for sublista in dados_reservas_pagamento]
+                    for nome, id_pg, receber_loja in lista_teste:
+
                         if nome == escolha_client_input:
                             valor_a_receber_cliente = receber_loja
 
