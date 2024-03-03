@@ -531,7 +531,7 @@ def gerar_pdf(data_para_pdf):
 def gerar_html(data_para_pdf):
     mydb.connect()
     cursor.execute(
-        f"SELECT c.nome AS nome_cliente, CASE WHEN c.cpf = c.id THEN '' ELSE c.cpf END AS cpf, c.telefone, v.apelido AS nome_vendedor, r.tipo, r.fotos, c.roupa, r.check_in FROM reserva AS r INNER JOIN cliente AS c ON r.id_cliente = c.id INNER JOIN vendedores AS v ON r.id_vendedor = v.id WHERE r.data = '{data_para_pdf}'")
+        f"SELECT r.nome_cliente AS nome_cliente, CASE WHEN c.cpf = c.id THEN '' ELSE c.cpf END AS cpf, c.telefone, v.apelido AS nome_vendedor, r.tipo, r.fotos, c.roupa, r.check_in FROM reserva AS r INNER JOIN cliente AS c ON r.id_cliente = c.id INNER JOIN vendedores AS v ON r.id_vendedor = v.id WHERE r.data = '{data_para_pdf}'")
     dados = cursor.fetchall()
     minimo = 10
 

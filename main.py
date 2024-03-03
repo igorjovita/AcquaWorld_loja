@@ -235,7 +235,7 @@ if menu_main == 'Reservar':
                             st.session_state.data_pratica2.append(data_pratica2)
                         else:
                             st.session_state.data_pratica2.append('')
-    
+
                         if nome_cliente not in st.session_state.nome_cadastrado:
                             st.session_state.nome_cadastrado.append(nome_cliente)
                             forma_pg = 'Pix'
