@@ -228,6 +228,7 @@ if menu_main == 'Reservar':
                         st.session_state.data_pratica2.append('')
 
                     lista_cred = ['TUR2', 'OWD', 'ADV', 'RESCUE', 'REVIEW']
+                    contagem, restricao, contagem_cred, vaga_bat, vaga_cred, vaga_total = calculo_restricao(data)
 
                     if tipo in lista_cred and contagem_cred >= vaga_cred:
                         st.write(contagem_cred)
@@ -300,7 +301,6 @@ if menu_main == 'Reservar':
             #     st.write(restricao)
             #     st.error('Todas as vagas de credenciados foram preenchidas')
 
-            
             with mydb.cursor() as cursor:
                 cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE id_cliente = %s and data = %s",
                                (id_cliente, data))
