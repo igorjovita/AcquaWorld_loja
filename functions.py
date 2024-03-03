@@ -171,10 +171,10 @@ def insert_reserva(reserva):
     if reserva[9] != '':
         for i in range(2):
             if i == 0:
-                reserva[5] = reserva[5] + '> Pratica 1'
+                reserva[i][5] = reserva[i][5] + '> Pratica 1'
             elif i == 1:
-                reserva[5] = reserva[5] + '> Pratica 2'
-                reserva[0] = reserva[9]
+                reserva[i][5] = reserva[i][5] + '> Pratica 2'
+                reserva[i][0] = reserva[i][9]
             sql = (
                 "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, check_in, id_titular, receber_loja, data_pratica2) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s, %s)")
 
