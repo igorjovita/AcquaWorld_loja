@@ -625,11 +625,13 @@ if menu_main == 'Pagamento':
     with c1:
         if st.button('Selecionar Titular'):
             st.session_state.botao = True
-            # for nome, id_titular_pg in st.session_state.id_pagamento:
-            #     if nome == selectbox_cliente:
-            #         id_titular_pagamento = id_titular_pg
-            # st.rerun()
+            for nome, id_titular_pg in st.session_state.id_pagamento:
+                if nome == selectbox_cliente:
+
+                    id_titular_pagamento = id_titular_pg
+
             st.write(st.session_state.id_pagamento)
+            st.write(id_titular_pg)
     with c2:
         if st.button('Voltar'):
             st.session_state.botao = False
