@@ -597,9 +597,6 @@ if menu_main == 'Pagamento':
     if 'id_pagamento' not in st.session_state:
         st.session_state.id_pagamento = []
 
-    if 'nome_id_pagamento' not in st.session_state:
-        st.session_state.nome_id_pagamento = []
-
     if 'dados_pagamento' not in st.session_state:
         st.session_state.dados_pagamento = []
 
@@ -615,7 +612,7 @@ if menu_main == 'Pagamento':
 
     for dado in lista_nome_id_titular:
         lista_pagamento.append(str(dado[0]).translate(str.maketrans('', '', chars)))
-        st.session_state.nome_id_pagamento.append(str(dado).translate(str.maketrans('', '', chars2)).split(','))
+        st.session_state.id_pagamento.append(str(dado).translate(str.maketrans('', '', chars2)).split(','))
 
     if st.session_state.botao:
         selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista_pagamento, disabled=True)
@@ -628,7 +625,6 @@ if menu_main == 'Pagamento':
             st.session_state.botao = True
             for nome, id_titular_pg in st.session_state.id_pagamento:
                 if nome == selectbox_cliente:
-                    st.session_state.id_pagamento.append(st.session_state.nome_id_pagamento)
                     id_titular_pagamento = id_titular_pg
             # st.rerun()
             st.write(st.session_state.id_pagamento)
