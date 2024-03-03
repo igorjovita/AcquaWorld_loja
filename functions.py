@@ -177,6 +177,7 @@ def insert_reserva(reserva):
             elif i == 1:
                 nova_reserva[5] = str(reserva[5]) + '> Pratica 2'
                 nova_reserva[0] = reserva[9]
+                nova_reserva[7] = ''
             sql = (
                 "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, check_in, id_titular, receber_loja, data_pratica2) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s, %s)")
 
