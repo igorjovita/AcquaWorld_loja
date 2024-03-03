@@ -841,7 +841,7 @@ if menu_main == 'Pagamento':
                             check_in = '#00B0F0'
                         if check_in_entry == 'Para o pier':
                             check_in = 'yellow'
-                        st.write(st.session_state.dados_pagamento[3])
+                        st.write(st.session_state.dados_pagamento)
 
                     elif pagamento_escolha == 'Pagamento Grupo':
                         st.write('---')
