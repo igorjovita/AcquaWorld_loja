@@ -220,6 +220,12 @@ def select_controle_curso():
     return dados
 
 
+def select_pagamentos(id_reserva):
+    mydb.connect()
+    cursor.execute(f"SELECT recebedor, pagamento FROM pagamentos WHERE id_reserva = {id_reserva}")
+    resultado = cursor.fetchall()
+
+    return resultado
 # def select_alunos():
 #     mydb.connect()
 #     cursor.execute(""
