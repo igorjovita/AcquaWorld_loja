@@ -654,6 +654,7 @@ if menu_main == 'Pagamento':
             dados_reservas_pagamento = select_reserva_id_titular(
                 id_titular_pagamento)  # id, id_cliente, tipo, valor_total, receber_loja, id_vendedor
             id_vendedor_pg = dados_reservas_pagamento[0][4]
+            st.write(dados_reservas_pagamento)
 
             for dado in dados_reservas_pagamento:
                 id_reserva_pg, nome_reserva_pg, receber_loja_pg, situacao_reserva, id_vendedor, id_cliente_pg, tipo_pg, valor_total = dado
