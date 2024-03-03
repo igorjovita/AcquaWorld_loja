@@ -227,7 +227,15 @@ if menu_main == 'Reservar':
                     else:
                         st.session_state.data_pratica2.append('')
 
-                    if nome_cliente not in st.session_state.nome_cadastrado:
+                    lista_cred = ['TUR2', 'OWD', 'ADV', 'RESCUE', 'REVIEW']
+
+                    if tipo in lista_cred and contagem_cred >= vaga_cred:
+                        st.write(contagem_cred)
+                        st.write(vaga_cred)
+                        st.write(restricao)
+                        st.error('Todas as vagas de credenciados foram preenchidas')
+
+                    elif nome_cliente not in st.session_state.nome_cadastrado:
                         st.session_state.nome_cadastrado.append(nome_cliente)
                         forma_pg = 'Pix'
                         st.session_state.pagamentos.append((data, recebedor_sinal, sinal, forma_pg))
@@ -284,114 +292,114 @@ if menu_main == 'Reservar':
 
         if st.button('Reservar'):
 
-            lista_cred = ['TUR2', 'OWD', 'ADV', 'RESCUE', 'REVIEW']
+            # lista_cred = ['TUR2', 'OWD', 'ADV', 'RESCUE', 'REVIEW']
+            #
+            # if tipo in lista_cred and contagem_cred >= vaga_cred:
+            #     st.write(contagem_cred)
+            #     st.write(vaga_cred)
+            #     st.write(restricao)
+            #     st.error('Todas as vagas de credenciados foram preenchidas')
 
-            if tipo in lista_cred and contagem_cred >= vaga_cred:
-                st.write(contagem_cred)
-                st.write(vaga_cred)
-                st.write(restricao)
-                st.error('Todas as vagas de credenciados foram preenchidas')
+            
+            with mydb.cursor() as cursor:
+                cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE id_cliente = %s and data = %s",
+                               (id_cliente, data))
+                verifica_cpf = cursor.fetchone()[0]
 
-            else:
-                with mydb.cursor() as cursor:
-                    cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE id_cliente = %s and data = %s",
-                                   (id_cliente, data))
-                    verifica_cpf = cursor.fetchone()[0]
+                if verifica_cpf > 0:
+                    st.error('Cliente já reservado para esta data')
 
-                    if verifica_cpf > 0:
-                        st.error('Cliente já reservado para esta data')
+                else:
+                    for reserva in reservas:
+                        id_reserva = insert_reserva(reserva)
 
-                    else:
-                        for reserva in reservas:
-                            id_reserva = insert_reserva(reserva)
+                        st.session_state.pagamentos2.append((id_titular, id_reserva))
 
-                            st.session_state.pagamentos2.append((id_titular, id_reserva))
+                    for i in range(len(st.session_state.pagamentos)):
+                        st.session_state.pagamentos[i] = st.session_state.pagamentos[i] + \
+                                                         st.session_state.pagamentos2[i]
 
-                        for i in range(len(st.session_state.pagamentos)):
-                            st.session_state.pagamentos[i] = st.session_state.pagamentos[i] + \
-                                                             st.session_state.pagamentos2[i]
+                    if recebedor_sinal is not None:
 
-                        if recebedor_sinal is not None:
-
-                            for pagamento in st.session_state.pagamentos:
-                                cursor.execute(
-                                    "INSERT INTO pagamentos (data, recebedor, pagamento, forma_pg, id_titular, id_reserva) VALUES (%s,%s, %s, %s, %s, %s)",
-                                    pagamento)
-                            st.session_state['ids_clientes'] = []
-
-                        if recebedor_sinal == 'Vendedor' and valor_mergulho == sinal:
-
-                            valor_neto = select_valor_neto(tipo, valor_total_reserva=valor_mergulho,
-                                                           id_vendedor_pg=id_vendedor, forma_pg=forma_pg)
-
-                            lista_ids = []
-                            for tupla in st.session_state.pagamentos2:
-                                lista_ids.append(tupla[1])
-
-                            for item in lista_ids:
-                                insert_lancamento_comissao(id_reserva_cliente=item, id_vendedor_pg=id_vendedor,
-                                                           valor_receber=valor_neto, valor_pagar=0,
-                                                           id_titular_pagamento=id_titular)
-
-                            reservas = []
-
-                        data_ = str(data).split('-')
-                        data_formatada = f'{data_[2]}/{data_[1]}/{data_[0]}'
-
-                        descricao = f'Sinal reserva titular {nome_titular} dia {data_formatada}'
-                        forma_pg = 'Pix'
-
-                        # Formatando as variáveis como moeda brasileira
-                        valor_sinal_formatado = format_currency(st.session_state.valor_sinal, 'BRL', locale='pt_BR')
-                        valor_mergulho_receber_formatado = format_currency(st.session_state.valor_mergulho_receber,
-                                                                           'BRL',
-                                                                           locale='pt_BR')
-                        valor_mergulho_total_formatado = format_currency(st.session_state.valor_mergulho_total,
-                                                                         'BRL',
-                                                                         locale='pt_BR')
-                        tipo_sinal = 'SINAL'
-                        if recebedor_sinal == 'AcquaWorld':
+                        for pagamento in st.session_state.pagamentos:
                             cursor.execute(
-                                "INSERT INTO caixa (tipo, data, tipo_movimento, descricao, forma_pg, valor) VALUES (%s,     %s, %s, %s, %s, %s)",
-                                (tipo_sinal, data, 'ENTRADA', descricao, forma_pg, st.session_state.valor_sinal))
+                                "INSERT INTO pagamentos (data, recebedor, pagamento, forma_pg, id_titular, id_reserva) VALUES (%s,%s, %s, %s, %s, %s)",
+                                pagamento)
+                        st.session_state['ids_clientes'] = []
 
-                        # Na hora de exibir, utilize a vírgula para juntar os nomes dos dependentes
-                        nomes_dependentes_formatados = ', '.join(st.session_state.nome_dependente)
+                    if recebedor_sinal == 'Vendedor' and valor_mergulho == sinal:
 
-                        st.success('Reserva realizada com sucesso!')
+                        valor_neto = select_valor_neto(tipo, valor_total_reserva=valor_mergulho,
+                                                       id_vendedor_pg=id_vendedor, forma_pg=forma_pg)
 
-                        st.code(f"""
-                        *Reserva Concluida com Sucesso!*
-                        
-                        Titular da Reserva - {nome_titular}
-                        Reservas Dependentes - {nomes_dependentes_formatados}
-                        
-                        Valor total - {valor_mergulho_total_formatado}
-                        Já foi pago - {valor_sinal_formatado}
-                        Falta pagar - {valor_mergulho_receber_formatado}
+                        lista_ids = []
+                        for tupla in st.session_state.pagamentos2:
+                            lista_ids.append(tupla[1])
 
-                        
-                        Favor chegar na data marcada: 
+                        for item in lista_ids:
+                            insert_lancamento_comissao(id_reserva_cliente=item, id_vendedor_pg=id_vendedor,
+                                                       valor_receber=valor_neto, valor_pagar=0,
+                                                       id_titular_pagamento=id_titular)
 
-                        ⚠️ {data_formatada} às 07:30hs em nossa loja 
-                        
-                        ⚠️ Favor chegar na hora pois é necessário, efetuar o restante do pagamento caso ainda não tenha feito, preencher os termos de responsabilidade/questionário médico e fazer retirada da pulseirinha que dá acesso à embarcação.
-                        
-                        ⚓ O ponto de encontro será na loja de mergulho !⚓
-                        
-                        ➡️ARRAIAL DO CABO: Praça da Bandeira, n 23, Praia dos Anjos. Loja de Madeira na esquina, um pouco depois da rodoviária Indo pra praia dos anjos.
+                        reservas = []
 
-                        *Na Marina dos Anjos, a prefeitura cobra uma taxa de  embarque de R$ 10,00,  por pessoa em dinheiro.*
-                        """)
-                        st.session_state.valor_sinal = 0
-                        st.session_state.valor_mergulho_receber = 0
-                        st.session_state.valor_mergulho_total = 0
-                        st.session_state.nome_dependente = []
-                        st.session_state.pagamentos = []
-                        st.session_state.pagamentos2 = []
+                    data_ = str(data).split('-')
+                    data_formatada = f'{data_[2]}/{data_[1]}/{data_[0]}'
 
-                if 'botao_clicado' in st.session_state:
-                    st.session_state.botao_clicado = False
+                    descricao = f'Sinal reserva titular {nome_titular} dia {data_formatada}'
+                    forma_pg = 'Pix'
+
+                    # Formatando as variáveis como moeda brasileira
+                    valor_sinal_formatado = format_currency(st.session_state.valor_sinal, 'BRL', locale='pt_BR')
+                    valor_mergulho_receber_formatado = format_currency(st.session_state.valor_mergulho_receber,
+                                                                       'BRL',
+                                                                       locale='pt_BR')
+                    valor_mergulho_total_formatado = format_currency(st.session_state.valor_mergulho_total,
+                                                                     'BRL',
+                                                                     locale='pt_BR')
+                    tipo_sinal = 'SINAL'
+                    if recebedor_sinal == 'AcquaWorld':
+                        cursor.execute(
+                            "INSERT INTO caixa (tipo, data, tipo_movimento, descricao, forma_pg, valor) VALUES (%s,     %s, %s, %s, %s, %s)",
+                            (tipo_sinal, data, 'ENTRADA', descricao, forma_pg, st.session_state.valor_sinal))
+
+                    # Na hora de exibir, utilize a vírgula para juntar os nomes dos dependentes
+                    nomes_dependentes_formatados = ', '.join(st.session_state.nome_dependente)
+
+                    st.success('Reserva realizada com sucesso!')
+
+                    st.code(f"""
+                    *Reserva Concluida com Sucesso!*
+                    
+                    Titular da Reserva - {nome_titular}
+                    Reservas Dependentes - {nomes_dependentes_formatados}
+                    
+                    Valor total - {valor_mergulho_total_formatado}
+                    Já foi pago - {valor_sinal_formatado}
+                    Falta pagar - {valor_mergulho_receber_formatado}
+
+                    
+                    Favor chegar na data marcada: 
+
+                    ⚠️ {data_formatada} às 07:30hs em nossa loja 
+                    
+                    ⚠️ Favor chegar na hora pois é necessário, efetuar o restante do pagamento caso ainda não tenha feito, preencher os termos de responsabilidade/questionário médico e fazer retirada da pulseirinha que dá acesso à embarcação.
+                    
+                    ⚓ O ponto de encontro será na loja de mergulho !⚓
+                    
+                    ➡️ARRAIAL DO CABO: Praça da Bandeira, n 23, Praia dos Anjos. Loja de Madeira na esquina, um pouco depois da rodoviária Indo pra praia dos anjos.
+
+                    *Na Marina dos Anjos, a prefeitura cobra uma taxa de  embarque de R$ 10,00,  por pessoa em dinheiro.*
+                    """)
+                    st.session_state.valor_sinal = 0
+                    st.session_state.valor_mergulho_receber = 0
+                    st.session_state.valor_mergulho_total = 0
+                    st.session_state.nome_dependente = []
+                    st.session_state.pagamentos = []
+                    st.session_state.pagamentos2 = []
+
+            if 'botao_clicado' in st.session_state:
+                st.session_state.botao_clicado = False
 
 if menu_main == 'Editar':
 
