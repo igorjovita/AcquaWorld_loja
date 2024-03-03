@@ -143,6 +143,15 @@ def select_id_titular_vendedor():
     cursor.execute("SELECT id_titular, id_vendedor FROM reserva WHERE id_cliente = %s ")
 
 
+def select_nome_id_titular(data):
+    mydb.connect()
+    cursor.execute(
+        f"SELECT nome_cliente, id_cliente FROM reserva WHERE data = '{data}' and id_titular = id_cliente")
+    resultado = cursor.fetchall()
+
+    return resultado
+
+
 def select_grupo_reserva(id_titular, data):
     mydb.connect()
     cursor.execute(
@@ -192,11 +201,13 @@ def select_id_cliente_like(nome_vaga):
 
 def select_controle_curso():
     mydb.connect()
-    cursor.execute("SELECT cliente.nome, c.data_pratica1, c.data_pratica2, cliente.telefone, c.curso, c.material, c.situacao, c.exercicios, c.certificacao FROM controle_cursos as c INNER JOIN cliente ON c.id_cliente = cliente.id")
+    cursor.execute(
+        "SELECT cliente.nome, c.data_pratica1, c.data_pratica2, cliente.telefone, c.curso, c.material, c.situacao, c.exercicios, c.certificacao FROM controle_cursos as c INNER JOIN cliente ON c.id_cliente = cliente.id")
     dados = cursor.fetchall()
     mydb.close()
 
     return dados
+
 
 # def select_alunos():
 #     mydb.connect()

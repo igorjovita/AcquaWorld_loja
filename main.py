@@ -11,7 +11,7 @@ from datetime import date
 import streamlit.components.v1
 from functions import select_reserva, processar_pagamento, gerar_pdf, gerar_html, select_apelido_vendedores, \
     calculo_restricao, insert_cliente, insert_reserva, select_id_vendedores, insert_lancamento_comissao, \
-    select_valor_neto, select_cliente, select_grupo_reserva, update_vaga, select_id_cliente_like
+    select_valor_neto, select_cliente, select_grupo_reserva, update_vaga, select_id_cliente_like, select_nome_id_titular
 import time
 
 chars = "'),([]"
@@ -606,16 +606,13 @@ if menu_main == 'Pagamento':
     data_reserva = st.date_input('Data da reserva', format='DD/MM/YYYY')
 
     lista_pagamento = []
-    with mydb.cursor() as cursor:
-        cursor.execute(
-            f"SELECT nome_cliente, id_cliente FROM reserva WHERE data = '{data_reserva}' and id_titular = id_cliente")
-        resultado_select = cursor.fetchall()
 
-        for item in resultado_select:
-            nome_cliente_pagamento = str(item[0]).translate(str.maketrans('', '', chars))
-            id_titular_pagamento = str(item).translate(str.maketrans('', '', chars2)).split(',')
-            lista_pagamento.append(nome_cliente_pagamento)
-            st.session_state.id_pagamento.append(id_titular_pagamento)
+    lista_nome_id_titular = select_nome_id_titular(data_reserva)
+
+    for item in lista_nome_id_titular:
+
+        lista_pagamento.append(str(item[0]).translate(str.maketrans('', '', chars)))
+        st.session_state.id_pagamento.append(str(item).translate(str.maketrans('', '', chars2)).split(','))
 
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista_pagamento)
 
