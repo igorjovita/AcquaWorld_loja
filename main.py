@@ -710,7 +710,6 @@ if menu_main == 'Pagamento':
                             f"<h2 style='color: black; text-align: center; font-size: 1em;'>{recebedor} -  R$ {pagamento_formatado}</h2>",
                             unsafe_allow_html=True)
                     total_sinal += pagamento
-                    st.write(f'total_sinal {total_sinal}')
 
                 else:
                     with coluna2:
