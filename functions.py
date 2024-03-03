@@ -171,7 +171,7 @@ def insert_reserva(reserva):
     if reserva[9] != '':
         for i in range(2):
             if i == 0:
-                st.write(reserva[i][5])
+                st.write(reserva[5])
                 # reserva[i][5] = reserva[i][5] + '> Pratica 1'
             elif i == 1:
                 st.write(reserva[i][5])
