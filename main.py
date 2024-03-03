@@ -623,6 +623,7 @@ if menu_main == 'Pagamento':
     with c1:
         if st.button('Selecionar Titular'):
             st.session_state.botao = True
+            st.rerun()
 
     with c2:
         if st.button('Voltar'):
