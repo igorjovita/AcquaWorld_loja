@@ -647,14 +647,12 @@ if menu_main == 'Pagamento':
 
         if selectbox_cliente is not None:
             titulo_tabela_pagamentos()  # Titulo da Tabela em HTML
-            for nome, id_titular_pg in st.session_state.id_pagamento:
-                if nome == selectbox_cliente:
-                    id_titular_pagamento = id_titular_pg
+
             st.session_state.id_pagamento = []
 
 
             dados_reservas_pagamento = select_reserva_id_titular(
-                id_titular_pg)  # id, id_cliente, tipo, valor_total, receber_loja, id_vendedor
+                id_titular_pagamento)  # id, id_cliente, tipo, valor_total, receber_loja, id_vendedor
             id_vendedor_pg = dados_reservas_pagamento[0][4]
 
             for dado in dados_reservas_pagamento:
