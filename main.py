@@ -296,7 +296,6 @@ if menu_main == 'Reservar':
 
         if st.button('Reservar'):
 
-
             with mydb.cursor() as cursor:
                 cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE id_cliente = %s and data = %s",
                                (id_cliente, data))
@@ -620,15 +619,11 @@ if menu_main == 'Pagamento':
 
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista_pagamento)
 
-    if 'contador' not in st.session_state:
-        st.session_state.contador = 0
-
     if st.button('Selecionar Titular'):
         st.session_state.botao = True
 
     if st.session_state.botao:
-        st.session_state.contador += 1
-        st.write(st.session_state.contador)
+
         lista_nome_pagamento = []
         nome_cliente_reserva = []
         id_reserva_pagamento = []
@@ -846,6 +841,7 @@ if menu_main == 'Pagamento':
                             check_in = '#00B0F0'
                         if check_in_entry == 'Para o pier':
                             check_in = 'yellow'
+                        st.write(st.session_state.dados_pagamento[3])
 
                     elif pagamento_escolha == 'Pagamento Grupo':
                         st.write('---')
@@ -868,6 +864,7 @@ if menu_main == 'Pagamento':
                             parcela = 0
 
                         check_in_entry = st.selectbox('Cliente vai pra onde?', ['Loja', 'Para o pier'], index=None)
+
                         if check_in_entry == 'Loja':
                             check_in = '#00B0F0'
                         if check_in_entry == 'Para o pier':

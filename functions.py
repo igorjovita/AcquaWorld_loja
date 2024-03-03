@@ -23,17 +23,44 @@ mydb = mysql.connector.connect(
 
 cursor = mydb.cursor(buffered=True)
 
-#CRIAÇÕES
 
-def criar_controle_cursos():
-    mydb.connect()
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS controle_cursos(
-            id int not null auto_increment,
-            data
-            id_cliente int,
-            
-        """)
+# CRIAÇÕES
+
+
+# def criar_controle_cursos():
+#     mydb.connect()
+#     cursor.execute("""
+#         CREATE TABLE IF NOT EXISTS controle_cursos(
+#             id int not null auto_increment,
+#             data_pratica1 date,
+#             data_pratica2 date,
+#             id_cliente int,
+#             curso varchar(40),
+#             material varchar(40),
+#             situacao varchar(40),
+#             exercicios varchar(40),
+#             certificacao varchar(40),
+#             primary key(id),
+#             FOREIGN KEY (id_cliente) REFERENCES cliente(id)
+#         """)
+
+
+# def create_contagem_curso():
+#     mydb.connect()
+#     cursor.execute("""
+#     CREATE TABLE IF NOT EXISTS contagem_curso(
+#         id int not null auto_increment,
+#         pic_dive int,
+#         pic_efr int,
+#         open_pt int,
+#         open_es int,
+#         open_ing int,
+#         adv int,
+#         efr int,
+#         rescue int,
+#         dm int,
+#         primary key(id));
+#     """)
 
 # SELECTS
 @st.cache_resource
@@ -163,6 +190,19 @@ def select_id_cliente_like(nome_vaga):
     return id_cliente
 
 
+def select_controle_curso():
+    mydb.connect()
+    cursor.execute("SELECT cliente.nome, c.data_pratica1, c.data_pratica2, cliente.telefone, c.curso, c.material, c.situacao, c.exercicios, c.certificacao FROM controle_cursos as c INNER JOIN cliente ON c.id_cliente = cliente.id")
+    dados = cursor.fetchall()
+    mydb.close()
+
+    return dados
+
+# def select_alunos():
+#     mydb.connect()
+#     cursor.execute(""
+
+
 # INSERTS
 
 
@@ -274,7 +314,8 @@ def insert_vendedores(nome, apelido, telefone, neto_bat, neto_acp, neto_tur1, ne
 
 # FUNÇÕES NORMAIS
 
-def update_vaga(id_cliente, nome, cpf, telefone, tipo, peso, altura, valor_total, sinal, recebedor_sinal, receber_loja, data, id_titular, id_vendedor ):
+def update_vaga(id_cliente, nome, cpf, telefone, tipo, peso, altura, valor_total, sinal, recebedor_sinal, receber_loja,
+                data, id_titular, id_vendedor):
     mydb.connect()
     roupa = f'{altura}/{peso}'
     query = "UPDATE cliente SET nome = %s, cpf = %s, telefone = %s, roupa = %s WHERE id = %s"
