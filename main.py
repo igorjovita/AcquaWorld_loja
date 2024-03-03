@@ -632,6 +632,7 @@ if menu_main == 'Pagamento':
 
             st.write(st.session_state.id_pagamento)
             st.write(id_titular_pg)
+            st.write(selectbox_cliente)
     with c2:
         if st.button('Voltar'):
             st.session_state.botao = False
