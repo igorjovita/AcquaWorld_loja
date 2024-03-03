@@ -222,11 +222,6 @@ if menu_main == 'Reservar':
                     else:
                         valor_loja = valor_loja
                 if st.form_submit_button(f'Cadastrar {nome_cliente}'):
-                    if data_pratica2 is not None:
-                        st.session_state.data_pratica2.append(data_pratica2)
-                    else:
-                        st.session_state.data_pratica2.append('')
-
                     lista_cred = ['TUR2', 'OWD', 'ADV', 'RESCUE', 'REVIEW']
                     contagem, restricao, contagem_cred, vaga_bat, vaga_cred, vaga_total = calculo_restricao(data)
 
@@ -235,36 +230,41 @@ if menu_main == 'Reservar':
                         st.write(vaga_cred)
                         st.write(restricao)
                         st.error('Todas as vagas de credenciados foram preenchidas')
-
-                    elif nome_cliente not in st.session_state.nome_cadastrado:
-                        st.session_state.nome_cadastrado.append(nome_cliente)
-                        forma_pg = 'Pix'
-                        st.session_state.pagamentos.append((data, recebedor_sinal, sinal, forma_pg))
-                        st.session_state.valor_sinal += float(sinal)
-
-                        st.session_state.valor_mergulho_receber += float(valor_loja)
-                        st.session_state.valor_mergulho_total += float(valor_mergulho)
-
-                        if i != 0:
-                            st.session_state.nome_dependente.append(nome_cliente)
-
-                        with mydb.cursor() as cursor:
-                            try:
-
-                                id_cliente = insert_cliente(cpf, nome_cliente, telefone, roupa)
-                                st.session_state.ids_clientes.append(id_cliente)
-                                mydb.commit()
-
-                            except IntegrityError:
-                                cursor.execute(f"SELECT id from cliente where cpf = %s and nome = %s",
-                                               (cpf, nome_cliente))
-                                info_registro = cursor.fetchone()
-
-                                if info_registro:
-                                    id_cliente = info_registro[0]
-                                    st.session_state.ids_clientes.append(id_cliente)
                     else:
-                        st.error(f'{nome_cliente} já foi cadastrado no sistema!')
+                        if data_pratica2 is not None:
+                            st.session_state.data_pratica2.append(data_pratica2)
+                        else:
+                            st.session_state.data_pratica2.append('')
+    
+                        if nome_cliente not in st.session_state.nome_cadastrado:
+                            st.session_state.nome_cadastrado.append(nome_cliente)
+                            forma_pg = 'Pix'
+                            st.session_state.pagamentos.append((data, recebedor_sinal, sinal, forma_pg))
+                            st.session_state.valor_sinal += float(sinal)
+
+                            st.session_state.valor_mergulho_receber += float(valor_loja)
+                            st.session_state.valor_mergulho_total += float(valor_mergulho)
+
+                            if i != 0:
+                                st.session_state.nome_dependente.append(nome_cliente)
+
+                            with mydb.cursor() as cursor:
+                                try:
+
+                                    id_cliente = insert_cliente(cpf, nome_cliente, telefone, roupa)
+                                    st.session_state.ids_clientes.append(id_cliente)
+                                    mydb.commit()
+
+                                except IntegrityError:
+                                    cursor.execute(f"SELECT id from cliente where cpf = %s and nome = %s",
+                                                   (cpf, nome_cliente))
+                                    info_registro = cursor.fetchone()
+
+                                    if info_registro:
+                                        id_cliente = info_registro[0]
+                                        st.session_state.ids_clientes.append(id_cliente)
+                        else:
+                            st.error(f'{nome_cliente} já foi cadastrado no sistema!')
 
             # Adicione esta verificação antes de tentar acessar a lista
             if i < len(st.session_state['ids_clientes']):
