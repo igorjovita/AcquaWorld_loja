@@ -413,7 +413,8 @@ def update_check_in(nome, check_in, data_reserva):
 @st.cache_data
 def calcular_valores(valor_neto, acquaworld_valor, vendedor_valor, reserva_neto):
     situacao = 'Pendente'
-
+    valor_receber = 0
+    valor_pagar = 0
     if acquaworld_valor < valor_neto:
         valor_receber = valor_neto - acquaworld_valor
         valor_pagar = 0
