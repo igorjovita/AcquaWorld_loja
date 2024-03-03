@@ -11,7 +11,8 @@ from datetime import date
 import streamlit.components.v1
 from functions import select_reserva, processar_pagamento, gerar_pdf, gerar_html, select_apelido_vendedores, \
     calculo_restricao, insert_cliente, insert_reserva, select_id_vendedores, insert_lancamento_comissao, \
-    select_valor_neto, select_cliente, select_grupo_reserva, update_vaga, select_id_cliente_like, select_nome_id_titular
+    select_valor_neto, select_cliente, select_grupo_reserva, update_vaga, select_id_cliente_like, \
+    select_nome_id_titular, select_reserva_id_titular, titulo_tabela_pagamentos
 import time
 
 chars = "'),([]"
@@ -331,8 +332,8 @@ if menu_main == 'Reservar':
                         for tupla in st.session_state.pagamentos2:
                             lista_ids.append(tupla[1])
 
-                        for item in lista_ids:
-                            insert_lancamento_comissao(id_reserva_cliente=item, id_vendedor_pg=id_vendedor,
+                        for dado in lista_ids:
+                            insert_lancamento_comissao(id_reserva_cliente=dado, id_vendedor_pg=id_vendedor,
                                                        valor_receber=valor_neto, valor_pagar=0,
                                                        id_titular_pagamento=id_titular)
 
@@ -408,15 +409,15 @@ if menu_main == 'Editar':
     if opcoes == 'Editar Reserva':
         cursor.execute(f"SELECT nome_cliente FROM reserva WHERE data = '{data_editar}'")
         id_cliente_editar = cursor.fetchall()
-        for item in id_cliente_editar:
-            lista.append(str(item).translate(str.maketrans('', '', chars)))
+        for dado in id_cliente_editar:
+            lista.append(str(dado).translate(str.maketrans('', '', chars)))
     else:
         cursor.execute(
             f"SELECT nome_cliente, id_cliente FROM reserva WHERE data = '{data_editar}' and id_cliente = id_titular")
         id_cliente_editar = cursor.fetchall()
-        for item in id_cliente_editar:
-            lista.append(str(item[0]).translate(str.maketrans('', '', chars)))
-            st.session_state.info_editar.append(item)
+        for dado in id_cliente_editar:
+            lista.append(str(dado[0]).translate(str.maketrans('', '', chars)))
+            st.session_state.info_editar.append(dado)
 
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista)
 
@@ -609,10 +610,9 @@ if menu_main == 'Pagamento':
 
     lista_nome_id_titular = select_nome_id_titular(data_reserva)
 
-    for item in lista_nome_id_titular:
-
-        lista_pagamento.append(str(item[0]).translate(str.maketrans('', '', chars)))
-        st.session_state.id_pagamento.append(str(item).translate(str.maketrans('', '', chars2)).split(','))
+    for dado in lista_nome_id_titular:
+        lista_pagamento.append(str(dado[0]).translate(str.maketrans('', '', chars)))
+        st.session_state.id_pagamento.append(str(dado).translate(str.maketrans('', '', chars2)).split(','))
 
     selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista_pagamento)
 
@@ -636,14 +636,12 @@ if menu_main == 'Pagamento':
                         id_titular_pagamento = id_titular_pg
                 st.session_state.id_pagamento = []
 
-                # id, id_cliente, tipo, valor_total, receber_loja, id_vendedor
-                cursor.execute(
-                    f"SELECT id, nome_cliente, receber_loja, situacao, id_vendedor, id_cliente, tipo, valor_total from reserva where id_titular = {id_titular_pagamento}")
-                resultado_pg = cursor.fetchall()
-                id_vendedor_pg = resultado_pg[0][4]
+                dados_reservas_pagamento = select_reserva_id_titular(
+                    id_titular_pg)  # id, id_cliente, tipo, valor_total, receber_loja, id_vendedor
+                id_vendedor_pg = dados_reservas_pagamento[0][4]
 
-                for item in resultado_pg:
-                    id_reserva_pg, nome_reserva_pg, receber_loja_pg, situacao_reserva, id_vendedor, id_cliente_pg, tipo_pg, valor_total = item
+                for dado in dados_reservas_pagamento:
+                    id_reserva_pg, nome_reserva_pg, receber_loja_pg, situacao_reserva, id_vendedor, id_cliente_pg, tipo_pg, valor_total = dado
 
                     nome_cliente_reserva.append(nome_reserva_pg)
                     id_reserva_pagamento.append(id_reserva_pg)
@@ -659,25 +657,8 @@ if menu_main == 'Pagamento':
                              id_vendedor))
                 receber_grupo = 0
                 total_sinal = 0
-                colun1, colun2, colun3, colun4 = st.columns(4)
 
-                with colun1:
-                    st.markdown(
-                        f"<h2 style='color: black; text-align: center; font-size: 1.5em; font-weight: bold;'>Nome</h2>",
-                        unsafe_allow_html=True)
-                with colun2:
-                    st.markdown(
-                        f"<h2 style='color: black; font-size: 1.5em; text-align: center; font-weight: bold;'>Valor Pago</h2>",
-                        unsafe_allow_html=True)
-
-                with colun3:
-                    st.markdown(
-                        f"<h2 style='color: black; font-size: 1.5em; text-align: center; font-weight: bold;'>Valor a Receber</h2>",
-                        unsafe_allow_html=True)
-                with colun4:
-                    st.markdown(
-                        f"<h2 style='color: black; font-size: 1.5em; text-align: center; font-weight: bold;'>Situação</h2>",
-                        unsafe_allow_html=True)
+                titulo_tabela_pagamentos() #Titulo da Tabela em HTML
 
                 for nome, id_pg, receber_loja in zip(nome_cliente_reserva, id_reserva_pagamento,
                                                      receber_loja_reserva):

@@ -138,6 +138,16 @@ def select_reserva(nome, data_reserva):
     return info_reserva
 
 
+@st.cache_resource
+def select_reserva_id_titular(id_titular):
+    mydb.connect()
+    cursor.execute(
+        f"SELECT id, nome_cliente, receber_loja, situacao, id_vendedor, id_cliente, tipo, valor_total from reserva where id_titular = {id_titular}")
+    resultado = cursor.fetchall()
+
+    mydb.close()
+    return resultado
+
 def select_id_titular_vendedor():
     mydb.connect()
     cursor.execute("SELECT id_titular, id_vendedor FROM reserva WHERE id_cliente = %s ")
@@ -148,6 +158,7 @@ def select_nome_id_titular(data):
     cursor.execute(
         f"SELECT nome_cliente, id_cliente FROM reserva WHERE data = '{data}' and id_titular = id_cliente")
     resultado = cursor.fetchall()
+    mydb.close()
 
     return resultado
 
@@ -840,3 +851,25 @@ def gerar_html_total(data_caixa):
     pdfkit.from_string(output_text, pdf_filename, configuration=config)
 
     return output_text
+
+
+def titulo_tabela_pagamentos():
+    colun1, colun2, colun3, colun4 = st.columns(4)
+
+    with colun1:
+        st.markdown(
+            f"<h2 style='color: black; text-align: center; font-size: 1.5em; font-weight: bold;'>Nome</h2>",
+            unsafe_allow_html=True)
+    with colun2:
+        st.markdown(
+            f"<h2 style='color: black; font-size: 1.5em; text-align: center; font-weight: bold;'>Valor Pago</h2>",
+            unsafe_allow_html=True)
+
+    with colun3:
+        st.markdown(
+            f"<h2 style='color: black; font-size: 1.5em; text-align: center; font-weight: bold;'>Valor a Receber</h2>",
+            unsafe_allow_html=True)
+    with colun4:
+        st.markdown(
+            f"<h2 style='color: black; font-size: 1.5em; text-align: center; font-weight: bold;'>Situação</h2>",
+            unsafe_allow_html=True)
