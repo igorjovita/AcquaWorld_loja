@@ -288,10 +288,10 @@ if menu_main == 'Reservar':
                 else:
                     if id_titular is None:
                         id_titular = id_cliente
-
-            reservas.append(
-                (data, id_cliente, tipo, id_vendedor, valor_mergulho, nome_cliente, '#FFFFFF', id_titular,
-                 valor_loja, st.session_state.data_pratica2[i]))
+            if st.session_state.data_pratica2:
+                reservas.append(
+                    (data, id_cliente, tipo, id_vendedor, valor_mergulho, nome_cliente, '#FFFFFF', id_titular,
+                     valor_loja, st.session_state.data_pratica2[i]))
             st.write('---')
 
         if st.button('Reservar'):
