@@ -614,9 +614,9 @@ if menu_main == 'Pagamento':
         lista_pagamento.append(str(dado[0]).translate(str.maketrans('', '', chars)))
         st.session_state.id_pagamento.append(str(dado).translate(str.maketrans('', '', chars2)).split(','))
 
-    if not st.session_state.botao:
+    if st.session_state.botao:
         selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista_pagamento, disabled=True)
-    else:
+    elif not st.session_state.botao:
         selectbox_cliente = st.selectbox('Selecione a reserva para editar', lista_pagamento)
 
     c1, c2 = st.columns(2)
