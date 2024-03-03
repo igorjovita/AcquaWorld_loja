@@ -806,6 +806,7 @@ if menu_main == 'Pagamento':
 
                         if nome == escolha_client_input:
                             valor_a_receber_cliente = receber_loja
+                    st.write(valor_a_receber_cliente)
 
                     if valor_a_receber_cliente is not None:
                         valor_a_receber_formatado = "{:,.2f}".format(valor_a_receber_cliente).replace(",",
