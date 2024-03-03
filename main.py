@@ -610,6 +610,8 @@ if menu_main == 'Pagamento':
 
     lista_nome_id_titular = select_nome_id_titular(data_reserva)
 
+    st.write(lista_nome_id_titular)
+
     for dado in lista_nome_id_titular:
         lista_pagamento.append(str(dado[0]).translate(str.maketrans('', '', chars)))
 
@@ -628,7 +630,7 @@ if menu_main == 'Pagamento':
             #     if nome == selectbox_cliente:
             #         id_titular_pagamento = id_titular_pg
             # st.rerun()
-            st.write(st.session_state.id_pagamento)
+            # st.write(st.session_state.id_pagamento)
     with c2:
         if st.button('Voltar'):
             st.session_state.botao = False
