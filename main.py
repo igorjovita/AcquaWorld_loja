@@ -610,7 +610,6 @@ if menu_main == 'Pagamento':
 
     lista_nome_id_titular = select_nome_id_titular(data_reserva)
 
-
     for dado in lista_nome_id_titular:
         lista_pagamento.append(str(dado[0]).translate(str.maketrans('', '', chars)))
         if dado not in st.session_state.id_pagamento:
@@ -627,7 +626,6 @@ if menu_main == 'Pagamento':
             st.session_state.botao = True
             for nome, id_titular_pg in st.session_state.id_pagamento:
                 if nome == selectbox_cliente:
-
                     id_titular_pagamento = id_titular_pg
 
             st.write(st.session_state.id_pagamento)
@@ -658,91 +656,93 @@ if menu_main == 'Pagamento':
             for dado in dados_reservas_pagamento:
                 id_reserva_pg, nome_reserva_pg, receber_loja_pg, situacao_reserva, id_vendedor, id_cliente_pg, tipo_pg, valor_total = dado
 
-                dados_para_pagamento.append((nome_reserva_pg, id_reserva_pg, receber_loja_pg))
+                if nome_reserva_pg == selectbox_cliente:
 
-                if (nome_reserva_pg, situacao_reserva) not in options_select_cliente:
-                    options_select_cliente.append((nome_reserva_pg, situacao_reserva))
+                    dados_para_pagamento.append((nome_reserva_pg, id_reserva_pg, receber_loja_pg))
 
-                if (nome_reserva_pg, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg,
-                    id_vendedor, situacao_reserva) not in st.session_state.dados_pagamento:
-                    st.session_state.dados_pagamento.append(
-                        (nome_reserva_pg, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg,
-                         id_vendedor))
-                receber_grupo = 0
-                total_sinal = 0
+                    if (nome_reserva_pg, situacao_reserva) not in options_select_cliente:
+                        options_select_cliente.append((nome_reserva_pg, situacao_reserva))
 
-                nome_formatado = str(nome_reserva_pg).translate(str.maketrans('', '', chars))
+                    if (nome_reserva_pg, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg,
+                        id_vendedor, situacao_reserva) not in st.session_state.dados_pagamento:
+                        st.session_state.dados_pagamento.append(
+                            (nome_reserva_pg, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg,
+                             id_vendedor))
+                    receber_grupo = 0
+                    total_sinal = 0
 
-                info_cliente_pg = select_reserva(nome=nome_formatado, data_reserva=data_reserva)
+                    nome_formatado = str(nome_reserva_pg).translate(str.maketrans('', '', chars))
 
-                if receber_loja_pg is not None:
-                    receber_formatado = float(str(receber_loja_pg).translate(str.maketrans('', '', chars)))
-                else:
-                    receber_formatado = float(0.00)
+                    info_cliente_pg = select_reserva(nome=nome_formatado, data_reserva=data_reserva)
 
-                resultado_select_pagamentos = select_pagamentos(
-                    int(str(id_reserva_pg).translate(str.maketrans('', '', chars))))
+                    if receber_loja_pg is not None:
+                        receber_formatado = float(str(receber_loja_pg).translate(str.maketrans('', '', chars)))
+                    else:
+                        receber_formatado = float(0.00)
 
-                if len(resultado_select_pagamentos) == 1:
-                    recebedor, pagamento = resultado_select_pagamentos[0]  # Desempacotando a tupla
+                    resultado_select_pagamentos = select_pagamentos(
+                        int(str(id_reserva_pg).translate(str.maketrans('', '', chars))))
 
-                elif len(resultado_select_pagamentos) > 1:
-                    pagamento = 0
-                    recebedor = resultado_select_pagamentos[0][0]  # Obtendo o recebedor da primeira tupla
-                    for numero in resultado_select_pagamentos:
-                        pagamento += numero[1]  # Somando os pagamentos das tuplas
-                else:
-                    recebedor = None
+                    if len(resultado_select_pagamentos) == 1:
+                        recebedor, pagamento = resultado_select_pagamentos[0]  # Desempacotando a tupla
 
-                lista_nome_pagamento.append(nome_formatado)
-
-                coluna1, coluna2, coluna3, coluna4 = st.columns(4)
-
-                with coluna1:
-                    st.markdown(
-                        f"<h2 style='color: black; text-align: center; font-size: 1.2em;'>{nome_formatado}</h2>",
-                        unsafe_allow_html=True)
-
-                if recebedor is not None:
-                    with coluna2:
-                        pagamento_formatado = "{:,.2f}".format(pagamento).replace(",", "X").replace(".",
-                                                                                                    ",").replace(
-                            "X", ".")
-                        st.markdown(
-                            f"<h2 style='color: black; text-align: center; font-size: 1em;'>{recebedor} -  R$ {pagamento_formatado}</h2>",
-                            unsafe_allow_html=True)
-                    total_sinal += pagamento
-
-                else:
-                    with coluna2:
-                        st.markdown(
-                            f"<h2 style='color: black; text-align: center; font-size: 1em;'>Nenhum sinal foi pago</h2>",
-                            unsafe_allow_html=True)
+                    elif len(resultado_select_pagamentos) > 1:
                         pagamento = 0
+                        recebedor = resultado_select_pagamentos[0][0]  # Obtendo o recebedor da primeira tupla
+                        for numero in resultado_select_pagamentos:
+                            pagamento += numero[1]  # Somando os pagamentos das tuplas
+                    else:
+                        recebedor = None
 
-                with coluna3:
-                    if info_cliente_pg[3] == pagamento:
-                        receber_formatado_individual = 0.00
-                        situacao = 'Pago'
-                        pagamento = 0
-                        receber_formatado = 0.00
+                    lista_nome_pagamento.append(nome_formatado)
+
+                    coluna1, coluna2, coluna3, coluna4 = st.columns(4)
+
+                    with coluna1:
+                        st.markdown(
+                            f"<h2 style='color: black; text-align: center; font-size: 1.2em;'>{nome_formatado}</h2>",
+                            unsafe_allow_html=True)
+
+                    if recebedor is not None:
+                        with coluna2:
+                            pagamento_formatado = "{:,.2f}".format(pagamento).replace(",", "X").replace(".",
+                                                                                                        ",").replace(
+                                "X", ".")
+                            st.markdown(
+                                f"<h2 style='color: black; text-align: center; font-size: 1em;'>{recebedor} -  R$ {pagamento_formatado}</h2>",
+                                unsafe_allow_html=True)
+                        total_sinal += pagamento
 
                     else:
-                        receber_formatado_individual = "{:,.2f}".format(receber_formatado).replace(",",
-                                                                                                   "X").replace(
-                            ".",
-                            ",").replace(
-                            "X", ".")
-                        situacao = 'Pendente'
-                    st.markdown(
-                        f"<h2 style='color: black; text-align: center; font-size: 1em;'>R$ {receber_formatado_individual}</h2>",
-                        unsafe_allow_html=True)
+                        with coluna2:
+                            st.markdown(
+                                f"<h2 style='color: black; text-align: center; font-size: 1em;'>Nenhum sinal foi pago</h2>",
+                                unsafe_allow_html=True)
+                            pagamento = 0
 
-                receber_grupo += receber_formatado
-                with coluna4:
-                    st.markdown(
-                        f"<h2 style='color: black; text-align: center; font-size: 1em;'>{situacao}</h2>",
-                        unsafe_allow_html=True)
+                    with coluna3:
+                        if info_cliente_pg[3] == pagamento:
+                            receber_formatado_individual = 0.00
+                            situacao = 'Pago'
+                            pagamento = 0
+                            receber_formatado = 0.00
+
+                        else:
+                            receber_formatado_individual = "{:,.2f}".format(receber_formatado).replace(",",
+                                                                                                       "X").replace(
+                                ".",
+                                ",").replace(
+                                "X", ".")
+                            situacao = 'Pendente'
+                        st.markdown(
+                            f"<h2 style='color: black; text-align: center; font-size: 1em;'>R$ {receber_formatado_individual}</h2>",
+                            unsafe_allow_html=True)
+
+                    receber_grupo += receber_formatado
+                    with coluna4:
+                        st.markdown(
+                            f"<h2 style='color: black; text-align: center; font-size: 1em;'>{situacao}</h2>",
+                            unsafe_allow_html=True)
 
             if receber_grupo == 0.00:
                 st.write('---')
@@ -783,7 +783,6 @@ if menu_main == 'Pagamento':
 
                 else:
                     pagamento_escolha = 'Pagamento Individual'
-
 
                 for opcao in options_select_cliente:
                     if opcao[1] == 'Reserva Paga':
