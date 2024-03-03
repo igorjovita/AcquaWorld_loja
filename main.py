@@ -602,7 +602,8 @@ if menu_main == 'Pagamento':
 
     if 'escolha_reserva_pendente' not in st.session_state:
         st.session_state.escolha_reserva_pendente = []
-
+    if 'titular' not in st.session_state:
+        st.session_state.titular = []
     data_pagamento = date.today()
     data_reserva = st.date_input('Data da reserva', format='DD/MM/YYYY')
 
@@ -628,7 +629,7 @@ if menu_main == 'Pagamento':
             for nome, id_titular_pg in st.session_state.id_pagamento:
                 if nome == selectbox_cliente:
 
-                    id_titular_pagamento = id_titular_pg
+                    st.session_state.titular.append(id_titular_pg)
 
     with c2:
         if st.button('Voltar'):
@@ -647,7 +648,7 @@ if menu_main == 'Pagamento':
             st.session_state.id_pagamento = []
 
             dados_reservas_pagamento = select_reserva_id_titular(
-                id_titular_pagamento)  # id, id_cliente, tipo, valor_total, receber_loja, id_vendedor
+                st.session_state.titular[0])  # id, id_cliente, tipo, valor_total, receber_loja, id_vendedor
             id_vendedor_pg = dados_reservas_pagamento[0][4]
             st.write(dados_reservas_pagamento)
 
@@ -870,7 +871,7 @@ if menu_main == 'Pagamento':
                                 # Processa o pagamento apenas para o cliente selecionado
                                 processar_pagamento(nome_cliente, data_reserva, check_in, forma_pg, parcela,
                                                     id_vendedor_pg,
-                                                    id_titular_pagamento, id_reserva_pg, id_cliente_pg,
+                                                    st.session_state.titular[0], id_reserva_pg, id_cliente_pg,
                                                     tipo_pg, valor_total, receber_loja_pg)
 
                     else:
@@ -885,7 +886,7 @@ if menu_main == 'Pagamento':
                                 receber_loja_selecionado = receber_loja_pg
                         nome = escolha_client_input
                         processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg,
-                                            id_titular_pagamento, id_reserva_selecionada, id_cliente_selecionado,
+                                            st.session_state.titular[0], id_reserva_selecionada, id_cliente_selecionado,
                                             tipo_selecionado, valor_total_selecionado, receber_loja_selecionado)
                     st.session_state.escolha_reserva_pendente.remove(nome)
                     st.session_state.pagamentos = []
