@@ -667,8 +667,7 @@ if menu_main == 'Pagamento':
                          id_vendedor))
                 receber_grupo = 0
                 total_sinal = 0
-                lista = [st.session_state.dados_pagamento[0], st.session_state.dados_pagamento[-1]]
-                st.write(lista)
+
 
                 nome_formatado = str(nome_reserva_pg).translate(str.maketrans('', '', chars))
 
@@ -744,6 +743,8 @@ if menu_main == 'Pagamento':
                         unsafe_allow_html=True)
                 receber_grupo += receber_formatado
 
+            lista = [st.session_state.dados_pagamento[0], st.session_state.dados_pagamento[-1]]
+            st.write(f'Lista - {lista}')
             if receber_grupo == 0.00:
                 st.write('---')
                 st.success('Todas os clientes dessa reserva efeturam o pagamento!')
