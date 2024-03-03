@@ -230,6 +230,9 @@ if menu_main == 'Reservar':
                         st.write(vaga_cred)
                         st.write(restricao)
                         st.error('Todas as vagas de credenciados foram preenchidas')
+
+                    elif (tipo == 'OWD' or tipo == 'ADV') and data_pratica2 is None:
+                        st.error('Informe a data da pratica 2')
                     else:
                         if data_pratica2 is not None:
                             st.session_state.data_pratica2.append(data_pratica2)
@@ -293,13 +296,6 @@ if menu_main == 'Reservar':
 
         if st.button('Reservar'):
 
-            # lista_cred = ['TUR2', 'OWD', 'ADV', 'RESCUE', 'REVIEW']
-            #
-            # if tipo in lista_cred and contagem_cred >= vaga_cred:
-            #     st.write(contagem_cred)
-            #     st.write(vaga_cred)
-            #     st.write(restricao)
-            #     st.error('Todas as vagas de credenciados foram preenchidas')
 
             with mydb.cursor() as cursor:
                 cursor.execute(f"SELECT COUNT(*) FROM reserva WHERE id_cliente = %s and data = %s",
