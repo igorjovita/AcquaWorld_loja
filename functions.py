@@ -138,7 +138,6 @@ def select_reserva(nome, data_reserva):
     return info_reserva
 
 
-
 def select_reserva_id_titular(id_titular):
     mydb.connect()
     cursor.execute(

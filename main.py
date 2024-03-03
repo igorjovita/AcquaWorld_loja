@@ -631,6 +631,7 @@ if menu_main == 'Pagamento':
                     id_titular_pagamento = id_titular_pg
 
             st.write(st.session_state.id_pagamento)
+            st.write(id_titular_pagamento)
             st.write(id_titular_pg)
             st.write(selectbox_cliente)
     with c2:
@@ -650,6 +651,7 @@ if menu_main == 'Pagamento':
                 if nome == selectbox_cliente:
                     id_titular_pagamento = id_titular_pg
             st.session_state.id_pagamento = []
+
 
             dados_reservas_pagamento = select_reserva_id_titular(
                 id_titular_pg)  # id, id_cliente, tipo, valor_total, receber_loja, id_vendedor
