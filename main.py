@@ -623,9 +623,8 @@ if menu_main == 'Pagamento':
     with c1:
         if st.button('Selecionar Titular'):
             st.session_state.botao = True
-            st.write(st.session_state.id_pagamento)
             st.rerun()
-
+            st.write(st.session_state.id_pagamento)
     with c2:
         if st.button('Voltar'):
             st.session_state.botao = False
