@@ -720,6 +720,8 @@ if menu_main == 'Pagamento':
                         pagamento = 0
 
                 with coluna3:
+                    st.write(f'infocliente - {info_cliente_pg[3]}')
+                    st.write(f'pagamento - {pagamento}')
                     if info_cliente_pg[3] == pagamento:
                         receber_formatado_individual = 0.00
                         situacao = 'Pago'
