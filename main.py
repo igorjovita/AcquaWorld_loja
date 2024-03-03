@@ -219,7 +219,7 @@ if menu_main == 'Reservar':
                 if st.form_submit_button(f'Cadastrar {nome_cliente}'):
                     if tipo == 'OWD' or tipo == 'ADV':
                         st.date_input('Data da Pratica 2', format='DD/MM/YYYY')
-                        st.button('teste')
+                        st.form_submit_button('teste')
                     if nome_cliente not in st.session_state.nome_cadastrado:
                         st.session_state.nome_cadastrado.append(nome_cliente)
                         forma_pg = 'Pix'
