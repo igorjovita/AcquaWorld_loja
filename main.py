@@ -87,6 +87,9 @@ if menu_main == 'Reservar':
     if 'nome_cadastrado' not in st.session_state:
         st.session_state.nome_cadastrado = []
 
+    if 'data_pratica2' not in st.session_state:
+        st.session_state.data_pratica2 = []
+
     # Capturar nome dos vendedores cadastrados no sistema
     mydb.connect()
     lista_vendedor = select_apelido_vendedores()
@@ -158,14 +161,13 @@ if menu_main == 'Reservar':
 
             if valor == 0:
                 id_titular_vaga = id_cliente
-            reserva_temporaria.append((data, id_cliente, '', id_vendedor, '', f'{data}/{comissario}/{i}', '', id_titular_vaga, ''))
+            reserva_temporaria.append(
+                (data, id_cliente, '', id_vendedor, '', f'{data}/{comissario}/{i}', '', id_titular_vaga, ''))
 
         for reserva in reserva_temporaria:
-
             insert_reserva(reserva)
 
         st.success(f'{quantidade_reserva} vagas reservadas para  {comissario}')
-
 
     if st.session_state.botao_clicado:
 
@@ -218,8 +220,12 @@ if menu_main == 'Reservar':
                         valor_loja = valor_loja
                 if st.form_submit_button(f'Cadastrar {nome_cliente}'):
                     if tipo == 'OWD' or tipo == 'ADV':
-                        st.date_input('Data da Pratica 2', format='DD/MM/YYYY')
-                        st.form_submit_button('teste')
+                        data_pratica2 = st.date_input('Data da Pratica 2', format='DD/MM/YYYY')
+                        if st.form_submit_button('teste'):
+                            st.session_state.data_pratica2.append(data_pratica2)
+                        else:
+                            st.session_state.data_pratica2.append('')
+
                     if nome_cliente not in st.session_state.nome_cadastrado:
                         st.session_state.nome_cadastrado.append(nome_cliente)
                         forma_pg = 'Pix'
@@ -270,11 +276,9 @@ if menu_main == 'Reservar':
                     if id_titular is None:
                         id_titular = id_cliente
 
-
-
             reservas.append(
                 (data, id_cliente, tipo, id_vendedor, valor_mergulho, nome_cliente, '#FFFFFF', id_titular,
-                 valor_loja))
+                 valor_loja, st.session_state.data_pratica2[i]))
             st.write('---')
 
         if st.button('Reservar'):
@@ -538,7 +542,7 @@ if menu_main == 'Editar':
 
         for i in range(len(st.session_state.lista_id_vaga)):
             with st.form(f'Vaga {comissario_vaga}-{i}'):
-                st.subheader(f'Vaga Reservada {i+1}')
+                st.subheader(f'Vaga Reservada {i + 1}')
 
                 col1, col2, col3 = st.columns(3)
                 with col1:
@@ -557,9 +561,11 @@ if menu_main == 'Editar':
                     recebedor_sinal_vaga = st.selectbox('Recebedor do Sinal', ['Vendedor', 'AcquaWorld'], index=None)
 
                 if st.form_submit_button(f'Cadastrar Cliente{i}'):
-
                     st.write(st.session_state.reserva_temporaria)
-                    st.session_state.reserva_temporaria.append((st.session_state.lista_id_vaga[i], nome_cliente_vaga, cpf_vaga, telefone_vaga, tipo, peso_vaga, altura_vaga, valor_vaga, sinal_vaga, recebedor_sinal_vaga, receber_vaga, data_vaga))
+                    st.session_state.reserva_temporaria.append((st.session_state.lista_id_vaga[i], nome_cliente_vaga,
+                                                                cpf_vaga, telefone_vaga, tipo, peso_vaga, altura_vaga,
+                                                                valor_vaga, sinal_vaga, recebedor_sinal_vaga,
+                                                                receber_vaga, data_vaga))
                     st.write(st.session_state.lista_id_vaga)
 
                     # st.session_state.lista_vaga.remove(st.session_state.lista_vaga[i])
@@ -571,7 +577,8 @@ if menu_main == 'Editar':
             st.write(id_titular)
             id_vendedor_vaga = select_id_vendedores(comissario_vaga)
             for reserva in st.session_state.reserva_temporaria:
-                update_vaga(reserva[0], reserva[1], reserva[2], reserva[3], reserva[4], reserva[5], reserva[6], reserva[7], reserva[8], reserva[9], reserva[10], reserva[11], id_titular, id_vendedor_vaga)
+                update_vaga(reserva[0], reserva[1], reserva[2], reserva[3], reserva[4], reserva[5], reserva[6],
+                            reserva[7], reserva[8], reserva[9], reserva[10], reserva[11], id_titular, id_vendedor_vaga)
             st.session_state.botao_vaga = False
             st.success('Reservas atualizadas com sucesso!')
             time.sleep(1.0)

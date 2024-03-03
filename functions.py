@@ -169,7 +169,7 @@ def select_id_cliente_like(nome_vaga):
 def insert_reserva(reserva):
     mydb.connect()
     sql = (
-        "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, check_in, id_titular, receber_loja, data_pratica2) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s)")
+        "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, check_in, id_titular, receber_loja, data_pratica2) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s, %s)")
 
     # Executar a inserção de múltiplos valores
     cursor.execute(sql, reserva)
