@@ -213,18 +213,19 @@ if menu_main == 'Reservar':
                                                    key=f'valor{nome_cliente}{i}')
                     valor_loja = st.text_input(f'Valor a receber:', key=f'loja{nome_cliente}{i}')
 
+                with st.expander('Data Pratica 2'):
+                    data_pratica2 = st.date_input('Data da Pratica 2', format='DD/MM/YYYY', value=None)
+
                     roupa = f'{altura:.2f}/{peso}'
                     if valor_loja == '':
                         valor_loja = 0.00
                     else:
                         valor_loja = valor_loja
                 if st.form_submit_button(f'Cadastrar {nome_cliente}'):
-                    if tipo == 'OWD' or tipo == 'ADV':
-                        data_pratica2 = st.date_input('Data da Pratica 2', format='DD/MM/YYYY')
-                        if st.form_submit_button('teste'):
-                            st.session_state.data_pratica2.append(data_pratica2)
-                        else:
-                            st.session_state.data_pratica2.append('')
+                    if data_pratica2 is not None:
+                        st.session_state.data_pratica2.append(data_pratica2)
+                    else:
+                        st.session_state.data_pratica2.append('')
 
                     if nome_cliente not in st.session_state.nome_cadastrado:
                         st.session_state.nome_cadastrado.append(nome_cliente)
