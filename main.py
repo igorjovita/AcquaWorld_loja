@@ -802,7 +802,7 @@ if menu_main == 'Pagamento':
                     valor_a_receber_cliente = None
                     lista_teste = [sublista[:3] for sublista in dados_reservas_pagamento]
                     st.write(lista_teste)
-                    for nome, id_pg, receber_loja in lista_teste:
+                    for id_pg, nome, receber_loja in lista_teste:
 
                         if nome == escolha_client_input:
                             valor_a_receber_cliente = receber_loja
