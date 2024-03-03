@@ -743,7 +743,7 @@ if menu_main == 'Pagamento':
                         unsafe_allow_html=True)
                 receber_grupo += receber_formatado
 
-            lista = [st.session_state.dados_pagamento[0], st.session_state.dados_pagamento[-1]]
+            lista = [st.session_state.dados_pagamento[0][0], st.session_state.dados_pagamento[-1]]
             st.write(f'Lista - {lista}')
             if receber_grupo == 0.00:
                 st.write('---')
