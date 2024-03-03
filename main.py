@@ -633,9 +633,6 @@ if menu_main == 'Pagamento':
     if st.session_state.botao:
         dados_para_pagamento = []
         lista_nome_pagamento = []
-        # nome_cliente_reserva = []
-        # id_reserva_pagamento = []
-        # receber_loja_reserva = []
         options_select_cliente = []
         escolha_reserva_pendente = []
 
@@ -653,9 +650,6 @@ if menu_main == 'Pagamento':
             for dado in dados_reservas_pagamento:
                 id_reserva_pg, nome_reserva_pg, receber_loja_pg, situacao_reserva, id_vendedor, id_cliente_pg, tipo_pg, valor_total = dado
 
-                # nome_cliente_reserva.append(nome_reserva_pg)
-                # id_reserva_pagamento.append(id_reserva_pg)
-                # receber_loja_reserva.append(receber_loja_pg)
                 dados_para_pagamento.append((nome_reserva_pg, id_reserva_pg, receber_loja_pg))
 
                 if (nome_reserva_pg, situacao_reserva) not in options_select_cliente:
@@ -884,7 +878,7 @@ if menu_main == 'Pagamento':
                         processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg,
                                             id_titular_pagamento, id_reserva_selecionada, id_cliente_selecionado,
                                             tipo_selecionado, valor_total_selecionado, receber_loja_selecionado)
-
+                    st.session_state.escolha_reserva_pendente.remove(nome)
                     st.session_state.pagamentos = []
                     st.session_state.pagamentos2 = []
                     st.session_state.dados_pagamento = []
