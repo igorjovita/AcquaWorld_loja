@@ -645,7 +645,7 @@ if menu_main == 'Pagamento':
         escolha_reserva_pendente = []
 
         if selectbox_cliente is not None:
-
+            titulo_tabela_pagamentos()  # Titulo da Tabela em HTML
             for nome, id_titular_pg in st.session_state.id_pagamento:
                 if nome == selectbox_cliente:
                     id_titular_pagamento = id_titular_pg
@@ -664,27 +664,24 @@ if menu_main == 'Pagamento':
                     options_select_cliente.append((nome_reserva_pg, situacao_reserva))
 
                 if (nome_reserva_pg, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg,
-                    id_vendedor) not in st.session_state.dados_pagamento:
+                    id_vendedor, situacao_reserva) not in st.session_state.dados_pagamento:
                     st.session_state.dados_pagamento.append(
                         (nome_reserva_pg, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg,
                          id_vendedor))
-            receber_grupo = 0
-            total_sinal = 0
+                receber_grupo = 0
+                total_sinal = 0
 
-            titulo_tabela_pagamentos()  # Titulo da Tabela em HTML
-
-            for nome, id_pg, receber_loja in dados_para_pagamento:
-                nome_formatado = str(nome).translate(str.maketrans('', '', chars))
+                nome_formatado = str(nome_reserva_pg).translate(str.maketrans('', '', chars))
 
                 info_cliente_pg = select_reserva(nome=nome_formatado, data_reserva=data_reserva)
 
-                if receber_loja is not None:
-                    receber_formatado = float(str(receber_loja).translate(str.maketrans('', '', chars)))
+                if receber_loja_pg is not None:
+                    receber_formatado = float(str(receber_loja_pg).translate(str.maketrans('', '', chars)))
                 else:
                     receber_formatado = float(0.00)
 
                 resultado_select_pagamentos = select_pagamentos(
-                    int(str(id_pg).translate(str.maketrans('', '', chars))))
+                    int(str(id_reserva_pg).translate(str.maketrans('', '', chars))))
 
                 if len(resultado_select_pagamentos) == 1:
                     recebedor, pagamento = resultado_select_pagamentos[0]  # Desempacotando a tupla
@@ -787,6 +784,7 @@ if menu_main == 'Pagamento':
                 else:
                     pagamento_escolha = 'Pagamento Individual'
 
+
                 for opcao in options_select_cliente:
                     if opcao[1] == 'Reserva Paga':
                         pass
@@ -832,6 +830,8 @@ if menu_main == 'Pagamento':
                     st.write(st.session_state.dados_pagamento)
 
                 elif pagamento_escolha == 'Pagamento Grupo':
+                    lista = [st.session_state.dados_pagamento[0], st.session_state.dados_pagamento[-1]]
+                    st.write(lista)
                     st.write('---')
 
                     st.subheader(f'Pagamento Grupo {selectbox_cliente}')
