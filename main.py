@@ -611,7 +611,6 @@ if menu_main == 'Pagamento':
 
     lista_nome_id_titular = select_nome_id_titular(data_reserva)
 
-
     for dado in lista_nome_id_titular:
         lista_pagamento.append(str(dado[0]).translate(str.maketrans('', '', chars)))
         if dado not in st.session_state.id_pagamento:
@@ -628,7 +627,6 @@ if menu_main == 'Pagamento':
             st.session_state.botao = True
             for nome, id_titular_pg in st.session_state.id_pagamento:
                 if nome == selectbox_cliente:
-
                     st.session_state.titular.append(id_titular_pg)
 
     with c2:
@@ -666,8 +664,6 @@ if menu_main == 'Pagamento':
                     st.session_state.dados_pagamento.append(
                         (nome_reserva_pg, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg,
                          id_vendedor))
-
-
 
                 nome_formatado = str(nome_reserva_pg).translate(str.maketrans('', '', chars))
 
@@ -737,13 +733,11 @@ if menu_main == 'Pagamento':
                         f"<h2 style='color: black; text-align: center; font-size: 1em;'>R$ {receber_formatado_individual}</h2>",
                         unsafe_allow_html=True)
 
-
                 with coluna4:
                     st.markdown(
                         f"<h2 style='color: black; text-align: center; font-size: 1em;'>{situacao}</h2>",
                         unsafe_allow_html=True)
                 receber_grupo += receber_formatado
-
 
             if receber_grupo == 0.00:
                 st.write('---')
@@ -785,7 +779,6 @@ if menu_main == 'Pagamento':
                 else:
                     pagamento_escolha = 'Pagamento Individual'
 
-
                 for opcao in options_select_cliente:
                     if opcao[1] == 'Reserva Paga':
                         pass
@@ -806,7 +799,6 @@ if menu_main == 'Pagamento':
 
                         if nome == escolha_client_input:
                             valor_a_receber_cliente = receber_loja
-
 
                     if valor_a_receber_cliente is not None:
                         valor_a_receber_formatado = "{:,.2f}".format(valor_a_receber_cliente).replace(",",

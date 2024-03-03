@@ -12,3 +12,5 @@ if menu_controles == 'Cursos':
     alunos = 'oi'
 
     dados = select_controle_curso()
+
+    st.table(dados)
