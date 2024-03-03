@@ -30,13 +30,13 @@ mydb = mysql.connector.connect(
 cursor = mydb.cursor(buffered=True)
 st.set_page_config(layout='wide', page_title='AcquaWorld', page_icon='🤿')
 
-escolha = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visualizar', 'Editar', 'Pagamento'],
-                      icons=['book', 'card-checklist', 'pencil-square', 'currency-dollar'],
-                      orientation='horizontal')
+menu_main = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visualizar', 'Editar', 'Pagamento'],
+                        icons=['book', 'card-checklist', 'pencil-square', 'currency-dollar'],
+                        orientation='horizontal')
 
 pasta = os.path.dirname(__file__)
 
-if escolha == 'Visualizar':
+if menu_main == 'Visualizar':
     # Função para obter cores com base no valor da coluna 'check_in'
     data_para_pdf = st.date_input("Data para gerar PDF:", format='DD/MM/YYYY')
     if st.button('Gerar Html'):
@@ -51,7 +51,7 @@ if escolha == 'Visualizar':
         download_link = f'<a href="data:application/pdf;base64,{base64.b64encode(open(pdf_filename, "rb").read()).decode()}" download="{pdf_filename}">Clique aqui para baixar</a>'
         st.markdown(download_link, unsafe_allow_html=True)
 
-if escolha == 'Reservar':
+if menu_main == 'Reservar':
     # Inicialização de listas e variaveis
     nomes_clientes = []
     reservas = []
@@ -217,6 +217,8 @@ if escolha == 'Reservar':
                     else:
                         valor_loja = valor_loja
                 if st.form_submit_button(f'Cadastrar {nome_cliente}'):
+                    if tipo == 'OWD' or tipo == 'ADV':
+                        st.date_input('Data da Pratica 2', format='DD/MM/YYYY')
                     if nome_cliente not in st.session_state.nome_cadastrado:
                         st.session_state.nome_cadastrado.append(nome_cliente)
                         forma_pg = 'Pix'
@@ -267,6 +269,8 @@ if escolha == 'Reservar':
                     if id_titular is None:
                         id_titular = id_cliente
 
+
+
             reservas.append(
                 (data, id_cliente, tipo, id_vendedor, valor_mergulho, nome_cliente, '#FFFFFF', id_titular,
                  valor_loja))
@@ -312,7 +316,7 @@ if escolha == 'Reservar':
                         if recebedor_sinal == 'Vendedor' and valor_mergulho == sinal:
 
                             valor_neto = select_valor_neto(tipo, valor_total_reserva=valor_mergulho,
-                                                           id_vendedor_pg=id_vendedor)
+                                                           id_vendedor_pg=id_vendedor, forma_pg=forma_pg)
 
                             lista_ids = []
                             for tupla in st.session_state.pagamentos2:
@@ -383,7 +387,7 @@ if escolha == 'Reservar':
                 if 'botao_clicado' in st.session_state:
                     st.session_state.botao_clicado = False
 
-if escolha == 'Editar':
+if menu_main == 'Editar':
 
     data_editar = st.date_input('Data da Reserva', format='DD/MM/YYYY')
     opcoes = st.radio('Filtro', ['Editar Grupo', 'Editar Reserva'], horizontal=True)
@@ -572,7 +576,7 @@ if escolha == 'Editar':
             time.sleep(1.0)
             st.rerun()
 
-if escolha == 'Pagamento':
+if menu_main == 'Pagamento':
 
     if 'botao' not in st.session_state:
         st.session_state.botao = False

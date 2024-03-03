@@ -23,6 +23,17 @@ mydb = mysql.connector.connect(
 
 cursor = mydb.cursor(buffered=True)
 
+#CRIAÇÕES
+
+def criar_controle_cursos():
+    mydb.connect()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS controle_cursos(
+            id int not null auto_increment,
+            data
+            id_cliente int,
+            
+        """)
 
 # SELECTS
 @st.cache_resource
@@ -59,10 +70,12 @@ def select_id_vendedores(comissario):
 
 
 @st.cache_data
-def select_valor_neto(tipo, valor_total_reserva, id_vendedor_pg):
+def select_valor_neto(tipo, valor_total_reserva, id_vendedor_pg, forma_pg):
     mydb.connect()
-    if tipo == 'BAT':
+    if tipo == 'BAT' and forma_pg != 'Credito' and forma_pg != 'Debito':
         cursor.execute(f"SELECT valor_neto FROM vendedores WHERE id = {id_vendedor_pg}")
+    elif tipo == 'BAT' and (forma_pg == 'Credito' or forma_pg == 'Debito'):
+        cursor.execute(f"SELECT neto_bat_cartao FROM vendedores WHERE id = {id_vendedor_pg}")
     elif tipo == 'ACP':
         cursor.execute(f"SELECT neto_acp FROM vendedores WHERE id = {id_vendedor_pg}")
     elif tipo == 'TUR1':
@@ -156,7 +169,7 @@ def select_id_cliente_like(nome_vaga):
 def insert_reserva(reserva):
     mydb.connect()
     sql = (
-        "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, check_in, id_titular, receber_loja) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s)")
+        "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, check_in, id_titular, receber_loja, data_pratica2) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s)")
 
     # Executar a inserção de múltiplos valores
     cursor.execute(sql, reserva)
@@ -261,7 +274,7 @@ def update_vaga(id_cliente, nome, cpf, telefone, tipo, peso, altura, valor_total
 
     elif recebedor_sinal == 'Vendedor' and valor_total == sinal:
         valor_neto = select_valor_neto(tipo, valor_total_reserva=valor_total,
-                                       id_vendedor_pg=id_vendedor)
+                                       id_vendedor_pg=id_vendedor, forma_pg='Pix')
 
         insert_lancamento_comissao(id_reserva_cliente=id_reserva, id_vendedor_pg=id_vendedor,
                                    valor_receber=valor_neto, valor_pagar=0,
@@ -357,7 +370,7 @@ def processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vend
     acquaworld_valor = None
 
     # Calcular valores relevantes
-    valor_neto = select_valor_neto(tipo_selecionado, valor_total_selecionado, id_vendedor_pg)
+    valor_neto = select_valor_neto(tipo_selecionado, valor_total_selecionado, id_vendedor_pg, forma_pg=forma_pg)
 
     reserva_neto = valor_total_selecionado - valor_neto
 
