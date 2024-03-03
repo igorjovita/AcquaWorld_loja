@@ -651,8 +651,8 @@ if menu_main == 'Pagamento':
                 st.session_state.titular[0])  # id, id_cliente, tipo, valor_total, receber_loja, id_vendedor
             id_vendedor_pg = dados_reservas_pagamento[0][4]
 
-
-
+            receber_grupo = 0
+            total_sinal = 0
             for dado in dados_reservas_pagamento:
                 id_reserva_pg, nome_reserva_pg, receber_loja_pg, situacao_reserva, id_vendedor, id_cliente_pg, tipo_pg, valor_total = dado
 
@@ -666,8 +666,7 @@ if menu_main == 'Pagamento':
                     st.session_state.dados_pagamento.append(
                         (nome_reserva_pg, id_reserva_pg, id_cliente_pg, tipo_pg, valor_total, receber_loja_pg,
                          id_vendedor))
-                receber_grupo = 0
-                total_sinal = 0
+
 
 
                 nome_formatado = str(nome_reserva_pg).translate(str.maketrans('', '', chars))
