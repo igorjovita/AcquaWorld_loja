@@ -138,7 +138,7 @@ def select_reserva(nome, data_reserva):
     return info_reserva
 
 
-@st.cache_resource
+
 def select_reserva_id_titular(id_titular):
     mydb.connect()
     cursor.execute(
