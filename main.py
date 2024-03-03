@@ -650,7 +650,7 @@ if menu_main == 'Pagamento':
             dados_reservas_pagamento = select_reserva_id_titular(
                 st.session_state.titular[0])  # id, id_cliente, tipo, valor_total, receber_loja, id_vendedor
             id_vendedor_pg = dados_reservas_pagamento[0][4]
-            st.write(dados_reservas_pagamento)
+
 
 
             for dado in dados_reservas_pagamento:
@@ -720,8 +720,7 @@ if menu_main == 'Pagamento':
                         pagamento = 0
 
                 with coluna3:
-                    st.write(f'infocliente - {info_cliente_pg[3]}')
-                    st.write(f'pagamento - {pagamento}')
+
                     if info_cliente_pg[3] == pagamento:
                         receber_formatado_individual = 0.00
                         situacao = 'Pago'
@@ -803,12 +802,12 @@ if menu_main == 'Pagamento':
 
                     valor_a_receber_cliente = None
                     lista_teste = [sublista[:3] for sublista in dados_reservas_pagamento]
-                    st.write(lista_teste)
+
                     for id_pg, nome, receber_loja in lista_teste:
 
                         if nome == escolha_client_input:
                             valor_a_receber_cliente = receber_loja
-                    st.write(valor_a_receber_cliente)
+
 
                     if valor_a_receber_cliente is not None:
                         valor_a_receber_formatado = "{:,.2f}".format(valor_a_receber_cliente).replace(",",
