@@ -651,6 +651,7 @@ if menu_main == 'Pagamento':
             id_vendedor_pg = dados_reservas_pagamento[0][4]
             st.write(dados_reservas_pagamento)
 
+
             for dado in dados_reservas_pagamento:
                 id_reserva_pg, nome_reserva_pg, receber_loja_pg, situacao_reserva, id_vendedor, id_cliente_pg, tipo_pg, valor_total = dado
 
@@ -666,6 +667,8 @@ if menu_main == 'Pagamento':
                          id_vendedor))
                 receber_grupo = 0
                 total_sinal = 0
+                lista = [st.session_state.dados_pagamento[0], st.session_state.dados_pagamento[-1]]
+                st.write(lista)
 
                 nome_formatado = str(nome_reserva_pg).translate(str.maketrans('', '', chars))
 
@@ -734,11 +737,12 @@ if menu_main == 'Pagamento':
                         f"<h2 style='color: black; text-align: center; font-size: 1em;'>R$ {receber_formatado_individual}</h2>",
                         unsafe_allow_html=True)
 
-                receber_grupo += receber_formatado
+
                 with coluna4:
                     st.markdown(
                         f"<h2 style='color: black; text-align: center; font-size: 1em;'>{situacao}</h2>",
                         unsafe_allow_html=True)
+                receber_grupo += receber_formatado
 
             if receber_grupo == 0.00:
                 st.write('---')
@@ -823,11 +827,10 @@ if menu_main == 'Pagamento':
                         check_in = '#00B0F0'
                     if check_in_entry == 'Para o pier':
                         check_in = 'yellow'
-                    st.write(st.session_state.dados_pagamento)
+
 
                 elif pagamento_escolha == 'Pagamento Grupo':
-                    lista = [st.session_state.dados_pagamento[0], st.session_state.dados_pagamento[-1]]
-                    st.write(lista)
+
                     st.write('---')
 
                     st.subheader(f'Pagamento Grupo {selectbox_cliente}')
