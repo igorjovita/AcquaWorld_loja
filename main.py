@@ -628,6 +628,7 @@ if menu_main == 'Pagamento':
     with c2:
         if st.button('Voltar'):
             st.session_state.botao = False
+            st.rerun()
 
     if st.session_state.botao:
 
