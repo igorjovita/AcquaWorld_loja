@@ -597,7 +597,7 @@ if menu_main == 'Pagamento':
     if 'id_pagamento' not in st.session_state:
         st.session_state.id_pagamento = []
 
-    if 'id_pagamento' not in st.session_state:
+    if 'nome_id_pagamento' not in st.session_state:
         st.session_state.nome_id_pagamento = []
 
     if 'dados_pagamento' not in st.session_state:
