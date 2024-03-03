@@ -171,27 +171,29 @@ def insert_reserva(reserva):
     if reserva[9] != '':
         for i in range(2):
             if i == 0:
-                reserva[i][5] = reserva[i][5] + '> Pratica 1'
+                st.write(reserva[i][5])
+                # reserva[i][5] = reserva[i][5] + '> Pratica 1'
             elif i == 1:
-                reserva[i][5] = reserva[i][5] + '> Pratica 2'
-                reserva[i][0] = reserva[i][9]
-            sql = (
-                "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, check_in, id_titular, receber_loja, data_pratica2) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s, %s)")
-
-            cursor.execute(sql, reserva)
-
-            if i == 0:
-                id_reserva = cursor.lastrowid
-
-    else:
-        sql = (
-            "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, check_in, id_titular, receber_loja, data_pratica2) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s, %s)")
-
-        # Executar a inserção de múltiplos valores
-        cursor.execute(sql, reserva)
-        id_reserva = cursor.lastrowid
-    mydb.close()
-    return id_reserva
+                st.write(reserva[i][5])
+            #     reserva[i][5] = reserva[i][5] + '> Pratica 2'
+            #     reserva[i][0] = reserva[i][9]
+            # sql = (
+            #     "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, check_in, id_titular, receber_loja, data_pratica2) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s, %s)")
+            #
+            # cursor.execute(sql, reserva)
+    #
+    #         if i == 0:
+    #             id_reserva = cursor.lastrowid
+    #
+    # else:
+    #     sql = (
+    #         "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, check_in, id_titular, receber_loja, data_pratica2) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s, %s)")
+    #
+    #     # Executar a inserção de múltiplos valores
+    #     cursor.execute(sql, reserva)
+    #     id_reserva = cursor.lastrowid
+    # mydb.close()
+    # return id_reserva
 
 
 def insert_cliente(cpf, nome_cliente, telefone, roupa):
