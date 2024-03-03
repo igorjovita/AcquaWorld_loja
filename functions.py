@@ -168,12 +168,28 @@ def select_id_cliente_like(nome_vaga):
 
 def insert_reserva(reserva):
     mydb.connect()
-    sql = (
-        "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, check_in, id_titular, receber_loja, data_pratica2) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s, %s)")
+    if reserva[9] != '':
+        for i in range(2):
+            if i == 0:
+                reserva[5] = reserva[5] + '> Pratica 1'
+            elif i == 1:
+                reserva[5] = reserva[5] + '> Pratica 2'
+                reserva[0] = reserva[9]
+            sql = (
+                "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, check_in, id_titular, receber_loja, data_pratica2) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s, %s)")
 
-    # Executar a inserção de múltiplos valores
-    cursor.execute(sql, reserva)
-    id_reserva = cursor.lastrowid
+            cursor.execute(sql, reserva)
+
+            if i == 0:
+                id_reserva = cursor.lastrowid
+
+    else:
+        sql = (
+            "INSERT INTO reserva (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, check_in, id_titular, receber_loja, data_pratica2) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s, %s)")
+
+        # Executar a inserção de múltiplos valores
+        cursor.execute(sql, reserva)
+        id_reserva = cursor.lastrowid
     mydb.close()
     return id_reserva
 
