@@ -1,6 +1,6 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
-from functions import select_controle_curso, insert_contagem_curso, select_alunos
+from functions import select_controle_curso, insert_contagem_curso, select_alunos, update_controle_curso
 import pandas as pd
 from datetime import date
 
@@ -66,6 +66,7 @@ if menu_controles == 'Cursos':
             dm = 1
         data = date.today()
         insert_contagem_curso(data, 'SAIDA', '', '', open_pt, open_es, open_ing, adv, efr, rescue, dm,emprestado)
+        update_controle_curso(id_aluno)
         st.success('Sistema Atulizado com sucesso')
 
 

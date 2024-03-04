@@ -366,6 +366,13 @@ def insert_vendedores(nome, apelido, telefone, neto_bat, neto_acp, neto_tur1, ne
 
 # FUNÇÕES NORMAIS
 
+
+def update_controle_curso(id_cliente):
+    mydb.connect()
+    cursor.execute("UPDATE controle_curso set material = 'ENTREGUE' where id_cliente = %s", (id_cliente, ))
+
+    mydb.close()
+
 def update_vaga(id_cliente, nome, cpf, telefone, tipo, peso, altura, valor_total, sinal, recebedor_sinal, receber_loja,
                 data, id_titular, id_vendedor):
     mydb.connect()
