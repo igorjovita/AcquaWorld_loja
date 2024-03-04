@@ -145,6 +145,7 @@ if menu_controles == 'Maquinas':
         if st.form_submit_button('Pesquisar'):
             maquina_escolhida = select_maquina_pagamentos(select_box_maquina)
             df = pd.DataFrame(maquina_escolhida, columns=['Data', 'Nome Cliente', 'Curso', 'Forma Pagamento', 'Parcela', 'Valor'])
+            df['Data'] = df['Data'].apply(lambda x: x.strftime('%d/%m/%Y'))
 
             valor_total = format_currency(float(df['Valor'].sum()), 'BRL', locale='pt_BR')
 
