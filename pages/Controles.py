@@ -29,60 +29,60 @@ if menu_controles == 'Cursos':
     st.write('---')
 
     emprestado = ''
+    with st.form('Entrega Material'):
+        st.subheader('Entrega de Material')
+        lista_nome_alunos, lista_alunos = select_alunos()
+        materiais = ['OPEN - PT', 'OPEN - ES', 'OPEN - ING', 'AVANÇADO', 'EFR', 'RESCUE', 'DIVEMASTER']
 
-    st.subheader('Entrega de Material')
-    lista_nome_alunos, lista_alunos = select_alunos()
-    materiais = ['OPEN - PT', 'OPEN - ES', 'OPEN - ING', 'AVANÇADO', 'EFR', 'RESCUE', 'DIVEMASTER']
+        select_box_aluno = st.selectbox('Escolha o aluno', options=lista_nome_alunos, index=None)
 
-    select_box_aluno = st.selectbox('Escolha o aluno', options=lista_nome_alunos, index=None)
+        select_box_curso = st.selectbox('Escolha o Material', options=materiais, index=None)
 
-    select_box_curso = st.selectbox('Escolha o Material', options=materiais, index=None)
+        with st.expander('Emprestar'):
+            emprestado = st.text_input('Insira o nome de quem pegou emprestado').upper()
 
-    with st.expander('Emprestar'):
-        emprestado = st.text_input('Insira o nome de quem pegou emprestado').upper()
+        if st.form_submit_button('Lançar no sistema'):
+            pic_dive = 0
+            pic_efr = 0
+            open_pt = 0
+            open_es = 0
+            open_ing = 0
+            adv = 0
+            efr = 0
+            rescue = 0
+            dm = 0
+            emprestado = ''
+            for aluno in lista_alunos:
+                if aluno[0] == select_box_aluno:
+                    id_aluno = aluno[1]
+            if select_box_curso == 'OPEN - PT':
+                open_pt += 1
 
-    if st.button('Lançar no sistema'):
-        pic_dive = 0
-        pic_efr = 0
-        open_pt = 0
-        open_es = 0
-        open_ing = 0
-        adv = 0
-        efr = 0
-        rescue = 0
-        dm = 0
-        emprestado = ''
-        for aluno in lista_alunos:
-            if aluno[0] == select_box_aluno:
-                id_aluno = aluno[1]
-        if select_box_curso == 'OPEN - PT':
-            open_pt += 1
+            elif select_box_curso == 'OPEN - ES':
+                open_es += 1
 
-        elif select_box_curso == 'OPEN - ES':
-            open_es += 1
+            elif select_box_curso == 'OPEN - ING':
+                open_ing += 1
+            elif select_box_curso == 'AVANÇADO':
+                adv += 1
 
-        elif select_box_curso == 'OPEN - ING':
-            open_select_box_curso
-        elif select_box_curso == 'AVANÇADO':
-            adv += 1
+            elif select_box_curso == 'EFR':
+                efr += 1
 
-        elif select_box_curso == 'EFR':
-            efr += 1
+            elif select_box_curso == 'RESCUE':
+                rescue += 1
 
-        elif select_box_curso == 'RESCUE':
-            rescue += 1
+            elif select_box_curso == 'DIVEMASTER':
+                dm += 1
 
-        elif select_box_curso == 'DIVEMASTER':
-            dm += 1
-
-        st.write(select_box_curso)
-        st.write(open_pt)
-        data = date.today()
-        insert_contagem_curso(data, 'SAIDA', '', '', open_pt=open_pt, open_es=open_es, open_ing=open_ing, adv=adv,
-                              efr=efr, rescue=rescue, dm=dm, emprestado=emprestado)
-        if select_box_aluno:
-            update_controle_curso_material(id_aluno)
-        st.success('Sistema Atulizado com sucesso')
+            st.write(select_box_curso)
+            st.write(open_pt)
+            data = date.today()
+            insert_contagem_curso(data, 'SAIDA', '', '', open_pt=open_pt, open_es=open_es, open_ing=open_ing, adv=adv,
+                                  efr=efr, rescue=rescue, dm=dm, emprestado=emprestado)
+            if select_box_aluno:
+                update_controle_curso_material(id_aluno)
+            st.success('Sistema Atulizado com sucesso')
 
     st.write('---')
 
