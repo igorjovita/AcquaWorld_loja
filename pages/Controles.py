@@ -14,3 +14,30 @@ if menu_controles == 'Cursos':
     dados = select_controle_curso()
 
     st.table(dados)
+
+    st.write('---')
+
+    st.header('Controle de Materiais e Pics')
+
+    st.subheader('Lançar Compra')
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        open_pt = st.text_input('Manual Open Water - Portugues')
+        adv = st.text_input('Manual Avançado')
+        dm = st.text_input('Manual DiveMaster')
+
+    with col2:
+        open_es = st.text_input('Manual Open Water - Espanhol')
+        efr = st.text_input('Manual EFR')
+        pic_dive = st.text_input('Pic Dive')
+    with col3:
+        open_ing = st.text_input('Manual Open Water - Inglês')
+        rescue = st.text_input('Manual Rescue Diver')
+        pic_efr = st.text_input('Pic EFR')
+
+
+
+
+

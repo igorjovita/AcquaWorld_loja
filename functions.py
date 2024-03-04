@@ -224,6 +224,10 @@ def select_pagamentos(id_reserva):
     cursor.execute(f"SELECT recebedor, pagamento FROM pagamentos WHERE id_reserva = {id_reserva}")
     resultado = cursor.fetchall()
 
+
+def select_contagem_curso():
+
+
     return resultado
 # def select_alunos():
 #     mydb.connect()
