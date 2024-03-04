@@ -1,6 +1,6 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
-from functions import select_controle_curso, insert_contagem_curso
+from functions import select_controle_curso, insert_contagem_curso, select_alunos
 import pandas as pd
 from datetime import date
 
@@ -10,8 +10,6 @@ menu_controles = option_menu(menu_title="Controles", options=['Cursos', 'Maquina
 if menu_controles == 'Cursos':
     st.subheader('Controle de cursos')
 
-    alunos = 'oi'
-
     dados = select_controle_curso()
 
     st.table(dados)
@@ -20,6 +18,13 @@ if menu_controles == 'Cursos':
 
     st.header('Controle de Materiais e Pics')
 
+    st.subheader('Entrega de Material')
+    alunos = select_alunos()
+
+    st.selectbox('Escolha o aluno', options=alunos, index=None)
+
+
+    st.write('---')
     st.subheader('Lançar Compra')
 
     col1, col2, col3 = st.columns(3)
@@ -45,6 +50,8 @@ if menu_controles == 'Cursos':
         tipo_movimento = 'ENTRADA'
         insert_contagem_curso(data, tipo_movimento, pic_dive, pic_efr, open_pt, open_es, open_ing, adv, efr, rescue, dm, emprestado)
         st.success('Lançamento cadastrado com sucesso')
+
+
 
 
 

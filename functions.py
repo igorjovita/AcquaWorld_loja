@@ -225,9 +225,13 @@ def select_pagamentos(id_reserva):
     resultado = cursor.fetchall()
     return resultado
 
-def select_contagem_curso():
-    pass
+def select_alunos():
+    mydb.connect()
+    cursor.execute("SELECT cliente.nome from controle_cursos as c INNER JOIN cliente on c.id_cliente = cliente.id WHERE (c.curso = 'OWD' or c.curso = 'ADV' or c.curso = 'RESCUE' or c.curso = 'EFR' or c.curso = 'DIVEMASTER') and material = 'PENDENTE'")
+    alunos = cursor.fetchall()
 
+    mydb.close()
+    return alunos
 
 # def select_alunos():
 #     mydb.connect()
