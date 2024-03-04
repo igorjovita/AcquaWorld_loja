@@ -21,10 +21,13 @@ if menu_controles == 'Cursos':
     st.subheader('Entrega de Material')
     lista_nome_alunos, lista_alunos = select_alunos()
 
-    st.selectbox('Escolha o aluno', options=lista_nome_alunos, index=None)
+    select_box_aluno = st.selectbox('Escolha o aluno', options=lista_nome_alunos, index=None)
 
     st.write(lista_alunos)
 
+    for aluno in lista_alunos:
+        if aluno[0] == select_box_aluno:
+            st.write(aluno[1])
 
     st.write('---')
     st.subheader('Lançar Compra')
