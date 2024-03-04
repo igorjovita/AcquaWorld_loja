@@ -304,11 +304,10 @@ def select_curso_certificar():
 
 def select_maquina_pagamentos(maquina):
     mydb.connect()
-    cursor.execute(f"SELECT p.data, r.nome_cliente, r.tipo, p.forma_pg, p.parcela, p.pagamento FROM pagamentos as p INNER JOIN reserva as r on p.id_reserva = r.id where p.maquina = '{maquina}'")
-
-
+    cursor.execute(f"SELECT p.data, r.nome_cliente, r.tipo, p.forma_pg, p.parcela, p.pagamento FROM pagamentos as p INNER JOIN reserva as r on p.id_reserva = r.id where p.maquina = %s",(maquina, ))
+    lista_maquinas = cursor.fetchall()
     mydb.close()
-
+    return lista_maquinas
 
 
 
