@@ -1,6 +1,7 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
-from functions import select_controle_curso, insert_contagem_curso, select_alunos, update_controle_curso
+from functions import select_controle_curso, insert_contagem_curso, select_alunos, update_controle_curso, \
+    select_quantidade_material
 import pandas as pd
 from datetime import date
 
@@ -17,6 +18,16 @@ if menu_controles == 'Cursos':
     st.write('---')
 
     st.header('Controle de Materiais e Pics')
+
+    contagem = select_quantidade_material()
+
+    st.table(contagem)
+
+
+    st.write('---')
+
+
+
     emprestado = ''
 
     st.subheader('Entrega de Material')
@@ -68,7 +79,8 @@ if menu_controles == 'Cursos':
         st.write(open_pt)
         data = date.today()
         insert_contagem_curso(data, 'SAIDA', '', '', open_pt=open_pt, open_es=open_es, open_ing=open_ing, adv=adv, efr=efr, rescue=rescue, dm=dm, emprestado=emprestado)
-        # update_controle_curso(id_aluno)
+        if select_box_aluno:
+            update_controle_curso(id_aluno)
         st.success('Sistema Atulizado com sucesso')
 
 

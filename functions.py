@@ -240,6 +240,26 @@ def select_alunos():
     mydb.close()
     return lista_nome_alunos, alunos
 
+def select_quantidade_material():
+    mydb.connect()
+    cursor.execute("""
+    SELECT
+    SUM(CASE WHEN tipo_movimento = 'ENTRADA' THEN pic_dive ELSE -pic_dive END) AS total_pic_dive,
+    SUM(CASE WHEN tipo_movimento = 'ENTRADA' THEN pic_efr ELSE -pic_efr END) AS total_pic_efr,
+    SUM(CASE WHEN tipo_movimento = 'ENTRADA' THEN open_pt ELSE -open_pt END) AS total_open_pt,
+    SUM(CASE WHEN tipo_movimento = 'ENTRADA' THEN open_es ELSE -open_es END) AS total_open_es,
+    SUM(CASE WHEN tipo_movimento = 'ENTRADA' THEN open_ing ELSE -open_ing END) AS total_open_ing,
+    SUM(CASE WHEN tipo_movimento = 'ENTRADA' THEN adv ELSE -adv END) AS total_adv,
+    SUM(CASE WHEN tipo_movimento = 'ENTRADA' THEN efr ELSE -efr END) AS total_efr,
+    SUM(CASE WHEN tipo_movimento = 'ENTRADA' THEN rescue ELSE -rescue END) AS total_rescue,
+    SUM(CASE WHEN tipo_movimento = 'ENTRADA' THEN dm ELSE -dm END) AS total_dm
+    FROM contagem_curso
+    
+    """)
+    contagem = cursor.fetchall()
+
+    mydb.close()
+    return contagem
 
 # def select_alunos():
 #     mydb.connect()
