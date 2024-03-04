@@ -369,7 +369,7 @@ def insert_vendedores(nome, apelido, telefone, neto_bat, neto_acp, neto_tur1, ne
 
 def update_controle_curso(id_cliente):
     mydb.connect()
-    cursor.execute("UPDATE controle_curso set material = 'ENTREGUE' where id_cliente = %s", (id_cliente, ))
+    cursor.execute("UPDATE controle_cursos set material = 'ENTREGUE' where id_cliente = %s", (id_cliente, ))
 
     mydb.close()
 
