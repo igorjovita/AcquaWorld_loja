@@ -227,11 +227,14 @@ def select_pagamentos(id_reserva):
 
 def select_alunos():
     mydb.connect()
-    cursor.execute("SELECT cliente.nome from controle_cursos as c INNER JOIN cliente on c.id_cliente = cliente.id WHERE (c.curso = 'OWD' or c.curso = 'ADV' or c.curso = 'RESCUE' or c.curso = 'EFR' or c.curso = 'DIVEMASTER') and material = 'PENDENTE'")
+    lista_alunos = []
+    cursor.execute("SELECT cliente.nome, cliente.id from controle_cursos as c INNER JOIN cliente on c.id_cliente = cliente.id WHERE (c.curso = 'OWD' or c.curso = 'ADV' or c.curso = 'RESCUE' or c.curso = 'EFR' or c.curso = 'DIVEMASTER') and material = 'PENDENTE'")
     alunos = cursor.fetchall()
+    for aluno in alunos:
+        lista_alunos.append(str(aluno).translate(str.maketrans('', '', chars)))
 
     mydb.close()
-    return alunos
+    return lista_alunos
 
 # def select_alunos():
 #     mydb.connect()
