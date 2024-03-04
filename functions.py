@@ -409,9 +409,9 @@ def insert_vendedores(nome, apelido, telefone, neto_bat, neto_acp, neto_tur1, ne
 # FUNÇÕES NORMAIS
 
 
-def update_controle_curso_certificar(id_cliente, numero_certicacao):
+def update_controle_curso_certificar(id_cliente, numero_certificacao):
     mydb.connect()
-    cursor.execute("UPDATE controle_cursos set certificacao = 'CERTIFICADO', exercicios = 'CONCLUIDO', n_certificacao = %s", (numero_certificacao,))
+    cursor.execute("UPDATE controle_cursos set certificacao = 'CERTIFICADO', exercicios = 'CONCLUIDO', n_certificacao = %s WHERE id_cliente = %s", (numero_certificacao, id_cliente))
     mydb.close()
 
 def update_controle_curso_material(id_cliente):
