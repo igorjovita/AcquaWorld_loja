@@ -63,10 +63,13 @@ if menu_controles == 'Cursos':
 
         elif select_box_curso == 'DIVEMASTER':
             dm += 1
-        data = date.today()
-        insert_contagem_curso(data, 'SAIDA', '', '', open_pt, open_es, open_ing, adv, efr, rescue, dm, emprestado)
-        update_controle_curso(id_aluno)
-        st.success('Sistema Atulizado com sucesso')
+
+        st.write(select_box_curso)
+        st.write(open_pt)
+        # data = date.today()
+        # insert_contagem_curso(data, 'SAIDA', '', '', open_pt, open_es, open_ing, adv, efr, rescue, dm, emprestado)
+        # update_controle_curso(id_aluno)
+        # st.success('Sistema Atulizado com sucesso')
 
 
     st.write('---')
