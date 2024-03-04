@@ -31,39 +31,39 @@ if menu_controles == 'Cursos':
         emprestado = st.text_input('Insira o nome de quem pegou emprestado').upper()
 
     if st.button('Lançar no sistema'):
-        pic_dive = ''
-        pic_efr = ''
-        open_pt = ''
-        open_es = ''
-        open_ing = ''
-        adv = ''
-        efr = ''
-        rescue = ''
-        dm = ''
+        pic_dive = 0
+        pic_efr = 0
+        open_pt = 0
+        open_es = 0
+        open_ing = 0
+        adv = 0
+        efr = 0
+        rescue = 0
+        dm = 0
         emprestado = ''
         for aluno in lista_alunos:
             if aluno[0] == select_box_aluno:
                 id_aluno = aluno[1]
         if materiais == 'OPEN - PT':
-            open_pt = 1
+            open_pt += 1
 
-        if materiais == 'OPEN - ES':
-            open_es = 1
+        elif materiais == 'OPEN - ES':
+            open_es += 1
 
-        if materiais == 'OPEN - ING':
-            open_ing = 1
+        elif materiais == 'OPEN - ING':
+            open_ing += 1
 
-        if materiais == 'AVANÇADO':
-            adv = 1
+        elif materiais == 'AVANÇADO':
+            adv += 1
 
-        if materiais == 'EFR':
-            efr = 1
+        elif materiais == 'EFR':
+            efr += 1
 
-        if materiais == 'RESCUE':
-            rescue = 1
+        elif materiais == 'RESCUE':
+            rescue += 1
 
-        if materiais == 'DIVEMASTER':
-            dm = 1
+        elif materiais == 'DIVEMASTER':
+            dm += 1
         data = date.today()
         insert_contagem_curso(data, 'SAIDA', '', '', open_pt, open_es, open_ing, adv, efr, rescue, dm,emprestado)
         update_controle_curso(id_aluno)
