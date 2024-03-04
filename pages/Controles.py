@@ -93,7 +93,7 @@ if menu_controles == 'Cursos':
         exercicios = st.selectbox('O aluno concluiu os exercicios?', ['Sim', 'Não'], index=None)
         certificacao = st.text_input('Insira o numero da certificaçao')
 
-        if st.button('Lançar Certificaçao'):
+        if st.form_submit_button('Lançar Certificaçao'):
             for id_certificar in lista_id_certificar:
                 if id_certificar[0] == aluno_certificar:
                     id_aluno_certificar = id_certificar[1]
