@@ -89,9 +89,9 @@ if menu_controles == 'Cursos':
     st.subheader('Certificar')
     alunos_certificar = select_curso_certificar()
     st.selectbox('Alunos para Certificar', alunos_certificar, index=None)
+
     st.write('---')
 
-    st.subheader
     st.subheader('Lançar Compra')
 
     col1, col2, col3 = st.columns(3)
