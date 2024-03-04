@@ -209,7 +209,7 @@ if menu_main == 'Reservar':
                                                    key=f'recebedor{nome_cliente}{i}')
                 with colu3:
                     tipo = st.selectbox(f'Certificação: ',
-                                        ('BAT', 'ACP', 'TUR1', 'TUR2', 'OWD', 'ADV'),
+                                        ('BAT', 'ACP', 'TUR1', 'TUR2', 'OWD', 'ADV','EFR', 'RESCUE','DM'),
                                         index=None, placeholder='Certificação', key=f'tipo{nome_cliente}{i}')
                     valor_mergulho = st.text_input(f'Valor do Mergulho',
                                                    key=f'valor{nome_cliente}{i}')
