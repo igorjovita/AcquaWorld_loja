@@ -62,6 +62,21 @@ cursor = mydb.cursor(buffered=True)
 #         primary key(id));
 #     """)
 
+# def create_maquina_cartao():
+#     mydb.connect()
+#     cursor.execute("""
+#     CREATE TABLE IF NOT EXISTS maquina_cartao(
+#         id int not null auto_increment,
+#         nome varchar(40),
+#         taxa_debito decimal(10,2),
+#         taxa_credito_vista decimal(10,2),
+#         taxa_credito_parcelado decimal(10,2),
+#         taxa_pix decimal(10,2),
+#         primary key (id))
+#     """)
+#
+#     mydb.close()
+
 # SELECTS
 @st.cache_resource
 def select_apelido_vendedores():
@@ -136,6 +151,18 @@ def select_reserva(nome, data_reserva):
     mydb.close()
 
     return info_reserva
+
+@st.cache_resource
+def select_maquina():
+    mydb.connect()
+    cursor.execute("SELECT nome from maquina_cartao")
+    lista_maquina = cursor.fetchall()
+    lista = []
+    for maquina in lista_maquina:
+        lista.append(str(maquina).translate(str.maketrans('', '', chars)))
+    mydb.close()
+
+    return lista
 
 
 def select_reserva_id_titular(id_titular):

@@ -13,7 +13,7 @@ from functions import select_reserva, processar_pagamento, gerar_pdf, gerar_html
     calculo_restricao, insert_cliente, insert_reserva, select_id_vendedores, insert_lancamento_comissao, \
     select_valor_neto, select_cliente, select_grupo_reserva, update_vaga, select_id_cliente_like, \
     select_nome_id_titular, select_reserva_id_titular, titulo_tabela_pagamentos, select_pagamentos, \
-    insert_controle_curso
+    insert_controle_curso, select_maquina
 import time
 
 chars = "'),([]"
@@ -820,6 +820,11 @@ if menu_main == 'Pagamento':
 
                     if forma_pg == 'Credito':
                         parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
+
+                    if forma_pg == 'Credito' or forma_pg == 'Debito':
+                        maquinas = select_maquina()
+                        maquina = st.selectbox('Maquininha', maquinas)
+
                     else:
                         parcela = 0
 
@@ -847,7 +852,11 @@ if menu_main == 'Pagamento':
                                             placeholder='Insira a forma de pagamento')
 
                     if forma_pg == 'Credito':
-                        parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
+                        maquinas = select_maquina()
+
+                    if forma_pg == 'Credito' or forma_pg == 'Debito':
+                        maquinas = select_maquina()
+                        maquina = st.selectbox('Maquininha', maquinas)
                     else:
                         parcela = 0
 
