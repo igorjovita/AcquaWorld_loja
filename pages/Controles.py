@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
 from functions import select_controle_curso, insert_contagem_curso, select_alunos, update_controle_curso, \
-    select_quantidade_material
+    select_quantidade_material, select_curso_certificar
 import pandas as pd
 from datetime import date
 
@@ -84,8 +84,14 @@ if menu_controles == 'Cursos':
             update_controle_curso(id_aluno)
         st.success('Sistema Atulizado com sucesso')
 
-
     st.write('---')
+
+    st.subheader('Certificar')
+    alunos_certificar = select_curso_certificar()
+    st.selectbox('Alunos para Certificar', alunos_certificar, index=None)
+    st.write('---')
+
+    st.subheader
     st.subheader('Lançar Compra')
 
     col1, col2, col3 = st.columns(3)

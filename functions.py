@@ -261,6 +261,15 @@ def select_quantidade_material():
     mydb.close()
     return contagem
 
+
+def select_curso_certificar():
+
+    mydb.connect()
+    cursor.execute("SELECT cliente.nome from controle_cursos as c INNER JOIN cliente on c.id_cliente = cliente.id where c.certificacao = 'PENDENTE'")
+    aluno_certificar = cursor.fetchall()
+
+    mydb.close()
+    return aluno_certificar
 # def select_alunos():
 #     mydb.connect()
 #     cursor.execute(""
