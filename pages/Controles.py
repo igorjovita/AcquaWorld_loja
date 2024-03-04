@@ -144,4 +144,7 @@ if menu_controles == 'Maquinas':
             maquina_escolhida = select_maquina_pagamentos(select_box_maquina)
             df = pd.DataFrame(maquina_escolhida, columns=['Data', 'Nome Cliente', 'Curso', 'Forma Pagamento', 'Parcela', 'Valor'])
 
+            valor_total = df['Valor'].sum()
+
             st.dataframe(df, hide_index=True, use_container_width=True)
+            st.write(valor_total)
