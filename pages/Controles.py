@@ -5,6 +5,8 @@ from functions import select_controle_curso, insert_contagem_curso, select_aluno
     select_maquina_pagamentos
 import pandas as pd
 from datetime import date
+from babel.numbers import format_currency
+
 
 menu_controles = option_menu(menu_title="Controles", options=['Cursos', 'Maquinas'],
                              orientation='horizontal')
@@ -144,7 +146,8 @@ if menu_controles == 'Maquinas':
             maquina_escolhida = select_maquina_pagamentos(select_box_maquina)
             df = pd.DataFrame(maquina_escolhida, columns=['Data', 'Nome Cliente', 'Curso', 'Forma Pagamento', 'Parcela', 'Valor'])
 
-            valor_total = df['Valor'].sum()
+            valor_total = format_currency(float(df['Valor'].sum()), 'BRL', locale='pt_BR')
 
             st.dataframe(df, hide_index=True, use_container_width=True)
             st.write(valor_total)
+
