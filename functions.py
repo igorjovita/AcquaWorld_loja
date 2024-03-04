@@ -377,11 +377,11 @@ def insert_cliente(cpf, nome_cliente, telefone, roupa):
     return id_cliente
 
 
-def insert_pagamento(data_pagamento, id_reserva_cliente, recebedor, pagamento, forma_pg, parcela, id_titular_pagamento):
+def insert_pagamento(data_pagamento, id_reserva_cliente, recebedor, pagamento, forma_pg, parcela, id_titular_pagamento, maquina):
     mydb.connect()
     cursor.execute(
-        "INSERT INTO pagamentos (data ,id_reserva, recebedor, pagamento, forma_pg, parcela, id_titular) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-        (data_pagamento, id_reserva_cliente, recebedor, pagamento, forma_pg, parcela, id_titular_pagamento))
+        "INSERT INTO pagamentos (data ,id_reserva, recebedor, pagamento, forma_pg, parcela, id_titular, maquina) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+        (data_pagamento, id_reserva_cliente, recebedor, pagamento, forma_pg, parcela, id_titular_pagamento, maquina))
     id_pagamento = cursor.lastrowid
     mydb.close()
 
@@ -546,7 +546,7 @@ def calcular_valores(valor_neto, acquaworld_valor, vendedor_valor, reserva_neto)
 
 def processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg, id_titular_pagamento,
                         id_reserva_selecionada, id_cliente_selecionado, tipo_selecionado, valor_total_selecionado,
-                        receber_loja_selecionado):
+                        receber_loja_selecionado, maquina):
     # Atualizar o check-in
     update_check_in(nome, check_in, data_reserva)
     id_cliente = id_cliente_selecionado
@@ -557,7 +557,7 @@ def processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vend
     # Inserir pagamento no banco de dados
     id_pagamento = insert_pagamento(data_reserva, id_reserva_selecionada, recebedor_pagamento, pagamento, forma_pg,
                                     parcela,
-                                    id_titular_pagamento)
+                                    id_titular_pagamento, maquina)
 
     # Calcular soma dos pagamentos
     mydb.connect()

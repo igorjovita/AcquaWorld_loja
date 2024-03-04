@@ -821,12 +821,18 @@ if menu_main == 'Pagamento':
                     if forma_pg == 'Credito':
                         parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
 
+                    else:
+                        parcela = 0
+
+
                     if forma_pg == 'Credito' or forma_pg == 'Debito':
                         maquinas = select_maquina()
                         maquina = st.selectbox('Maquininha', maquinas)
 
                     else:
-                        parcela = 0
+                        maquina = ''
+
+
 
                     check_in_entry = st.selectbox('Cliente vai pra onde?', ['Loja', 'Para o pier'], index=None)
                     if check_in_entry == 'Loja':
@@ -852,13 +858,18 @@ if menu_main == 'Pagamento':
                                             placeholder='Insira a forma de pagamento')
 
                     if forma_pg == 'Credito':
-                        maquinas = select_maquina()
+                        parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
+
+                    else:
+                        parcela = 0
 
                     if forma_pg == 'Credito' or forma_pg == 'Debito':
                         maquinas = select_maquina()
                         maquina = st.selectbox('Maquininha', maquinas)
+
                     else:
-                        parcela = 0
+                        maquina = ''
+
 
                     check_in_entry = st.selectbox('Cliente vai pra onde?', ['Loja', 'Para o pier'], index=None)
 
@@ -879,7 +890,7 @@ if menu_main == 'Pagamento':
                                 processar_pagamento(nome_cliente, data_reserva, check_in, forma_pg, parcela,
                                                     id_vendedor_pg,
                                                     st.session_state.titular[0], id_reserva_pg, id_cliente_pg,
-                                                    tipo_pg, valor_total, receber_loja_pg)
+                                                    tipo_pg, valor_total, receber_loja_pg, maquina)
 
                     else:
                         for dados_pagamento in st.session_state.dados_pagamento:
@@ -894,7 +905,7 @@ if menu_main == 'Pagamento':
                         nome = escolha_client_input
                         processar_pagamento(nome, data_reserva, check_in, forma_pg, parcela, id_vendedor_pg,
                                             st.session_state.titular[0], id_reserva_selecionada, id_cliente_selecionado,
-                                            tipo_selecionado, valor_total_selecionado, receber_loja_selecionado)
+                                            tipo_selecionado, valor_total_selecionado, receber_loja_selecionado, maquina)
                     st.session_state.escolha_reserva_pendente.remove(nome)
                     st.session_state.pagamentos = []
                     st.session_state.pagamentos2 = []
