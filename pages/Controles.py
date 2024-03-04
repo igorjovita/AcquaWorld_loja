@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
-from functions import select_controle_curso, insert_contagem_curso, select_alunos, update_controle_curso, \
-    select_quantidade_material, select_curso_certificar
+from functions import select_controle_curso, insert_contagem_curso, select_alunos, update_controle_curso_material, \
+    select_quantidade_material, select_curso_certificar, update_controle_curso_certificar
 import pandas as pd
 from datetime import date
 
@@ -21,13 +21,12 @@ if menu_controles == 'Cursos':
 
     contagem = select_quantidade_material()
 
-    tabela = pd.DataFrame(contagem, columns=['Pic Dive', 'Pic Efr', 'Open-PT', 'Open-ES', 'Open-ING', 'ADV', 'EFR', 'Rescue', 'DM'])
+    tabela = pd.DataFrame(contagem,
+                          columns=['Pic Dive', 'Pic Efr', 'Open-PT', 'Open-ES', 'Open-ING', 'ADV', 'EFR', 'Rescue',
+                                   'DM'])
     st.dataframe(tabela, hide_index=True)
 
-
     st.write('---')
-
-
 
     emprestado = ''
 
@@ -79,16 +78,27 @@ if menu_controles == 'Cursos':
         st.write(select_box_curso)
         st.write(open_pt)
         data = date.today()
-        insert_contagem_curso(data, 'SAIDA', '', '', open_pt=open_pt, open_es=open_es, open_ing=open_ing, adv=adv, efr=efr, rescue=rescue, dm=dm, emprestado=emprestado)
+        insert_contagem_curso(data, 'SAIDA', '', '', open_pt=open_pt, open_es=open_es, open_ing=open_ing, adv=adv,
+                              efr=efr, rescue=rescue, dm=dm, emprestado=emprestado)
         if select_box_aluno:
-            update_controle_curso(id_aluno)
+            update_controle_curso_material(id_aluno)
         st.success('Sistema Atulizado com sucesso')
 
     st.write('---')
 
     st.subheader('Certificar')
-    alunos_certificar = select_curso_certificar()
-    st.selectbox('Alunos para Certificar', alunos_certificar, index=None)
+    lista_alunos_certificar, lista_id_certificar = select_curso_certificar()
+
+    aluno_certificar = st.selectbox('Alunos para Certificar', lista_alunos_certificar, index=None)
+    exercicios = st.selectbox('O aluno concluiu os exercicios?', ['Sim', 'Não'], index=None)
+    certificacao = st.text_input('Insira o numero da certificaçao')
+
+    if st.button('Lançar Certificaçao'):
+        for id_certificar in lista_id_certificar:
+            if id_certificar[0] == aluno_certificar:
+                id_aluno_certificar = id_certificar[1]
+
+        update_controle_curso_certificar(id_aluno_certificar, certificacao)
 
     st.write('---')
 
