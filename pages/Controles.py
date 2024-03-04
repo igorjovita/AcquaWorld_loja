@@ -19,7 +19,7 @@ if menu_controles == 'Cursos':
     df = pd.DataFrame(dados, columns=['Cliente', 'Data Pratica 1', 'Data Pratica 2', 'Telefone', 'Curso', 'Material', 'Situação', 'Exercicios', 'Certificação'])
 
     df['Data Pratica 1'] = df['Data Pratica 1'].apply(lambda x: x.strftime('%d/%m/%Y'))
-    df['Data Pratica 2'] = df['Data Pratica 2'].apply(lambda x: x.strftime('%d/%m/%Y'))
+    df['Data Pratica 2'] = df['Data Pratica 2'].apply(lambda x: x.strftime('%d/%m/%Y' if x else ''))
 
     st.dataframe(df, hide_index=True)
 
