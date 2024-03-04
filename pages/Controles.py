@@ -21,7 +21,7 @@ if menu_controles == 'Cursos':
 
     contagem = select_quantidade_material()
 
-    st.table(contagem)
+    st.dataframe(contagem)
 
 
     st.write('---')
