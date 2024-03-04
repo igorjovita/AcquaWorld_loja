@@ -310,7 +310,7 @@ if menu_main == 'Reservar':
                 else:
                     for reserva in reservas:
                         id_reserva = insert_reserva(reserva)
-                        if reserva[2] == 'OWD' or reserva[2] == 'ADV':
+                        if reserva[2] == 'OWD' or reserva[2] == 'ADV' or reserva[2] == 'EFR' or reserva[2] == 'RESCUE' or reserva[2] == 'DM':
                             insert_controle_curso(reserva[0], reserva[9], reserva[1], reserva[2])
 
                         st.session_state.pagamentos2.append((id_titular, id_reserva))
