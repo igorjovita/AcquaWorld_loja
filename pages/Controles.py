@@ -44,13 +44,13 @@ if menu_controles == 'Cursos':
         for aluno in lista_alunos:
             if aluno[0] == select_box_aluno:
                 id_aluno = aluno[1]
-        if materiais == 'OPEN_PT':
+        if materiais == 'OPEN - PT':
             open_pt = 1
 
-        if materiais == 'OPEN_ES':
+        if materiais == 'OPEN - ES':
             open_es = 1
 
-        if materiais == 'OPEN_ING':
+        if materiais == 'OPEN - ING':
             open_ing = 1
 
         if materiais == 'AVANÇADO':
