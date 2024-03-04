@@ -22,7 +22,7 @@ if menu_controles == 'Cursos':
     contagem = select_quantidade_material()
 
     tabela = pd.DataFrame(contagem, columns=['Pic Dive', 'Pic Efr', 'Open-PT', 'Open-ES', 'Open-ING', 'ADV', 'EFR', 'Rescue', 'DM'])
-    st.dataframe(tabela)
+    st.dataframe(tabela, hide_index=True)
 
 
     st.write('---')
