@@ -132,14 +132,14 @@ if menu_controles == 'Cursos':
                                   dm, emprestado)
             st.success('Lançamento cadastrado com sucesso')
 
-    if menu_controles == 'Maquinas':
+if menu_controles == 'Maquinas':
 
-        with st.form('Maquinas'):
-            st.subheader('Controle Maquinas')
-            lista_maquinas = select_maquina()
+    with st.form('Maquinas'):
+        st.subheader('Controle Maquinas')
+        lista_maquinas = select_maquina()
 
-            select_box_maquina = st.selectbox('Escolha a maquina para pesquisar', lista_maquinas, index=None)
+        select_box_maquina = st.selectbox('Escolha a maquina para pesquisar', lista_maquinas, index=None)
 
-            if st.form_submit_button('Pesquisar'):
-                maquina_escolhida = select_maquina_pagamentos(select_box_maquina)
-                st.table(maquina_escolhida)
+        if st.form_submit_button('Pesquisar'):
+            maquina_escolhida = select_maquina_pagamentos(select_box_maquina)
+            st.table(maquina_escolhida)
