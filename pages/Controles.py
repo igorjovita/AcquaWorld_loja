@@ -24,10 +24,11 @@ if menu_controles == 'Cursos':
     select_box_aluno = st.selectbox('Escolha o aluno', options=lista_nome_alunos, index=None)
 
     st.write(lista_alunos)
-
-    for aluno in lista_alunos:
-        if aluno[0] == select_box_aluno:
-            st.write(aluno[1])
+    
+    if st.button('Lançar no sistema'):
+        for aluno in lista_alunos:
+            if aluno[0] == select_box_aluno:
+                st.write(aluno[1])
 
     st.write('---')
     st.subheader('Lançar Compra')
