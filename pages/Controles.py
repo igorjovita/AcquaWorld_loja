@@ -44,28 +44,27 @@ if menu_controles == 'Cursos':
         for aluno in lista_alunos:
             if aluno[0] == select_box_aluno:
                 id_aluno = aluno[1]
-        if materiais == 'OPEN - PT':
+        if select_box_curso == 'OPEN - PT':
             open_pt += 1
 
-        elif materiais == 'OPEN - ES':
+        elif select_box_curso == 'OPEN - ES':
             open_es += 1
 
-        elif materiais == 'OPEN - ING':
-            open_ing += 1
-
-        elif materiais == 'AVANÇADO':
+        elif select_box_curso == 'OPEN - ING':
+            open_select_box_curso
+        elif select_box_curso == 'AVANÇADO':
             adv += 1
 
-        elif materiais == 'EFR':
+        elif select_box_curso == 'EFR':
             efr += 1
 
-        elif materiais == 'RESCUE':
+        elif select_box_curso == 'RESCUE':
             rescue += 1
 
-        elif materiais == 'DIVEMASTER':
+        elif select_box_curso == 'DIVEMASTER':
             dm += 1
         data = date.today()
-        insert_contagem_curso(data, 'SAIDA', '', '', open_pt, open_es, open_ing, adv, efr, rescue, dm,emprestado)
+        insert_contagem_curso(data, 'SAIDA', '', '', open_pt, open_es, open_ing, adv, efr, rescue, dm, emprestado)
         update_controle_curso(id_aluno)
         st.success('Sistema Atulizado com sucesso')
 
