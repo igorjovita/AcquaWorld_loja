@@ -97,8 +97,10 @@ if menu_controles == 'Cursos':
         for id_certificar in lista_id_certificar:
             if id_certificar[0] == aluno_certificar:
                 id_aluno_certificar = id_certificar[1]
+                curso_aluno_certificar = id_certificar[2]
+        data = date.today()
 
-        update_controle_curso_certificar(id_aluno_certificar, certificacao)
+        update_controle_curso_certificar(id_aluno_certificar, certificacao, curso_aluno_certificar, data)
 
     st.write('---')
 

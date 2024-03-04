@@ -265,7 +265,7 @@ def select_quantidade_material():
 def select_curso_certificar():
 
     mydb.connect()
-    cursor.execute("SELECT cliente.nome, cliente.id from controle_cursos as c INNER JOIN cliente on c.id_cliente = cliente.id where c.certificacao = 'PENDENTE'")
+    cursor.execute("SELECT cliente.nome, cliente.id, c.curso from controle_cursos as c INNER JOIN cliente on c.id_cliente = cliente.id where c.certificacao = 'PENDENTE'")
     aluno_certificar = cursor.fetchall()
     lista_alunos = []
     for aluno in aluno_certificar:
@@ -409,9 +409,16 @@ def insert_vendedores(nome, apelido, telefone, neto_bat, neto_acp, neto_tur1, ne
 # FUNÇÕES NORMAIS
 
 
-def update_controle_curso_certificar(id_cliente, numero_certificacao):
+def update_controle_curso_certificar(id_cliente, numero_certificacao, tipo, data):
     mydb.connect()
     cursor.execute("UPDATE controle_cursos set certificacao = 'CERTIFICADO', exercicios = 'CONCLUIDO', n_certificacao = %s WHERE id_cliente = %s", (numero_certificacao, id_cliente))
+
+    if tipo == 'EFR':
+
+        cursor.execute("INSERT INTO contagem_curso (data, tipo_movimento, pic_efr) VALUES (%s, %s, %s)", (data, 'SAIDA', 1))
+    else:
+        cursor.execute("INSERT INTO contagem_curso (data, tipo_movimento, pic_dive) VALUES (%s, %s, %s)",
+                       (data, 'SAIDA', 1))
     mydb.close()
 
 def update_controle_curso_material(id_cliente):
