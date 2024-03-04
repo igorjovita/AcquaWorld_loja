@@ -142,4 +142,5 @@ if menu_controles == 'Maquinas':
 
         if st.form_submit_button('Pesquisar'):
             maquina_escolhida = select_maquina_pagamentos(select_box_maquina)
-            st.table(maquina_escolhida)
+            df = pd.DataFrame(maquina_escolhida, ['Data', 'Nome Cliente', 'Curso', 'Forma Pagamento', 'Parcela', 'Valor'])
+            st.dataframe(df, hide_index=True)
