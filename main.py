@@ -305,6 +305,7 @@ if menu_main == 'Reservar':
 
                 if verifica_cpf > 0:
                     st.error('Cliente já reservado para esta data')
+                    reservas = []
 
                 else:
                     for reserva in reservas:
