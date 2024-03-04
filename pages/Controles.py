@@ -1,7 +1,8 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
 from functions import select_controle_curso, insert_contagem_curso, select_alunos, update_controle_curso_material, \
-    select_quantidade_material, select_curso_certificar, update_controle_curso_certificar
+    select_quantidade_material, select_curso_certificar, update_controle_curso_certificar, select_maquina, \
+    select_maquina_pagamentos
 import pandas as pd
 from datetime import date
 
@@ -127,6 +128,18 @@ if menu_controles == 'Cursos':
         if st.form_submit_button('Lançar'):
             data = date.today()
             tipo_movimento = 'ENTRADA'
-            insert_contagem_curso(data, tipo_movimento, pic_dive, pic_efr, open_pt, open_es, open_ing, adv, efr, rescue, dm,
-                                  emprestado)
+            insert_contagem_curso(data, tipo_movimento, pic_dive, pic_efr, open_pt, open_es, open_ing, adv, efr, rescue,
+                                  dm, emprestado)
             st.success('Lançamento cadastrado com sucesso')
+
+    if menu_controles == 'Maquinas':
+
+        with st.form('Maquinas'):
+            st.subheader('Controle Maquinas')
+            lista_maquinas = select_maquina()
+
+            select_box_maquina = st.selectbox('Escolha a maquina para pesquisar', lista_maquinas, index=None)
+
+            if st.form_submit_button('Pesquisar'):
+                maquina_escolhida = select_maquina_pagamentos(select_box_maquina)
+                st.table(maquina_escolhida)
