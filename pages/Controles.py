@@ -66,10 +66,10 @@ if menu_controles == 'Cursos':
 
         st.write(select_box_curso)
         st.write(open_pt)
-        # data = date.today()
-        # insert_contagem_curso(data, 'SAIDA', '', '', open_pt, open_es, open_ing, adv, efr, rescue, dm, emprestado)
-        # update_controle_curso(id_aluno)
-        # st.success('Sistema Atulizado com sucesso')
+        data = date.today()
+        insert_contagem_curso(data, 'SAIDA', '', '', open_pt=open_pt, open_es=open_es, open_ing=open_ing, adv=adv, efr=efr, rescue=rescue, dm=dm, emprestado=emprestado)
+        update_controle_curso(id_aluno)
+        st.success('Sistema Atulizado com sucesso')
 
 
     st.write('---')

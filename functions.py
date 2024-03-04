@@ -147,6 +147,7 @@ def select_reserva_id_titular(id_titular):
     mydb.close()
     return resultado
 
+
 def select_id_titular_vendedor():
     mydb.connect()
     cursor.execute("SELECT id_titular, id_vendedor FROM reserva WHERE id_cliente = %s ")
@@ -225,17 +226,20 @@ def select_pagamentos(id_reserva):
     resultado = cursor.fetchall()
     return resultado
 
+
 def select_alunos():
     mydb.connect()
     lista_nome_alunos = []
 
-    cursor.execute("SELECT cliente.nome, cliente.id from controle_cursos as c INNER JOIN cliente on c.id_cliente = cliente.id WHERE (c.curso = 'OWD' or c.curso = 'ADV' or c.curso = 'RESCUE' or c.curso = 'EFR' or c.curso = 'DIVEMASTER') and material = 'PENDENTE'")
+    cursor.execute(
+        "SELECT cliente.nome, cliente.id from controle_cursos as c INNER JOIN cliente on c.id_cliente = cliente.id WHERE (c.curso = 'OWD' or c.curso = 'ADV' or c.curso = 'RESCUE' or c.curso = 'EFR' or c.curso = 'DIVEMASTER') and material = 'PENDENTE'")
     alunos = cursor.fetchall()
     for aluno in alunos:
         lista_nome_alunos.append(str(aluno[0]).translate(str.maketrans('', '', chars)))
 
     mydb.close()
     return lista_nome_alunos, alunos
+
 
 # def select_alunos():
 #     mydb.connect()
@@ -245,18 +249,24 @@ def select_alunos():
 # INSERTS
 
 
-def insert_contagem_curso(data, tipo_movimento, pic_dive, pic_efr, open_pt, open_es, open_ing, adv, efr, rescue, dm, emprestado):
+def insert_contagem_curso(data, tipo_movimento, pic_dive, pic_efr, open_pt, open_es, open_ing, adv, efr, rescue, dm,
+                          emprestado):
     mydb.connect()
-    cursor.execute("INSERT INTO contagem_curso (data, tipo_movimento, pic_dive, pic_efr, open_pt, open_es, open_ing, adv, efr, rescue, dm, emprestado) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (data, tipo_movimento, pic_dive, pic_efr, open_pt, open_es, open_ing, adv, efr, rescue, dm, emprestado))
+    cursor.execute(
+        "INSERT INTO contagem_curso (data, tipo_movimento, pic_dive, pic_efr, open_pt, open_es, open_ing, adv, efr, rescue, dm, emprestado) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+        (data, tipo_movimento, pic_dive, pic_efr, open_pt, open_es, open_ing, adv, efr, rescue, dm, emprestado))
 
     mydb.close()
 
 
 def insert_controle_curso(data_pratica1, data_pratica2, id_cliente, tipo):
     mydb.connect()
-    cursor.execute("INSERT INTO controle_cursos (data_pratica1, data_pratica2, id_cliente, curso, material, situacao, exercicios, certificacao) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",(data_pratica1, data_pratica2, id_cliente, tipo, 'PENDENTE', 'PENDENTE', 'PENDENTE', 'PENDENTE'))
+    cursor.execute(
+        "INSERT INTO controle_cursos (data_pratica1, data_pratica2, id_cliente, curso, material, situacao, exercicios, certificacao) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+        (data_pratica1, data_pratica2, id_cliente, tipo, 'PENDENTE', 'PENDENTE', 'PENDENTE', 'PENDENTE'))
 
     mydb.close()
+
 
 def insert_reserva(reserva):
     mydb.connect()
@@ -369,9 +379,10 @@ def insert_vendedores(nome, apelido, telefone, neto_bat, neto_acp, neto_tur1, ne
 
 def update_controle_curso(id_cliente):
     mydb.connect()
-    cursor.execute("UPDATE controle_cursos set material = 'ENTREGUE' where id_cliente = %s", (id_cliente, ))
+    cursor.execute("UPDATE controle_cursos set material = 'ENTREGUE' where id_cliente = %s", (id_cliente,))
 
     mydb.close()
+
 
 def update_vaga(id_cliente, nome, cpf, telefone, tipo, peso, altura, valor_total, sinal, recebedor_sinal, receber_loja,
                 data, id_titular, id_vendedor):
