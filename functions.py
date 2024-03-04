@@ -223,18 +223,25 @@ def select_pagamentos(id_reserva):
     mydb.connect()
     cursor.execute(f"SELECT recebedor, pagamento FROM pagamentos WHERE id_reserva = {id_reserva}")
     resultado = cursor.fetchall()
-
+    return resultado
 
 def select_contagem_curso():
+    pass
 
 
-    return resultado
 # def select_alunos():
 #     mydb.connect()
 #     cursor.execute(""
 
 
 # INSERTS
+
+
+def insert_contagem_curso(data, tipo_movimento, pic_dive, pic_efr, open_pt, open_es, open_ing, adv, efr, rescue, dm, emprestado):
+    mydb.connect()
+    cursor.execute("INSERT INTO contagem_curso (data, tipo_movimento, pic_dive, pic_efr, open_pt, open_es, open_ing, adv, efr, rescue, dm, emprestado) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (data, tipo_movimento, pic_dive, pic_efr, open_pt, open_es, open_ing, adv, efr, rescue, dm, emprestado))
+
+    mydb.close()
 
 
 def insert_controle_curso(data_pratica1, data_pratica2, id_cliente, tipo):
