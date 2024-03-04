@@ -19,9 +19,11 @@ if menu_controles == 'Cursos':
     st.header('Controle de Materiais e Pics')
 
     st.subheader('Entrega de Material')
-    alunos = select_alunos()
+    lista_nome_alunos, lista_alunos = select_alunos()
 
-    st.selectbox('Escolha o aluno', options=alunos, index=None)
+    st.selectbox('Escolha o aluno', options=lista_nome_alunos, index=None)
+
+    st.write(lista_alunos)
 
 
     st.write('---')
