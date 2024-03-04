@@ -86,21 +86,21 @@ if menu_controles == 'Cursos':
 
     st.write('---')
 
-    st.subheader('Certificar')
-    lista_alunos_certificar, lista_id_certificar = select_curso_certificar()
+    with st.form('Certificar'):
+        lista_alunos_certificar, lista_id_certificar = select_curso_certificar()
+        st.subheader('Certificar')
+        aluno_certificar = st.selectbox('Alunos para Certificar', lista_alunos_certificar, index=None)
+        exercicios = st.selectbox('O aluno concluiu os exercicios?', ['Sim', 'Não'], index=None)
+        certificacao = st.text_input('Insira o numero da certificaçao')
 
-    aluno_certificar = st.selectbox('Alunos para Certificar', lista_alunos_certificar, index=None)
-    exercicios = st.selectbox('O aluno concluiu os exercicios?', ['Sim', 'Não'], index=None)
-    certificacao = st.text_input('Insira o numero da certificaçao')
+        if st.button('Lançar Certificaçao'):
+            for id_certificar in lista_id_certificar:
+                if id_certificar[0] == aluno_certificar:
+                    id_aluno_certificar = id_certificar[1]
+                    curso_aluno_certificar = id_certificar[2]
+            data = date.today()
 
-    if st.button('Lançar Certificaçao'):
-        for id_certificar in lista_id_certificar:
-            if id_certificar[0] == aluno_certificar:
-                id_aluno_certificar = id_certificar[1]
-                curso_aluno_certificar = id_certificar[2]
-        data = date.today()
-
-        update_controle_curso_certificar(id_aluno_certificar, certificacao, curso_aluno_certificar, data)
+            update_controle_curso_certificar(id_aluno_certificar, certificacao, curso_aluno_certificar, data)
 
     st.write('---')
 
