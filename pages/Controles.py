@@ -68,7 +68,7 @@ if menu_controles == 'Cursos':
         st.write(open_pt)
         data = date.today()
         insert_contagem_curso(data, 'SAIDA', '', '', open_pt=open_pt, open_es=open_es, open_ing=open_ing, adv=adv, efr=efr, rescue=rescue, dm=dm, emprestado=emprestado)
-        update_controle_curso(id_aluno)
+        # update_controle_curso(id_aluno)
         st.success('Sistema Atulizado com sucesso')
 
 
