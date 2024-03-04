@@ -12,7 +12,8 @@ import streamlit.components.v1
 from functions import select_reserva, processar_pagamento, gerar_pdf, gerar_html, select_apelido_vendedores, \
     calculo_restricao, insert_cliente, insert_reserva, select_id_vendedores, insert_lancamento_comissao, \
     select_valor_neto, select_cliente, select_grupo_reserva, update_vaga, select_id_cliente_like, \
-    select_nome_id_titular, select_reserva_id_titular, titulo_tabela_pagamentos, select_pagamentos
+    select_nome_id_titular, select_reserva_id_titular, titulo_tabela_pagamentos, select_pagamentos, \
+    insert_controle_curso
 import time
 
 chars = "'),([]"
@@ -308,6 +309,8 @@ if menu_main == 'Reservar':
                 else:
                     for reserva in reservas:
                         id_reserva = insert_reserva(reserva)
+                        if reserva[2] == 'OWD' or reserva[2] == 'ADV':
+                            insert_controle_curso(reserva[0], reserva[9], reserva[1], reserva[2])
 
                         st.session_state.pagamentos2.append((id_titular, id_reserva))
 

@@ -233,6 +233,12 @@ def select_pagamentos(id_reserva):
 # INSERTS
 
 
+def insert_controle_curso(data_pratica1, data_pratica2, id_cliente, tipo):
+    mydb.connect()
+    cursor.execute("INSERT INTO controle_cursos (data_pratica1, data_pratica2, id_cliente, curso, material, situaçao, exercicios, certificacao) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",(data_pratica1, data_pratica2, id_cliente, tipo, 'PENDENTE', 'PENDENTE', 'PENDENTE', 'PENDENTE'))
+
+    mydb.close()
+
 def insert_reserva(reserva):
     mydb.connect()
     if reserva[9] != '':
