@@ -103,30 +103,30 @@ if menu_controles == 'Cursos':
             update_controle_curso_certificar(id_aluno_certificar, certificacao, curso_aluno_certificar, data)
 
     st.write('---')
+    with st.form('Compras'):
+        st.subheader('Lançar Compra')
 
-    st.subheader('Lançar Compra')
+        col1, col2, col3 = st.columns(3)
 
-    col1, col2, col3 = st.columns(3)
+        with col1:
+            open_pt = st.text_input('Manual Open Water - Portugues')
+            adv = st.text_input('Manual Avançado')
+            dm = st.text_input('Manual DiveMaster')
 
-    with col1:
-        open_pt = st.text_input('Manual Open Water - Portugues')
-        adv = st.text_input('Manual Avançado')
-        dm = st.text_input('Manual DiveMaster')
+        with col2:
+            open_es = st.text_input('Manual Open Water - Espanhol')
+            efr = st.text_input('Manual EFR')
+            pic_dive = st.text_input('Pic Dive')
+        with col3:
+            open_ing = st.text_input('Manual Open Water - Inglês')
+            rescue = st.text_input('Manual Rescue Diver')
+            pic_efr = st.text_input('Pic EFR')
 
-    with col2:
-        open_es = st.text_input('Manual Open Water - Espanhol')
-        efr = st.text_input('Manual EFR')
-        pic_dive = st.text_input('Pic Dive')
-    with col3:
-        open_ing = st.text_input('Manual Open Water - Inglês')
-        rescue = st.text_input('Manual Rescue Diver')
-        pic_efr = st.text_input('Pic EFR')
-
-    with st.expander('Pegou emprestado?'):
-        emprestado = st.text_input('Quem emprestou?').upper()
-    if st.button('Lançar'):
-        data = date.today()
-        tipo_movimento = 'ENTRADA'
-        insert_contagem_curso(data, tipo_movimento, pic_dive, pic_efr, open_pt, open_es, open_ing, adv, efr, rescue, dm,
-                              emprestado)
-        st.success('Lançamento cadastrado com sucesso')
+        with st.expander('Pegou emprestado?'):
+            emprestado = st.text_input('Quem emprestou?').upper()
+        if st.form_submit_button('Lançar'):
+            data = date.today()
+            tipo_movimento = 'ENTRADA'
+            insert_contagem_curso(data, tipo_movimento, pic_dive, pic_efr, open_pt, open_es, open_ing, adv, efr, rescue, dm,
+                                  emprestado)
+            st.success('Lançamento cadastrado com sucesso')
