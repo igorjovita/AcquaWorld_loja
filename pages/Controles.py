@@ -5,7 +5,7 @@ import pandas as pd
 from datetime import date
 
 menu_controles = option_menu(menu_title="Controles", options=['Cursos', 'Maquinas'],
-                        orientation='horizontal')
+                             orientation='horizontal')
 
 if menu_controles == 'Cursos':
     st.subheader('Controle de cursos')
@@ -17,18 +17,57 @@ if menu_controles == 'Cursos':
     st.write('---')
 
     st.header('Controle de Materiais e Pics')
+    emprestado = ''
 
     st.subheader('Entrega de Material')
     lista_nome_alunos, lista_alunos = select_alunos()
+    materiais = ['OPEN - PT', 'OPEN - ES', 'OPEN - ING', 'AVANÇADO', 'EFR', 'RESCUE', 'DIVEMASTER']
 
     select_box_aluno = st.selectbox('Escolha o aluno', options=lista_nome_alunos, index=None)
 
-    st.write(lista_alunos)
-    
+    select_box_curso = st.selectbox('Escolha o Material', options=materiais, index=None)
+
+    with st.expander('Emprestar'):
+        emprestado = st.text_input('Insira o nome de quem pegou emprestado').upper()
+
     if st.button('Lançar no sistema'):
+        pic_dive = ''
+        pic_efr = ''
+        open_pt = ''
+        open_es = ''
+        open_ing = ''
+        adv = ''
+        efr = ''
+        rescue = ''
+        dm = ''
+        emprestado = ''
         for aluno in lista_alunos:
             if aluno[0] == select_box_aluno:
-                st.write(aluno[1])
+                id_aluno = aluno[1]
+        if materiais == 'OPEN_PT':
+            open_pt = 1
+
+        if materiais == 'OPEN_ES':
+            open_es = 1
+
+        if materiais == 'OPEN_ING':
+            open_ing = 1
+
+        if materiais == 'AVANÇADO':
+            adv = 1
+
+        if materiais == 'EFR':
+            efr = 1
+
+        if materiais == 'RESCUE':
+            rescue = 1
+
+        if materiais == 'DIVEMASTER':
+            dm = 1
+        data = date.today()
+        insert_contagem_curso(data, 'SAIDA', '', '', open_pt, open_es, open_ing, adv, efr, rescue, dm,emprestado)
+        st.success('Sistema Atulizado com sucesso')
+
 
     st.write('---')
     st.subheader('Lançar Compra')
@@ -54,12 +93,6 @@ if menu_controles == 'Cursos':
     if st.button('Lançar'):
         data = date.today()
         tipo_movimento = 'ENTRADA'
-        insert_contagem_curso(data, tipo_movimento, pic_dive, pic_efr, open_pt, open_es, open_ing, adv, efr, rescue, dm, emprestado)
+        insert_contagem_curso(data, tipo_movimento, pic_dive, pic_efr, open_pt, open_es, open_ing, adv, efr, rescue, dm,
+                              emprestado)
         st.success('Lançamento cadastrado com sucesso')
-
-
-
-
-
-
-
