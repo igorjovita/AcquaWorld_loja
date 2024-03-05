@@ -597,21 +597,17 @@ if menu_main == 'Pagamento':
     # Iniciando variaveis e listas
     id_titular_pagamento = ''
 
+    st.subheader('Pagamento')
+    data_pagamento = st.date_input('Data da reserva')
+    nome_titular_pagamento, nome_id_titular_pagamento = select_nome_id_titular(data_pagamento)
+    select_box_titular = st.selectbox('Titular da Reserva', nome_titular_pagamento, index=None)
 
+    if st.button('Pesquisar reserva'):
+        for dado in nome_id_titular_pagamento:
+            if dado[0] == select_box_titular:
+                id_titular_pagamento = dado[1]
 
-
-    with st.form('Pagamento'):
-        st.subheader('Pagamento')
-        data_pagamento = st.date_input('Data da reserva')
-        nome_titular_pagamento, nome_id_titular_pagamento = select_nome_id_titular(data_pagamento)
-        select_box_titular = st.selectbox('Titular da Reserva', nome_titular_pagamento, index=None)
-
-        if st.form_submit_button('Pesquisar reserva'):
-            for dado in nome_id_titular_pagamento:
-                if dado[0] == select_box_titular:
-                    id_titular_pagamento = dado[1]
-
-            st.write(id_titular_pagamento)
+        st.write(id_titular_pagamento)
 
 
 

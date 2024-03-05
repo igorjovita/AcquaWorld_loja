@@ -180,6 +180,7 @@ def select_id_titular_vendedor():
     cursor.execute("SELECT id_titular, id_vendedor FROM reserva WHERE id_cliente = %s ")
 
 
+@st.cache_resource
 def select_nome_id_titular(data):
     mydb.connect()
     cursor.execute(
