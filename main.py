@@ -621,7 +621,9 @@ if menu_main == 'Pagamento':
 
             id_reserva_pg, nome_cliente_pg, id_cliente_pg, tipo_pg, id_vendedor_pg, receber_loja, valor_total, situacao_pg = clientes
 
-            st.write(nome_cliente_pg)
+            reserva_pagamento = select_reserva(nome_cliente_pg, data_pagamento)
+
+            st.write(reserva_pagamento)
 
             
 
