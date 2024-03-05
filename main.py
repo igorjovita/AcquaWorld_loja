@@ -616,14 +616,13 @@ if menu_main == 'Pagamento':
                 st.session_state.id_titular_pagamento = dado[1]
 
         reservas_mesmo_nome = select_reserva_id_titular(st.session_state.id_titular_pagamento)
-
+        st.write(reservas_mesmo_nome)
         for clientes in reservas_mesmo_nome:
 
-            id_reserva_pg, nome_cliente_pg, id_cliente_pg, tipo_pg, id_vendedor_pg, receber_loja, valor_total, situacao_pg = clientes
+            id_reserva_pg, nome_cliente_pg, id_cliente_pg, tipo_pg, id_vendedor_pg, receber_loja, valor_total, situacao_pg, recebedor_pg, pagamento_pg = clientes
 
-            reserva_pagamento = select_reserva(nome_cliente_pg, data_pagamento)
-
-            st.write(reserva_pagamento)
+            if receber_loja is None:
+                receber_loja = float(0.00)
 
             
 

@@ -168,7 +168,7 @@ def select_maquina():
 def select_reserva_id_titular(id_titular):
     mydb.connect()
     cursor.execute(
-        f"SELECT id, nome_cliente, id_cliente, tipo, id_vendedor, receber_loja, valor_total, situacao from reserva where id_titular = {id_titular}")
+        f"SELECT r.id, r.nome_cliente, r.id_cliente, r.tipo, r.id_vendedor, r.receber_loja, r.valor_total, r.situacao, p.recebedor, p.pagamento from reserva as r INNER JOIN pagamentos as p ON p.id_reserva = r.id where id_titular = {id_titular}")
     resultado = cursor.fetchall()
 
     mydb.close()
