@@ -615,9 +615,17 @@ if menu_main == 'Pagamento':
             if dado[0] == select_box_titular:
                 st.session_state.id_titular_pagamento = dado[1]
 
-        reservas_mesmo_id = select_reserva_id_titular(st.session_state.id_titular_pagamento)
+        reservas_mesmo_nome = select_reserva_id_titular(st.session_state.id_titular_pagamento)
 
-        st.write(reservas_mesmo_id)
+        for clientes in reservas_mesmo_nome:
+
+            id_reserva_pg, nome_cliente_pg, id_cliente_pg, tipo_pg, id_vendedor_pg, receber_loja, valor_total, situacao_pg = clientes
+
+            st.write(nome_cliente_pg)
+
+            
+
+
 
 
 
