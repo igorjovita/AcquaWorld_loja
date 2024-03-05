@@ -184,10 +184,15 @@ def select_nome_id_titular(data):
     mydb.connect()
     cursor.execute(
         f"SELECT nome_cliente, id_cliente FROM reserva WHERE data = '{data}' and id_titular = id_cliente")
-    resultado = cursor.fetchall()
+    resultados = cursor.fetchall()
+    lista_titular = []
+    lista_nome_id_tiular = []
+    for resultado in resultados:
+        lista_titular.append(str(resultado[0]).translate(str.maketrans('', '', chars)))
+        lista_nome_id_tiular.append(resultado)
     mydb.close()
 
-    return resultado
+    return lista_titular, lista_nome_id_tiular
 
 
 def select_grupo_reserva(id_titular, data):
