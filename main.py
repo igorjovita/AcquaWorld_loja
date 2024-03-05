@@ -596,6 +596,11 @@ if menu_main == 'Editar':
 if menu_main == 'Pagamento':
     # Iniciando variaveis e listas
     id_titular_pagamento = ''
+    if 'pagina_pagamento' not in st.session_state:
+        st.session_state.pagina_pagamento = False
+
+    if 'id_titular_pagamento' not in st.session_state:
+        st.session_state.id_titular_pagamento = ''
 
     st.subheader('Pagamento')
     data_pagamento = st.date_input('Data da reserva')
@@ -603,11 +608,18 @@ if menu_main == 'Pagamento':
     select_box_titular = st.selectbox('Titular da Reserva', nome_titular_pagamento, index=None)
 
     if st.button('Pesquisar reserva'):
+        st.session_state.pagina_pagamento = True
+
+    if st.session_state.pagina_pagamento:
         for dado in nome_id_titular_pagamento:
             if dado[0] == select_box_titular:
-                id_titular_pagamento = dado[1]
+                st.session_state.id_titular_pagamento = dado[1]
 
-        st.write(id_titular_pagamento)
+        reservas_mesmo_id = select_reserva_id_titular(st.session_state.id_titular_pagamento)
+
+        st.write(reservas_mesmo_id)
+
+
 
 
 

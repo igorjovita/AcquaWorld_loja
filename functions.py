@@ -168,7 +168,7 @@ def select_maquina():
 def select_reserva_id_titular(id_titular):
     mydb.connect()
     cursor.execute(
-        f"SELECT id, nome_cliente, receber_loja, situacao, id_vendedor, id_cliente, tipo, valor_total from reserva where id_titular = {id_titular}")
+        f"SELECT id, nome_cliente, id_cliente, tipo, id_vendedor, receber_loja, valor_total, situacao from reserva where id_titular = {id_titular}")
     resultado = cursor.fetchall()
 
     mydb.close()
