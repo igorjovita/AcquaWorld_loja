@@ -674,10 +674,12 @@ if menu_main == 'Pagamento':
             nomes_pg = []
             for i in st.session_state.nomes_clientes_pagamento:
                 nomes_pg.append(i[0])
-            st.selectbox('Escolha o cleinte', nomes_pg, index=None)
 
-            if pagamento_individual_coletivo == st.session_state.nomes_clientes_pagamento[0]:
-                st.write(st.session_state.nomes_clientes_pagamento[3])
+            select_box_cliente_pg = st.selectbox('Escolha o cliente', nomes_pg, index=None)
+
+            for cliente in st.session_state.nomes_clientes_pagamento:
+                if select_box_cliente_pg == cliente[0]:
+                    st.write(cliente[3])
 
 
 
