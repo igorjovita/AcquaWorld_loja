@@ -635,6 +635,7 @@ if menu_main == 'Pagamento':
                 if pagamento_pg >= valor_total:
                     receber_loja = float(0.00)
 
+
             if situacao_pg is None:
                 situacao_pg = 'Pendente'
 
@@ -644,8 +645,7 @@ if menu_main == 'Pagamento':
             else:
                 texto_sinal = f'{recebedor_pg} - R$ {pagamento_pg}'
 
-            if pagamento_pg == valor_total:
-                receber_loja = float(0.00)
+
 
             coluna1, coluna2, coluna3, coluna4 = st.columns(4)
 
@@ -672,7 +672,7 @@ if menu_main == 'Pagamento':
             total_receber += float(receber_loja)
 
             st.session_state.nomes_clientes_pagamento.append(
-                (nome_cliente_pg, id_cliente_pg, id_reserva_pg, receber_loja, id_vendedor_pg, tipo_pg, valor_total))
+                (nome_cliente_pg, id_cliente_pg, id_reserva_pg, receber_loja, id_vendedor_pg, tipo_pg, valor_total, situacao_pg))
         pagamento_individual_coletivo = st.radio('Tipo de pagamento', ['Pagamento Individual', 'Pagamento em Grupo'],
                                                  horizontal=True)
         st.write('---')
@@ -681,7 +681,8 @@ if menu_main == 'Pagamento':
 
             nomes_pg = []
             for i in st.session_state.nomes_clientes_pagamento:
-                nomes_pg.append(i[0])
+                if i[7] != 'Reserva Paga':
+                    nomes_pg.append(i[0])
 
             select_box_cliente_pg = st.selectbox('Escolha o cliente', nomes_pg, index=None)
 
