@@ -673,53 +673,51 @@ if menu_main == 'Pagamento':
 
             st.session_state.nomes_clientes_pagamento.append(
                 (nome_cliente_pg, id_cliente_pg, id_reserva_pg, receber_loja))
+        pagamento_individual_coletivo = st.radio('Tipo de pagamento', ['Pagamento Individual', 'Pagamento em Grupo'],
+                                                 horizontal=True)
 
-        with st.form('Pagamento'):
-            pagamento_individual_coletivo = st.radio('Tipo de pagamento', ['Pagamento Individual', 'Pagamento em Grupo'],
-                                                     horizontal=True)
+        if pagamento_individual_coletivo == 'Pagamento Individual':
 
-            if pagamento_individual_coletivo == 'Pagamento Individual':
+            nomes_pg = []
+            for i in st.session_state.nomes_clientes_pagamento:
+                nomes_pg.append(i[0])
 
-                nomes_pg = []
-                for i in st.session_state.nomes_clientes_pagamento:
-                    nomes_pg.append(i[0])
+            select_box_cliente_pg = st.selectbox('Escolha o cliente', nomes_pg, index=None)
 
-                select_box_cliente_pg = st.selectbox('Escolha o cliente', nomes_pg, index=None)
-
-                for cliente in st.session_state.nomes_clientes_pagamento:
-                    if select_box_cliente_pg == cliente[0]:
-                        total_receber = cliente[3]
-                        st.subheader(f'Receber R$ {total_receber}')
-            else:
-                st.subheader(f'Receber R$ {total_receber}')
+            for cliente in st.session_state.nomes_clientes_pagamento:
+                if select_box_cliente_pg == cliente[0]:
+                    total_receber = cliente[3]
+                    st.subheader(f'Receber R$ {total_receber}')
+        else:
+            st.subheader(f'Receber R$ {total_receber}')
 
 
-            forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
-                                    index=None,
-                                    placeholder='Insira a forma de pagamento')
+        forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
+                                index=None,
+                                placeholder='Insira a forma de pagamento')
 
-            if forma_pg == 'Credito':
-                parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
+        if forma_pg == 'Credito':
+            parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
 
-            else:
-                parcela = 0
+        else:
+            parcela = 0
 
-            if forma_pg == 'Credito' or forma_pg == 'Debito':
-                maquinas = select_maquina()
-                maquina = st.selectbox('Maquininha', maquinas)
+        if forma_pg == 'Credito' or forma_pg == 'Debito':
+            maquinas = select_maquina()
+            maquina = st.selectbox('Maquininha', maquinas)
 
-            else:
-                maquina = ''
+        else:
+            maquina = ''
 
-            check_in_entry = st.selectbox('Cliente vai pra onde?', ['Loja', 'Para o pier'], index=None)
-            if check_in_entry == 'Loja':
-                check_in = '#00B0F0'
-            if check_in_entry == 'Para o pier':
-                check_in = 'yellow'
+        check_in_entry = st.selectbox('Cliente vai pra onde?', ['Loja', 'Para o pier'], index=None)
+        if check_in_entry == 'Loja':
+            check_in = '#00B0F0'
+        if check_in_entry == 'Para o pier':
+            check_in = 'yellow'
 
-            if st.form_submit_button('Lançar Pagamento'):
+        if st.button('Lançar Pagamento'):
 
-                st.success(f'Pago um total de - R$ {total_receber}')
+            st.success(f'Pago um total de - R$ {total_receber}')
 
     # if 'botao' not in st.session_state:
     #     st.session_state.botao = False
