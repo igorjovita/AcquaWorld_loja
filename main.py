@@ -624,6 +624,37 @@ if menu_main == 'Pagamento':
             if receber_loja is None:
                 receber_loja = float(0.00)
 
+            if recebedor_pg is None:
+                texto_sinal = 'Nenhum sinal encontrado'
+
+            else:
+                texto_sinal = f'{recebedor_pg} - R$ {pagamento_pg}'
+
+            if pagamento_pg == valor_total:
+                receber_loja = float(0.00)
+
+            coluna1, coluna2, coluna3, coluna4 = st.columns(4)
+
+            with coluna1:
+                st.markdown(
+                    f"<h2 style='color: black; text-align: center; font-size: 1.2em;'>{nome_cliente_pg}</h2>",
+                    unsafe_allow_html=True)
+
+            with coluna2:
+                st.markdown(
+                    f"<h2 style='color: black; text-align: center; font-size: 1.2em;'>{texto_sinal}</h2>",
+                    unsafe_allow_html=True)
+
+            with coluna3:
+                st.markdown(
+                    f"<h2 style='color: black; text-align: center; font-size: 1.2em;'>{receber_loja}</h2>",
+                    unsafe_allow_html=True)
+
+            with coluna4:
+                st.markdown(
+                    f"<h2 style='color: black; text-align: center; font-size: 1.2em;'>{situacao_pg}</h2>",
+                    unsafe_allow_html=True)
+
             
 
 
