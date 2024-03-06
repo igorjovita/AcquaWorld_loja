@@ -685,9 +685,10 @@ if menu_main == 'Pagamento':
 
             for cliente in st.session_state.nomes_clientes_pagamento:
                 if select_box_cliente_pg == cliente[0]:
-                    st.subheader(f'Receber R$ {cliente[3]}')
+                    total_receber = cliente[3]
+                    st.subheader(f'Receber R$ {total_receber}')
         else:
-            st.subheader(total_receber)
+            st.subheader(f'Receber R$ {total_receber}')
 
 
 
