@@ -691,28 +691,33 @@ if menu_main == 'Pagamento':
         else:
             st.subheader(f'Receber R$ {total_receber}')
 
-        forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
-                                index=None,
-                                placeholder='Insira a forma de pagamento')
+        with st.form('Pagamento'):
+            forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
+                                    index=None,
+                                    placeholder='Insira a forma de pagamento')
 
-        if forma_pg == 'Credito':
-            parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
+            if forma_pg == 'Credito':
+                parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
 
-        else:
-            parcela = 0
+            else:
+                parcela = 0
 
-        if forma_pg == 'Credito' or forma_pg == 'Debito':
-            maquinas = select_maquina()
-            maquina = st.selectbox('Maquininha', maquinas)
+            if forma_pg == 'Credito' or forma_pg == 'Debito':
+                maquinas = select_maquina()
+                maquina = st.selectbox('Maquininha', maquinas)
 
-        else:
-            maquina = ''
+            else:
+                maquina = ''
 
-        check_in_entry = st.selectbox('Cliente vai pra onde?', ['Loja', 'Para o pier'], index=None)
-        if check_in_entry == 'Loja':
-            check_in = '#00B0F0'
-        if check_in_entry == 'Para o pier':
-            check_in = 'yellow'
+            check_in_entry = st.selectbox('Cliente vai pra onde?', ['Loja', 'Para o pier'], index=None)
+            if check_in_entry == 'Loja':
+                check_in = '#00B0F0'
+            if check_in_entry == 'Para o pier':
+                check_in = 'yellow'
+
+            if st.form_submit_button('Lançar Pagamento'):
+
+                st.success(f'Pago um total de - R$ {total_receber}')
 
     # if 'botao' not in st.session_state:
     #     st.session_state.botao = False
