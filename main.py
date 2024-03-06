@@ -680,12 +680,12 @@ if menu_main == 'Pagamento':
             st.success('Todos os clientes efetuaram o pagamento')
 
         else:
-
-            pagamento_individual_coletivo = st.radio('Tipo de pagamento', ['Pagamento Individual', 'Pagamento em Grupo'],
-                                                 horizontal=True)
-
             if len(nomes_pg) < 1:
                 pagamento_individual_coletivo = 'Pagamento em Grupo'
+            else:
+                pagamento_individual_coletivo = st.radio('Tipo de pagamento',
+                                                         ['Pagamento Individual', 'Pagamento em Grupo'],
+                                                         horizontal=True)
 
             if pagamento_individual_coletivo == 'Pagamento Individual':
 
