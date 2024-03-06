@@ -665,11 +665,17 @@ if menu_main == 'Pagamento':
                 st.markdown(
                     f"<h2 style='color: black; text-align: center; font-size: 1.2em;'>{situacao_pg}</h2>",
                     unsafe_allow_html=True)
-            st.session_state.nomes_clientes_pagamento.append(nome_cliente_pg)
+
+            st.session_state.nomes_clientes_pagamento.append((nome_cliente_pg, id_cliente_pg, id_reserva_pg, receber_loja))
         pagamento_individual_coletivo = st.radio('Tipo de pagamento', ['Pagamento Individual', 'Pagamento em Grupo'], horizontal=True)
 
         if pagamento_individual_coletivo == 'Pagamento Individual':
-            st.selectbox('Escolha o cleinte', st.session_state.nomes_clientes_pagamento, index=None)
+            st.selectbox('Escolha o cleinte', st.session_state.nomes_clientes_pagamento[0], index=None)
+
+            if pagamento_individual_coletivo == st.session_state.nomes_clientes_pagamento[0]:
+                st.write(st.session_state.nomes_clientes_pagamento[3])
+
+
 
 
 
