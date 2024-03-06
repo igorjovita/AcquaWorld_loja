@@ -752,7 +752,8 @@ if menu_main == 'Pagamento':
                                                 reserva[5], reserva[6], total_receber, maquina)
 
                 st.success('Pagamento lançado com Sucesso')
-                st.session_state.pagina_pagamento = False
+                if len(st.session_state.nomes_clientes_pagamento) == len(nomes_pg):
+                    st.session_state.pagina_pagamento = False
 
 
 
