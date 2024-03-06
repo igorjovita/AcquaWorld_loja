@@ -673,14 +673,18 @@ if menu_main == 'Pagamento':
                  situacao_pg))
 
         nomes_pg = []
+        nomes_pg_pendente = []
         for i in st.session_state.nomes_clientes_pagamento:
             if i[7] == 'Reserva Paga':
                 nomes_pg.append(i[0])
+            else:
+                nomes_pg_pendente.append(i[0])
+
         if len(st.session_state.nomes_clientes_pagamento) == len(nomes_pg):
             st.success('Todos os clientes efetuaram o pagamento')
 
         else:
-            if len(nomes_pg) < 1:
+            if len(st.session_state.nomes_clientes_pagamento) < 1:
                 pagamento_individual_coletivo = 'Pagamento em Grupo'
             else:
                 pagamento_individual_coletivo = st.radio('Tipo de pagamento',
@@ -693,7 +697,7 @@ if menu_main == 'Pagamento':
                     if i[7] != 'Reserva Paga':
                         nomes_pg.append(i[0])
 
-                select_box_cliente_pg = st.selectbox('Escolha o cliente', nomes_pg, index=None)
+                select_box_cliente_pg = st.selectbox('Escolha o cliente', nomes_pg_pendente, index=None)
 
                 for cliente in st.session_state.nomes_clientes_pagamento:
                     if select_box_cliente_pg == cliente[0]:
