@@ -687,14 +687,13 @@ if menu_main == 'Pagamento':
 
             if pagamento_individual_coletivo == 'Pagamento Individual':
 
-
                 for i in st.session_state.nomes_clientes_pagamento:
                     if i[7] != 'Reserva Paga':
                         nomes_pg.append(i[0])
 
                 select_box_cliente_pg = st.selectbox('Escolha o cliente', nomes_pg, index=None)
 
-                  for cliente in st.session_state.nomes_clientes_pagamento:
+                for cliente in st.session_state.nomes_clientes_pagamento:
                     if select_box_cliente_pg == cliente[0]:
                         total_receber = cliente[3]
 
