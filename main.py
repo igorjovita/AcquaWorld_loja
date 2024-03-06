@@ -732,11 +732,11 @@ if menu_main == 'Pagamento':
             if st.button('Lançar Pagamento'):
                 for reserva in st.session_state.nomes_clientes_pagamento:
                     if pagamento_individual_coletivo == 'Pagamento em Grupo':
-
-                        processar_pagamento(reserva[0], data_pagamento, check_in, forma_pg, parcela,
-                                            reserva[4],
-                                            st.session_state.id_titular_pagamento, reserva[2], reserva[1],
-                                            reserva[5], reserva[6], total_receber, maquina)
+                        if reserva[7] != 'Reserva Paga':
+                            processar_pagamento(reserva[0], data_pagamento, check_in, forma_pg, parcela,
+                                                reserva[4],
+                                                st.session_state.id_titular_pagamento, reserva[2], reserva[1],
+                                                reserva[5], reserva[6], total_receber, maquina)
 
                     else:
                         if select_box_cliente_pg == reserva[0]:
