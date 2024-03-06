@@ -603,7 +603,7 @@ if menu_main == 'Pagamento':
         st.session_state.id_titular_pagamento = ''
 
     if 'nomes_cliente_pagamento' not in st.session_state:
-        st.session_state.nomes_clientes_pagamento = ''
+        st.session_state.nomes_clientes_pagamento = []
 
     st.subheader('Pagamento')
     data_pagamento = st.date_input('Data da reserva')
@@ -665,7 +665,7 @@ if menu_main == 'Pagamento':
                 st.markdown(
                     f"<h2 style='color: black; text-align: center; font-size: 1.2em;'>{situacao_pg}</h2>",
                     unsafe_allow_html=True)
-        st.session_state.nomes_clientes_pagamento = reservas_mesmo_nome[1]
+            st.session_state.nomes_clientes_pagamento.append(nome_cliente_pg)
         pagamento_individual_coletivo = st.radio('Tipo de pagamento', ['Pagamento Individual', 'Pagamento em Grupo'], horizontal=True)
 
         if pagamento_individual_coletivo == 'Pagamento Individual':
