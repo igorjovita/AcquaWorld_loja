@@ -684,6 +684,9 @@ if menu_main == 'Pagamento':
             pagamento_individual_coletivo = st.radio('Tipo de pagamento', ['Pagamento Individual', 'Pagamento em Grupo'],
                                                  horizontal=True)
 
+            if len(nomes_pg) < 1:
+                pagamento_individual_coletivo = 'Pagamento em Grupo'
+
             if pagamento_individual_coletivo == 'Pagamento Individual':
 
                 for i in st.session_state.nomes_clientes_pagamento:
