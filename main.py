@@ -616,7 +616,7 @@ if menu_main == 'Pagamento':
                 st.session_state.id_titular_pagamento = dado[1]
 
         reservas_mesmo_nome = select_reserva_id_titular(st.session_state.id_titular_pagamento)
-        
+
         titulo_tabela_pagamentos()  # Titulo da Tabela em HTML
         for clientes in reservas_mesmo_nome:
 
@@ -624,6 +624,9 @@ if menu_main == 'Pagamento':
 
             if receber_loja is None:
                 receber_loja = float(0.00)
+
+            if pagamento_pg > valor_total:
+                receber_loja = f'({valor_total} - {pagamento_pg}) pago a mais'
 
             if recebedor_pg is None:
                 texto_sinal = 'Nenhum sinal encontrado'
