@@ -209,7 +209,7 @@ if menu_main == 'Reservar':
                                                    key=f'recebedor{nome_cliente}{i}')
                 with colu3:
                     tipo = st.selectbox(f'Certificação: ',
-                                        ('BAT', 'ACP', 'TUR1', 'TUR2', 'OWD', 'ADV','EFR', 'RESCUE','DM'),
+                                        ('BAT', 'ACP', 'TUR1', 'TUR2', 'OWD', 'ADV', 'EFR', 'RESCUE', 'DM'),
                                         index=None, placeholder='Certificação', key=f'tipo{nome_cliente}{i}')
                     valor_mergulho = st.text_input(f'Valor do Mergulho',
                                                    key=f'valor{nome_cliente}{i}')
@@ -310,7 +310,8 @@ if menu_main == 'Reservar':
                 else:
                     for reserva in reservas:
                         id_reserva = insert_reserva(reserva)
-                        if reserva[2] == 'OWD' or reserva[2] == 'ADV' or reserva[2] == 'EFR' or reserva[2] == 'RESCUE' or reserva[2] == 'DM':
+                        if reserva[2] == 'OWD' or reserva[2] == 'ADV' or reserva[2] == 'EFR' or reserva[
+                            2] == 'RESCUE' or reserva[2] == 'DM':
                             insert_controle_curso(reserva[0], reserva[9], reserva[1], reserva[2])
 
                         st.session_state.pagamentos2.append((id_titular, id_reserva))
@@ -607,8 +608,6 @@ if menu_main == 'Pagamento':
     if 'nomes_cliente_pagamento' not in st.session_state:
         st.session_state.nomes_clientes_pagamento = []
 
-
-
     st.subheader('Pagamento')
     data_pagamento = st.date_input('Data da reserva')
     nome_titular_pagamento, nome_id_titular_pagamento = select_nome_id_titular(data_pagamento)
@@ -672,8 +671,10 @@ if menu_main == 'Pagamento':
 
             total_receber += float(receber_loja)
 
-            st.session_state.nomes_clientes_pagamento.append((nome_cliente_pg, id_cliente_pg, id_reserva_pg, receber_loja))
-        pagamento_individual_coletivo = st.radio('Tipo de pagamento', ['Pagamento Individual', 'Pagamento em Grupo'], horizontal=True)
+            st.session_state.nomes_clientes_pagamento.append(
+                (nome_cliente_pg, id_cliente_pg, id_reserva_pg, receber_loja))
+        pagamento_individual_coletivo = st.radio('Tipo de pagamento', ['Pagamento Individual', 'Pagamento em Grupo'],
+                                                 horizontal=True)
 
         if pagamento_individual_coletivo == 'Pagamento Individual':
 
@@ -690,20 +691,28 @@ if menu_main == 'Pagamento':
         else:
             st.subheader(f'Receber R$ {total_receber}')
 
+        forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
+                                index=None,
+                                placeholder='Insira a forma de pagamento')
 
+        if forma_pg == 'Credito':
+            parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
 
+        else:
+            parcela = 0
 
+        if forma_pg == 'Credito' or forma_pg == 'Debito':
+            maquinas = select_maquina()
+            maquina = st.selectbox('Maquininha', maquinas)
 
+        else:
+            maquina = ''
 
-
-
-
-
-
-
-
-
-
+        check_in_entry = st.selectbox('Cliente vai pra onde?', ['Loja', 'Para o pier'], index=None)
+        if check_in_entry == 'Loja':
+            check_in = '#00B0F0'
+        if check_in_entry == 'Para o pier':
+            check_in = 'yellow'
 
     # if 'botao' not in st.session_state:
     #     st.session_state.botao = False
