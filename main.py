@@ -614,7 +614,7 @@ if menu_main == 'Pagamento':
     select_box_titular = st.selectbox('Titular da Reserva', nome_titular_pagamento, index=None)
 
     if st.button('Pesquisar reserva'):
-        if select_box_titular is '':
+        if select_box_titular is None:
             st.warning('Nenhum lançamento para essa data')
         else:
             st.session_state.pagina_pagamento = True
