@@ -752,7 +752,7 @@ if menu_main == 'Pagamento':
 
                 if len(st.session_state.nomes_clientes_pagamento) == len(nomes_pg):
                     st.write(st.session_state.nomes_clientes_pagamento)
-                    st.session_state(nomes_pg)
+                    st.write(nomes_pg)
                     st.session_state.pagina_pagamento = False
                 st.rerun()
 
