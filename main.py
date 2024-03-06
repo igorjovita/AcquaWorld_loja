@@ -658,7 +658,7 @@ if menu_main == 'Pagamento':
 
             with coluna3:
                 st.markdown(
-                    f"<h2 style='color: black; text-align: center; font-size: 1.2em;'>{receber_loja}</h2>",
+                    f"<h2 style='color: black; text-align: center; font-size: 1.2em;'>{format_currency(receber_loja, 'BRL', locale='pt_BR')}</h2>",
                     unsafe_allow_html=True)
 
             with coluna4:
