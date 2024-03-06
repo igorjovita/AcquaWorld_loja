@@ -675,61 +675,71 @@ if menu_main == 'Pagamento':
                                                  horizontal=True)
         st.write('---')
 
-        if pagamento_individual_coletivo == 'Pagamento Individual':
-
-            nomes_pg = []
-            for i in st.session_state.nomes_clientes_pagamento:
-                if i[7] != 'Reserva Paga':
-                    nomes_pg.append(i[0])
-
-            select_box_cliente_pg = st.selectbox('Escolha o cliente', nomes_pg, index=None)
-
-            for cliente in st.session_state.nomes_clientes_pagamento:
-                if select_box_cliente_pg == cliente[0]:
-                    total_receber = cliente[3]
-
-        valor_pago = st.text_input('Valor Pago', value=total_receber)
-
-        forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
-                                index=None,
-                                placeholder='Insira a forma de pagamento')
-
-        if forma_pg == 'Credito':
-            parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
+        lista_ = []
+        nomes_pg = []
+        for i in st.session_state.nomes_clientes_pagamento:
+            if i[7] == 'Reserva Paga':
+                nomes_pg.append(i[0])
+        if len(st.session_state.nomes_clientes_pagamento) == len(nomes_pg):
+            st.subheader('Todos os clientes efetuaram o pagamento')
 
         else:
-            parcela = 0
 
-        if forma_pg == 'Credito' or forma_pg == 'Debito':
-            maquinas = select_maquina()
-            maquina = st.selectbox('Maquininha', maquinas)
+            if pagamento_individual_coletivo == 'Pagamento Individual':
 
-        else:
-            maquina = ''
 
-        check_in_entry = st.selectbox('Cliente vai pra onde?', ['Loja', 'Para o pier'], index=None)
-        if check_in_entry == 'Loja':
-            check_in = '#00B0F0'
-        if check_in_entry == 'Para o pier':
-            check_in = 'yellow'
+                for i in st.session_state.nomes_clientes_pagamento:
+                    if i[7] != 'Reserva Paga':
+                        nomes_pg.append(i[0])
 
-        if st.button('Lançar Pagamento'):
-            for reserva in st.session_state.nomes_clientes_pagamento:
-                if pagamento_individual_coletivo == 'Pagamento em Grupo':
+                select_box_cliente_pg = st.selectbox('Escolha o cliente', nomes_pg, index=None)
 
-                    processar_pagamento(reserva[0], data_pagamento, check_in, forma_pg, parcela,
-                                        reserva[4],
-                                        st.session_state.id_titular_pagamento, reserva[2], reserva[1],
-                                        reserva[5], reserva[6], total_receber, maquina)
+                  for cliente in st.session_state.nomes_clientes_pagamento:
+                    if select_box_cliente_pg == cliente[0]:
+                        total_receber = cliente[3]
 
-                else:
-                    if select_box_cliente_pg == reserva[0]:
+            valor_pago = st.text_input('Valor Pago', value=total_receber)
+
+            forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
+                                    index=None,
+                                    placeholder='Insira a forma de pagamento')
+
+            if forma_pg == 'Credito':
+                parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
+
+            else:
+                parcela = 0
+
+            if forma_pg == 'Credito' or forma_pg == 'Debito':
+                maquinas = select_maquina()
+                maquina = st.selectbox('Maquininha', maquinas)
+
+            else:
+                maquina = ''
+
+            check_in_entry = st.selectbox('Cliente vai pra onde?', ['Loja', 'Para o pier'], index=None)
+            if check_in_entry == 'Loja':
+                check_in = '#00B0F0'
+            if check_in_entry == 'Para o pier':
+                check_in = 'yellow'
+
+            if st.button('Lançar Pagamento'):
+                for reserva in st.session_state.nomes_clientes_pagamento:
+                    if pagamento_individual_coletivo == 'Pagamento em Grupo':
+
                         processar_pagamento(reserva[0], data_pagamento, check_in, forma_pg, parcela,
                                             reserva[4],
                                             st.session_state.id_titular_pagamento, reserva[2], reserva[1],
                                             reserva[5], reserva[6], total_receber, maquina)
 
-            st.success('Pagamento lançado com Sucesso')
+                    else:
+                        if select_box_cliente_pg == reserva[0]:
+                            processar_pagamento(reserva[0], data_pagamento, check_in, forma_pg, parcela,
+                                                reserva[4],
+                                                st.session_state.id_titular_pagamento, reserva[2], reserva[1],
+                                                reserva[5], reserva[6], total_receber, maquina)
+
+                st.success('Pagamento lançado com Sucesso')
 
     # if 'botao' not in st.session_state:
     #     st.session_state.botao = False
