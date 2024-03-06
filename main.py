@@ -611,13 +611,12 @@ if menu_main == 'Pagamento':
     st.subheader('Pagamento')
     data_pagamento = st.date_input('Data da reserva')
     nome_titular_pagamento, nome_id_titular_pagamento = select_nome_id_titular(data_pagamento)
-    select_box_titular = st.selectbox('Titular da Reserva', nome_titular_pagamento, index=None)
-
+    select_box_titular = st.selectbox('Titular da Reserva', nome_titular_pagamento)
+    if select_box_titular is None:
+        st.warning('Nenhum lançamento para essa data')
+        st.session_state.pagina_pagamento = False
     if st.button('Pesquisar reserva'):
-        if select_box_titular is None:
-            st.warning('Nenhum lançamento para essa data')
-        else:
-            st.session_state.pagina_pagamento = True
+        st.session_state.pagina_pagamento = True
 
     if st.session_state.pagina_pagamento:
         for dado in nome_id_titular_pagamento:
