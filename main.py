@@ -635,7 +635,6 @@ if menu_main == 'Pagamento':
                 if pagamento_pg >= valor_total:
                     receber_loja = float(0.00)
 
-
             if situacao_pg is None:
                 situacao_pg = 'Pendente'
 
@@ -644,8 +643,6 @@ if menu_main == 'Pagamento':
 
             else:
                 texto_sinal = f'{recebedor_pg} - R$ {pagamento_pg}'
-
-
 
             coluna1, coluna2, coluna3, coluna4 = st.columns(4)
 
@@ -672,7 +669,8 @@ if menu_main == 'Pagamento':
             total_receber += float(receber_loja)
 
             st.session_state.nomes_clientes_pagamento.append(
-                (nome_cliente_pg, id_cliente_pg, id_reserva_pg, receber_loja, id_vendedor_pg, tipo_pg, valor_total, situacao_pg))
+                (nome_cliente_pg, id_cliente_pg, id_reserva_pg, receber_loja, id_vendedor_pg, tipo_pg, valor_total,
+                 situacao_pg))
         pagamento_individual_coletivo = st.radio('Tipo de pagamento', ['Pagamento Individual', 'Pagamento em Grupo'],
                                                  horizontal=True)
         st.write('---')
@@ -689,9 +687,8 @@ if menu_main == 'Pagamento':
             for cliente in st.session_state.nomes_clientes_pagamento:
                 if select_box_cliente_pg == cliente[0]:
                     total_receber = cliente[3]
-                    valor_pago = st.text_input('Valor Pago', value=total_receber)
-        else:
-            valor_pago = st.text_input('Valor Pago', value=total_receber)
+
+        valor_pago = st.text_input('Valor Pago', value=total_receber)
 
         forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
                                 index=None,
@@ -732,10 +729,7 @@ if menu_main == 'Pagamento':
                                             st.session_state.id_titular_pagamento, reserva[2], reserva[1],
                                             reserva[5], reserva[6], total_receber, maquina)
 
-
             st.success('Pagamento lançado com Sucesso')
-
-
 
     # if 'botao' not in st.session_state:
     #     st.session_state.botao = False
