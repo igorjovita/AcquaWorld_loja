@@ -666,8 +666,9 @@ if menu_main == 'Pagamento':
                     unsafe_allow_html=True)
 
         pagamento_individual_coletivo = st.radio('Tipo de pagamento', ['Pagamento Individual', 'Pagamento em Grupo'], horizontal=True)
-            
 
+        if pagamento_individual_coletivo == 'Pagamento Individual':
+            st.write(reservas_mesmo_nome[2])
 
 
 
