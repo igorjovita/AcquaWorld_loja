@@ -665,7 +665,7 @@ if menu_main == 'Pagamento':
                 st.markdown(
                     f"<h2 style='color: black; text-align: center; font-size: 1.2em;'>{situacao_pg}</h2>",
                     unsafe_allow_html=True)
-        st.session_state.nomes_clientes_pagamento = reservas_mesmo_nome[2]
+        st.session_state.nomes_clientes_pagamento = reservas_mesmo_nome
         pagamento_individual_coletivo = st.radio('Tipo de pagamento', ['Pagamento Individual', 'Pagamento em Grupo'], horizontal=True)
 
         if pagamento_individual_coletivo == 'Pagamento Individual':
