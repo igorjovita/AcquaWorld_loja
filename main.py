@@ -671,11 +671,7 @@ if menu_main == 'Pagamento':
             st.session_state.nomes_clientes_pagamento.append(
                 (nome_cliente_pg, id_cliente_pg, id_reserva_pg, receber_loja, id_vendedor_pg, tipo_pg, valor_total,
                  situacao_pg))
-        pagamento_individual_coletivo = st.radio('Tipo de pagamento', ['Pagamento Individual', 'Pagamento em Grupo'],
-                                                 horizontal=True)
-        st.write('---')
 
-        lista_ = []
         nomes_pg = []
         for i in st.session_state.nomes_clientes_pagamento:
             if i[7] == 'Reserva Paga':
@@ -684,6 +680,9 @@ if menu_main == 'Pagamento':
             st.success('Todos os clientes efetuaram o pagamento')
 
         else:
+
+            pagamento_individual_coletivo = st.radio('Tipo de pagamento', ['Pagamento Individual', 'Pagamento em Grupo'],
+                                                 horizontal=True)
 
             if pagamento_individual_coletivo == 'Pagamento Individual':
 
