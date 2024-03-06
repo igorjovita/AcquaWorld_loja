@@ -625,8 +625,10 @@ if menu_main == 'Pagamento':
             if receber_loja is None:
                 receber_loja = float(0.00)
 
-            if pagamento_pg > valor_total:
-                receber_loja = f'({valor_total} - {pagamento_pg}) pago a mais'
+            if pagamento_pg:
+                if pagamento_pg > valor_total:
+                    recebido_excesso = float(valor_total) - float(pagamento_pg)
+                    receber_loja = f'R$ {recebido_excesso} excedente'
 
             if recebedor_pg is None:
                 texto_sinal = 'Nenhum sinal encontrado'
