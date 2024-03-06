@@ -670,7 +670,11 @@ if menu_main == 'Pagamento':
         pagamento_individual_coletivo = st.radio('Tipo de pagamento', ['Pagamento Individual', 'Pagamento em Grupo'], horizontal=True)
 
         if pagamento_individual_coletivo == 'Pagamento Individual':
-            st.selectbox('Escolha o cleinte', st.session_state.nomes_clientes_pagamento[0], index=None)
+
+            nomes_pg = []
+            for i in st.session_state.nomes_clientes_pagamento:
+                nomes_pg.append(i[0])
+            st.selectbox('Escolha o cleinte', nomes_pg, index=None)
 
             if pagamento_individual_coletivo == st.session_state.nomes_clientes_pagamento[0]:
                 st.write(st.session_state.nomes_clientes_pagamento[3])
