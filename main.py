@@ -673,25 +673,27 @@ if menu_main == 'Pagamento':
 
             st.session_state.nomes_clientes_pagamento.append(
                 (nome_cliente_pg, id_cliente_pg, id_reserva_pg, receber_loja))
-        pagamento_individual_coletivo = st.radio('Tipo de pagamento', ['Pagamento Individual', 'Pagamento em Grupo'],
-                                                 horizontal=True)
-
-        if pagamento_individual_coletivo == 'Pagamento Individual':
-
-            nomes_pg = []
-            for i in st.session_state.nomes_clientes_pagamento:
-                nomes_pg.append(i[0])
-
-            select_box_cliente_pg = st.selectbox('Escolha o cliente', nomes_pg, index=None)
-
-            for cliente in st.session_state.nomes_clientes_pagamento:
-                if select_box_cliente_pg == cliente[0]:
-                    total_receber = cliente[3]
-                    st.subheader(f'Receber R$ {total_receber}')
-        else:
-            st.subheader(f'Receber R$ {total_receber}')
 
         with st.form('Pagamento'):
+            pagamento_individual_coletivo = st.radio('Tipo de pagamento', ['Pagamento Individual', 'Pagamento em Grupo'],
+                                                     horizontal=True)
+
+            if pagamento_individual_coletivo == 'Pagamento Individual':
+
+                nomes_pg = []
+                for i in st.session_state.nomes_clientes_pagamento:
+                    nomes_pg.append(i[0])
+
+                select_box_cliente_pg = st.selectbox('Escolha o cliente', nomes_pg, index=None)
+
+                for cliente in st.session_state.nomes_clientes_pagamento:
+                    if select_box_cliente_pg == cliente[0]:
+                        total_receber = cliente[3]
+                        st.subheader(f'Receber R$ {total_receber}')
+            else:
+                st.subheader(f'Receber R$ {total_receber}')
+
+
             forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
                                     index=None,
                                     placeholder='Insira a forma de pagamento')
