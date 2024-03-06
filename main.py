@@ -688,9 +688,9 @@ if menu_main == 'Pagamento':
             for cliente in st.session_state.nomes_clientes_pagamento:
                 if select_box_cliente_pg == cliente[0]:
                     total_receber = cliente[3]
-                    st.subheader(f'Receber R$ {total_receber}')
+                    valor_pago = st.text_input('Valor Pago', value=total_receber)
         else:
-            st.subheader(f'Receber R$ {total_receber}')
+            valor_pago = st.text_input('Valor Pago', value=total_receber)
 
 
         forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
