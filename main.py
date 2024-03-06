@@ -596,6 +596,8 @@ if menu_main == 'Editar':
 if menu_main == 'Pagamento':
     # Iniciando variaveis e listas
     id_titular_pagamento = ''
+    total_receber = 0
+
     if 'pagina_pagamento' not in st.session_state:
         st.session_state.pagina_pagamento = False
 
@@ -604,6 +606,8 @@ if menu_main == 'Pagamento':
 
     if 'nomes_cliente_pagamento' not in st.session_state:
         st.session_state.nomes_clientes_pagamento = []
+
+
 
     st.subheader('Pagamento')
     data_pagamento = st.date_input('Data da reserva')
@@ -666,6 +670,8 @@ if menu_main == 'Pagamento':
                     f"<h2 style='color: black; text-align: center; font-size: 1.2em;'>{situacao_pg}</h2>",
                     unsafe_allow_html=True)
 
+            total_receber += receber_loja
+
             st.session_state.nomes_clientes_pagamento.append((nome_cliente_pg, id_cliente_pg, id_reserva_pg, receber_loja))
         pagamento_individual_coletivo = st.radio('Tipo de pagamento', ['Pagamento Individual', 'Pagamento em Grupo'], horizontal=True)
 
@@ -679,8 +685,9 @@ if menu_main == 'Pagamento':
 
             for cliente in st.session_state.nomes_clientes_pagamento:
                 if select_box_cliente_pg == cliente[0]:
-                    st.write(cliente[3])
-
+                    st.subheader(f'Receber R$ {cliente[3]}')
+        else:
+            st.subheader(total_receber)
 
 
 
