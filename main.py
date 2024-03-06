@@ -681,7 +681,7 @@ if menu_main == 'Pagamento':
             if i[7] == 'Reserva Paga':
                 nomes_pg.append(i[0])
         if len(st.session_state.nomes_clientes_pagamento) == len(nomes_pg):
-            st.subheader('Todos os clientes efetuaram o pagamento')
+            st.success('Todos os clientes efetuaram o pagamento')
 
         else:
 
