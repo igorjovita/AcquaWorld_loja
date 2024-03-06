@@ -236,11 +236,7 @@ if menu_main == 'Reservar':
                     elif (tipo == 'OWD' or tipo == 'ADV') and data_pratica2 is None:
                         st.error('Informe a data da pratica 2')
                     else:
-                        if data_pratica2 is not None:
-                            st.session_state.data_pratica2.append(data_pratica2)
-                        else:
-                            st.session_state.data_pratica2.append('')
-
+                    
                         if nome_cliente not in st.session_state.nome_cadastrado:
                             st.session_state.nome_cadastrado.append(nome_cliente)
                             forma_pg = 'Pix'
@@ -290,10 +286,10 @@ if menu_main == 'Reservar':
                 else:
                     if id_titular is None:
                         id_titular = id_cliente
-            if st.session_state.data_pratica2:
-                reservas.append(
-                    (data, id_cliente, tipo, id_vendedor, valor_mergulho, nome_cliente, '#FFFFFF', id_titular,
-                     valor_loja, st.session_state.data_pratica2[i]))
+
+            reservas.append(
+                (data, id_cliente, tipo, id_vendedor, valor_mergulho, nome_cliente, '#FFFFFF', id_titular,
+                 valor_loja, data_pratica2))
             st.write('---')
 
         if st.button('Reservar'):
