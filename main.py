@@ -631,6 +631,9 @@ if menu_main == 'Pagamento':
             if receber_loja is None:
                 receber_loja = float(0.00)
 
+            if receber_loja == pagamento_pg:
+                receber_loja = float(0.00)
+
             if pagamento_pg:
                 if pagamento_pg >= valor_total:
                     receber_loja = float(0.00)
