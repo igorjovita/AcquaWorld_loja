@@ -699,7 +699,8 @@ if menu_main == 'Pagamento':
                     if select_box_cliente_pg == cliente[0]:
                         total_receber = cliente[3]
 
-            valor_pago = st.text_input('Valor Pago', value=total_receber)
+            total_receber_real = format_currency(total_receber, 'BRL', locale='pt_BR')
+            valor_pago = st.text_input('Valor Pago', value=total_receber_real)
 
             forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
                                     index=None,
@@ -713,7 +714,7 @@ if menu_main == 'Pagamento':
 
             if forma_pg == 'Credito' or forma_pg == 'Debito':
                 maquinas = select_maquina()
-                maquina = st.selectbox('Maquininha', maquinas)
+                maquina = st.selectbox('Maquininha', maquinas, index=None)
 
             else:
                 maquina = ''
