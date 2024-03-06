@@ -602,7 +602,7 @@ if menu_main == 'Pagamento':
     if 'id_titular_pagamento' not in st.session_state:
         st.session_state.id_titular_pagamento = ''
 
-    if nomes_cliente_pagamento not in st.session_state:
+    if 'nomes_cliente_pagamento' not in st.session_state:
         st.session_state.nomes_clientes_pagamento = ''
 
     st.subheader('Pagamento')
