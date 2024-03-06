@@ -217,6 +217,8 @@ if menu_main == 'Reservar':
 
                 with st.expander('Data Pratica 2'):
                     data_pratica2 = st.date_input('Data da Pratica 2', format='DD/MM/YYYY', value=None)
+                    if data_pratica2 == '0000-00-00':
+                        data_pratica2 = ''
 
                     roupa = f'{altura:.2f}/{peso}'
                     if valor_loja == '':
@@ -236,7 +238,7 @@ if menu_main == 'Reservar':
                     elif (tipo == 'OWD' or tipo == 'ADV') and data_pratica2 is None:
                         st.error('Informe a data da pratica 2')
                     else:
-                    
+
                         if nome_cliente not in st.session_state.nome_cadastrado:
                             st.session_state.nome_cadastrado.append(nome_cliente)
                             forma_pg = 'Pix'

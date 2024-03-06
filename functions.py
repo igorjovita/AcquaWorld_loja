@@ -346,7 +346,7 @@ def insert_controle_curso(data_pratica1, data_pratica2, id_cliente, tipo):
 
 def insert_reserva(reserva):
     mydb.connect()
-    if reserva[9] != '':
+    if reserva[2] != 'OWD' or reserva[2] = 'ADV':
         for i in range(2):
             nova_reserva = list(reserva)
             if i == 0:
