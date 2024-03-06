@@ -629,6 +629,9 @@ if menu_main == 'Pagamento':
                 if pagamento_pg >= valor_total:
                     receber_loja = float(0.00)
 
+            if situacao_pg is None:
+                situacao_pg = 'Pendente'
+
             if recebedor_pg is None:
                 texto_sinal = 'Nenhum sinal encontrado'
 
