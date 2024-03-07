@@ -748,7 +748,7 @@ if menu_main == 'Pagamento':
                                                 st.session_state.id_titular_pagamento, reserva[2], reserva[1],
                                                 reserva[5], reserva[6], total_receber, maquina)
 
-               
+
                 st.rerun()
 
 

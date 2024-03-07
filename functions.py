@@ -152,6 +152,7 @@ def select_reserva(nome, data_reserva):
 
     return info_reserva
 
+
 @st.cache_resource
 def select_maquina():
     mydb.connect()
@@ -178,7 +179,6 @@ def select_reserva_id_titular(id_titular):
 def select_id_titular_vendedor():
     mydb.connect()
     cursor.execute("SELECT id_titular, id_vendedor FROM reserva WHERE id_cliente = %s ")
-
 
 
 def select_nome_id_titular(data):
@@ -273,6 +273,7 @@ def select_alunos():
     mydb.close()
     return lista_nome_alunos, alunos
 
+
 def select_quantidade_material():
     mydb.connect()
     cursor.execute("""
@@ -296,9 +297,9 @@ def select_quantidade_material():
 
 
 def select_curso_certificar():
-
     mydb.connect()
-    cursor.execute("SELECT cliente.nome, cliente.id, c.curso from controle_cursos as c INNER JOIN cliente on c.id_cliente = cliente.id where c.certificacao = 'PENDENTE'")
+    cursor.execute(
+        "SELECT cliente.nome, cliente.id, c.curso from controle_cursos as c INNER JOIN cliente on c.id_cliente = cliente.id where c.certificacao = 'PENDENTE'")
     aluno_certificar = cursor.fetchall()
     lista_alunos = []
     for aluno in aluno_certificar:
@@ -310,11 +311,28 @@ def select_curso_certificar():
 
 def select_maquina_pagamentos(maquina):
     mydb.connect()
-    cursor.execute(f"SELECT p.data, r.nome_cliente, r.tipo, p.forma_pg, p.parcela, p.pagamento FROM pagamentos as p INNER JOIN reserva as r on p.id_reserva = r.id where p.maquina = %s",(maquina, ))
+    cursor.execute(
+        f"SELECT p.data, r.nome_cliente, r.tipo, p.forma_pg, p.parcela, p.pagamento FROM pagamentos as p INNER JOIN reserva as r on p.id_reserva = r.id where p.maquina = %s",
+        (maquina,))
     lista_maquinas = cursor.fetchall()
     mydb.close()
     return lista_maquinas
 
+
+def select_termo_cliente(data):
+    mydb.connect()
+    cursor.execute(f"""
+    SELECT CASE WHEN id_cliente IS NOT NULL THEN 'Com cliente'
+            ELSE 'Sem cliente'
+        END AS situacao,
+        COUNT(*) AS quantidade
+    FROM sua_tabela
+    WHERE data = '{data}'
+    GROUP BY id_cliente;
+""")
+    dados = cursor.fetchall()
+
+    return dados
 
 
 # def select_alunos():
@@ -394,7 +412,8 @@ def insert_cliente(cpf, nome_cliente, telefone, roupa):
     return id_cliente
 
 
-def insert_pagamento(data_pagamento, id_reserva_cliente, recebedor, pagamento, forma_pg, parcela, id_titular_pagamento, maquina):
+def insert_pagamento(data_pagamento, id_reserva_cliente, recebedor, pagamento, forma_pg, parcela, id_titular_pagamento,
+                     maquina):
     mydb.connect()
     cursor.execute(
         "INSERT INTO pagamentos (data ,id_reserva, recebedor, pagamento, forma_pg, parcela, id_titular, maquina) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
@@ -455,15 +474,19 @@ def insert_vendedores(nome, apelido, telefone, neto_bat, neto_acp, neto_tur1, ne
 
 def update_controle_curso_certificar(id_cliente, numero_certificacao, tipo, data):
     mydb.connect()
-    cursor.execute("UPDATE controle_cursos set certificacao = 'CERTIFICADO', exercicios = 'CONCLUIDO', n_certificacao = %s WHERE id_cliente = %s", (numero_certificacao, id_cliente))
+    cursor.execute(
+        "UPDATE controle_cursos set certificacao = 'CERTIFICADO', exercicios = 'CONCLUIDO', n_certificacao = %s WHERE id_cliente = %s",
+        (numero_certificacao, id_cliente))
 
     if tipo == 'EFR':
 
-        cursor.execute("INSERT INTO contagem_curso (data, tipo_movimento, pic_efr) VALUES (%s, %s, %s)", (data, 'SAIDA', 1))
+        cursor.execute("INSERT INTO contagem_curso (data, tipo_movimento, pic_efr) VALUES (%s, %s, %s)",
+                       (data, 'SAIDA', 1))
     else:
         cursor.execute("INSERT INTO contagem_curso (data, tipo_movimento, pic_dive) VALUES (%s, %s, %s)",
                        (data, 'SAIDA', 1))
     mydb.close()
+
 
 def update_controle_curso_material(id_cliente):
     mydb.connect()
