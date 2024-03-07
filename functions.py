@@ -142,6 +142,20 @@ def select_valor_neto(tipo, valor_total_reserva, id_vendedor_pg, forma_pg):
         return None
 
 
+def select_lista_nomes(data):
+    mydb.connect()
+    cursor.execute("SELECT cliente.nome from reserva inner join cliente on reserva.id_cliente = cliente.id where reserva.data = %s", (data,))
+    dados = cursor.fetchall()
+    lista_clientes = []
+    if dados:
+        for dado in dados:
+            lista_clientes.append(str(dado).translate(str.maketrans('', '', chars)))
+
+
+    mydb.close()
+    return lista_clientes
+
+
 @st.cache_resource
 def select_reserva(nome, data_reserva):
     mydb.connect()
