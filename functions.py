@@ -331,6 +331,9 @@ def select_termo_cliente(data):
     GROUP BY id_cliente;
 """)
     dados = cursor.fetchall()
+    if dados:
+        st.write(f'Clientes Relacionados - {dados[0][1]}')
+        st.write(f'Clientes Não Relacionados - {dados[1][1]}')
 
     return dados
 
