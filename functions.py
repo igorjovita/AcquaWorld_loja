@@ -325,7 +325,7 @@ def select_termo_cliente(data):
     SELECT  CASE WHEN id_cliente IS NOT NULL THEN 'relacionado ao cliente'
             ELSE 'nao relacionado'
         END AS situacao,
-        COUNT(*) AS quantidade
+        COUNT(*) AS quantidade,
         GROUP_CONCAT(nome) as nome
     FROM termo_clientes
     WHERE data_reserva = '{data}'
