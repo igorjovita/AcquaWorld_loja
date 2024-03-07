@@ -13,16 +13,14 @@ if st.button('Pesquisar'):
     st.session_state.pesquisa_termo = True
 
 if st.session_state.pesquisa_termo:
-    dados = select_termo_cliente(data_termo)
+    dados, lista_relacionado, lista_nao_relacionado = select_termo_cliente(data_termo)
     if dados:
         st.write(dados)
-        if len(dados) == 1 and dados[0][0] == 'relacionado ao cliente':
+        if len(lista_nao_relacionado) == 0:
             st.success('Todos os termos estão relacionados aos clientes')
         else:
 
-            nomes_nao_relacionados = str(dados[0][2]).split(',')
-
-            select_box_nao_relacionado = st.selectbox('Escolha o cliente para relacionar', nomes_nao_relacionados,
+            select_box_nao_relacionado = st.selectbox('Escolha o cliente para relacionar', lista_nao_relacionado,
                                                       index=None)
             nomes_reservados, nomes_ids_reservados = select_lista_nomes(data_termo)
             select_box_reservados = st.selectbox('Clientes Reservados', nomes_reservados, index=None)

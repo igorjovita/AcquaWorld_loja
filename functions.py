@@ -347,9 +347,16 @@ def select_termo_cliente(data):
         FROM termo_clientes
         WHERE data_reserva = '{data}';
     """)
+    lista_relacionados = []
+    lista_nao_relacionados = []
     dados = cursor.fetchall()
+    for dado in dados:
+        if dado[2] == 'relacionado ao cliente':
+            lista_relacionados.append(dado[1])
+        else:
+            lista_nao_relacionados.append(dado[1])
 
-    return dados
+    return dados, lista_relacionados, lista_nao_relacionados
 
 
 
