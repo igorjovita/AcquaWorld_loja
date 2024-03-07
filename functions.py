@@ -322,8 +322,8 @@ def select_maquina_pagamentos(maquina):
 def select_termo_cliente(data):
     mydb.connect()
     cursor.execute(f"""
-    SELECT CASE WHEN id_cliente IS NOT NULL THEN 
-            ELSE 
+    SELECT CASE WHEN id_cliente IS NOT NULL THEN 'Com cliente'
+            ELSE 'Sem cliente'
         END AS situacao,
         COUNT(*) AS quantidade
     FROM termo_clientes
