@@ -12,9 +12,6 @@ data_termo = st.date_input('Selecione a data para pesquisar', format='DD/MM/YYYY
 if st.button('Pesquisar'):
     st.session_state.pesquisa_termo = True
 
-
-
-
 if st.session_state.pesquisa_termo:
     dados = select_termo_cliente(data_termo)
     if dados:
@@ -24,8 +21,8 @@ if st.session_state.pesquisa_termo:
 
             nomes_nao_relacionados = str(dados[0][2]).split(',')
 
-
-            select_box_nao_relacionado = st.selectbox('Escolha o cliente para relacionar', nomes_nao_relacionados, index=None)
+            select_box_nao_relacionado = st.selectbox('Escolha o cliente para relacionar', nomes_nao_relacionados,
+                                                      index=None)
             nomes_reservados, nomes_ids_reservados = select_lista_nomes(data_termo)
             select_box_reservados = st.selectbox('Clientes Reservados', nomes_reservados, index=None)
             atualizar = st.selectbox('Atualizar informaçoes do cliente?', ['Sim', 'Não'], index=None)
@@ -44,5 +41,3 @@ if st.session_state.pesquisa_termo:
                 else:
                     update_termo_cliente(id_cliente, select_box_nao_relacionado)
                     update_reserva_cliente_termo(data_termo, id_cliente, tipo)
-
-

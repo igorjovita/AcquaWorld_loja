@@ -505,10 +505,10 @@ def update_reserva_cliente_termo(data, id_cliente, tipo):
 
 def update_cliente(nome, telefone, cpf, estado, pais, id_cliente):
     mydb.connect()
-    st.write(id_cliente)
-    # cursor.execute(
-    #     "UPDATE cliente SET nome = %s, telefone = %s, cpf = %s, estado = %s, pais = %s WHERE id = %s",
-    #     (nome, telefone, cpf, estado, pais, id_cliente))
+ 
+    cursor.execute(
+        "UPDATE cliente SET nome = %s, telefone = %s, cpf = %s, estado = %s, pais = %s WHERE id = %s",
+        (nome, telefone, cpf, estado, pais, id_cliente))
 
     mydb.close()
 
