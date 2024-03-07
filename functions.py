@@ -326,7 +326,7 @@ def select_termo_cliente(data):
             ELSE 'nao relacionado'
         END AS situacao,
         COUNT(*) AS quantidade
-        GROUP_CONCAT(nome)
+        GROUP_CONCAT(nome) as nome
     FROM termo_clientes
     WHERE data_reserva = '{data}'
     GROUP BY id_cliente;
