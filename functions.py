@@ -498,16 +498,17 @@ def update_reserva_cliente_termo(data, id_cliente, tipo):
     dado = cursor.fetchone()
     if dado:
         st.write(dado)
-        # update_cliente(dado[0], dado[1], dado[2], dado[3], dado[4], id_cliente)
-        # update_info_reserva(dado[0], id_cliente, data, tipo)
+        update_cliente(dado[0], dado[1], dado[2], dado[3], dado[4], id_cliente)
+        update_info_reserva(dado[0], id_cliente, data, tipo)
     mydb.close()
 
 
 def update_cliente(nome, telefone, cpf, estado, pais, id_cliente):
     mydb.connect()
-    cursor.execute(
-        "UPDATE cliente SET nome = %s, telefone = %s, cpf = %s, estado = %s, pais = %s WHERE id = %s",
-        (nome, telefone, cpf, estado, pais, id_cliente))
+    st.write(id_cliente)
+    # cursor.execute(
+    #     "UPDATE cliente SET nome = %s, telefone = %s, cpf = %s, estado = %s, pais = %s WHERE id = %s",
+    #     (nome, telefone, cpf, estado, pais, id_cliente))
 
     mydb.close()
 
@@ -519,9 +520,9 @@ def update_info_reserva(nome, id_cliente, data, tipo):
             f"UPDATE reserva set nome_cliente = '{nome}' WHERE id_cliente = {id_cliente} and data = '{data}'")
 
 
-def update_termo_cliente(id_cliente):
+def update_termo_cliente(id_cliente, nome):
     mydb.connect()
-    cursor.execute("UPDATE termo_clientes set id_cliente = %s", (id_cliente,))
+    cursor.execute("UPDATE termo_clientes set id_cliente = %s where nome = %s", (id_cliente, nome))
     mydb.close()
 
 
