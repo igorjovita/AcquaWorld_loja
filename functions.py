@@ -497,8 +497,9 @@ def update_reserva_cliente_termo(data, id_cliente, tipo):
         (data, id_cliente))
     dado = cursor.fetchone()
     if dado:
-        update_cliente(dado[0], dado[1], dado[2], dado[3], dado[4], id_cliente)
-        update_info_reserva(dado[0], id_cliente, data, tipo)
+        st.write(dado)
+        # update_cliente(dado[0], dado[1], dado[2], dado[3], dado[4], id_cliente)
+        # update_info_reserva(dado[0], id_cliente, data, tipo)
     mydb.close()
 
 
