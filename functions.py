@@ -345,7 +345,7 @@ def select_termo_cliente(data):
     GROUP BY id_cliente;
 """)
     dados = cursor.fetchall()
-
+    st.write(dados)
 
     return dados
 
