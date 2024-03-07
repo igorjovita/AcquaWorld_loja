@@ -18,8 +18,8 @@ if st.button('Pesquisar'):
 if st.session_state.pesquisa_termo:
     dados = select_termo_cliente(data_termo)
     if dados:
-        st.write(f'Clientes Não Relacionados - {dados[0][1]}')
-        st.write(f'Clientes Relacionados - {dados[1][1]}')
+        # st.write(f'Clientes Não Relacionados - {dados[0][1]}')
+        # st.write(f'Clientes Relacionados - {dados[1][1]}')
         nomes_nao_relacionados = str(dados[0][2]).split(',')
         st.selectbox('Escolha o cliente para relacionar', nomes_nao_relacionados, index=None)
         nomes_reservados, nomes_ids_reservados = select_lista_nomes(data_termo)
