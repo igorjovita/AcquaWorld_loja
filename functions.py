@@ -337,15 +337,16 @@ def select_maquina_pagamentos(maquina):
 def select_termo_cliente(data):
     mydb.connect()
     cursor.execute(f"""
-    SELECT  CASE WHEN id_cliente IS NOT NULL THEN 'relacionado ao cliente'
-            ELSE 'nao relacionado'
-        END AS situacao,
-        COUNT(*) AS quantidade,
-        GROUP_CONCAT(nome) as nome
-    FROM termo_clientes
-    WHERE data_reserva = '{data}'
-    GROUP BY id_cliente;
-""")
+        SELECT
+            id_cliente,
+            nome,
+            CASE
+                WHEN id_cliente IS NOT NULL THEN 'relacionado ao cliente'
+                ELSE 'nao relacionado'
+            END AS situacao
+        FROM termo_clientes
+        WHERE data_reserva = '{data}';
+    """)
     dados = cursor.fetchall()
 
     return dados
