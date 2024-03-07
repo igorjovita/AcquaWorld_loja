@@ -15,7 +15,6 @@ if st.button('Pesquisar'):
 if st.session_state.pesquisa_termo:
     dados, lista_relacionado, lista_nao_relacionado = select_termo_cliente(data_termo)
     if dados:
-        st.write(dados)
         if len(lista_nao_relacionado) == 0:
             st.success('Todos os termos estão relacionados aos clientes')
         else:
