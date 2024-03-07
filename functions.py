@@ -144,13 +144,14 @@ def select_valor_neto(tipo, valor_total_reserva, id_vendedor_pg, forma_pg):
 
 def select_lista_nomes(data):
     mydb.connect()
-    cursor.execute("SELECT cliente.nome, cliente.id from reserva inner join cliente on reserva.id_cliente = cliente.id where reserva.data = %s", (data,))
+    cursor.execute(
+        "SELECT cliente.nome, cliente.id, reserva.tipo from reserva inner join cliente on reserva.id_cliente = cliente.id where reserva.data = %s",
+        (data,))
     dados = cursor.fetchall()
     lista_clientes = []
     if dados:
         for dado in dados:
             lista_clientes.append(str(dado[0]).translate(str.maketrans('', '', chars)))
-
 
     mydb.close()
     return lista_clientes, dados
@@ -336,18 +337,20 @@ def select_maquina_pagamentos(maquina):
 def select_termo_cliente(data):
     mydb.connect()
     cursor.execute(f"""
-    SELECT *, CASE WHEN id_cliente IS NOT NULL THEN 'relacionado ao cliente'
+    SELECT  CASE WHEN id_cliente IS NOT NULL THEN 'relacionado ao cliente'
             ELSE 'nao relacionado'
         END AS situacao,
-        COUNT(*) AS quantidade
+        COUNT(*) AS quantidade,
+        GROUP_CONCAT(nome) as nome
     FROM termo_clientes
     WHERE data_reserva = '{data}'
     GROUP BY id_cliente;
 """)
     dados = cursor.fetchall()
-    st.write(dados)
 
     return dados
+
+
 
 
 # def select_alunos():
@@ -487,11 +490,23 @@ def insert_vendedores(nome, apelido, telefone, neto_bat, neto_acp, neto_tur1, ne
 # FUNÇÕES NORMAIS
 
 
-def update_cliente(nome, telefone, cpf, estado, id_cliente):
+def update_reserva_cliente_termo(data, id_cliente, tipo):
     mydb.connect()
     cursor.execute(
-        "UPDATE cliente SET nome = %s, telefone = %s, cpf = %s, estado = %s WHERE id = %s",
-        (nome, telefone, cpf, estado, id_cliente))
+        "SELECT nome, cpf, telefone, estado, pais from termo_clientes where data_reserva = %s and id_cliente = %s",
+        (data, id_cliente))
+    dado = cursor.fetchone()
+    if dado:
+        update_cliente(dado[0], dado[1], dado[2], dado[3], dado[4], id_cliente)
+        update_info_reserva(dado[0], id_cliente, data, tipo)
+    mydb.close()
+
+
+def update_cliente(nome, telefone, cpf, estado, pais, id_cliente):
+    mydb.connect()
+    cursor.execute(
+        "UPDATE cliente SET nome = %s, telefone = %s, cpf = %s, estado = %s, pais WHERE id = %s",
+        (nome, telefone, cpf, estado, pais, id_cliente))
 
     mydb.close()
 
@@ -505,9 +520,8 @@ def update_info_reserva(nome, id_cliente, data, tipo):
 
 def update_termo_cliente(id_cliente):
     mydb.connect()
-    cursor.execute("UPDATE termo_clientes set id_cliente = %s", (id_cliente, ))
+    cursor.execute("UPDATE termo_clientes set id_cliente = %s", (id_cliente,))
     mydb.close()
-
 
 
 def update_controle_curso_certificar(id_cliente, numero_certificacao, tipo, data):
