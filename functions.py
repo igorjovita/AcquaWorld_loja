@@ -326,7 +326,7 @@ def select_termo_cliente(data):
             ELSE 'Sem cliente'
         END AS situacao,
         COUNT(*) AS quantidade
-    FROM sua_tabela
+    FROM termo_clientes
     WHERE data = '{data}'
     GROUP BY id_cliente;
 """)
