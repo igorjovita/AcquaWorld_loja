@@ -11,6 +11,11 @@ data_termo = st.date_input('Selecione a data para pesquisar', format='DD/MM/YYYY
 if st.button('Pesquisar'):
     st.session_state.pesquisa_termo = True
 
+
+def update_termo_clientes(id_cliente):
+    pass
+
+
 if st.session_state.pesquisa_termo:
     dados = select_termo_cliente(data_termo)
     if dados:
@@ -28,3 +33,4 @@ if st.session_state.pesquisa_termo:
                     id_cliente = cliente[1]
 
             st.write(id_cliente)
+            update_termo_clientes(id_cliente)

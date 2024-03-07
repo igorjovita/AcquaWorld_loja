@@ -336,11 +336,10 @@ def select_maquina_pagamentos(maquina):
 def select_termo_cliente(data):
     mydb.connect()
     cursor.execute(f"""
-    SELECT  CASE WHEN id_cliente IS NOT NULL THEN 'relacionado ao cliente'
+    SELECT * CASE WHEN id_cliente IS NOT NULL THEN 'relacionado ao cliente'
             ELSE 'nao relacionado'
         END AS situacao,
-        COUNT(*) AS quantidade,
-        GROUP_CONCAT(nome) as nome
+        COUNT(*) AS quantidade
     FROM termo_clientes
     WHERE data_reserva = '{data}'
     GROUP BY id_cliente;
@@ -486,6 +485,29 @@ def insert_vendedores(nome, apelido, telefone, neto_bat, neto_acp, neto_tur1, ne
 
 
 # FUNÇÕES NORMAIS
+
+
+def update_cliente(nome, telefone, cpf, estado, id_cliente):
+    mydb.connect()
+    cursor.execute(
+        "UPDATE cliente SET nome = %s, telefone = %s, cpf = %s, estado = %s WHERE id = %s",
+        (nome, telefone, cpf, estado, id_cliente))
+
+    mydb.close()
+
+
+def update_info_reserva(nome, id_cliente, data, tipo):
+    mydb.connect()
+    if tipo != 'OWD' or tipo != 'ADV':
+        cursor.execute(
+            f"UPDATE reserva set nome_cliente = '{nome}' WHERE id_cliente = {id_cliente} and data = '{data}'")
+
+
+def update_termo_cliente(id_cliente):
+    mydb.connect()
+    cursor.execute("UPDATE termo_clientes set id_cliente = %s", (id_cliente, ))
+    mydb.close()
+
 
 
 def update_controle_curso_certificar(id_cliente, numero_certificacao, tipo, data):
