@@ -327,7 +327,7 @@ def select_termo_cliente(data):
         END AS situacao,
         COUNT(*) AS quantidade
     FROM termo_clientes
-    WHERE data = '{data}'
+    WHERE data_reserva = '{data}'
     GROUP BY id_cliente;
 """)
     dados = cursor.fetchall()
