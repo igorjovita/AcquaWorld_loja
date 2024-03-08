@@ -349,16 +349,27 @@ def select_termo_cliente(data):
     """)
     lista_relacionados = []
     lista_nao_relacionados = []
+    lista_total = []
     dados = cursor.fetchall()
     for dado in dados:
         if dado[2] == 'relacionado ao cliente':
             lista_relacionados.append(dado[1])
         else:
             lista_nao_relacionados.append(dado[1])
+        lista_total.append(dado[1])
+    return dados, lista_relacionados, lista_nao_relacionados, lista_total
 
-    return dados, lista_relacionados, lista_nao_relacionados
 
+def select_termo(data):
+    mydb.connect()
 
+    cursor.execute(
+        f"SElECT c.nome, c.telefone, c.cpf, c.data_nascimento, c.email, c.nome_emergencia, c.telefone_emergencia, c.estado, c.pais, m.gravida, m.remedio, m.doenca_cardiaca, m.asma, m.doenca_pulmonar, m.epilepsia, m.enjoo, m.dd, m.coluna, m.diabetes, m.ouvido, m.hemorragia, m.cirurgia, m.nome_cirurgia, m.tempo_cirurgia, m.viagem, m.menor, m.bebida from termo_clientes as c INNER JOIN termo_medico as m on m.id_termo_cliente = c.id  where c.data_reserva = '{data}'")
+    dados = cursor.fetchall()
+
+    mydb.close()
+
+    return dados
 
 
 # def select_alunos():
@@ -814,11 +825,41 @@ def gerar_pdf(data_para_pdf):
     return pdf_filename
 
 
-def html_termo():
+def html_termo(data, nome_cliente):
+    nome = ''
+    cpf = ''
+    telefone = ''
+    email = ''
+    data_nascimento = ''
+    pais = ''
+    estado = ''
+    nome_emergencia = ''
+    telefone_emergencia = ''
 
-    mydb.connect()
+    dados_termo = select_termo(data)
 
-    cursor.execute("SELECT ")
+    for dado in dados_termo:
+        if dado[0] == nome_cliente:
+            nome = dado[0]
+            cpf = dado[2]
+            telefone = dado[1]
+            email = dado[4]
+            data_nascimento = dado[3]
+            pais = dado[8]
+            estado = dado[7]
+            nome_emergencia = dado[5]
+            telefone_emergencia = dado[6]
+
+    contexto = {'nome': nome, 'cpf': cpf, 'telefone': telefone, 'email': email,
+                'data_nascimento': data_nascimento, 'nome_emergencia': nome_emergencia, 'telefone_emergencia': telefone_emergencia, 'pais': pais, 'estdao': estado}
+
+    # Renderizar o template HTML
+    planilha_loader = jinja2.FileSystemLoader('./')
+    planilha_env = jinja2.Environment(loader=planilha_loader)
+    planilha = planilha_env.get_template('termo_responsabilidade.html')
+    output_text = planilha.render(contexto)
+
+    return output_text
 
 
 

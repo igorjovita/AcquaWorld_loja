@@ -1,7 +1,9 @@
 import streamlit as st
 
 from functions import select_termo_cliente, select_lista_nomes, update_reserva_cliente_termo, update_termo_cliente, \
-    update_info_reserva
+    update_info_reserva, html_termo
+
+import streamlit.components.v1
 
 st.subheader('Termos de responsabilidade')
 
@@ -15,7 +17,8 @@ if st.button('Pesquisar'):
     st.session_state.pesquisa_termo = True
 
 if st.session_state.pesquisa_termo:
-    dados, lista_relacionado, lista_nao_relacionado = select_termo_cliente(data_termo)
+    dados, lista_relacionado, lista_nao_relacionado, lista_total = select_termo_cliente(data_termo)
+    col1, col2 = st.columns(2)
     if dados:
         if len(lista_nao_relacionado) == 0:
             st.success('Todos os termos estão relacionados aos clientes')
@@ -26,18 +29,26 @@ if st.session_state.pesquisa_termo:
             nomes_reservados, nomes_ids_reservados = select_lista_nomes(data_termo)
             select_box_reservados = st.selectbox('Clientes Reservados', nomes_reservados, index=None)
             atualizar = st.selectbox('Atualizar informaçoes do cliente?', ['Sim', 'Não'], index=None)
+            with col1:
+                if st.button('Relacionar'):
 
-            if st.button('Relacionar'):
+                    id_cliente = ''
+                    for cliente in nomes_ids_reservados:
+                        if select_box_reservados == cliente[0]:
+                            id_cliente = cliente[1]
+                            tipo = cliente[2]
+                    if atualizar == 'Não':
+                        st.write(id_cliente)
+                        update_termo_cliente(id_cliente, select_box_nao_relacionado)
 
-                id_cliente = ''
-                for cliente in nomes_ids_reservados:
-                    if select_box_reservados == cliente[0]:
-                        id_cliente = cliente[1]
-                        tipo = cliente[2]
-                if atualizar == 'Não':
-                    st.write(id_cliente)
-                    update_termo_cliente(id_cliente, select_box_nao_relacionado)
+                    else:
+                        update_termo_cliente(id_cliente, select_box_nao_relacionado)
+                        update_reserva_cliente_termo(data_termo, id_cliente, tipo)
+            nome_cliente = st.selectbox('Nome cliente', lista_total, index=None)
+        with col2:
+            if st.button('Abrir Termo'):
+                termo = html_termo(data_termo, nome_cliente)
+                st.components.v1.html(termo, height=1000, width=1000, scrolling=True)
 
-                else:
-                    update_termo_cliente(id_cliente, select_box_nao_relacionado)
-                    update_reserva_cliente_termo(data_termo, id_cliente, tipo)
+
+                
