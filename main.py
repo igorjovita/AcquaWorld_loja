@@ -327,7 +327,7 @@ if menu_main == 'Reservar':
                         st.session_state['ids_clientes'] = []
 
                     if recebedor_sinal == 'Vendedor' and valor_mergulho == sinal:
-
+                        forma_pg = 'Pix'
                         valor_neto = select_valor_neto(tipo, valor_total_reserva=valor_mergulho,
                                                        id_vendedor_pg=id_vendedor, forma_pg=forma_pg)
 
