@@ -5,6 +5,8 @@ from functions import select_termo_cliente, select_lista_nomes, update_reserva_c
 
 st.subheader('Termos de responsabilidade')
 
+
+
 if 'pesquisa_termo' not in st.session_state:
     st.session_state.pesquisa_termo = False
 

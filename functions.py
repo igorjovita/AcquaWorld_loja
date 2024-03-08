@@ -814,6 +814,14 @@ def gerar_pdf(data_para_pdf):
     return pdf_filename
 
 
+def html_termo():
+
+    mydb.connect()
+
+    cursor.execute("SELECT ")
+
+
+
 def gerar_html(data_para_pdf):
     mydb.connect()
     cursor.execute(
