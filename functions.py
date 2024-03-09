@@ -367,6 +367,8 @@ def select_termo(data):
         f"SElECT c.nome, c.telefone, c.cpf, c.data_nascimento, c.email, c.nome_emergencia, c.telefone_emergencia, c.estado, c.pais, c.data_reserva, m.gravida, m.remedio, m.doenca_cardiaca, m.asma, m.doenca_pulmonar, m.epilepsia, m.enjoo, m.dd, m.coluna, m.diabetes, m.ouvido, m.hemorragia, m.cirurgia, m.nome_cirurgia, m.tempo_cirurgia, m.viagem, m.menor, m.bebida from termo_clientes as c INNER JOIN termo_medico as m on m.id_termo_cliente = c.id  where c.data_reserva = '{data}'")
     dados = cursor.fetchall()
 
+
+
     mydb.close()
 
     return dados
@@ -836,8 +838,20 @@ def html_termo(data, nome_cliente):
     nome_emergencia = ''
     telefone_emergencia = ''
     data_mergulho = ''
+    gravida = ''
+    ouvido = ''
+    remedio = ''
+    dd = ''
+    cardiaca = ''
+    epilepsia = ''
+    asma = ''
+    diabetes = ''
+    sinusite = ''
+    hemorragia = ''
+    pulmonar = ''
+    enjoo = ''
 
-    dados_termo = select_termo(data)
+dados_termo = select_termo(data)
 
     for dado in dados_termo:
         if dado[0] == nome_cliente:
@@ -851,9 +865,21 @@ def html_termo(data, nome_cliente):
             nome_emergencia = dado[5]
             telefone_emergencia = dado[6]
             data_mergulho = dado[9]
+            coluna = dado[18]
+            gravida = dado[10]
+            ouvido = dado[20]
+            remedio = dado[11]
+            dd = dado[17]
+            cardiaca = dado[12]
+            epilepsia = dado[15]
+            asma = dado[13]
+            diabetes = dado[19]
+            hemorragia = dado[21]
+            pulmonar = dado[14]
+            enjoo = dado[16]
 
     contexto = {'nome': nome, 'cpf': cpf, 'telefone': telefone, 'email': email,
-                'data_nascimento': data_nascimento, 'nome_emergencia': nome_emergencia, 'telefone_emergencia': telefone_emergencia, 'pais': pais, 'estdao': estado, 'data_mergulho': data_mergulho}
+                'data_nascimento': data_nascimento, 'nome_emergencia': nome_emergencia, 'telefone_emergencia': telefone_emergencia, 'pais': pais, 'estdao': estado, 'data_mergulho': data_mergulho, 'coluna': coluna, 'gravida': gravida, 'ouvido': ouvido, 'remedio': remedio, 'dd': dd, 'cardiaca': cardiaca, 'epilepsia': epilepsia, 'asma': asma, 'diabetes': diabetes, 'hemorragia': hemorragia, 'pulmonar': pulmonar, 'enjoo': enjoo}
 
     # Renderizar o template HTML
     planilha_loader = jinja2.FileSystemLoader('./')
