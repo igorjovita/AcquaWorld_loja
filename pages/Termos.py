@@ -58,4 +58,4 @@ if menu_termo == 'Visualizar':
     nome_cliente = st.selectbox('Nome cliente', lista_total, index=None)
     if st.button('Abrir Termo'):
         termo = html_termo(data_termo, nome_cliente)
-        st.components.v1.html(termo, height=1000, width=1000)
+        st.components.v1.html(termo, height=2000, width=1000)
