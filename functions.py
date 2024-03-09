@@ -364,7 +364,7 @@ def select_termo(data):
     mydb.connect()
 
     cursor.execute(
-        f"SElECT c.nome, c.telefone, c.cpf, c.data_nascimento, c.email, c.nome_emergencia, c.telefone_emergencia, c.estado, c.pais, m.gravida, m.remedio, m.doenca_cardiaca, m.asma, m.doenca_pulmonar, m.epilepsia, m.enjoo, m.dd, m.coluna, m.diabetes, m.ouvido, m.hemorragia, m.cirurgia, m.nome_cirurgia, m.tempo_cirurgia, m.viagem, m.menor, m.bebida from termo_clientes as c INNER JOIN termo_medico as m on m.id_termo_cliente = c.id  where c.data_reserva = '{data}'")
+        f"SElECT c.nome, c.telefone, c.cpf, c.data_nascimento, c.email, c.nome_emergencia, c.telefone_emergencia, c.estado, c.pais, c.data_reserva, m.gravida, m.remedio, m.doenca_cardiaca, m.asma, m.doenca_pulmonar, m.epilepsia, m.enjoo, m.dd, m.coluna, m.diabetes, m.ouvido, m.hemorragia, m.cirurgia, m.nome_cirurgia, m.tempo_cirurgia, m.viagem, m.menor, m.bebida from termo_clientes as c INNER JOIN termo_medico as m on m.id_termo_cliente = c.id  where c.data_reserva = '{data}'")
     dados = cursor.fetchall()
 
     mydb.close()
@@ -835,6 +835,7 @@ def html_termo(data, nome_cliente):
     estado = ''
     nome_emergencia = ''
     telefone_emergencia = ''
+    data_mergulho = ''
 
     dados_termo = select_termo(data)
 
@@ -849,9 +850,10 @@ def html_termo(data, nome_cliente):
             estado = dado[7]
             nome_emergencia = dado[5]
             telefone_emergencia = dado[6]
+            data_mergulho = dado[9]
 
     contexto = {'nome': nome, 'cpf': cpf, 'telefone': telefone, 'email': email,
-                'data_nascimento': data_nascimento, 'nome_emergencia': nome_emergencia, 'telefone_emergencia': telefone_emergencia, 'pais': pais, 'estdao': estado}
+                'data_nascimento': data_nascimento, 'nome_emergencia': nome_emergencia, 'telefone_emergencia': telefone_emergencia, 'pais': pais, 'estdao': estado, 'data_mergulho': data_mergulho}
 
     # Renderizar o template HTML
     planilha_loader = jinja2.FileSystemLoader('./')
