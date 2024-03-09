@@ -851,7 +851,7 @@ def html_termo(data, nome_cliente):
     pulmonar = ''
     enjoo = ''
 
-dados_termo = select_termo(data)
+    dados_termo = select_termo(data)
 
     for dado in dados_termo:
         if dado[0] == nome_cliente:
