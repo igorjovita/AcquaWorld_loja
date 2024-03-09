@@ -4,10 +4,12 @@ from functions import select_termo_cliente, select_lista_nomes, update_reserva_c
     update_info_reserva, html_termo
 
 import streamlit.components.v1
-
+from streamlit_option_menu import option_menu
 st.subheader('Termos de responsabilidade')
 
-
+menu_main = option_menu(menu_title="Termo de Responsabilidade", options=['Visualizar', 'Editar'],
+                        icons=['card-checklist', 'pencil-square'],
+                        orientation='horizontal')
 
 
 
