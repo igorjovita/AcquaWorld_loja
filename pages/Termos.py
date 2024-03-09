@@ -1,5 +1,5 @@
 import streamlit as st
-import base64
+
 from functions import select_termo_cliente, select_lista_nomes, update_reserva_cliente_termo, update_termo_cliente, \
     update_info_reserva, html_termo
 
@@ -58,8 +58,7 @@ if menu_termo == 'Visualizar':
     nome_cliente = st.selectbox('Nome cliente', lista_total, index=None)
     if st.button('Abrir Termo'):
 
-        pdf_filename = html_termo(data_termo, nome_cliente)
-        
+        termo = html_termo(data_termo, nome_cliente)
+        st.components.v1.html(termo, height=1600, width=1000)
 
-        download_link = f'<a href="data:application/pdf;base64,{base64.b64encode(open(pdf_filename, "rb").read()).decode()}" download="{pdf_filename}">Clique aqui para baixar</a>'
-        st.markdown(download_link, unsafe_allow_html=True)
+

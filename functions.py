@@ -887,21 +887,9 @@ def html_termo(data, nome_cliente):
     planilha = planilha_env.get_template('termo_responsabilidade.html')
     output_text = planilha.render(contexto)
 
-    # Nome do arquivo PDF
-    pdf_filename = f"reservas_{data}.pdf"
+    
 
-    # Gerar PDF
-    config = pdfkit.configuration()
-    options = {
-        'encoding': 'utf-8',
-        'no-images': None,
-        'quiet': '',
-    }
-    pdfkit.from_string(output_text, pdf_filename, configuration=config, options=options)
-
-    return pdf_filename
-
-
+    return output_text
 
 
 
