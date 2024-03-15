@@ -881,7 +881,7 @@ def html_termo(data, nome_cliente):
                 'telefone_emergencia': telefone_emergencia, 'pais': pais, 'estdao': estado,
                 'data_mergulho': data_mergulho}
 
-    
+
     # , 'coluna': coluna, 'gravida': gravida, 'ouvido': ouvido,
     #             'remedio': remedio, 'dd': dd, 'cardiaca': cardiaca, 'epilepsia': epilepsia, 'asma': asma,
     #             'diabetes': diabetes, 'hemorragia': hemorragia, 'pulmonar': pulmonar, 'enjoo': enjoo}
