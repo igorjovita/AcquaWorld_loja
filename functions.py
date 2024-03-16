@@ -889,9 +889,17 @@ def html_termo(data, nome_cliente):
     planilha_env = jinja2.Environment(loader=planilha_loader)
     planilha = planilha_env.get_template('termo_responsabilidade.html')
     output_text = planilha.render(contexto)
-    pdf_file = f'termo_responsabilidade.html'
+    pdf_filename = f'termo {nome_cliente} - {data}.pdf'
 
-    return output_text, pdf_file
+    config = pdfkit.configuration()
+    options = {
+        'encoding': 'utf-8',
+        'no-images': None,
+        'quiet': '',
+    }
+    pdfkit.from_string(output_text, pdf_filename, configuration=config, options=options)
+
+    return output_text, pdf_filename
 
 
 def gerar_html(data_para_pdf):
