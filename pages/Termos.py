@@ -1,3 +1,5 @@
+import base64
+
 import streamlit as st
 
 from functions import select_termo_cliente, select_lista_nomes, update_reserva_cliente_termo, update_termo_cliente, \
@@ -60,5 +62,8 @@ if menu_termo == 'Visualizar':
 
         termo = html_termo(data_termo, nome_cliente)
         st.components.v1.html(termo, height=1600, width=1000)
+
+        download_link = f'<a href="data:application/pdf;base64,{base64.b64encode(open(termo, "rb").read()).decode()}" download="{termo}">Clique aqui para baixar</a>'
+        st.markdown(download_link, unsafe_allow_html=True)
 
 
