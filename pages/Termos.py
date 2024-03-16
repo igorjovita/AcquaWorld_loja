@@ -60,10 +60,10 @@ if menu_termo == 'Visualizar':
     nome_cliente = st.selectbox('Nome cliente', lista_total, index=None)
     if st.button('Abrir Termo'):
 
-        termo = html_termo(data_termo, nome_cliente)
+        termo, pdf_file = html_termo(data_termo, nome_cliente)
         st.components.v1.html(termo, height=1600, width=1000)
 
-        download_link = f'<a href="data:application/pdf;base64,{base64.b64encode(open(termo, "rb").read()).decode()}" download="{termo}">Clique aqui para baixar</a>'
+        download_link = f'<a href="data:application/pdf;base64,{base64.b64encode(open(pdf_file, "rb").read()).decode()}" download="{pdf_file}">Clique aqui para baixar</a>'
         st.markdown(download_link, unsafe_allow_html=True)
 
 
