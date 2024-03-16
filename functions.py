@@ -848,6 +848,7 @@ def html_termo(data, nome_cliente):
     hemorragia = ''
     pulmonar = ''
     enjoo = ''
+    coluna = ''
 
     dados_termo = select_termo(data)
 
@@ -879,12 +880,9 @@ def html_termo(data, nome_cliente):
     contexto = {'nome': nome, 'cpf': cpf, 'telefone': telefone, 'email': email,
                 'data_nascimento': data_nascimento, 'nome_emergencia': nome_emergencia,
                 'telefone_emergencia': telefone_emergencia, 'pais': pais, 'estdao': estado,
-                'data_mergulho': data_mergulho}
-
-
-    # , 'coluna': coluna, 'gravida': gravida, 'ouvido': ouvido,
-    #             'remedio': remedio, 'dd': dd, 'cardiaca': cardiaca, 'epilepsia': epilepsia, 'asma': asma,
-    #             'diabetes': diabetes, 'hemorragia': hemorragia, 'pulmonar': pulmonar, 'enjoo': enjoo}
+                'data_mergulho': data_mergulho, 'coluna': coluna, 'gravida': gravida, 'ouvido': ouvido,
+                'remedio': remedio, 'dd': dd, 'cardiaca': cardiaca, 'epilepsia': epilepsia, 'asma': asma,
+                'diabetes': diabetes, 'hemorragia': hemorragia, 'pulmonar': pulmonar, 'enjoo': enjoo}
 
     # Renderizar o template HTML
     planilha_loader = jinja2.FileSystemLoader('./')

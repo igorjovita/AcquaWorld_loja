@@ -8,51 +8,264 @@
 </head>
 <body>
     <section id="parte1">
+        <img src="./logo.png" alt="Logomarca da Acquaworld">
         <h2>Termo de Responsabilidade</h2>
         <h4>Data do Mergulho {{data_mergulho}}</h4>
-        <style>
-        .inputs_cliente {
-            display: flex;
-            justify-content: center; /* Center horizontally */
-            align-items: center;
-        }</style>
+        <section id="grupo_input">
 
-            <section class="inputs_cliente">
+            <style>
+            .inputs_cliente {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            * {
+                font-family: sans-serif;
+                font-size: small;
+            }
+
+            #parte1  {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            img {
+                max-width: 400px; /* Largura máxima desejada */
+                max-height: 350px; /* Altura máxima desejada */
+                width: auto; /* Redimensiona proporcionalmente */
+                height: auto; /* Redimensiona proporcionalmente */
+            }
+
+            #grupo_input {
+                display: flex;
+                text-align: center;
+            }
+
+            div {
+                display: flex;
+            }
+
+            .inputs_cliente > div {
+                margin-right: 50px;
+            }
+
+            .custom-h4::after {
+                content: ""; /* Cria um pseudo-elemento após o conteúdo do <h4> */
+                display: block; /* Torna o pseudo-elemento um bloco */
+                width: 200px; /* A linha preta ocupa 100% da largura do <h4> */
+                height: 1px; /* Espessura da linha */
+                background-color: black; /* Cor da linha */
+                bottom: -5px; /* Ajusta a posição vertical da linha (opcional) */
+            }
+
+
+            #parte2 {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 4rem;
+                margin: 4rem;
+            }
+
+            li {
+                padding: 0.5rem;
+                list-style-type: none
+            }
+
+            #parte3 {
+                display: flex;
+                flex-direction: column;
+                align-items:start;
+                margin-top: 4rem;
+                margin: 4rem;
+            }
+
+            #grupo_medico {
+                display: flex;
+                justify-content: space-between;
+            }
+
+            label {
+                padding: 0.5rem;
+            }
+
+            #titulo_parte3 {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+            }
+
+            .inputs_medico1 {
+                flex: 1; /* Ocupa a largura disponível */
+                margin-right: 250px; /* Adicione margem direita para separar as seções */
+            }
+
+            .questionario::after {
+                content: ""; /* Cria um pseudo-elemento após o conteúdo do <h4> */
+                display: block; /* Torna o pseudo-elemento um bloco */
+                width: 70px; /* A linha preta ocupa 100% da largura do <h4> */
+                height: 1px; /* Espessura da linha */
+                background-color: black; /* Cor da linha */
+            }
+
+            </style>
+
+                <section class="inputs_cliente">
+                    <div id="linha1">
+                        <h4 class="label">Nome:</h4>
+                        <h4 class="custom-h4">{{nome_completo}}</h4>
+                    </div>
+                    <div id="linha1">
+                        <h4 class="label">Data de Nascimento:</h4>
+                        <h4 class="custom-h4">{{data_nascimento}}</h4>
+                    </div>
+                    <div id="linha1">
+                        <h4 class="label">Pais:</h4>
+                        <h4 class="custom-h4">{{pais}}</h4>
+                    </div>
+                </section>
+
+                <section class="inputs_cliente">
+                    <div id="linha2">
+                        <h4 class="label">Documento:</h4>
+                        <h4 class="custom-h4">{{cpf}}</h4>
+                    </div>
+                    <div id="linha2">
+                        <h4 class="label">Email:</h4>
+                        <h4 class="custom-h4">{{email}}</h4>
+                    </div>
+                    <div id="linha2">
+                        <h4 class="label">Contato Emergencia:</h4>
+                        <h4 class="custom-h4">{{nome_emergencia}}</h4>
+                    </div>
+                </section>
+                <section class="inputs_cliente">
+                    <div id="linha1">
+                        <h4 class="label">Telefone:</h4>
+                        <h4 class="custom-h4">{{telefone}}</h4>
+                    </div>
+                    <div id="linha1">
+                        <h4 class="label">Estado:</h4>
+                        <h4 class="custom-h4">{{estado}}</h4>
+                    </div>
+                    <div id="linha1">
+                        <h4 class="label">  Tel Contato Emergencia:</h4>
+                        <h4 class="custom-h4">{{telefone_emergencia}}</h4>
+                    </div>
+                </section>
+
+
+        </section>
+    </section>
+    <section id="parte2">
+        <h2>CERTIFICADO DE ENTENDIMENTO E SUPOSIÇÃO EXPRESSA DE RISCO</h2>
+        <p>Eu estou ciente que o mergulho recreativo com ar comprimido tem seus riscos e que antes de fazê-lo serei instruído de como proceder durante
+            meu passeio guiado com relação aos procedimentos de segurança tais como desalagamento de máscara, desalagamento do regulador e o modo
+            de se comunicar via sinais debaixo d’água.</p>
+        <p>Serei instruído durante o briefing sobre como proceder com relação à embarcação, natação, respiração e equalização das vias aéreas, tendo a
+            possibilidade de tirar qualquer duvida que restar sobre o meu passeio antes de acontecer.</p>
+        <p>Estou ciente, ainda, que os mergulhos são realizados em um local distante, tanto em tempo, como espaço, do atendimento médico. Declaro que
+            estou ciente que uma vez que eu entre na água com o amparo do mergulhador e inicie o processo de adaptação o valor do meu batismo não
+            será ressarcido. Entendo que é terminantemente proibido o consumo de bebida alcóolica antes do mergulho.</p>
+        <p>Ciente de todos esses riscos, declaro, pelo presente termo, minha livre opção de realizar esse mergulho recreativo guiado.
+            Em vista da minha participação nesta atividade eu assumo de livre e espontânea vontade, todos os riscos referentes a tal, isentando de tal forma
+            o (s) meu (s) instrutores, guia(s), a associação, a empresa e qualquer um dos seus respectivos funcionários (doravante denominados “Partes
+            Desobrigadas”), não somente.</p>
+        <ol>
+            <li>
+                a) de qualquer responsabilidade por qualquer dano, lesão, morte ou quaisquer outros danos materiais ou orais sofridos por mim, por minha
+                família, por meus herdeiros e sucessores em decorrência de minha livre participação na atividade de mergulho recreativo, de cujos riscos,
+                confirmo, que estou plenamente ciente, mas também,
+            </li>
+            <li>
+                b) de qualquer reivindicação ou processo que venha a ser instaurado por mim, minha família, meu espólio, meus herdeiros, ou sucessores,
+                resultantes de minha inscrição e participação nesta atividade
+            </li>
+
+        </ol>
+        <p>
+            Também fui informado e estou ciente que a prática de mergulho recreativo é atividade física extenuante e que estarei me excedendo durante o
+            mergulho e, caso venha a sofrer uma lesão resultante de ataque cardíaco, pânico, hiper ventilação, etc, assumo expressamente o risco e
+            responsabilidade por tais lesões e isentando de responsabilidades as “Partes Desobrigadas”.
+        </p>
+        <p>
+            Declaro que estou apto física e mentalmente a participar das atividades de mergulho, não tendo qualquer moléstia ou problema de saúde que
+            possam prejudicar ou causar qualquer risco antes, durante ou após a prática de mergulho
+        </p>
+    </section>
+    <section id="parte3">
+        <div id="titulo_parte3">
+            <h2>HISTÓRICO MÉDICO – Informações Confidenciais</h2>
+            <p>As perguntas abaixo visam identificar problemas de saúde que possam interferir com a prática do mergulho recreativo. Isso necessariamente não irá impedi-de participar, porém irá requerer avaliação mais específica a se necessário opinião médica.</p>
+        </div>
+        <section id="grupo_medico">
+
+            <section class="inputs_medico1">
                 <div>
-                    <span class="label">Nome Completo:</span>
-                    <h4 class="custom-h4">{{nome_completo}}</h4>
+                    <label for="">Esta gravida ou tentando engravidar?</label>
+                    <label for="" class="questionario">{{gravida}}</label>
+                </div>
+                <div>
+                    <label for="">Toma remedio regularmente?</label>
+                    <label for="" class="questionario">{{remedio}}</label>
+                </div>
+                <div>
+                    <label for="">Doença ou cirurgia cardiaca?</label>
+                    <label for="" class="questionario">{{cardiaca}}</label>
+                </div>
+                <div>
+                    <label for="">Asma, dificuldade respiratoria ou falta de ar?</label>
+                    <label for="" class="questionario">{{asma}}</label>
+                </div>
+                <div>
+                    <label for="">Sinusite frequente?</label>
+                    <label for="" class="questionario">{{sinusite}}</label>
+                </div>
+                <div>
+                    <label for="">Doença pulmonar ou pneumotorax?</label>
+                    <label for="" class="questionario">{{pulmonar}}</label>
+                </div>
+                <div>
+                    <label for="">Epilepsia, convulsões, problemas cerebrais?</label>
+                    <label for="" class="questionario">{{eplepsia}}</label>
                 </div>
             </section>
-
-            <section class="inputs_cliente">
+            <section class="inputs_medico">
                 <div>
-                    <label for="data_nascimento">Data de Nascimento</label>
-                    <input type="date" id="data_nascimento" value="{{data_nascimento}}">
+                    <label for="">Esta gravida ou tentando engravidar?</label>
+                    <label for="" class="questionario">{{gravida}}</label>
                 </div>
                 <div>
-                    <label for="email">Email</label>
-                    <input type="mail" id="email" value="{{email}}">
+                    <label for="">Toma remedio regularmente?</label>
+                    <label for="" class="questionario">{{remedio}}</label>
                 </div>
                 <div>
-                    <label for="pais">Pais</label>
-                    <input type="text" id="pais" value="{{pais}}">
+                    <label for="">Doença ou cirurgia cardiaca?</label>
+                    <label for="" class="questionario">{{cardiaca}}</label>
+                </div>
+                <div>
+                    <label for="">Asma, dificuldade respiratoria ou falta de ar?</label>
+                    <label for="" class="questionario">{{asma}}</label>
+                </div>
+                <div>
+                    <label for="">Sinusite frequente?</label>
+                    <label for="" class="questionario">{{sinusite}}</label>
+                </div>
+                <div>
+                    <label for="">Doença pulmonar ou pneumotorax?</label>
+                    <label for="" class="questionario">{{pulmonar}}</label>
+                </div>
+                <div>
+                    <label for="">Epilepsia, convulsões, problemas cerebrais?</label>
+                    <label for="" class="questionario">{{epilepsia}}</label>
                 </div>
             </section>
-            <section class="inputs_cliente">
-                <div>
-                    <label for="estado">Estado</label>
-                    <input type="text" id="estado" value="{{estado}}">
-                </div>
-                <div>
-                    <label for="contato_emergencia">Contato de Emergencia</label>
-                    <input type="text" id="contato_emergencia" value="{{contato_emergencia}}">
-                </div>
-                <div>
-                    <label for="telefone_emergencia">Telefone Contato de Emergencia</label>
-                    <input type="text" id="telefone_emergencia" value="{{telefone_emergencia}}">
-                </div>
+        </section>
 
-            </section>
     </section>
 </body>
 </html>
