@@ -889,7 +889,7 @@ def html_termo(data, nome_cliente):
     planilha_env = jinja2.Environment(loader=planilha_loader)
     planilha = planilha_env.get_template('termo_responsabilidade.html')
     output_text = planilha.render(contexto)
-    pdf_file = f'termo - {data} - {nome_cliente}'
+    pdf_file = f'termo_responsabilidade.html'
 
     return output_text, pdf_file
 
