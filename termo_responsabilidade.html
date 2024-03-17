@@ -60,6 +60,15 @@
                 bottom: -5px; /* Ajusta a posição vertical da linha (opcional) */
             }
 
+            #linha_pais::after {
+                content: ""; /* Cria um pseudo-elemento após o conteúdo do <h4> */
+                display: block; /* Torna o pseudo-elemento um bloco */
+                width: 100px;
+                height: 0.5px; /* Espessura da linha */
+                background-color: gray; /* Cor da linha */
+                bottom: -5px; /* Ajusta a posição vertical da linha (opcional) */
+            }
+
 
             #parte2 {
                 display: flex;
@@ -124,7 +133,7 @@
                     </div>
                     <div id="linha1">
                         <h4 class="label">Pais:</h4>
-                        <h4 class="custom-h4">{{pais}}</h4>
+                        <h4 id="linha_pais">{{pais}}</h4>
                     </div>
                 </section>
 
