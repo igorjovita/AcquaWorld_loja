@@ -360,12 +360,12 @@ def select_termo_cliente(data):
     return dados, lista_relacionados, lista_nao_relacionados, lista_total
 
 
-def select_termo(data):
+def select_termo(data, nome_cliente):
     mydb.connect()
 
     cursor.execute(
-        f"SElECT c.nome, c.telefone, c.cpf, c.data_nascimento, c.email, c.nome_emergencia, c.telefone_emergencia, c.estado, c.pais, c.data_reserva, m.gravida, m.remedio, m.doenca_cardiaca, m.asma, m.doenca_pulmonar, m.epilepsia, m.enjoo, m.dd, m.coluna, m.diabetes, m.ouvido, m.hemorragia, m.cirurgia, m.nome_cirurgia, m.tempo_cirurgia, m.viagem, m.menor, m.bebida from termo_clientes as c INNER JOIN termo_medico as m on m.id_termo_cliente = c.id  where c.data_reserva = '{data}'")
-    dados = cursor.fetchall()
+        f"SElECT c.nome, c.telefone, c.cpf, c.data_nascimento, c.email, c.nome_emergencia, c.telefone_emergencia, c.estado, c.pais, c.data_reserva, m.gravida, m.remedio, m.doenca_cardiaca, m.asma, m.doenca_pulmonar, m.epilepsia, m.enjoo, m.dd, m.coluna, m.diabetes, m.ouvido, m.hemorragia, m.cirurgia, m.nome_cirurgia, m.tempo_cirurgia, m.viagem, m.menor, m.bebida from termo_clientes as c INNER JOIN termo_medico as m on m.id_termo_cliente = c.id  where c.data_reserva = '{data}' and c.nome = '{nome_cliente}'")
+    dados = cursor.fetchone()
 
     mydb.close()
 
@@ -850,20 +850,23 @@ def html_termo(data, nome_cliente):
     enjoo = ''
     coluna = ''
 
-    dados_termo = select_termo(data)
+    dados_termo = select_termo(data, nome_cliente)
     st.write(dados_termo)
+
+
 
     for dado in dados_termo:
         if dado[0] == nome_cliente:
             nome = dado[0]
-            cpf = dado[2]
             telefone = dado[1]
-            email = dado[4]
+            cpf = dado[2]
             data_nascimento = dado[3]
-            pais = dado[8]
-            estado = dado[7]
+            email = dado[4]
             nome_emergencia = dado[5]
             telefone_emergencia = dado[6]
+            pais = dado[8]
+            estado = dado[7]
+
             data_mergulho = dado[9]
             coluna = dado[18]
             gravida = dado[10]
