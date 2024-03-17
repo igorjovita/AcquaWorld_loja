@@ -51,6 +51,10 @@
                 margin-right: 25px;
             }
 
+            .linha1 {
+                text-align: start;
+            }
+
             .custom-h4::after {
                 content: ""; /* Cria um pseudo-elemento após o conteúdo do <h4> */
                 display: block; /* Torna o pseudo-elemento um bloco */
@@ -60,7 +64,7 @@
                 bottom: -5px; /* Ajusta a posição vertical da linha (opcional) */
             }
 
-            #linha_pais::after {
+            .linha_menor::after {
                 content: ""; /* Cria um pseudo-elemento após o conteúdo do <h4> */
                 display: block; /* Torna o pseudo-elemento um bloco */
                 width: 100px;
@@ -122,18 +126,18 @@
 
             </style>
 
-                <section class="inputs_cliente">
+                <section id="coluna1">
                     <div id="linha1">
                         <h4 class="label">Nome:</h4>
                         <h4 class="custom-h4">{{nome}}</h4>
                     </div>
                     <div id="linha1">
-                        <h4 class="label">Data de Nascimento:</h4>
-                        <h4 class="custom-h4">{{data_nascimento}}</h4>
+                        <h4 class="label">Nascimento:</h4>
+                        <h4 class="linha_menor">{{data_nascimento}}</h4>
                     </div>
                     <div id="linha1">
                         <h4 class="label">Pais:</h4>
-                        <h4 id="linha_pais">{{pais}}</h4>
+                        <h4 class="linha_menor"">{{pais}}</h4>
                     </div>
                 </section>
 
