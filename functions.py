@@ -758,7 +758,7 @@ def gerar_pdf(data_para_pdf):
     background_colors = []
     # Consulta ao banco de dados para obter os dados
     cursor.execute(
-        f"SELECT nome_cliente, tipo, fotos, dm, check_in FROM reserva WHERE data = '{data_para_pdf}'")
+        f"SELECT nome_cliente, tipo, fotos, id_staff, check_in FROM reserva WHERE data = '{data_para_pdf}'")
     lista_dados_reserva = cursor.fetchall()
 
     for dados in lista_dados_reserva:
@@ -851,6 +851,7 @@ def html_termo(data, nome_cliente):
     coluna = ''
 
     dados_termo = select_termo(data)
+    st.write(dados_termo)
 
     for dado in dados_termo:
         if dado[0] == nome_cliente:
