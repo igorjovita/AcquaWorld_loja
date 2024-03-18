@@ -135,27 +135,11 @@
                 padding: 0.5 rem;
             }
 
-            #assinatura::after {
-                content: ""; /* Cria um pseudo-elemento após o conteúdo do <h4> */
-                display: block; /* Torna o pseudo-elemento um bloco */
-                width: 500px; /* A linha preta ocupa 100% da largura do <h4> */
-                height: 1px; /* Espessura da linha */
-                background-color: black; /* Cor da linha */
-                margin-top: auto;
+            #assinatura {
+                margin-left: 0.5 rem;
             }
 
-            .assinatura-label {
-            display: flex;
-            align-items: flex-end;
-        }
 
-        .assinatura-label::after {
-            content: "";
-            flex-grow: 1;
-            height: 1px;
-            background-color: black;
-            margin-left: 10px; /* Ajuste conforme necessário */
-        }
 
 
             </style>
@@ -318,8 +302,8 @@
             <p id="label_viagem">Vai viajar de avião no prazo de 12 horas após o mergulho?</p>
             <p class="questionario">{{viagem}}</p>
     </div>
-    <div>
-        <p> Assinatura: _____________________________________________ Data: __/__/____</p>
+    <div id="assinatura">
+        <p> Assinatura: ______________________________________________________________________ Data: __/__/____</p>
 
     </div>
 
