@@ -832,10 +832,10 @@ def html_termo(data, nome_cliente):
 
     if dados_termo:
         contexto = {'nome': dados_termo[0], 'telefone': dados_termo[1], 'cpf': dados_termo[2],
-                    'data_nascimento': datetime.strptime(dados_termo[3], '%Y-%m-%d').strftime('%d/%m/%Y'), 'email': dados_termo[4],
+                    'data_nascimento': datetime.strptime(str(dados_termo[3]), '%Y-%m-%d').strftime('%d/%m/%Y'), 'email': dados_termo[4],
                     'nome_emergencia': dados_termo[5],
                     'telefone_emergencia': dados_termo[6], 'estado': dados_termo[7], 'pais': dados_termo[8],
-                    'data_mergulho': datetime.strptime(dados_termo[9], '%Y-%m-%d').strftime('%d/%m/%Y'), 'gravida': dados_termo[10], 'remedio': dados_termo[11],
+                    'data_mergulho': datetime.strptime(str(dados_termo[9]), '%Y-%m-%d').strftime('%d/%m/%Y'), 'gravida': dados_termo[10], 'remedio': dados_termo[11],
                     'cardiaca': dados_termo[12], 'asma': dados_termo[13], 'pulmonar': dados_termo[14],
                     'epilepsia': dados_termo[15], 'enjoo': dados_termo[16], 'dd': dados_termo[17],
                     'coluna': dados_termo[18], 'diabetes': dados_termo[19], 'ouvido': dados_termo[20],
