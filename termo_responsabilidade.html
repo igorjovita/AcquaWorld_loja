@@ -144,6 +144,20 @@
                 margin-top: auto;
             }
 
+            .assinatura-label {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .assinatura-label::after {
+            content: "";
+            flex-grow: 1;
+            height: 1px;
+            background-color: black;
+            margin-left: 10px; /* Ajuste conforme necessário */
+        }
+
+
             </style>
 
                 <section id="coluna1">
@@ -305,9 +319,7 @@
             <p class="questionario">{{viagem}}</p>
     </div>
     <div>
-        <p> Assinatura:</p>
-        <p id="assinatura"></p>
-
+        <p class="assinatura-label"> Assinatura:</p>
     </div>
 
 
