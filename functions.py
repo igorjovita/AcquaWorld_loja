@@ -826,67 +826,20 @@ def gerar_pdf(data_para_pdf):
 
 
 def html_termo(data, nome_cliente):
-    nome = ''
-    cpf = ''
-    telefone = ''
-    email = ''
-    data_nascimento = ''
-    pais = ''
-    estado = ''
-    nome_emergencia = ''
-    telefone_emergencia = ''
-    data_mergulho = ''
-    gravida = ''
-    ouvido = ''
-    remedio = ''
-    dd = ''
-    cardiaca = ''
-    epilepsia = ''
-    asma = ''
-    diabetes = ''
-    sinusite = ''
-    hemorragia = ''
-    pulmonar = ''
-    enjoo = ''
-    coluna = ''
-
     dados_termo = select_termo(data, nome_cliente)
-    st.write(dados_termo)
 
-
-
-    for dado in dados_termo:
-        if dado[0] == nome_cliente:
-            nome = dado[0]
-            telefone = dado[1]
-            cpf = dado[2]
-            data_nascimento = dado[3]
-            email = dado[4]
-            nome_emergencia = dado[5]
-            telefone_emergencia = dado[6]
-            pais = dado[8]
-            estado = dado[7]
-
-            data_mergulho = dado[9]
-            coluna = dado[18]
-            gravida = dado[10]
-            ouvido = dado[20]
-            remedio = dado[11]
-            dd = dado[17]
-            cardiaca = dado[12]
-            epilepsia = dado[15]
-            asma = dado[13]
-            diabetes = dado[19]
-            hemorragia = dado[21]
-            pulmonar = dado[14]
-            enjoo = dado[16]
-
-    contexto = {'nome': nome, 'cpf': cpf, 'telefone': telefone, 'email': email,
-                'data_nascimento': data_nascimento, 'nome_emergencia': nome_emergencia,
-                'telefone_emergencia': telefone_emergencia, 'pais': pais, 'estdao': estado,
-                'data_mergulho': data_mergulho, 'coluna': coluna, 'gravida': gravida, 'ouvido': ouvido,
-                'remedio': remedio, 'dd': dd, 'cardiaca': cardiaca, 'epilepsia': epilepsia, 'asma': asma,
-                'diabetes': diabetes, 'hemorragia': hemorragia, 'pulmonar': pulmonar, 'enjoo': enjoo}
+    if dados_termo:
+        contexto = {'nome': dados_termo[0], 'telefone': dados_termo[1], 'cpf': dados_termo[2],
+                    'data_nascimento': dados_termo[3], 'email': dados_termo[4],
+                    'nome_emergencia': dados_termo[5],
+                    'telefone_emergencia': dados_termo[6], 'estado': dados_termo[7], 'pais': dados_termo[8],
+                    'data_mergulho': dados_termo[9], 'gravida': dados_termo[10], 'remedio': dados_termo[11],
+                    'cardiaca': dados_termo[12], 'asma': dados_termo[13], 'pulmonar': dados_termo[14],
+                    'epilepsia': dados_termo[15], 'enjoo': dados_termo[16], 'dd': dados_termo[17],
+                    'coluna': dados_termo[18], 'diabetes': dados_termo[19], 'ouvido': dados_termo[20],
+                    'hemorragia': dados_termo[21], 'cirurgia': dados_termo[22], 'nome_cirurgia': dados_termo[23],
+                    'tempo_cirurgia': dados_termo[24], 'viagem': dados_termo[25], 'menor': dados_termo[26],
+                    'bebida': dados_termo[27]}
 
     # Renderizar o template HTML
     planilha_loader = jinja2.FileSystemLoader('./')
