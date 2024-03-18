@@ -838,7 +838,7 @@ def html_termo(data, nome_cliente):
                     'cardiaca': dados_termo[12], 'asma': dados_termo[13], 'pulmonar': dados_termo[14],
                     'epilepsia': dados_termo[15], 'enjoo': dados_termo[16], 'dd': dados_termo[17],
                     'coluna': dados_termo[18], 'diabetes': dados_termo[19], 'ouvido': dados_termo[20],
-                    'hemorragia': dados_termo[21], 'sinusite': dados_termo[22], 'cirurgia':f'{dados_termo[23]} {dados_termo[24]}  {dados_termo[25]}', 'viagem': dados_termo[26], 'menor': dados_termo[27],
+                    'hemorragia': dados_termo[21], 'sinusite': dados_termo[22], 'cirurgia': f'{dados_termo[23]} {dados_termo[24]}  {dados_termo[25]}', 'viagem': dados_termo[26], 'menor': dados_termo[27],
                     'bebida': dados_termo[28]}
 
     # Renderizar o template HTML
