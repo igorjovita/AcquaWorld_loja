@@ -827,6 +827,7 @@ def gerar_pdf(data_para_pdf):
 
 def html_termo(data, nome_cliente):
     dados_termo = select_termo(data, nome_cliente)
+    contexto = {}
 
     if dados_termo:
         contexto = {'nome': dados_termo[0], 'telefone': dados_termo[1], 'cpf': dados_termo[2],
