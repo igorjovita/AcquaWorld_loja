@@ -7,19 +7,19 @@ from functions import select_termo_cliente, select_lista_nomes, update_reserva_c
 
 import streamlit.components.v1
 from streamlit_option_menu import option_menu
+
 st.subheader('Termos de responsabilidade')
 
 menu_termo = option_menu(menu_title="Termo de Responsabilidade", options=['Visualizar', 'Editar'],
-                        icons=['card-checklist', 'pencil-square'],
-                        orientation='horizontal')
-
+                         icons=['card-checklist', 'pencil-square'],
+                         orientation='horizontal')
 
 if menu_termo == 'Editar':
-
 
     if 'pesquisa_termo' not in st.session_state:
         st.session_state.pesquisa_termo = False
 
+    st.subheader("Relacionar Termos")
     data_termo = st.date_input('Selecione a data para pesquisar', format='DD/MM/YYYY')
     if st.button('Pesquisar'):
         st.session_state.pesquisa_termo = True
@@ -39,7 +39,7 @@ if menu_termo == 'Editar':
                 atualizar = st.selectbox('Atualizar informaçoes do cliente?', ['Sim', 'Não'], index=None)
 
                 if st.button('Relacionar'):
-
+                    tipo = ''
                     id_cliente = ''
                     for cliente in nomes_ids_reservados:
                         if select_box_reservados == cliente[0]:
@@ -53,17 +53,15 @@ if menu_termo == 'Editar':
                         update_termo_cliente(id_cliente, select_box_nao_relacionado)
                         update_reserva_cliente_termo(data_termo, id_cliente, tipo)
 
+
 if menu_termo == 'Visualizar':
 
     data_termo = st.date_input('Selecione a data para pesquisar', format='DD/MM/YYYY')
     dados, lista_relacionado, lista_nao_relacionado, lista_total = select_termo_cliente(data_termo)
     nome_cliente = st.selectbox('Nome cliente', lista_total, index=None)
     if st.button('Abrir Termo'):
-
         termo, pdf_file = html_termo(data_termo, nome_cliente)
         st.components.v1.html(termo, height=1600, width=1000)
 
         download_link = f'<a href="data:application/pdf;base64,{base64.b64encode(open(pdf_file, "rb").read()).decode()}" download="{pdf_file}">Clique aqui para baixar</a>'
         st.markdown(download_link, unsafe_allow_html=True)
-
-
