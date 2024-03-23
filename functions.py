@@ -804,7 +804,7 @@ def gerar_pdf(data_para_pdf):
         for i in range(numero):
             html_table += f"""
                         <tr>
-                            <td style="text-align: center;">{i + 1}</td>
+                            <td style="text-align: center;">{len(dados) + i + 1}</td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -832,7 +832,7 @@ def gerar_pdf(data_para_pdf):
     for i in range(10):
         html_table += f"""
             <tr>
-                <td style="text-align: center;">{len(dados) + i + 1}</td>
+                <td style="text-align: center;">{i + 1}</td>
                 <td></td>
                 <td></td>
                 <td></td>
