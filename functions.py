@@ -759,71 +759,72 @@ def gerar_pdf(data_para_pdf):
     background_colors = []
     # Consulta ao banco de dados para obter os dados
     cursor.execute(
-        f"SELECT nome_cliente, tipo, fotos, id_staff, check_in FROM reserva WHERE data = '{data_para_pdf}'")
+        f"SELECT r.nome_cliente, c.cpf, r.tipo, r.fotos, r.id_staff, r.check_in FROM reserva as r INNER JOIN cliente as c ON r.id_cliente = c.id WHERE data = '{data_para_pdf}'")
     lista_dados_reserva = cursor.fetchall()
+    st.write(lista_dados_reserva)
 
-    for dados in lista_dados_reserva:
-        if dados[0] is None:
-            cliente.append('')
-        else:
-            cliente.append(
-                str(dados[0].encode('utf-8').decode('utf-8')).upper().translate(str.maketrans('', '', chars)))
-
-        if dados[1] is None:
-            cert.append('')
-        else:
-            cert.append(str(dados[1]).upper().translate(str.maketrans('', '', chars)))
-        if dados[2] is None:
-            foto.append('')
-        else:
-            foto.append(str(dados[2]).upper().translate(str.maketrans('', '', chars)))
-
-        if dados[3] is None:
-            dm.append('')
-        else:
-            dm.append(str(dados[3]).upper().translate(str.maketrans('', '', chars)))
-
-        background_colors.append(str(dados[4]).translate(str.maketrans('', '', chars)))
-
-    for nome in cliente:
-        cursor.execute(
-            f"SELECT cpf, roupa FROM cliente WHERE nome = '{nome}'")
-        lista_dados_cliente = cursor.fetchall()
-
-        for item in lista_dados_cliente:
-            cpf.append(str(item[0]).translate(str.maketrans('', '', chars)))
-            roupa.append(str(item[1]).translate(str.maketrans('', '', chars)))
-
-    mydb.close()
-
-    # Processar a data
-    data_selecionada = str(data_para_pdf).split('-')
-    dia, mes, ano = data_selecionada[2], data_selecionada[1], data_selecionada[0]
-    data_completa = f'{dia}/{mes}/{ano}'
-
-    # Criar o contexto
-    contexto = {'cliente': cliente, 'cpf': cpf, 'c': cert, 'f': foto,
-                'r': roupa, 'data_reserva': data_completa, 'background_colors': background_colors, 'dm': dm}
-
-    # Renderizar o template HTML
-    planilha_loader = jinja2.FileSystemLoader('./')
-    planilha_env = jinja2.Environment(loader=planilha_loader)
-    planilha = planilha_env.get_template('planilha.html')
-    output_text = planilha.render(contexto)
-
-    # Nome do arquivo PDF
-    pdf_filename = f"reservas_{data_para_pdf}.pdf"
-
-    # Gerar PDF
-    config = pdfkit.configuration()
-    options = {
-        'encoding': 'utf-8',
-        'no-images': None,
-        'quiet': '',
-    }
-    pdfkit.from_string(output_text, pdf_filename, configuration=config, options=options)
-
-    return pdf_filename
+    # for dados in lista_dados_reserva:
+    #     if dados[0] is None:
+    #         cliente.append('')
+    #     else:
+    #         cliente.append(
+    #             str(dados[0].encode('utf-8').decode('utf-8')).upper().translate(str.maketrans('', '', chars)))
+    #
+    #     if dados[1] is None:
+    #         cert.append('')
+    #     else:
+    #         cert.append(str(dados[1]).upper().translate(str.maketrans('', '', chars)))
+    #     if dados[2] is None:
+    #         foto.append('')
+    #     else:
+    #         foto.append(str(dados[2]).upper().translate(str.maketrans('', '', chars)))
+    #
+    #     if dados[3] is None:
+    #         dm.append('')
+    #     else:
+    #         dm.append(str(dados[3]).upper().translate(str.maketrans('', '', chars)))
+    #
+    #     background_colors.append(str(dados[4]).translate(str.maketrans('', '', chars)))
+    #
+    # for nome in cliente:
+    #     cursor.execute(
+    #         f"SELECT cpf, roupa FROM cliente WHERE nome = '{nome}'")
+    #     lista_dados_cliente = cursor.fetchall()
+    #
+    #     for item in lista_dados_cliente:
+    #         cpf.append(str(item[0]).translate(str.maketrans('', '', chars)))
+    #         roupa.append(str(item[1]).translate(str.maketrans('', '', chars)))
+    #
+    # mydb.close()
+    #
+    # # Processar a data
+    # data_selecionada = str(data_para_pdf).split('-')
+    # dia, mes, ano = data_selecionada[2], data_selecionada[1], data_selecionada[0]
+    # data_completa = f'{dia}/{mes}/{ano}'
+    #
+    # # Criar o contexto
+    # contexto = {'cliente': cliente, 'cpf': cpf, 'c': cert, 'f': foto,
+    #             'r': roupa, 'data_reserva': data_completa, 'background_colors': background_colors, 'dm': dm}
+    #
+    # # Renderizar o template HTML
+    # planilha_loader = jinja2.FileSystemLoader('./')
+    # planilha_env = jinja2.Environment(loader=planilha_loader)
+    # planilha = planilha_env.get_template('planilha.html')
+    # output_text = planilha.render(contexto)
+    #
+    # # Nome do arquivo PDF
+    # pdf_filename = f"reservas_{data_para_pdf}.pdf"
+    #
+    # # Gerar PDF
+    # config = pdfkit.configuration()
+    # options = {
+    #     'encoding': 'utf-8',
+    #     'no-images': None,
+    #     'quiet': '',
+    # }
+    # pdfkit.from_string(output_text, pdf_filename, configuration=config, options=options)
+    #
+    # return pdf_filename
 
 
 def html_termo(data, nome_cliente):
@@ -863,7 +864,7 @@ def html_termo(data, nome_cliente):
 def gerar_html(data_para_pdf):
     mydb.connect()
     cursor.execute(
-        f"SELECT r.nome_cliente AS nome_cliente, CASE WHEN c.cpf = c.id THEN '' ELSE c.cpf END AS cpf, c.telefone, v.apelido AS nome_vendedor, r.tipo, r.fotos, c.roupa, r.check_in FROM reserva AS r INNER JOIN cliente AS c ON r.id_cliente = c.id INNER JOIN vendedores AS v ON r.id_vendedor = v.id WHERE r.data = '{data_para_pdf}'")
+        "SELECT r.nome_cliente AS nome_cliente, CASE WHEN c.cpf = c.id THEN '' ELSE c.cpf END AS cpf, c.telefone, v.apelido AS nome_vendedor, r.tipo, r.fotos, c.roupa, r.check_in FROM reserva AS r INNER JOIN cliente AS c ON r.id_cliente = c.id INNER JOIN vendedores AS v ON r.id_vendedor = v.id WHERE r.data = %s",(data_para_pdf, ))
     dados = cursor.fetchall()
     minimo = 10
 
