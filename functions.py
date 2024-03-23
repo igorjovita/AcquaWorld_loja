@@ -765,7 +765,10 @@ def gerar_pdf(data_para_pdf):
     html_table = f"""
             <h3 style="text-align: center;"><strong>Planilha Operação Diaria</strong></h3>
             <h4>Embarcação Beleza Nativa</h4>
-            <h4>Data: {{data_para_pdf}}</h4>
+            <div style="display: flex"></div>
+                <h4>Data: {data_para_pdf}</h4>
+                <h4>Horario: 08:30</h4>
+                
             <table style="border-collapse: collapse; width: 100%;" border="1">
             <tbody>
                 <tr style="height: 30px;">
