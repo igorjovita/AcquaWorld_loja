@@ -7,7 +7,6 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 import os
 import mysql.connector
-from datetime import date
 import streamlit.components.v1
 from functions import select_reserva, processar_pagamento, gerar_pdf, gerar_html, select_apelido_vendedores, \
     calculo_restricao, insert_cliente, insert_reserva, select_id_vendedores, insert_lancamento_comissao, \
@@ -41,17 +40,24 @@ pasta = os.path.dirname(__file__)
 if menu_main == 'Visualizar':
     # Função para obter cores com base no valor da coluna 'check_in'
     data_para_pdf = st.date_input("Data para gerar PDF:", format='DD/MM/YYYY')
-    if st.button('Gerar Html'):
-        tabela_html = gerar_html(data_para_pdf)
-        st.components.v1.html(tabela_html, height=1000, width=1000, scrolling=True)
+
+    coluna1, coluna2 = st.columns(2)
+
+    with coluna1:
+        if st.button('Gerar Html'):
+            tabela_html = gerar_html(data_para_pdf)
+            st.components.v1.html(tabela_html, height=1000, width=1000, scrolling=True)
+
+    with coluna2:
+        if st.button("Gerar PDF"):
+            pdf_filename = gerar_pdf(data_para_pdf)
+            download_link = f'<a href="data:application/pdf;base64,{base64.b64encode(open(pdf_filename, "rb").read()).decode()}" download="{pdf_filename}">Clique aqui para baixar</a>'
+            st.markdown(download_link, unsafe_allow_html=True)
+
     st.write('---')
 
     # Formulário para gerar PDF
 
-    if st.button("Gerar PDF"):
-        pdf_filename = gerar_pdf(data_para_pdf)
-        download_link = f'<a href="data:application/pdf;base64,{base64.b64encode(open(pdf_filename, "rb").read()).decode()}" download="{pdf_filename}">Clique aqui para baixar</a>'
-        st.markdown(download_link, unsafe_allow_html=True)
 
 if menu_main == 'Reservar':
     # Inicialização de listas e variaveis
