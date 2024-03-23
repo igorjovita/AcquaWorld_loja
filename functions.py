@@ -813,7 +813,7 @@ def gerar_pdf(data_para_pdf):
     for i in range(10):
         html_table += f"""
             <tr>
-                <td>{i + 1}</td>
+                <td style="text-align: center;">{i + 1}</td>
                 <td></td>
                 <td></td>
                 <td></td>
