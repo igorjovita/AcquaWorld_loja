@@ -759,9 +759,49 @@ def gerar_pdf(data_para_pdf):
     background_colors = []
     # Consulta ao banco de dados para obter os dados
     cursor.execute(
-        f"SELECT r.nome_cliente, c.cpf, r.tipo, r.fotos, r.id_staff, c.roupa, r.check_in FROM reserva as r INNER JOIN cliente as c ON r.id_cliente = c.id WHERE data = '{data_para_pdf}'")
-    lista_dados_reserva = cursor.fetchall()
-    st.write(lista_dados_reserva)
+        f"SELECT r.nome_cliente, c.cpf, r.tipo, r.fotos,  c.roupa, r.check_in FROM reserva as r INNER JOIN cliente as c ON r.id_cliente = c.id WHERE data = '{data_para_pdf}'")
+    dados = cursor.fetchall()
+    st.write(dados)
+
+    html_table = """
+        <table style="border-collapse: collapse; width: 100%;" border="1">
+            <tbody>
+                <tr style="height: 30px;">
+                    <th style="text-align: center;">#</th>
+                    <th>NOME COMPLETO</th>
+                    <th>CPF</th>
+                    <th>CERT</th>
+                    <th>FOTOS</th>
+                    <th>ROUPA</th>
+                    <th>BATERIA</th>
+                    <th>OBSERVAÇÃO</th>
+                </tr>
+        """
+
+    for i, dado in enumerate(dados):
+        nome_cliente = str(dado[0]).upper() if dado[0] is not None else ''
+        cpf = dado[1] if dado[1] is not None else ''
+        tipo = dado[2] if dado[2] is not None else ''
+        fotos = dado[3] if dado[3] is not None else ''
+        roupa = dado[4] if dado[4] is not None else ''
+        cor_fundo = dado[5] if dado[5] is not None else ''
+
+        html_table += f"""
+            <tr style="height: 30px;">
+                <td style="text-align: center;">{i + 1}</td>
+                <td style= "background-color: {cor_fundo};">{nome_cliente}</td> 
+                <td>{cpf}</td> 
+                <td>{tipo}</td>
+                <td>{fotos}</td>
+                <td>{roupa}</td>
+                <td></td>
+                <td></td>
+            </tr>
+        """
+    html_table += "</tbody></table>"
+
+    return html_table
+
 
     # for dados in lista_dados_reserva:
     #     if dados[0] is None:
@@ -825,40 +865,6 @@ def gerar_pdf(data_para_pdf):
     # pdfkit.from_string(output_text, pdf_filename, configuration=config, options=options)
     #
     # return pdf_filename
-
-
-def html_termo(data, nome_cliente):
-    dados_termo = select_termo(data, nome_cliente)
-    contexto = {}
-
-    if dados_termo:
-        contexto = {'nome': dados_termo[0], 'telefone': dados_termo[1], 'cpf': dados_termo[2],
-                    'data_nascimento': datetime.strptime(str(dados_termo[3]), '%Y-%m-%d').strftime('%d/%m/%Y'), 'email': dados_termo[4],
-                    'nome_emergencia': dados_termo[5],
-                    'telefone_emergencia': dados_termo[6], 'estado': dados_termo[7], 'pais': dados_termo[8],
-                    'data_mergulho': datetime.strptime(str(dados_termo[9]), '%Y-%m-%d').strftime('%d/%m/%Y'), 'gravida': dados_termo[10], 'remedio': dados_termo[11],
-                    'cardiaca': dados_termo[12], 'asma': dados_termo[13], 'pulmonar': dados_termo[14],
-                    'epilepsia': dados_termo[15], 'enjoo': dados_termo[16], 'dd': dados_termo[17],
-                    'coluna': dados_termo[18], 'diabetes': dados_termo[19], 'ouvido': dados_termo[20],
-                    'hemorragia': dados_termo[21], 'sinusite': dados_termo[22], 'cirurgia': f'{dados_termo[23]} {dados_termo[24]}  {dados_termo[25]}', 'viagem': dados_termo[26], 'menor': dados_termo[27],
-                    'bebida': dados_termo[28]}
-
-    # Renderizar o template HTML
-    planilha_loader = jinja2.FileSystemLoader('./')
-    planilha_env = jinja2.Environment(loader=planilha_loader)
-    planilha = planilha_env.get_template('termo_responsabilidade.html')
-    output_text = planilha.render(contexto)
-    pdf_filename = f'termo {nome_cliente} - {data}.pdf'
-
-    config = pdfkit.configuration()
-    options = {
-        'encoding': 'utf-8',
-        'no-images': None,
-        'quiet': '',
-    }
-    pdfkit.from_string(output_text, pdf_filename, configuration=config, options=options)
-
-    return output_text, pdf_filename
 
 
 def gerar_html(data_para_pdf):
@@ -925,11 +931,50 @@ def gerar_html(data_para_pdf):
             </tr>
             """
 
+
     mydb.close()
     # Fechando a tabela
     html_table += "</tbody></table>"
 
     return html_table
+
+
+
+
+def html_termo(data, nome_cliente):
+    dados_termo = select_termo(data, nome_cliente)
+    contexto = {}
+
+    if dados_termo:
+        contexto = {'nome': dados_termo[0], 'telefone': dados_termo[1], 'cpf': dados_termo[2],
+                    'data_nascimento': datetime.strptime(str(dados_termo[3]), '%Y-%m-%d').strftime('%d/%m/%Y'), 'email': dados_termo[4],
+                    'nome_emergencia': dados_termo[5],
+                    'telefone_emergencia': dados_termo[6], 'estado': dados_termo[7], 'pais': dados_termo[8],
+                    'data_mergulho': datetime.strptime(str(dados_termo[9]), '%Y-%m-%d').strftime('%d/%m/%Y'), 'gravida': dados_termo[10], 'remedio': dados_termo[11],
+                    'cardiaca': dados_termo[12], 'asma': dados_termo[13], 'pulmonar': dados_termo[14],
+                    'epilepsia': dados_termo[15], 'enjoo': dados_termo[16], 'dd': dados_termo[17],
+                    'coluna': dados_termo[18], 'diabetes': dados_termo[19], 'ouvido': dados_termo[20],
+                    'hemorragia': dados_termo[21], 'sinusite': dados_termo[22], 'cirurgia': f'{dados_termo[23]} {dados_termo[24]}  {dados_termo[25]}', 'viagem': dados_termo[26], 'menor': dados_termo[27],
+                    'bebida': dados_termo[28]}
+
+    # Renderizar o template HTML
+    planilha_loader = jinja2.FileSystemLoader('./')
+    planilha_env = jinja2.Environment(loader=planilha_loader)
+    planilha = planilha_env.get_template('termo_responsabilidade.html')
+    output_text = planilha.render(contexto)
+    pdf_filename = f'termo {nome_cliente} - {data}.pdf'
+
+    config = pdfkit.configuration()
+    options = {
+        'encoding': 'utf-8',
+        'no-images': None,
+        'quiet': '',
+    }
+    pdfkit.from_string(output_text, pdf_filename, configuration=config, options=options)
+
+    return output_text, pdf_filename
+
+
 
 
 def gerar_html_entrada_caixa(data_caixa):
