@@ -761,7 +761,7 @@ def gerar_pdf(data_para_pdf):
     cursor.execute(
         f"SELECT r.nome_cliente, c.cpf, r.tipo, r.fotos,  c.roupa, r.check_in FROM reserva as r INNER JOIN cliente as c ON r.id_cliente = c.id WHERE data = '{data_para_pdf}'")
     dados = cursor.fetchall()
-    st.write(dados)
+
 
     html_table = """
         <table style="border-collapse: collapse; width: 100%;" border="1">
