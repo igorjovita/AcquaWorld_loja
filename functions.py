@@ -762,7 +762,6 @@ def gerar_pdf(data_para_pdf):
         f"SELECT r.nome_cliente, c.cpf, r.tipo, r.fotos,  c.roupa, r.check_in FROM reserva as r INNER JOIN cliente as c ON r.id_cliente = c.id WHERE data = '{data_para_pdf}'")
     dados = cursor.fetchall()
 
-
     html_table = """
         <table style="border-collapse: collapse; width: 100%;" border="1">
             <tbody>
@@ -802,7 +801,7 @@ def gerar_pdf(data_para_pdf):
             <td style="border-style: solid; height: 18px; background-color: #808080; border-color: #000000; text-align: center;" colspan="8"">STAFFS</td>
             <tr>
                 <th style="text-align: center;">#</th>
-                <th>NOME COMPLETO</th>
+                <th>NOME</th>
                 <th>CPF</th>
                 <th>BAT</th>
                 <th style="width: 15px">TUR</th>
@@ -811,11 +810,23 @@ def gerar_pdf(data_para_pdf):
                 <th>OBSERVAÇÃO</th>
             </tr>
             """
+    for i in range(10):
+        html_table += f"""
+            <tr>
+                <td>{i + 1}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td ></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        """
 
     html_table += "</tbody></table>"
 
     return html_table
-
 
     # for dados in lista_dados_reserva:
     #     if dados[0] is None:
@@ -884,7 +895,8 @@ def gerar_pdf(data_para_pdf):
 def gerar_html(data_para_pdf):
     mydb.connect()
     cursor.execute(
-        "SELECT r.nome_cliente AS nome_cliente, CASE WHEN c.cpf = c.id THEN '' ELSE c.cpf END AS cpf, c.telefone, v.apelido AS nome_vendedor, r.tipo, r.fotos, c.roupa, r.check_in FROM reserva AS r INNER JOIN cliente AS c ON r.id_cliente = c.id INNER JOIN vendedores AS v ON r.id_vendedor = v.id WHERE r.data = %s",(data_para_pdf, ))
+        "SELECT r.nome_cliente AS nome_cliente, CASE WHEN c.cpf = c.id THEN '' ELSE c.cpf END AS cpf, c.telefone, v.apelido AS nome_vendedor, r.tipo, r.fotos, c.roupa, r.check_in FROM reserva AS r INNER JOIN cliente AS c ON r.id_cliente = c.id INNER JOIN vendedores AS v ON r.id_vendedor = v.id WHERE r.data = %s",
+        (data_para_pdf,))
     dados = cursor.fetchall()
     minimo = 10
 
@@ -945,14 +957,11 @@ def gerar_html(data_para_pdf):
             </tr>
             """
 
-
     mydb.close()
     # Fechando a tabela
     html_table += "</tbody></table>"
 
     return html_table
-
-
 
 
 def html_termo(data, nome_cliente):
@@ -961,14 +970,18 @@ def html_termo(data, nome_cliente):
 
     if dados_termo:
         contexto = {'nome': dados_termo[0], 'telefone': dados_termo[1], 'cpf': dados_termo[2],
-                    'data_nascimento': datetime.strptime(str(dados_termo[3]), '%Y-%m-%d').strftime('%d/%m/%Y'), 'email': dados_termo[4],
+                    'data_nascimento': datetime.strptime(str(dados_termo[3]), '%Y-%m-%d').strftime('%d/%m/%Y'),
+                    'email': dados_termo[4],
                     'nome_emergencia': dados_termo[5],
                     'telefone_emergencia': dados_termo[6], 'estado': dados_termo[7], 'pais': dados_termo[8],
-                    'data_mergulho': datetime.strptime(str(dados_termo[9]), '%Y-%m-%d').strftime('%d/%m/%Y'), 'gravida': dados_termo[10], 'remedio': dados_termo[11],
+                    'data_mergulho': datetime.strptime(str(dados_termo[9]), '%Y-%m-%d').strftime('%d/%m/%Y'),
+                    'gravida': dados_termo[10], 'remedio': dados_termo[11],
                     'cardiaca': dados_termo[12], 'asma': dados_termo[13], 'pulmonar': dados_termo[14],
                     'epilepsia': dados_termo[15], 'enjoo': dados_termo[16], 'dd': dados_termo[17],
                     'coluna': dados_termo[18], 'diabetes': dados_termo[19], 'ouvido': dados_termo[20],
-                    'hemorragia': dados_termo[21], 'sinusite': dados_termo[22], 'cirurgia': f'{dados_termo[23]} {dados_termo[24]}  {dados_termo[25]}', 'viagem': dados_termo[26], 'menor': dados_termo[27],
+                    'hemorragia': dados_termo[21], 'sinusite': dados_termo[22],
+                    'cirurgia': f'{dados_termo[23]} {dados_termo[24]}  {dados_termo[25]}', 'viagem': dados_termo[26],
+                    'menor': dados_termo[27],
                     'bebida': dados_termo[28]}
 
     # Renderizar o template HTML
@@ -987,8 +1000,6 @@ def html_termo(data, nome_cliente):
     pdfkit.from_string(output_text, pdf_filename, configuration=config, options=options)
 
     return output_text, pdf_filename
-
-
 
 
 def gerar_html_entrada_caixa(data_caixa):
