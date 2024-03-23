@@ -55,9 +55,8 @@ if menu_main == 'Visualizar':
 
     if botao2:
         pdf_filename = gerar_pdf(data_para_pdf)
-        st.components.v1.html(pdf_filename, height=1000, width=1000, scrolling=True)
-        # download_link = f'<a href="data:application/pdf;base64,{base64.b64encode(open(pdf_filename, "rb").read()).decode()}" download="{pdf_filename}">Clique aqui para baixar</a>'
-        # st.markdown(download_link, unsafe_allow_html=True)
+        download_link = f'<a href="data:application/pdf;base64,{base64.b64encode(open(pdf_filename, "rb").read()).decode()}" download="{pdf_filename}">Clique aqui para baixar</a>'
+        st.markdown(download_link, unsafe_allow_html=True)
 
 # Formulário para gerar PDF
 

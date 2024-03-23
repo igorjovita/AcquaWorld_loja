@@ -750,14 +750,7 @@ def lista_vendedores():
 
 def gerar_pdf(data_para_pdf):
     mydb.connect()
-    cliente = []
-    cpf = []
-    roupa = []
-    cert = []
-    foto = []
-    dm = []
-    background_colors = []
-    # Consulta ao banco de dados para obter os dados
+
     cursor.execute(
         f"SELECT r.nome_cliente, c.cpf, r.tipo, r.fotos,  c.roupa, r.check_in FROM reserva as r INNER JOIN cliente as c ON r.id_cliente = c.id WHERE data = '{data_para_pdf}'")
     dados = cursor.fetchall()
@@ -797,7 +790,7 @@ def gerar_pdf(data_para_pdf):
                 <td style= "background-color: {cor_fundo};">{nome_cliente}</td> 
                 <td>{cpf}</td> 
                 <td>{tipo}</td>
-                <td style="text-align: center;">{fotos}</td>
+                <td>{fotos}</td>
                 <td>{roupa}</td>
                 <td></td>
                 <td></td>
@@ -851,7 +844,19 @@ def gerar_pdf(data_para_pdf):
 
     html_table += "</tbody></table>"
 
-    return html_table
+    # Nome do arquivo PDF
+    pdf_filename = f"reservas_{data_para_pdf}.pdf"
+
+    # Gerar PDF
+    config = pdfkit.configuration()
+    options = {
+        'encoding': 'utf-8',
+        'no-images': None,
+        'quiet': '',
+    }
+    pdfkit.from_string(html_table, pdf_filename, configuration=config, options=options)
+
+    return pdf_filename
 
     # for dados in lista_dados_reserva:
     #     if dados[0] is None:
