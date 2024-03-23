@@ -792,7 +792,7 @@ def gerar_pdf(data_para_pdf):
                 <td style= "background-color: {cor_fundo};">{nome_cliente}</td> 
                 <td>{cpf}</td> 
                 <td>{tipo}</td>
-                <td>{fotos}</td>
+                <td style="text-align: center;">{fotos}</td>
                 <td>{roupa}</td>
                 <td></td>
                 <td></td>
