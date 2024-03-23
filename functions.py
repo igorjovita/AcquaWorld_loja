@@ -797,6 +797,25 @@ def gerar_pdf(data_para_pdf):
                 <td></td>
             </tr>
         """
+    minimo = 20
+    if len(dados) < minimo:
+        numero = minimo - len(dados)
+
+        for i in range(numero):
+            html_table += f"""
+                        <tr>
+                            <td style="text-align: center;">{i + 1}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td ></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    """
+
+
     html_table += """
             <td style="border-style: solid; height: 18px; background-color: #808080; border-color: #000000; text-align: center;" colspan="8"">STAFFS</td>
             <tr>
@@ -813,11 +832,11 @@ def gerar_pdf(data_para_pdf):
     for i in range(10):
         html_table += f"""
             <tr>
-                <td style="text-align: center;">{i + 1}</td>
+                <td style="text-align: center;">{len(dados) + i + 1}</td>
                 <td></td>
                 <td></td>
                 <td></td>
-                <td ></td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
