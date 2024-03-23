@@ -759,7 +759,7 @@ def gerar_pdf(data_para_pdf):
     background_colors = []
     # Consulta ao banco de dados para obter os dados
     cursor.execute(
-        f"SELECT r.nome_cliente, c.cpf, r.tipo, r.fotos, r.id_staff, r.check_in FROM reserva as r INNER JOIN cliente as c ON r.id_cliente = c.id WHERE data = '{data_para_pdf}'")
+        f"SELECT r.nome_cliente, c.cpf, r.tipo, r.fotos, r.id_staff, c.roupa, r.check_in FROM reserva as r INNER JOIN cliente as c ON r.id_cliente = c.id WHERE data = '{data_para_pdf}'")
     lista_dados_reserva = cursor.fetchall()
     st.write(lista_dados_reserva)
 
