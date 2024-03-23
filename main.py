@@ -44,19 +44,23 @@ if menu_main == 'Visualizar':
     coluna1, coluna2 = st.columns(2)
 
     with coluna1:
-        if st.button('Gerar Html'):
-            tabela_html = gerar_html(data_para_pdf)
-            st.components.v1.html(tabela_html, height=1000, width=1000, scrolling=True)
+        botao1 = st.button('Gerar Html')
 
     with coluna2:
-        if st.button("Gerar PDF"):
-            pdf_filename = gerar_pdf(data_para_pdf)
-            download_link = f'<a href="data:application/pdf;base64,{base64.b64encode(open(pdf_filename, "rb").read()).decode()}" download="{pdf_filename}">Clique aqui para baixar</a>'
-            st.markdown(download_link, unsafe_allow_html=True)
+        botao2 = st.button("Gerar PDF")
 
-    st.write('---')
+    if botao1:
+        tabela_html = gerar_html(data_para_pdf)
+        st.components.v1.html(tabela_html, height=1000, width=1000, scrolling=True)
 
-    # Formulário para gerar PDF
+    if botao2:
+        pdf_filename = gerar_pdf(data_para_pdf)
+        download_link = f'<a href="data:application/pdf;base64,{base64.b64encode(open(pdf_filename, "rb").read()).decode()}" download="{pdf_filename}">Clique aqui para baixar</a>'
+        st.markdown(download_link, unsafe_allow_html=True)
+
+st.write('---')
+
+# Formulário para gerar PDF
 
 
 if menu_main == 'Reservar':
@@ -754,9 +758,7 @@ if menu_main == 'Pagamento':
                                                 st.session_state.id_titular_pagamento, reserva[2], reserva[1],
                                                 reserva[5], reserva[6], total_receber, maquina)
 
-
                 st.rerun()
-
 
 #     st.write('---')
 #
