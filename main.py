@@ -58,8 +58,6 @@ if menu_main == 'Visualizar':
         download_link = f'<a href="data:application/pdf;base64,{base64.b64encode(open(pdf_filename, "rb").read()).decode()}" download="{pdf_filename}">Clique aqui para baixar</a>'
         st.markdown(download_link, unsafe_allow_html=True)
 
-st.write('---')
-
 # Formulário para gerar PDF
 
 
