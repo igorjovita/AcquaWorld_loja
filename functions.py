@@ -798,6 +798,20 @@ def gerar_pdf(data_para_pdf):
                 <td></td>
             </tr>
         """
+    html_table += """
+            <td style="border-style: solid; height: 18px; background-color: #808080; border-color: #000000; text-align: center;" colspan="8"">STAFFS</td>
+            <tr>
+                <th style="text-align: center;">#</th>
+                <th>NOME COMPLETO</th>
+                <th>CPF</th>
+                <th>ASSINATURA</th>
+                <th style="width: 15px">BAT</th>
+                <th>TUR</th>
+                <th>CURSO</th>
+                <th>OBSERVAÇÃO</th>
+            </tr>
+            """
+
     html_table += "</tbody></table>"
 
     return html_table
