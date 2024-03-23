@@ -766,7 +766,7 @@ def gerar_pdf(data_para_pdf):
             <h3 style="text-align: center;"><strong>Planilha Operação Diaria</strong></h3>
             <h4>Embarcação Beleza Nativa</h4>
             <div style="display: flex; justify-content: space-around;">
-                <h4>Data: {data_para_pdf}</h4>
+                <h4>Data: {datetime.strptime(str(data_para_pdf), '%Y-%m-%d').strftime('%d/%m/%Y')}</h4>
                 <h4>Horario: 08:30</h4>
             </div>
             <table style="border-collapse: collapse; width: 100%;" border="1">
