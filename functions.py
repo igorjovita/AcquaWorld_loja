@@ -763,6 +763,7 @@ def gerar_pdf(data_para_pdf):
     dados = cursor.fetchall()
 
     html_table = """
+        <h3 style="text-align: center;"><strong>Planilha Operação Diaria</strong></h3>
         <table style="border-collapse: collapse; width: 100%;" border="1">
             <tbody>
                 <tr style="height: 30px;">
