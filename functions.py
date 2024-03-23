@@ -762,9 +762,11 @@ def gerar_pdf(data_para_pdf):
         f"SELECT r.nome_cliente, c.cpf, r.tipo, r.fotos,  c.roupa, r.check_in FROM reserva as r INNER JOIN cliente as c ON r.id_cliente = c.id WHERE data = '{data_para_pdf}'")
     dados = cursor.fetchall()
 
-    html_table = """
-        <h3 style="text-align: center;"><strong>Planilha Operação Diaria</strong></h3>
-        <table style="border-collapse: collapse; width: 100%;" border="1">
+    html_table = f"""
+            <h3 style="text-align: center;"><strong>Planilha Operação Diaria</strong></h3>
+            <h4>Embarcação Beleza Nativa</h4>
+            <h4>Data: {{data_para_pdf}}</h4>
+            <table style="border-collapse: collapse; width: 100%;" border="1">
             <tbody>
                 <tr style="height: 30px;">
                     <th style="text-align: center;">#</th>
