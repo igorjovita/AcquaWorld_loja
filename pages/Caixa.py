@@ -34,10 +34,8 @@ if escolha_caixa == 'Lançamentos':
     with col1:
         data_caixa = st.date_input('Data', format='DD/MM/YYYY')
 
-
     with col2:
         lancamento = st.selectbox('Lançamento', ['ENTRADA', 'SAIDA', 'FECHAMENTO'], index=None)
-
 
     with col3:
         if lancamento == 'FECHAMENTO':
@@ -74,20 +72,18 @@ if escolha_caixa == 'Lançamentos':
         else:
             tipo = st.selectbox('Tipo', tipo2, index=None, disabled=True)
 
-
     with colu2:
 
         if lancamento == 'FECHAMENTO':
-            forma_pg = st.selectbox('Forma do Pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None, disabled=True)
+            forma_pg = st.selectbox('Forma do Pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None,
+                                    disabled=True)
         else:
             forma_pg = st.selectbox('Forma do Pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None)
-
 
     if lancamento == 'FECHAMENTO':
         descricao = st.text_area('Descriçao', disabled=True)
     else:
         descricao = st.text_area('Descriçao')
-
 
     if st.button('Lançar Pagamento'):
 
@@ -103,35 +99,36 @@ if escolha_caixa == 'Lançamentos':
             insert_caixa(1, data_caixa, lancamento, tipo, descricao, forma_pg, valor)
             st.success('Lançamento inserido no caixa')
 
-
 if escolha_caixa == 'Visualizar':
-
-    data_caixa2 = st.date_input('Data do Caixa', format='DD/MM/YYYY')
-
     st.header('Planilha Caixa')
+    data_caixa2 = st.date_input('Data do Caixa', format='DD/MM/YYYY')
 
     col1, col2, col3 = st.columns(3)
     html_content = None
 
     with col1:
         st.write('')
-        if st.button('Abrir Total'):
-            with open("planilha_caixa_total.html", "r", encoding="utf-8") as file:
-                html_content = gerar_html_total(data_caixa2)
+        botao1 = st.button('Abrir Total')
 
     with col2:
         st.write('')
-        if st.button('Abrir Entrada'):
-            with open("planilha_caixa_entrada.html", "r", encoding="utf-8") as file:
-                html_content = gerar_html_entrada_caixa(data_caixa2)
+        botao2 = st.button('Abrir Entrada')
+
     with col3:
         st.write('')
-        if st.button('Abrir Saida'):
-            with open("planilha_caixa_saida.html", "r", encoding="utf-8") as file:
-                html_content = gerar_html_saida_caixa(data_caixa2)
+        botao3 = st.button('Abrir Saida')
+
+    if botao1:
+        with open("planilha_caixa_total.html", "r", encoding="utf-8") as file:
+            html_content = gerar_html_total(data_caixa2)
+
+    if botao2:
+        with open("planilha_caixa_entrada.html", "r", encoding="utf-8") as file:
+            html_content = gerar_html_entrada_caixa(data_caixa2)
+
+    if botao3:
+        with open("planilha_caixa_saida.html", "r", encoding="utf-8") as file:
+            html_content = gerar_html_saida_caixa(data_caixa2)
 
     if html_content:
         st.components.v1.html(html_content, height=1000, width=1000, scrolling=True)
-
-
-
