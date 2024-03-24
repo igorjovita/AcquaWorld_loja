@@ -9,7 +9,6 @@ from yaml.loader import SafeLoader
 
 import streamlit_authenticator as stauth
 
-authenticate()
 
 if st.session_state["authentication_status"]:
 
@@ -73,4 +72,3 @@ if st.session_state["authentication_status"]:
 else:
     st.subheader('Realize o login primeiro')
 
-    
