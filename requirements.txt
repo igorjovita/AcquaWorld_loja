@@ -11,5 +11,5 @@ google
 babel~=2.14.0
 streamlit==1.31.0
 pip>=24.0
-streamlit_authenticator
+streamlit-authenticator
 PyYAML~=6.0.1
