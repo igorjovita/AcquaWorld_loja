@@ -537,6 +537,7 @@ def authenticate():
 
     if st.session_state["authentication_status"]:
         with st.sidebar:
+            st.image('/logo.png')
             col1, col2 = st.columns(2)
             with col1:
                 st.subheader(f'*{st.session_state["name"]}*')
