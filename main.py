@@ -33,6 +33,7 @@ authenticator = stauth.Authenticate(
 )
 
 with st.sidebar:
+    st.write('Login')
     authenticator.login()
 
 chars = "'),([]"
