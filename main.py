@@ -40,7 +40,7 @@ if st.session_state["authentication_status"]:
     st.sidebar.title('Menu')
 
     if st.session_state["name"] in lista_nivel_1:
-        sidebar_opcoes = ['Reservas', 'Caixa', 'Termo', 'Comissões', 'Controles', 'Financeiro']
+        sidebar_opcoes = ['Reservas', 'Caixa', 'Termo', 'Comissões', 'Controles', '💰 Financeiro']
     else:
         sidebar_opcoes = ['Reservas', 'Caixa', 'Termo', 'Comissões', 'Controles']
 
