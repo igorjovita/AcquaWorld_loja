@@ -18,7 +18,6 @@ import Termos, Caixa, Controles, Comissão
 
 st.set_page_config(layout='wide', page_title='AcquaWorld', page_icon='🤿')
 
-
 authenticate()
 
 chars = "'),([]"
@@ -35,11 +34,17 @@ mydb = mysql.connector.connect(
     charset="utf8")
 
 cursor = mydb.cursor(buffered=True)
-
+lista_nivel_1 = ['Igor Jovita']
 if st.session_state["authentication_status"]:
     st.sidebar.write('---')
     st.sidebar.title('Menu')
-    sidebar_menu = st.sidebar.radio('Selecione uma pagina', ['Reservas', 'Caixa', 'Termo', 'Comissões', 'Controles'])
+
+    if st.session_state["name"] in lista_nivel_1:
+        sidebar_opcoes = ['Reservas', 'Caixa', 'Termo', 'Comissões', 'Controles', 'Financeiro']
+    else:
+        sidebar_opcoes = ['Reservas', 'Caixa', 'Termo', 'Comissões', 'Controles']
+
+    sidebar_menu = st.sidebar.radio('Selecione uma pagina', sidebar_opcoes)
 
     if sidebar_menu == 'Termo':
         Termos.termo()
@@ -55,14 +60,13 @@ if st.session_state["authentication_status"]:
 
     if sidebar_menu == 'Reservas':
 
-
         menu_main = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visualizar', 'Editar', 'Pagamento'],
                                 icons=['book', 'card-checklist', 'pencil-square', 'currency-dollar'],
                                 orientation='horizontal')
 
         pasta = os.path.dirname(__file__)
 
-        if menu_main == 'Visualizar': # PARTE OK
+        if menu_main == 'Visualizar':  # PARTE OK
             # Função para obter cores com base no valor da coluna 'check_in'
             data_para_pdf = st.date_input("Data para gerar PDF:", format='DD/MM/YYYY')
 
@@ -84,7 +88,6 @@ if st.session_state["authentication_status"]:
                 st.markdown(download_link, unsafe_allow_html=True)
 
         # Formulário para gerar PDF
-
 
         if menu_main == 'Reservar':
             # Inicialização de listas e variaveis
@@ -260,7 +263,8 @@ if st.session_state["authentication_status"]:
                                 valor_loja = valor_loja
                         if st.form_submit_button(f'Cadastrar {nome_cliente}'):
                             lista_cred = ['TUR2', 'OWD', 'ADV', 'RESCUE', 'REVIEW']
-                            contagem, restricao, contagem_cred, vaga_bat, vaga_cred, vaga_total = calculo_restricao(data)
+                            contagem, restricao, contagem_cred, vaga_bat, vaga_cred, vaga_total = calculo_restricao(
+                                data)
 
                             if tipo in lista_cred and contagem_cred >= vaga_cred:
                                 st.write(contagem_cred)
@@ -485,7 +489,8 @@ if st.session_state["authentication_status"]:
                 cpf_cliente, telefone_cliente, roupa_cliente = select_cliente(id_cliente)
 
                 escolha_editar = st.radio('Escolha o que deseja editar',
-                                          ['Data', 'Nome', 'CPF e Telefone', 'Vendedor', 'Certificação', 'Peso e Altura'])
+                                          ['Data', 'Nome', 'CPF e Telefone', 'Vendedor', 'Certificação',
+                                           'Peso e Altura'])
 
                 if escolha_editar == 'Data':
                     nova_data = st.date_input('Nova Data da reserva', format='DD/MM/YYYY')
@@ -588,7 +593,8 @@ if st.session_state["authentication_status"]:
                         col1, col2, col3 = st.columns(3)
                         with col1:
                             nome_cliente_vaga = st.text_input('Nome')
-                            tipo = st.selectbox('Certificação', ['BAT', 'ACP', 'TUR1', 'TUR2', 'OWD', 'ADV'], index=None)
+                            tipo = st.selectbox('Certificação', ['BAT', 'ACP', 'TUR1', 'TUR2', 'OWD', 'ADV'],
+                                                index=None)
                             valor_vaga = st.text_input('Valor Total da reserva')
                             receber_vaga = st.text_input('Receber na Loja')
                         with col2:
@@ -599,14 +605,16 @@ if st.session_state["authentication_status"]:
                         with col3:
                             telefone_vaga = st.text_input('Telefone')
                             altura_vaga = st.slider('Altura', 1.50, 2.20)
-                            recebedor_sinal_vaga = st.selectbox('Recebedor do Sinal', ['Vendedor', 'AcquaWorld'], index=None)
+                            recebedor_sinal_vaga = st.selectbox('Recebedor do Sinal', ['Vendedor', 'AcquaWorld'],
+                                                                index=None)
 
                         if st.form_submit_button(f'Cadastrar Cliente{i}'):
                             st.write(st.session_state.reserva_temporaria)
-                            st.session_state.reserva_temporaria.append((st.session_state.lista_id_vaga[i], nome_cliente_vaga,
-                                                                        cpf_vaga, telefone_vaga, tipo, peso_vaga, altura_vaga,
-                                                                        valor_vaga, sinal_vaga, recebedor_sinal_vaga,
-                                                                        receber_vaga, data_vaga))
+                            st.session_state.reserva_temporaria.append(
+                                (st.session_state.lista_id_vaga[i], nome_cliente_vaga,
+                                 cpf_vaga, telefone_vaga, tipo, peso_vaga, altura_vaga,
+                                 valor_vaga, sinal_vaga, recebedor_sinal_vaga,
+                                 receber_vaga, data_vaga))
                             st.write(st.session_state.lista_id_vaga)
 
                             # st.session_state.lista_vaga.remove(st.session_state.lista_vaga[i])
@@ -619,7 +627,8 @@ if st.session_state["authentication_status"]:
                     id_vendedor_vaga = select_id_vendedores(comissario_vaga)
                     for reserva in st.session_state.reserva_temporaria:
                         update_vaga(reserva[0], reserva[1], reserva[2], reserva[3], reserva[4], reserva[5], reserva[6],
-                                    reserva[7], reserva[8], reserva[9], reserva[10], reserva[11], id_titular, id_vendedor_vaga)
+                                    reserva[7], reserva[8], reserva[9], reserva[10], reserva[11], id_titular,
+                                    id_vendedor_vaga)
                     st.session_state.botao_vaga = False
                     st.success('Reservas atualizadas com sucesso!')
                     time.sleep(1.0)
@@ -705,7 +714,8 @@ if st.session_state["authentication_status"]:
                     total_receber += float(receber_loja)
 
                     st.session_state.nomes_clientes_pagamento.append(
-                        (nome_cliente_pg, id_cliente_pg, id_reserva_pg, receber_loja, id_vendedor_pg, tipo_pg, valor_total,
+                        (nome_cliente_pg, id_cliente_pg, id_reserva_pg, receber_loja, id_vendedor_pg, tipo_pg,
+                         valor_total,
                          situacao_pg))
 
                 nomes_pg = []
@@ -782,8 +792,6 @@ if st.session_state["authentication_status"]:
                                                         reserva[5], reserva[6], total_receber, maquina)
 
                         st.rerun()
-
-
 
 #     st.write('---')
 #

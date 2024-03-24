@@ -542,7 +542,6 @@ def authenticate():
             with col1:
                 st.subheader(f'*{st.session_state["name"]}*')
             with col2:
-
                 authenticator.logout()
 
 
