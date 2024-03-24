@@ -539,7 +539,7 @@ def authenticate():
         with st.sidebar:
             col1, col2 = st.columns(2)
             with col1:
-                st.write(f'*{st.session_state["name"]}*')
+                st.subheader(f'*{st.session_state["name"]}*')
             with col2:
 
                 authenticator.logout()
