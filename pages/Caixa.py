@@ -2,7 +2,8 @@ import streamlit as st
 import mysql.connector
 import os
 import streamlit.components.v1
-from functions import gerar_html_entrada_caixa, gerar_html_total, gerar_html_saida_caixa, select_caixa
+from functions import gerar_html_entrada_caixa, gerar_html_total, gerar_html_saida_caixa, select_caixa, \
+    select_fechamento
 from functions import insert_caixa
 from babel.numbers import format_currency
 
@@ -84,10 +85,18 @@ else:
 
 
 if st.button('Lançar Pagamento'):
-    if lancamento == 'FECHAMENTO':
-        valor = saldo
-    insert_caixa(1, data_caixa, lancamento, tipo, descricao, forma_pg, valor)
-    st.success('Lançamento inserido no caixa')
+
+    fechamento = select_fechamento(data_caixa)
+
+    if fechamento:
+        st.error('O caixa já foi fechado, faça lançamentos no dia seguinte')
+
+    else:
+
+        if lancamento == 'FECHAMENTO':
+            valor = saldo
+        insert_caixa(1, data_caixa, lancamento, tipo, descricao, forma_pg, valor)
+        st.success('Lançamento inserido no caixa')
 
 
 st.write('---')

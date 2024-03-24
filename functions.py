@@ -376,6 +376,15 @@ def select_termo(data, nome_cliente):
     return dados
 
 
+def select_fechamento(data):
+    mydb.connect()
+    cursor.execute("SELECT valor from caixa where tipo_movimento = 'FECHAMENTO' and data = %s", (data, ))
+    resultado = cursor.fetchone()
+
+    mydb.close()
+    return resultado
+
+
 # INSERTS
 
 
