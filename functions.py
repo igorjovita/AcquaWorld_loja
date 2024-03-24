@@ -246,8 +246,11 @@ def select_caixa(data_caixa):
     mydb.connect()
     cursor.execute(f"SELECT tipo_movimento, tipo, descricao, forma_pg, valor FROM caixa WHERE data = '{data_caixa}'")
     dados = cursor.fetchall()
+
+    cursor.execute(f"select valor from caixa where tipo_movimento = 'FECHAMENTO' and data < '{data_caixa}' order by data desc limit 1")
+    saldo_anterior = cursor.fetchone()[0]
     mydb.close()
-    return dados
+    return dados, saldo_anterior
 
 
 def select_id_cliente_like(nome_vaga):
@@ -372,9 +375,6 @@ def select_termo(data, nome_cliente):
     return dados
 
 
-# def select_alunos():
-#     mydb.connect()
-#     cursor.execute(""
 
 
 # INSERTS
@@ -1130,7 +1130,7 @@ def gerar_html_total(data_caixa):
 
     mydb.connect()
     cursor.execute(
-        f"select valor from caixa where tipo_movimento = 'FECHAMENTO' and data < '{data_caixa}' order by data desc limit 1;;")
+        f"select valor from caixa where tipo_movimento = 'FECHAMENTO' and data < '{data_caixa}' order by data desc limit 1")
     mydb.close()
     dado_fechamento = cursor.fetchone()[0]
 

@@ -35,7 +35,7 @@ with col2:
 
 with col3:
     if lancamento == 'FECHAMENTO':
-        dados = select_caixa(data_caixa)
+        dados, saldo_anterior = select_caixa(data_caixa)
         soma_dinheiro = 0
         soma_saida_dinheiro = 0
         soma_cofre = 0
@@ -51,7 +51,7 @@ with col3:
                 if dado[1] == 'Cofre':
                     soma_cofre += float(dado[4])
 
-        saldo = soma_dinheiro - (soma_saida_dinheiro + soma_cofre)
+        saldo = (soma_dinheiro + saldo_anterior) - (soma_saida_dinheiro + soma_cofre)
         saldo_loja = format_currency(saldo, 'BRL', locale='pt_BR')
         valor = st.text_input('Valor', value=saldo_loja)
 
