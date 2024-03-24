@@ -34,7 +34,7 @@ mydb = mysql.connector.connect(
     charset="utf8")
 
 cursor = mydb.cursor(buffered=True)
-lista_nivel_1 = ['Teste ']
+lista_nivel_1 = ['Igor Jovita']
 if st.session_state["authentication_status"]:
     st.sidebar.write('---')
     st.sidebar.title('Menu')
