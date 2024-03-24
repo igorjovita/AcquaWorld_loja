@@ -39,6 +39,7 @@ if st.session_state["authentication_status"]:
     st.sidebar.write('---')
     st.sidebar.title('Menu')
 
+
     if st.session_state["username"] in lista_nivel_1:
         sidebar_opcoes = ['📆 Reservas', '💰 Caixa', '📝 Termo', '🤝 Comissões', '📖 Controles', '📈 Financeiro']
     else:
