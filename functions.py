@@ -1117,13 +1117,13 @@ def gerar_html_total(data_caixa):
     soma_total_saida = soma_saida_dinheiro + soma_saida_pix + soma_cofre + soma_reembolso
 
     soma_pix = format_currency(soma_pix, 'BRL', locale='pt_BR')
-    soma_dinheiro = format_currency(soma_dinheiro, 'BRL', locale='pt_BR')
+    soma_dinheiro_formatado = format_currency(soma_dinheiro, 'BRL', locale='pt_BR')
     soma_debito = format_currency(soma_debito, 'BRL', locale='pt_BR')
     soma_credito = format_currency(soma_credito, 'BRL', locale='pt_BR')
-    soma_cofre = format_currency(soma_cofre, 'BRL', locale='pt_BR')
+    soma_cofre_formatado = format_currency(soma_cofre, 'BRL', locale='pt_BR')
     soma_reembolso = format_currency(soma_reembolso, 'BRL', locale='pt_BR')
     soma_saida_pix = format_currency(soma_saida_pix, 'BRL', locale='pt_BR')
-    soma_saida_dinheiro = format_currency(soma_saida_dinheiro, 'BRL', locale='pt_BR')
+    soma_saida_dinheiro_formatado = format_currency(soma_saida_dinheiro, 'BRL', locale='pt_BR')
 
     soma_total_saida = format_currency(soma_total_saida, 'BRL', locale='pt_BR')
     soma_total_entrada = format_currency(soma_total_entrada, 'BRL', locale='pt_BR')
@@ -1139,10 +1139,10 @@ def gerar_html_total(data_caixa):
     saldo_loja = format_currency((float(soma_dinheiro) + float(dado_fechamento)) - (soma_saida_dinheiro + soma_cofre),
                                  'BRL', locale='pt_BR')
 
-    contexto_total = {'soma_pix': soma_pix, 'soma_dinheiro': soma_dinheiro, 'soma_debito': soma_debito,
+    contexto_total = {'soma_pix': soma_pix, 'soma_dinheiro': soma_dinheiro_formatado, 'soma_debito': soma_debito,
                       'soma_credito': soma_credito, 'soma_total_entrada': soma_total_entrada,
                       'soma_reembolso': soma_reembolso, 'soma_saida_pix': soma_saida_pix,
-                      'soma_saida_dinheiro': soma_saida_dinheiro, 'soma_cofre': soma_cofre,
+                      'soma_saida_dinheiro': soma_saida_dinheiro_formatado, 'soma_cofre': soma_cofre_formatado,
                       'soma_total_saida': soma_total_saida, 'saldo_loja': saldo_loja, 'saldo_anterior': fechamento}
 
     # Renderizar o template HTML
