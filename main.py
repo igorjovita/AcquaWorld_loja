@@ -40,16 +40,16 @@ if st.session_state["authentication_status"]:
     st.sidebar.title('Menu')
 
     if st.session_state["username"] in lista_nivel_1:
-        sidebar_opcoes = ['📆 Reservas', '💰 Caixa', '📝 Termo', '💱 Comissões', '📖 Controles', '📈 Financeiro']
+        sidebar_opcoes = ['📆 Reservas', '💰 Caixa', '📝 Termo', '🤝 Comissões', '📖 Controles', '📈 Financeiro']
     else:
-        sidebar_opcoes = ['📆 Reservas', '💰 Caixa', '📝 Termo', '💱 Comissões', '📖 Controles']
+        sidebar_opcoes = ['📆 Reservas', '💰 Caixa', '📝 Termo', '🤝 Comissões', '📖 Controles']
 
     sidebar_menu = st.sidebar.radio('Selecione uma pagina', sidebar_opcoes)
 
     if sidebar_menu == '📝 Termo':
         Termos.termo()
 
-    if sidebar_menu == '💱 Comissões':
+    if sidebar_menu == '🤝 Comissões':
         Comissão.comissao()
 
     if sidebar_menu == '💰 Caixa':
