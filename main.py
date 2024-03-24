@@ -34,7 +34,7 @@ authenticator = stauth.Authenticate(
 )
 
 
-authenticator.login(location='sidebar')
+authenticator.login()
 
 
 if st.session_state["authentication_status"]:
