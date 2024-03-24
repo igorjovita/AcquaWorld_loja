@@ -6,6 +6,10 @@ import pdfkit
 from babel.numbers import format_currency
 from mysql.connector import Error
 from datetime import datetime
+import yaml
+from yaml.loader import SafeLoader
+
+import streamlit_authenticator as stauth
 
 chars = "'),([]"
 chars2 = "')([]"
@@ -378,7 +382,7 @@ def select_termo(data, nome_cliente):
 
 def select_fechamento(data):
     mydb.connect()
-    cursor.execute("SELECT valor from caixa where tipo_movimento = 'FECHAMENTO' and data = %s", (data, ))
+    cursor.execute("SELECT valor from caixa where tipo_movimento = 'FECHAMENTO' and data = %s", (data,))
     resultado = cursor.fetchone()
 
     mydb.close()
@@ -515,6 +519,31 @@ def insert_vendedores(nome, apelido, telefone, neto_bat, neto_acp, neto_tur1, ne
 
 
 # FUNÇÕES NORMAIS
+
+
+def authenticate():
+    # Carregar configurações de autenticação do arquivo YAML
+    with open('config.yaml') as file:
+        config = yaml.load(file, Loader=SafeLoader)
+
+    # Configurar autenticador
+    authenticator = stauth.Authenticate(
+        config['credentials'],
+        config['cookie']['name'],
+        config['cookie']['key'],
+        config['cookie']['expiry_days'],
+        config['preauthorized']
+    )
+
+    # Verificar o status de autenticação e tomar ações correspondentes
+    if st.session_state["authentication_status"]:
+        authenticator.logout()
+        st.write(f'Welcome *{st.session_state["name"]}*')
+        st.title('Some content')
+    elif st.session_state["authentication_status"] is False:
+        st.error('Username/password is incorrect')
+    elif st.session_state["authentication_status"] is None:
+        st.warning('Please enter your username and password')
 
 
 def update_reserva_cliente_termo(data, id_cliente, tipo):

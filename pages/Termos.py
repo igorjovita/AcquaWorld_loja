@@ -1,7 +1,7 @@
 import base64
 import streamlit as st
 from functions import select_termo_cliente, select_lista_nomes, update_reserva_cliente_termo, update_termo_cliente, \
-    update_info_reserva, html_termo
+    update_info_reserva, html_termo, authenticate
 import streamlit.components.v1
 from streamlit_option_menu import option_menu
 import yaml
@@ -9,25 +9,7 @@ from yaml.loader import SafeLoader
 
 import streamlit_authenticator as stauth
 
-with open('config.yaml') as file:
-    config = yaml.load(file, Loader=SafeLoader)
-
-authenticator = stauth.Authenticate(
-    config['credentials'],
-    config['cookie']['name'],
-    config['cookie']['key'],
-    config['cookie']['expiry_days'],
-    config['preauthorized']
-)
-
-if st.session_state["authentication_status"]:
-    authenticator.logout()
-    st.write(f'Welcome *{st.session_state["name"]}*')
-    st.title('Some content')
-elif st.session_state["authentication_status"] is False:
-    st.error('Username/password is incorrect')
-elif st.session_state["authentication_status"] is None:
-    st.warning('Please enter your username and password')
+authenticate()
 
 st.subheader('Termos de responsabilidade')
 
