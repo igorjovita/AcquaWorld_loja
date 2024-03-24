@@ -242,13 +242,12 @@ def select_cliente(id_cliente):
     return cpf_cliente, telefone_cliente, roupa_cliente
 
 
-@st.cache_resource
+
 def select_caixa(data_caixa):
     mydb.connect()
     cursor.execute(f"SELECT tipo_movimento, tipo, descricao, forma_pg, valor FROM caixa WHERE data = '{data_caixa}'")
     dados = cursor.fetchall()
     mydb.close()
-    st.write(dados)
     return dados
 
 
