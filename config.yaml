@@ -1,0 +1,19 @@
+credentials:
+  usernames:
+    igorjovita:
+      email: igor.jovita@hotmail.com
+      logged_in: False # Will be managed automatically
+      name: Igor Jovita
+      password: divoom123 # Will be hashed automatically
+    jadelimaverde:
+      email: jadelimaverde@gmail.com
+      logged_in: False # Will be managed automatically
+      name: Jade Limaverde
+      password: jade123 # Will be hashed automatically
+cookie:
+  expiry_days: 30
+  key: some_signature_key # Must be string
+  name: some_cookie_name
+preauthorized:
+  emails:
+  - teste2121@hotmail.com
