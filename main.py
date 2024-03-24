@@ -19,6 +19,8 @@ import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 
+st.set_page_config(layout='wide', page_title='AcquaWorld', page_icon='🤿')
+
 with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
@@ -46,7 +48,7 @@ mydb = mysql.connector.connect(
     charset="utf8")
 
 cursor = mydb.cursor(buffered=True)
-st.set_page_config(layout='wide', page_title='AcquaWorld', page_icon='🤿')
+
 
 menu_main = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visualizar', 'Editar', 'Pagamento'],
                         icons=['book', 'card-checklist', 'pencil-square', 'currency-dollar'],
