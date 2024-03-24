@@ -46,19 +46,19 @@ if st.session_state["authentication_status"]:
 
     sidebar_menu = st.sidebar.radio('Selecione uma pagina', sidebar_opcoes)
 
-    if sidebar_menu == 'Termo':
+    if sidebar_menu == '📝 Termo':
         Termos.termo()
 
-    if sidebar_menu == 'Comissões':
+    if sidebar_menu == '💱 Comissões':
         Comissão.comissao()
 
-    if sidebar_menu == 'Caixa':
+    if sidebar_menu == '💰 Caixa':
         Caixa.caixa()
 
-    if sidebar_menu == 'Controles':
+    if sidebar_menu == '📖 Controles':
         Controles.controles()
 
-    if sidebar_menu == 'Reservas':
+    if sidebar_menu == '📆 Reservas':
 
         menu_main = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visualizar', 'Editar', 'Pagamento'],
                                 icons=['book', 'card-checklist', 'pencil-square', 'currency-dollar'],
