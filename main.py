@@ -40,10 +40,13 @@ cursor = mydb.cursor(buffered=True)
 if st.session_state["authentication_status"]:
     st.sidebar.write('---')
     st.sidebar.title('Menu')
-    sidebar_menu = st.sidebar.radio('Selecione uma pagina', ['Home', 'Termo'])
+    sidebar_menu = st.sidebar.radio('Selecione uma pagina', ['Home', 'Termo', 'Comissões'])
 
     if sidebar_menu == 'Termo':
         Termos.termo()
+
+    if sidebar_menu == 'Comissões':
+        Comissão.comissao()
 
     if sidebar_menu == 'Home':
 
