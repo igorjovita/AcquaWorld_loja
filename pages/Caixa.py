@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit_option_menu import option_menu
 import mysql.connector
 import os
 import streamlit.components.v1
@@ -23,110 +24,114 @@ tipo1 = ['ENTRADA', 'BAT', 'TUR', 'ACP', 'CURSO', 'PGT PARCEIRO', 'OUTROS']
 tipo2 = ['CAFÉ DA MANHÃ', 'DESPESA OPERACIONAL', 'SALARIO', 'SANGRIA', 'CONTAS']
 lancamento = ''
 
-st.header('Lançamento Caixa')
-col1, col2, col3 = st.columns(3)
+escolha_caixa = option_menu('Controle de Caixa', ['Visualizar', 'Lançamentos'], orientation='horizontal')
 
-with col1:
-    data_caixa = st.date_input('Data', format='DD/MM/YYYY')
+if escolha_caixa == 'Lançamentos':
 
+    st.header('Lançamento Caixa')
+    col1, col2, col3 = st.columns(3)
 
-with col2:
-    lancamento = st.selectbox('Lançamento', ['ENTRADA', 'SAIDA', 'FECHAMENTO'], index=None)
-
-
-with col3:
-    if lancamento == 'FECHAMENTO':
-        dados, saldo_anterior = select_caixa(data_caixa)
-        soma_dinheiro = 0
-        soma_saida_dinheiro = 0
-        soma_cofre = 0
-
-        for dado in dados:
-            if dado[0] == 'ENTRADA':
-                if dado[3] == 'Dinheiro':
-                    soma_dinheiro += float(dado[4])
-
-            if dado[0] == 'SAIDA':
-                if dado[3] == 'Dinheiro':
-                    soma_saida_dinheiro += float(dado[4])
-                if dado[1] == 'Cofre':
-                    soma_cofre += float(dado[4])
-
-        saldo = (soma_dinheiro + saldo_anterior) - (soma_saida_dinheiro + soma_cofre)
-        saldo_loja = format_currency(saldo, 'BRL', locale='pt_BR')
-        valor = st.text_input('Valor', value=saldo_loja)
-
-    else:
-        valor = st.text_input('Valor')
-
-colu1, colu2 = st.columns(2)
-
-with colu1:
-    if lancamento == 'ENTRADA':
-        tipo = st.selectbox('Tipo', tipo1, index=None)
-    elif lancamento == 'SAIDA':
-        tipo = st.selectbox('Tipo', tipo2, index=None)
-    else:
-        tipo = st.selectbox('Tipo', tipo2, index=None, disabled=True)
+    with col1:
+        data_caixa = st.date_input('Data', format='DD/MM/YYYY')
 
 
-with colu2:
-
-    if lancamento == 'FECHAMENTO':
-        forma_pg = st.selectbox('Forma do Pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None, disabled=True)
-    else:
-        forma_pg = st.selectbox('Forma do Pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None)
+    with col2:
+        lancamento = st.selectbox('Lançamento', ['ENTRADA', 'SAIDA', 'FECHAMENTO'], index=None)
 
 
-if lancamento == 'FECHAMENTO':
-    descricao = st.text_area('Descriçao', disabled=True)
-else:
-    descricao = st.text_area('Descriçao')
+    with col3:
+        if lancamento == 'FECHAMENTO':
+            dados, saldo_anterior = select_caixa(data_caixa)
+            soma_dinheiro = 0
+            soma_saida_dinheiro = 0
+            soma_cofre = 0
+
+            for dado in dados:
+                if dado[0] == 'ENTRADA':
+                    if dado[3] == 'Dinheiro':
+                        soma_dinheiro += float(dado[4])
+
+                if dado[0] == 'SAIDA':
+                    if dado[3] == 'Dinheiro':
+                        soma_saida_dinheiro += float(dado[4])
+                    if dado[1] == 'Cofre':
+                        soma_cofre += float(dado[4])
+
+            saldo = (soma_dinheiro + saldo_anterior) - (soma_saida_dinheiro + soma_cofre)
+            saldo_loja = format_currency(saldo, 'BRL', locale='pt_BR')
+            valor = st.text_input('Valor', value=saldo_loja)
+
+        else:
+            valor = st.text_input('Valor')
+
+    colu1, colu2 = st.columns(2)
+
+    with colu1:
+        if lancamento == 'ENTRADA':
+            tipo = st.selectbox('Tipo', tipo1, index=None)
+        elif lancamento == 'SAIDA':
+            tipo = st.selectbox('Tipo', tipo2, index=None)
+        else:
+            tipo = st.selectbox('Tipo', tipo2, index=None, disabled=True)
 
 
-if st.button('Lançar Pagamento'):
-
-    fechamento = select_fechamento(data_caixa)
-
-    if fechamento:
-        st.error('O caixa já foi fechado, faça lançamentos no dia seguinte')
-
-    else:
+    with colu2:
 
         if lancamento == 'FECHAMENTO':
-            valor = saldo
-        insert_caixa(1, data_caixa, lancamento, tipo, descricao, forma_pg, valor)
-        st.success('Lançamento inserido no caixa')
+            forma_pg = st.selectbox('Forma do Pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None, disabled=True)
+        else:
+            forma_pg = st.selectbox('Forma do Pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'], index=None)
 
 
-st.write('---')
+    if lancamento == 'FECHAMENTO':
+        descricao = st.text_area('Descriçao', disabled=True)
+    else:
+        descricao = st.text_area('Descriçao')
 
-data_caixa2 = st.date_input('Data do Caixa', format='DD/MM/YYYY')
 
-st.header('Planilha Caixa')
+    if st.button('Lançar Pagamento'):
 
-col1, col2, col3 = st.columns(3)
-html_content = None
+        fechamento = select_fechamento(data_caixa)
 
-with col1:
-    st.write('')
-    if st.button('Abrir Total'):
-        with open("planilha_caixa_total.html", "r", encoding="utf-8") as file:
-            html_content = gerar_html_total(data_caixa2)
+        if fechamento:
+            st.error('O caixa já foi fechado, faça lançamentos no dia seguinte')
 
-with col2:
-    st.write('')
-    if st.button('Abrir Entrada'):
-        with open("planilha_caixa_entrada.html", "r", encoding="utf-8") as file:
-            html_content = gerar_html_entrada_caixa(data_caixa2)
-with col3:
-    st.write('')
-    if st.button('Abrir Saida'):
-        with open("planilha_caixa_saida.html", "r", encoding="utf-8") as file:
-            html_content = gerar_html_saida_caixa(data_caixa2)
+        else:
 
-if html_content:
-    st.components.v1.html(html_content, height=1000, width=1000, scrolling=True)
+            if lancamento == 'FECHAMENTO':
+                valor = saldo
+            insert_caixa(1, data_caixa, lancamento, tipo, descricao, forma_pg, valor)
+            st.success('Lançamento inserido no caixa')
+
+
+if escolha_caixa == 'Visualizar':
+
+    data_caixa2 = st.date_input('Data do Caixa', format='DD/MM/YYYY')
+
+    st.header('Planilha Caixa')
+
+    col1, col2, col3 = st.columns(3)
+    html_content = None
+
+    with col1:
+        st.write('')
+        if st.button('Abrir Total'):
+            with open("planilha_caixa_total.html", "r", encoding="utf-8") as file:
+                html_content = gerar_html_total(data_caixa2)
+
+    with col2:
+        st.write('')
+        if st.button('Abrir Entrada'):
+            with open("planilha_caixa_entrada.html", "r", encoding="utf-8") as file:
+                html_content = gerar_html_entrada_caixa(data_caixa2)
+    with col3:
+        st.write('')
+        if st.button('Abrir Saida'):
+            with open("planilha_caixa_saida.html", "r", encoding="utf-8") as file:
+                html_content = gerar_html_saida_caixa(data_caixa2)
+
+    if html_content:
+        st.components.v1.html(html_content, height=1000, width=1000, scrolling=True)
 
 
 
