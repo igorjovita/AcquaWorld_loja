@@ -11,7 +11,7 @@ import streamlit_authenticator as stauth
 
 
 if st.session_state["authentication_status"]:
-    def comissoes():
+    def termo():
         st.subheader('Termos de responsabilidade')
 
         menu_termo = option_menu(menu_title="Termo de Responsabilidade", options=['Visualizar', 'Editar'],
