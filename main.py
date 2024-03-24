@@ -33,8 +33,10 @@ authenticator = stauth.Authenticate(
 )
 
 with st.sidebar:
-    st.write('Login')
-    
+    # Inputs de login e senha
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+
 
 chars = "'),([]"
 chars2 = "')([]"
