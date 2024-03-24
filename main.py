@@ -12,7 +12,7 @@ from functions import select_reserva, processar_pagamento, gerar_pdf, gerar_html
     calculo_restricao, insert_cliente, insert_reserva, select_id_vendedores, insert_lancamento_comissao, \
     select_valor_neto, select_cliente, select_grupo_reserva, update_vaga, select_id_cliente_like, \
     select_nome_id_titular, select_reserva_id_titular, titulo_tabela_pagamentos, select_pagamentos, \
-    insert_controle_curso, select_maquina
+    insert_controle_curso, select_maquina, authenticate
 import time
 
 import streamlit_authenticator as stauth
@@ -22,29 +22,7 @@ from yaml.loader import SafeLoader
 st.set_page_config(layout='wide', page_title='AcquaWorld', page_icon='🤿')
 
 
-with open('config.yaml') as file:
-    config = yaml.load(file, Loader=SafeLoader)
-
-authenticator = stauth.Authenticate(
-    config['credentials'],
-    config['cookie']['name'],
-    config['cookie']['key'],
-    config['cookie']['expiry_days'],
-    config['preauthorized']
-)
-
-
-authenticator.login()
-
-
-if st.session_state["authentication_status"]:
-    authenticator.logout()
-    st.write(f'Welcome *{st.session_state["name"]}*')
-    st.title('Some content')
-elif st.session_state["authentication_status"] is False:
-    st.error('Username/password is incorrect')
-elif st.session_state["authentication_status"] is None:
-    st.warning('Please enter your username and password')
+authenticate()
 
 chars = "'),([]"
 chars2 = "')([]"

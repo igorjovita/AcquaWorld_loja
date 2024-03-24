@@ -522,11 +522,9 @@ def insert_vendedores(nome, apelido, telefone, neto_bat, neto_acp, neto_tur1, ne
 
 
 def authenticate():
-    # Carregar configurações de autenticação do arquivo YAML
     with open('config.yaml') as file:
         config = yaml.load(file, Loader=SafeLoader)
 
-    # Configurar autenticador
     authenticator = stauth.Authenticate(
         config['credentials'],
         config['cookie']['name'],
@@ -535,10 +533,12 @@ def authenticate():
         config['preauthorized']
     )
 
-    # Verificar o status de autenticação e tomar ações correspondentes
+    authenticator.login()
+
     if st.session_state["authentication_status"]:
         authenticator.logout()
-        st.write(f'*{st.session_state["name"]}*')
+        st.write(f'Welcome *{st.session_state["name"]}*')
+        st.title('Some content')
     elif st.session_state["authentication_status"] is False:
         st.error('Username/password is incorrect')
     elif st.session_state["authentication_status"] is None:
