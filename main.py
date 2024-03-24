@@ -21,6 +21,11 @@ from yaml.loader import SafeLoader
 
 st.set_page_config(layout='wide', page_title='AcquaWorld', page_icon='🤿')
 
+with st.sidebar:
+    # Inputs de login e senha
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+
 with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
@@ -32,10 +37,7 @@ authenticator = stauth.Authenticate(
     config['preauthorized']
 )
 
-with st.sidebar:
-    # Inputs de login e senha
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
+
 
 
 chars = "'),([]"
