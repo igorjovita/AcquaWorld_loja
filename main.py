@@ -37,7 +37,7 @@ menu_main = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visu
 
 pasta = os.path.dirname(__file__)
 
-if menu_main == 'Visualizar':
+if menu_main == 'Visualizar': # PARTE OK
     # Função para obter cores com base no valor da coluna 'check_in'
     data_para_pdf = st.date_input("Data para gerar PDF:", format='DD/MM/YYYY')
 

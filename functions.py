@@ -248,6 +248,7 @@ def select_caixa(data_caixa):
     cursor.execute(f"SELECT tipo_movimento, tipo, descricao, forma_pg, valor FROM caixa WHERE data = '{data_caixa}'")
     dados = cursor.fetchall()
     mydb.close()
+    st.write(dados)
     return dados
 
 
@@ -857,69 +858,6 @@ def gerar_pdf(data_para_pdf):
     pdfkit.from_string(html_table, pdf_filename, configuration=config, options=options)
 
     return pdf_filename
-
-    # for dados in lista_dados_reserva:
-    #     if dados[0] is None:
-    #         cliente.append('')
-    #     else:
-    #         cliente.append(
-    #             str(dados[0].encode('utf-8').decode('utf-8')).upper().translate(str.maketrans('', '', chars)))
-    #
-    #     if dados[1] is None:
-    #         cert.append('')
-    #     else:
-    #         cert.append(str(dados[1]).upper().translate(str.maketrans('', '', chars)))
-    #     if dados[2] is None:
-    #         foto.append('')
-    #     else:
-    #         foto.append(str(dados[2]).upper().translate(str.maketrans('', '', chars)))
-    #
-    #     if dados[3] is None:
-    #         dm.append('')
-    #     else:
-    #         dm.append(str(dados[3]).upper().translate(str.maketrans('', '', chars)))
-    #
-    #     background_colors.append(str(dados[4]).translate(str.maketrans('', '', chars)))
-    #
-    # for nome in cliente:
-    #     cursor.execute(
-    #         f"SELECT cpf, roupa FROM cliente WHERE nome = '{nome}'")
-    #     lista_dados_cliente = cursor.fetchall()
-    #
-    #     for item in lista_dados_cliente:
-    #         cpf.append(str(item[0]).translate(str.maketrans('', '', chars)))
-    #         roupa.append(str(item[1]).translate(str.maketrans('', '', chars)))
-    #
-    # mydb.close()
-    #
-    # # Processar a data
-    # data_selecionada = str(data_para_pdf).split('-')
-    # dia, mes, ano = data_selecionada[2], data_selecionada[1], data_selecionada[0]
-    # data_completa = f'{dia}/{mes}/{ano}'
-    #
-    # # Criar o contexto
-    # contexto = {'cliente': cliente, 'cpf': cpf, 'c': cert, 'f': foto,
-    #             'r': roupa, 'data_reserva': data_completa, 'background_colors': background_colors, 'dm': dm}
-    #
-    # # Renderizar o template HTML
-    # planilha_loader = jinja2.FileSystemLoader('./')
-    # planilha_env = jinja2.Environment(loader=planilha_loader)
-    # planilha = planilha_env.get_template('planilha.html')
-    # output_text = planilha.render(contexto)
-    #
-    # # Nome do arquivo PDF
-    # pdf_filename = f"reservas_{data_para_pdf}.pdf"
-    #
-    # # Gerar PDF
-    # config = pdfkit.configuration()
-    # options = {
-    #     'encoding': 'utf-8',
-    #     'no-images': None,
-    #     'quiet': '',
-    # }
-    # pdfkit.from_string(output_text, pdf_filename, configuration=config, options=options)
-    #
-    # return pdf_filename
 
 
 def gerar_html(data_para_pdf):
