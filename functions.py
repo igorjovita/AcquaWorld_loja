@@ -247,7 +247,8 @@ def select_caixa(data_caixa):
     cursor.execute(f"SELECT tipo_movimento, tipo, descricao, forma_pg, valor FROM caixa WHERE data = '{data_caixa}'")
     dados = cursor.fetchall()
 
-    cursor.execute(f"select valor from caixa where tipo_movimento = 'FECHAMENTO' and data < '{data_caixa}' order by data desc limit 1")
+    cursor.execute(
+        f"select valor from caixa where tipo_movimento = 'FECHAMENTO' and data < '{data_caixa}' order by data desc limit 1")
     saldo_anterior = cursor.fetchone()[0]
     mydb.close()
     return dados, saldo_anterior
@@ -373,8 +374,6 @@ def select_termo(data, nome_cliente):
     mydb.close()
 
     return dados
-
-
 
 
 # INSERTS
@@ -974,7 +973,7 @@ def gerar_html_entrada_caixa(data_caixa):
     forma_pg = []
     valor = []
 
-    dados = select_caixa(data_caixa)
+    dados, saldo_anterior = select_caixa(data_caixa)
 
     for dado in dados:
         if dado[0] == 'ENTRADA':
@@ -1030,7 +1029,7 @@ def gerar_html_saida_caixa(data_caixa):
     forma_pg2 = []
     valor2 = []
 
-    dados = select_caixa(data_caixa)
+    dados, saldo_anterior = select_caixa(data_caixa)
 
     for dado in dados:
         if dado[0] == 'SAIDA':
@@ -1084,7 +1083,7 @@ def gerar_html_total(data_caixa):
     soma_reembolso = 0
     soma_cofre = 0
 
-    dados = select_caixa(data_caixa)
+    dados, saldo_anterior = select_caixa(data_caixa)
 
     for dado in dados:
         if dado[0] == 'ENTRADA':
@@ -1128,15 +1127,9 @@ def gerar_html_total(data_caixa):
     soma_total_saida = format_currency(soma_total_saida, 'BRL', locale='pt_BR')
     soma_total_entrada = format_currency(soma_total_entrada, 'BRL', locale='pt_BR')
 
-    mydb.connect()
-    cursor.execute(
-        f"select valor from caixa where tipo_movimento = 'FECHAMENTO' and data < '{data_caixa}' order by data desc limit 1")
-    mydb.close()
-    dado_fechamento = cursor.fetchone()[0]
+    fechamento = format_currency(saldo_anterior, 'BRL', locale='pt_BR')
 
-    fechamento = format_currency(dado_fechamento, 'BRL', locale='pt_BR')
-
-    saldo_loja = format_currency((float(soma_dinheiro) + float(dado_fechamento)) - (soma_saida_dinheiro + soma_cofre),
+    saldo_loja = format_currency((float(soma_dinheiro) + float(saldo_anterior)) - (soma_saida_dinheiro + soma_cofre),
                                  'BRL', locale='pt_BR')
 
     contexto_total = {'soma_pix': soma_pix, 'soma_dinheiro': soma_dinheiro_formatado, 'soma_debito': soma_debito,
