@@ -70,5 +70,5 @@ if st.session_state["authentication_status"]:
             st.markdown(download_link, unsafe_allow_html=True)
 
 else:
-    st.subheader('Realize o login primeiro')
+    st.error('Realize o login primeiro')
 
