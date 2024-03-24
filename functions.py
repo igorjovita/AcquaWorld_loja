@@ -533,11 +533,11 @@ def authenticate():
         config['preauthorized']
     )
 
-    authenticator.login()
+    authenticator.login(location='sidebar')
 
     if st.session_state["authentication_status"]:
-        authenticator.logout()
-        st.write(f'*{st.session_state["name"]}*')
+        authenticator.logout(location='sidebar')
+        st.sidebar.write(f'*{st.session_state["name"]}*')
 
     elif st.session_state["authentication_status"] is False:
         st.error('Username/password is incorrect')
