@@ -40,7 +40,7 @@ mydb = mysql.connector.connect(
 cursor = mydb.cursor(buffered=True)
 
 if st.session_state["authentication_status"]:
-
+    st.sidebar.write('---')
     st.sidebar.title('Menu')
     st.sidebar.radio('Selecione uma pagina', ['Home', 'Comissões'])
 
