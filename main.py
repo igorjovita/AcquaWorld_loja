@@ -14,8 +14,7 @@ from functions import select_reserva, processar_pagamento, gerar_pdf, gerar_html
     select_nome_id_titular, select_reserva_id_titular, titulo_tabela_pagamentos, select_pagamentos, \
     insert_controle_curso, select_maquina, authenticate
 import time
-import Comissão
-import Termos
+import Termos, Caixa, Controles, Comissão
 
 st.set_page_config(layout='wide', page_title='AcquaWorld', page_icon='🤿')
 
@@ -40,7 +39,7 @@ cursor = mydb.cursor(buffered=True)
 if st.session_state["authentication_status"]:
     st.sidebar.write('---')
     st.sidebar.title('Menu')
-    sidebar_menu = st.sidebar.radio('Selecione uma pagina', ['Home', 'Termo', 'Comissões'])
+    sidebar_menu = st.sidebar.radio('Selecione uma pagina', ['Reservas', 'Caixa', 'Termo', 'Comissões', 'Controles'])
 
     if sidebar_menu == 'Termo':
         Termos.termo()
@@ -48,7 +47,13 @@ if st.session_state["authentication_status"]:
     if sidebar_menu == 'Comissões':
         Comissão.comissao()
 
-    if sidebar_menu == 'Home':
+    if sidebar_menu == 'Caixa':
+        Caixa.caixa()
+
+    if sidebar_menu == 'Controles':
+        Controles.controles()
+
+    if sidebar_menu == 'Reservas':
 
 
         menu_main = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visualizar', 'Editar', 'Pagamento'],
