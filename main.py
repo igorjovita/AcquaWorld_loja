@@ -21,7 +21,7 @@ from yaml.loader import SafeLoader
 
 st.set_page_config(layout='wide', page_title='AcquaWorld', page_icon='🤿')
 
-
+import Comissão
 authenticate()
 
 chars = "'),([]"
@@ -40,6 +40,9 @@ mydb = mysql.connector.connect(
 cursor = mydb.cursor(buffered=True)
 
 if st.session_state["authentication_status"]:
+
+
+    st.sidebar.markdown('Comissoes')
 
 
     menu_main = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visualizar', 'Editar', 'Pagamento'],
