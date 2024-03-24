@@ -8,7 +8,7 @@ credentials:
     jadelimaverde:
       email: jadelimaverde@gmail.com
       logged_in: False # Will be managed automatically
-      name: Jade Limaverde
+      name: Jade
       password: jade123 # Will be hashed automatically
 cookie:
   expiry_days: 30
