@@ -42,7 +42,7 @@ cursor = mydb.cursor(buffered=True)
 if st.session_state["authentication_status"]:
 
     st.sidebar.title('Menu')
-
+    st.sidebar.radio('Selecione uma pagina', ['Home', 'Comissões'])
 
     menu_main = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visualizar', 'Editar', 'Pagamento'],
                             icons=['book', 'card-checklist', 'pencil-square', 'currency-dollar'],
