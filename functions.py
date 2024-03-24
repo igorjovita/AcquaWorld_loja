@@ -242,7 +242,6 @@ def select_cliente(id_cliente):
     return cpf_cliente, telefone_cliente, roupa_cliente
 
 
-
 def select_caixa(data_caixa):
     mydb.connect()
     cursor.execute(f"SELECT tipo_movimento, tipo, descricao, forma_pg, valor FROM caixa WHERE data = '{data_caixa}'")
@@ -814,7 +813,6 @@ def gerar_pdf(data_para_pdf):
                         </tr>
                     """
 
-
     html_table += """
             <td style="border-style: solid; height: 18px; background-color: #808080; border-color: #000000; text-align: center;" colspan="8"">STAFFS</td>
             <tr>
@@ -1133,7 +1131,7 @@ def gerar_html_total(data_caixa):
 
     mydb.connect()
     cursor.execute(
-        f"select valor from caixa where tipo_movimento = 'FECHAMENTO'order by data < '{data_caixa}' desc limit 1;")
+        f"select valor from caixa where tipo_movimento = 'FECHAMENTO' and data < '{data_caixa}' order by data desc limit 1;;")
     mydb.close()
     dado_fechamento = cursor.fetchone()[0]
     fechamento = format_currency(dado_fechamento, 'BRL', locale='pt_BR')
