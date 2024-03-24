@@ -34,8 +34,7 @@ authenticator = stauth.Authenticate(
 )
 
 
-with st.sidebar:
-    authenticator.login()
+authenticator.login(location='sidebar')
 
 chars = "'),([]"
 chars2 = "')([]"
