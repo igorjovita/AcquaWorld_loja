@@ -1,14 +1,24 @@
 import base64
-
 import streamlit as st
-
 from functions import select_termo_cliente, select_lista_nomes, update_reserva_cliente_termo, update_termo_cliente, \
     update_info_reserva, html_termo
-
 import streamlit.components.v1
 from streamlit_option_menu import option_menu
+import yaml
+from yaml.loader import SafeLoader
 
+import streamlit_authenticator as stauth
 
+with open('config.yaml') as file:
+    config = yaml.load(file, Loader=SafeLoader)
+
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days'],
+    config['preauthorized']
+)
 
 if st.session_state["authentication_status"]:
     authenticator.logout()
@@ -18,7 +28,7 @@ elif st.session_state["authentication_status"] is False:
     st.error('Username/password is incorrect')
 elif st.session_state["authentication_status"] is None:
     st.warning('Please enter your username and password')
-    
+
 st.subheader('Termos de responsabilidade')
 
 menu_termo = option_menu(menu_title="Termo de Responsabilidade", options=['Visualizar', 'Editar'],
@@ -63,7 +73,6 @@ if menu_termo == 'Editar':
                     else:
                         update_termo_cliente(id_cliente, select_box_nao_relacionado)
                         update_reserva_cliente_termo(data_termo, id_cliente, tipo)
-
 
 if menu_termo == 'Visualizar':
 
