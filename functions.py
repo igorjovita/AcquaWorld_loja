@@ -538,8 +538,7 @@ def authenticate():
     # Verificar o status de autenticação e tomar ações correspondentes
     if st.session_state["authentication_status"]:
         authenticator.logout()
-        st.write(f'Welcome *{st.session_state["name"]}*')
-        st.title('Some content')
+        st.write(f'*{st.session_state["name"]}*')
     elif st.session_state["authentication_status"] is False:
         st.error('Username/password is incorrect')
     elif st.session_state["authentication_status"] is None:
