@@ -41,8 +41,7 @@ cursor = mydb.cursor(buffered=True)
 
 if st.session_state["authentication_status"]:
 
-
-    st.sidebar.markdown('Comissoes')
+    st.sidebar.title('Menu')
 
 
     menu_main = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visualizar', 'Editar', 'Pagamento'],
