@@ -34,7 +34,8 @@ authenticator = stauth.Authenticate(
 )
 
 
-st.sidebar.markdown(authenticator.login())
+with st.sidebar:
+    authenticator.login()
 
 chars = "'),([]"
 chars2 = "')([]"
