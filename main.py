@@ -32,7 +32,8 @@ authenticator = stauth.Authenticate(
     config['preauthorized']
 )
 
-authenticator.login()
+with st.sidebar:
+    authenticator.login()
 
 chars = "'),([]"
 chars2 = "')([]"
