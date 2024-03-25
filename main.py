@@ -1,20 +1,23 @@
 import base64
+import os
+import time
 
-import pandas as pd
+import mysql.connector
+import streamlit as st
+import streamlit.components.v1
 from babel.numbers import format_currency
 from mysql.connector import IntegrityError
-import streamlit as st
 from streamlit_option_menu import option_menu
-import os
-import mysql.connector
-import streamlit.components.v1
+
+import Caixa
+import Comissão
+import Controles
+import Termos
 from functions import select_reserva, processar_pagamento, gerar_pdf, gerar_html, select_apelido_vendedores, \
     calculo_restricao, insert_cliente, insert_reserva, select_id_vendedores, insert_lancamento_comissao, \
     select_valor_neto, select_cliente, select_grupo_reserva, update_vaga, select_id_cliente_like, \
-    select_nome_id_titular, select_reserva_id_titular, titulo_tabela_pagamentos, select_pagamentos, \
-    insert_controle_curso, select_maquina, authenticate
-import time
-import Termos, Caixa, Controles, Comissão
+    select_nome_id_titular, select_reserva_id_titular, titulo_tabela_pagamentos, insert_controle_curso, select_maquina, \
+    authenticate
 
 st.set_page_config(layout='wide', page_title='AcquaWorld', page_icon='🤿')
 
@@ -38,7 +41,6 @@ lista_nivel_1 = ['igorjovita']
 if st.session_state["authentication_status"]:
     st.sidebar.write('---')
     st.sidebar.title('Menu')
-
 
     if st.session_state["username"] in lista_nivel_1:
         sidebar_opcoes = ['📆 Reservas', '💰 Caixa', '📝 Termo', '🤝 Comissões', '📖 Controles', '📈 Financeiro']
@@ -64,8 +66,6 @@ if st.session_state["authentication_status"]:
         menu_main = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visualizar', 'Editar', 'Pagamento'],
                                 icons=['book', 'card-checklist', 'pencil-square', 'currency-dollar'],
                                 orientation='horizontal')
-
-        pasta = os.path.dirname(__file__)
 
         if menu_main == 'Visualizar':  # PARTE OK
             # Função para obter cores com base no valor da coluna 'check_in'
@@ -257,11 +257,11 @@ if st.session_state["authentication_status"]:
                             if data_pratica2 == '0000-00-00':
                                 data_pratica2 = ''
 
-                            roupa = f'{altura:.2f}/{peso}'
-                            if valor_loja == '':
-                                valor_loja = 0.00
-                            else:
-                                valor_loja = valor_loja
+                        roupa = f'{altura:.2f}/{peso}'
+                        if valor_loja == '':
+                            valor_loja = 0.00
+                        else:
+                            valor_loja = valor_loja
                         if st.form_submit_button(f'Cadastrar {nome_cliente}'):
                             lista_cred = ['TUR2', 'OWD', 'ADV', 'RESCUE', 'REVIEW']
                             contagem, restricao, contagem_cred, vaga_bat, vaga_cred, vaga_total = calculo_restricao(
