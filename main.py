@@ -47,7 +47,7 @@ if st.session_state["authentication_status"]:
     else:
         sidebar_opcoes = ['📆 Reservas', '💰 Caixa', '📝 Termo', '🤝 Comissões', '📖 Controles']
 
-    sidebar_menu = st.sidebar.radio('', sidebar_opcoes, label_visibility='collapsed')
+    sidebar_menu = st.sidebar.radio('Opçoes', sidebar_opcoes, label_visibility='collapsed')
 
     if sidebar_menu == '📝 Termo':
         Termos.termo()
