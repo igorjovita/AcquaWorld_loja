@@ -91,7 +91,8 @@ class PagamentosPage:
 
     def processar_pagamento_final(self, reserva, forma_pg, maquina, parcela, status, data, total_receber):
 
-        nome_cliente, id_cliente, id_reserva, receber_loja, id_vendedor, tipo, valor_total, situacao, id_titular, recebedor = reserva
+        for item in reserva:
+            nome_cliente, id_cliente, id_reserva, receber_loja, id_vendedor, tipo, valor_total, situacao, id_titular, recebedor = item
 
         # Metodo para atualizar a cor de fundo da planilha diaria
 
