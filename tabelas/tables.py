@@ -117,7 +117,7 @@ class Planilhas:
                             <td>{observacao}</td> 
                             <td>{tipo}</td>
                             <td>{fotos}</td>
-                            <td>{roupa}</td>
+                            <td style="width: 20px">{roupa}</td>
                             <td></td>
                             
                         </tr>
