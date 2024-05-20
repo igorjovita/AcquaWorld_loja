@@ -43,16 +43,11 @@ class PagamentosPage:
             index = nome_titular.index(select_box_titular)
             id_titular = select_info_titular[index][1]
 
-            st.write(id_titular)
-
             reserva_grupo = self.reserva.obter_info_reserva_pagamentos_por_id(id_titular)  # Consulta Tabela Pagamentos
 
             total_receber, reservas_pagas, reservas_pg_pendente = self.formatacao_dados_pagamento(id_titular)
 
-            st.write(reserva_grupo)
-            st.write(total_receber)
-            st.write(reservas_pagas)
-            st.write(reservas_pg_pendente)
+
             # Verificação se todos os clientes já pagaram
             if len(reserva_grupo) == len(reservas_pagas):
                 st.success('Todos os clientes efetuaram o pagamento')
@@ -92,6 +87,7 @@ class PagamentosPage:
     def processar_pagamento_final(self, reserva, forma_pg, maquina, parcela, status, data, total_receber):
 
         for item in reserva:
+            st.write(item)
             nome_cliente, id_cliente, id_reserva, receber_loja, id_vendedor, tipo, valor_total, situacao, id_titular, recebedor = item
 
         # Metodo para atualizar a cor de fundo da planilha diaria
