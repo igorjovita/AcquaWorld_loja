@@ -173,6 +173,7 @@ class Reserva:
                     if (tipo == 'OWD' or tipo == 'ADV') and data_pratica2 is None:
                         st.error('É necessario informar a data da pratica 2')
 
+                    st.write(sinal)
                     if sinal != 0 and recebedor_sinal is None:
                         st.error('É necessario informar quem recebeu o sinal!')
 
