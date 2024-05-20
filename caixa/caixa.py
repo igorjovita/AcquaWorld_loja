@@ -105,7 +105,7 @@ class Caixa:
         total_saida = format_currency(float(select_somatorio[9]), 'BRL', locale='pt_BR')
         saldo_anterior = format_currency(float(float(select_somatorio[10])), 'BRL', locale='pt_BR')
 
-        saldo_loja = (float(select_somatorio[8]) + float(select_somatorio[10]) - (float(select_somatorio[9])))
+        saldo_loja = (float(select_somatorio[1]) + float(select_somatorio[10]) - (float(select_somatorio[5])))
 
         coluna1, coluna2 = st.columns(2)
 
