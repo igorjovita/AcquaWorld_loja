@@ -142,7 +142,7 @@ class Planilhas:
 
         html_table += """
                     <td style="border-style: solid; height: 18px; background-color: #808080; border-color: #000000; text-align: center;" colspan="8"">STAFFS</td>
-                    <tr>
+                    <tr style="height: 20px;">
                         <th style="text-align: center;">#</th>
                         <th>NOME</th>
                         <th>CPF</th>
