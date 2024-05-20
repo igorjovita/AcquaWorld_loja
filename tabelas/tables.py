@@ -89,7 +89,7 @@ class Planilhas:
                         <tr style="height: 30px;">
                             <th style="text-align: center;">#</th>
                             <th>NOME COMPLETO</th>
-                            <th>CPF</th>
+                            <th style="width: 150px">CPF</th>
                             <th>OBSERVAÇÃO</th>
                             <th>CERT</th>
                             <th style="width: 15px">FOTOS</th>
