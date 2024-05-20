@@ -1,0 +1,7 @@
+from .repository_vendedor import RepositoryVendedor
+from .repository_reserva import RepositoryReserva
+from .repository_cliente import RepositoryCliente
+from .repository_controle_curso import RepositoryControleCurso
+from .repository_pagamentos import RepositoryPagamentos
+from .repository_termo import RepositoryTermo
+
