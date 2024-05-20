@@ -58,7 +58,7 @@ class Reserva:
             id_titular = None
             id_vendedor = None
 
-            if st.form_submit_button('Reservar'):
+            if st.form_submit_button('Inserir Informações'):
 
                 if 'id_vendedor' not in st.session_state:
                     st.session_state.id_vendedor = None
@@ -274,7 +274,7 @@ Favor chegar na data marcada:
 
         st.code(mensagem)
         st.session_state.info_mensagem = []
-        
+
     def contagem_restricoes(self, data):
 
         select_contagem_reserva = self.repository_reserva.obter_contagem_reserva(data)
