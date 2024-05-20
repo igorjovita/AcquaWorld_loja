@@ -155,7 +155,7 @@ class Planilhas:
                     """
         for i in range(10):
             html_table += f"""
-                    <tr>
+                    <tr style="height: 30px;">
                         <td style="text-align: center;">{i + 1}</td>
                         <td></td>
                         <td></td>
