@@ -121,7 +121,7 @@ class Reserva:
                     nome_cliente = st.text_input('Nome do cliente', key=f'nome {i}')
                     roupa = st.text_input(f'Peso e altura', key=f'roupa {i}')
 
-                    sinal = float(st.text_input(f'Valor do Sinal', key=f'sinal {i}'))
+                    sinal = st.text_input(f'Valor do Sinal', key=f'sinal {i}')
 
                 with col2:
                     cpf = st.text_input('Cpf', key=f'cpf {i}')
