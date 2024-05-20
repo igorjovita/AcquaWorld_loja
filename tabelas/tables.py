@@ -78,7 +78,7 @@ class Planilhas:
         dados_para_planilha = self.repository_reserva.obter_info_reserva_para_planilha_loja(data)
 
         html_table = f"""
-                    <h3 style="text-align: center; margin-top: 20px;"><strong>Planilha Operação Diaria</strong></h3>
+                    <h3 style="text-align: center; margin-top: 50px;"><strong>Planilha Operação Diaria</strong></h3>
                     <h4 style= "margin: 0;">Embarcação Beleza Nativa</h4>
                     <div style="display: flex;">
                         <h4>Data: {datetime.strptime(str(data), '%Y-%m-%d').strftime('%d/%m/%Y')}</h4>
