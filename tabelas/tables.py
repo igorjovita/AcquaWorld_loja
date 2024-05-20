@@ -93,7 +93,7 @@ class Planilhas:
                             <th>OBSERVAÇÃO</th>
                             <th>CERT</th>
                             <th style="width: 15px">FOTOS</th>
-                            <th style="width: 30px">ROUPA</th>
+                            <th style="width: 20px">ROUPA</th>
                             <th>BATERIA</th>
                             
                         </tr>
