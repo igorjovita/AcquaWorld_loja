@@ -89,7 +89,7 @@ class PagamentosPage:
 
 
         st.write(reserva)
-        nome_cliente, id_cliente, id_reserva, receber_loja, id_vendedor, tipo, valor_total, situacao, id_titular, recebedor = reserva
+        nome_cliente, id_cliente, id_reserva, receber_loja, id_vendedor, tipo, valor_total, situacao, recebedor, id_titular, total_pago = reserva
 
         # Metodo para atualizar a cor de fundo da planilha diaria
 
