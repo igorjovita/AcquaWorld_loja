@@ -152,7 +152,7 @@ class Reserva:
                 if i == 0 and nome_titular is None:
                     nome_titular = nome_cliente
 
-            if st.form_submit_button('Cadastrar'):
+            if st.form_submit_button('Reservar'):
 
                 for i in range(int(quantidade_reserva)):
                     iteracao = i
@@ -230,7 +230,9 @@ class Reserva:
             descricao = f'Sinal reserva {nome_cliente} do dia {data.strftime("%d/%m/%Y")}'
             self.repository_pagamentos.insert_caixa(1, data_pagamento, 'ENTRADA', 'SINAL', descricao, 'Pix', sinal)
 
-        st.success('Reserva efetuada com sucesso!')
+        st.success(f'{nome_cliente} reservado com sucesso!')
+
+        st.session_state.tela_reserva = False
 
     def mensagem_formatada(self, info):
 
@@ -253,25 +255,26 @@ Titular da Reserva - {nome_titular}"""
 
         mensagem += f"""
     \nValor total - {format_currency(valor_total, 'BRL', locale='pt_BR')}
-    Já foi pago - {format_currency(sinal, 'BRL', locale='pt_BR')}
-    Falta pagar - {format_currency(receber_loja, 'BRL', locale='pt_BR')}
+Já foi pago - {format_currency(sinal, 'BRL', locale='pt_BR')}
+Falta pagar - {format_currency(receber_loja, 'BRL', locale='pt_BR')}
 
 
-    Favor chegar na data marcada: 
+Favor chegar na data marcada: 
 
-    ⚠️ {data.strftime("%d/%m/%Y")} às 07:30hs em nossa loja 
+⚠️ {data.strftime("%d/%m/%Y")} às 07:30hs em nossa loja 
 
-    ⚠️ Favor chegar na hora pois é necessário, efetuar o restante do pagamento caso ainda não tenha feito, preencher os termos de responsabilidade/questionário médico e fazer retirada da pulseirinha que dá acesso à embarcação.
+⚠️ Favor chegar na hora pois é necessário, efetuar o restante do pagamento caso ainda não tenha feito, preencher os termos de responsabilidade/questionário médico e fazer retirada da pulseirinha que dá acesso à embarcação.
 
-    ⚓ O ponto de encontro será na loja de mergulho !⚓
+⚓ O ponto de encontro será na loja de mergulho !⚓
 
-    ➡️ARRAIAL DO CABO: Praça da Bandeira, n 23, Praia dos Anjos. Loja de Madeira na esquina, um pouco depois da rodoviária Indo pra praia dos anjos.
+➡️ARRAIAL DO CABO: Praça da Bandeira, n 23, Praia dos Anjos. Loja de Madeira na esquina, um pouco depois da rodoviária Indo pra praia dos anjos.
 
-    *Na Marina dos Anjos, a prefeitura cobra uma taxa de  embarque de R$ 10,00,  por pessoa em dinheiro.*
+*Na Marina dos Anjos, a prefeitura cobra uma taxa de  embarque de R$ 10,00,  por pessoa em dinheiro.*
     """
 
         st.code(mensagem)
-
+        st.session_state.info_mensagem = []
+        
     def contagem_restricoes(self, data):
 
         select_contagem_reserva = self.repository_reserva.obter_contagem_reserva(data)
