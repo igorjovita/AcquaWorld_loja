@@ -70,6 +70,7 @@ class PagamentosPage:
                 if st.button('Lançar Pagamento'):
 
                     for reserva in reserva_grupo:
+                        st.write(reserva)
                         situacao = reserva[7]
                         if tipo_pagamento == 'Pagamento em Grupo':
                             if situacao != 'Reserva Paga':
