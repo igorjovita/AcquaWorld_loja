@@ -90,11 +90,12 @@ class Planilhas:
                             <th style="text-align: center;">#</th>
                             <th>NOME COMPLETO</th>
                             <th>CPF</th>
+                            <th>OBSERVAÇÃO</th>
                             <th>CERT</th>
                             <th style="width: 15px">FOTOS</th>
                             <th>ROUPA</th>
                             <th>BATERIA</th>
-                            <th>OBSERVAÇÃO</th>
+                            
                         </tr>
                 """
 
@@ -112,12 +113,13 @@ class Planilhas:
                         <tr style="height: 30px;">
                             <td style="text-align: center;">{i + 1}</td>
                             <td style= "background-color: {cor_fundo};">{nome_cliente}</td> 
-                            <td>{cpf}</td> 
+                            <td>{cpf}</td>
+                            <td>{observacao}</td> 
                             <td>{tipo}</td>
                             <td>{fotos}</td>
                             <td>{roupa}</td>
                             <td></td>
-                            <td>{observacao}</td>
+                            
                         </tr>
                     """
         minimo = 20
