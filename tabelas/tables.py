@@ -149,7 +149,7 @@ class Planilhas:
                         <th>BAT</th>
                         <th style="width: 15px">TUR</th>
                         <th>CURSO</th>
-                        <th>ASSINATURA</th>
+                        <th style="width: 20px">ASSINATURA</th>
                         <th>OBSERVAÇÃO</th>
                     </tr>
                     """
