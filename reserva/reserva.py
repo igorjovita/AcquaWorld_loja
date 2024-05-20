@@ -168,7 +168,8 @@ class Reserva:
                     observacao = st.session_state[f'observacao {i}']
                     soma_valor_total += int(valor_total)
                     soma_receber_loja += int(receber_loja)
-                    soma_sinal += int(sinal)
+                    if sinal != '':
+                        soma_sinal += int(sinal)
 
                     if (tipo == 'OWD' or tipo == 'ADV') and data_pratica2 is None:
                         st.error('É necessario informar a data da pratica 2')
