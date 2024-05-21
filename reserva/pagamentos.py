@@ -69,7 +69,9 @@ class PagamentosPage:
 
                 if tipo_pagamento is not None:
 
-                    forma_pg, maquina, parcela, status, valor = self.inputs_final_pagamentos(total_receber)
+                    quantidade_clientes = len(reserva_grupo)
+                    forma_pg, maquina, parcela, status, taxa_cartao = self.inputs_final_pagamentos(total_receber,
+                                                                                             quantidade_clientes)
 
                     if st.button('Lançar Pagamento'):
 
@@ -78,21 +80,22 @@ class PagamentosPage:
                             if tipo_pagamento == 'Pagamento em Grupo':
                                 if situacao != 'Reserva Paga':
                                     self.processar_pagamento_final(reserva, forma_pg, maquina, parcela, status,
-                                                                   data, valor)
+                                                                   data, taxa_cartao)
                                     st.success('Pagamento do grupo registrado com sucesso!')
 
                             else:
                                 if escolha_cliente == reserva[0] and situacao != 'Reserva Paga':
                                     self.processar_pagamento_final(reserva, forma_pg, maquina, parcela, status,
-                                                                   data, valor)
+                                                                   data, taxa_cartao)
 
                                     st.success('Pagamento registrado com sucesso!')
 
-    def processar_pagamento_final(self, reserva, forma_pg, maquina, parcela, status, data, valor_pago):
+    def processar_pagamento_final(self, reserva, forma_pg, maquina, parcela, status, data, taxa_cartao):
 
         nome_cliente, id_cliente, id_reserva, receber_loja, id_vendedor, tipo, valor_total, situacao, recebedor, id_titular, total_pago = reserva
 
         # Metodo para atualizar a cor de fundo da planilha diaria
+        valor_pago = receber_loja + taxa_cartao
 
         self.reserva.update_cor_fundo_reserva(status, nome_cliente, data)
 
@@ -116,21 +119,28 @@ class PagamentosPage:
                                                    forma_pg,
                                                    valor_pago)
 
-    def inputs_final_pagamentos(self, total_receber):
+    def inputs_final_pagamentos(self, total_receber, quantidade):
 
         parcela = 0
         maquina = ''
+        valor_taxa = 0
 
-        total_receber_formatado = format_currency(total_receber, 'BRL', locale='pt_BR')
-
-        valor = st.text_input('Valor Pago', value=total_receber_formatado)
-
-        valor_float = valor.replace('R$', '').strip()
-        valor_float = valor_float.replace('.', '').replace(',', '.')
         forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
                                 index=None)
 
         if forma_pg == 'Credito' or forma_pg == 'Debito':
+
+            taxa_cartao = st.radio('Cobrar taxa de cartão?', options=['Sim', 'Não'], index=None)
+
+            if taxa_cartao == 'Sim':
+                valor_taxa = st.text_input('Qual o valor da taxa ?', value=10)
+                total_receber = total_receber + float(valor_taxa)
+                valor_taxa = valor_taxa / int(quantidade)
+
+            total_receber_formatado = format_currency(total_receber, 'BRL', locale='pt_BR')
+
+            st.text_input('Valor Pago', value=total_receber_formatado)
+
             lista_maquinas = []
             select_maquinas = self.repository_pagamento.select_maquina_cartao()
             for resultado in select_maquinas:
@@ -143,7 +153,7 @@ class PagamentosPage:
 
         status = st.selectbox('Cliente vai pra onde?', ['Chegou na Loja', 'Direto pro pier'], index=None)
 
-        return forma_pg, maquina, parcela, status, valor_float
+        return forma_pg, maquina, parcela, status, valor_taxa
 
     def formatacao_dados_pagamento(self, id_titular):
 
