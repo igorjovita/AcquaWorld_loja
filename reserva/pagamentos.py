@@ -103,11 +103,12 @@ class PagamentosPage:
             descricao = f'{nome_cliente} do dia {data_formatada}'
             tipo_movimento_caixa = 'ENTRADA'
             id_conta = 1
+            data_pagamento = datetime.today()
 
             self.repository_pagamento.insert_pagamentos(data, id_reserva, 'AcquaWorld', receber_loja, forma_pg, parcela,
                                                         id_titular, maquina, 'Pagamento')
 
-            self.repository_pagamento.insert_caixa(id_conta, data, tipo_movimento_caixa, tipo, descricao, forma_pg,
+            self.repository_pagamento.insert_caixa(id_conta, data_pagamento, tipo_movimento_caixa, tipo, descricao, forma_pg,
                                                    receber_loja)
 
     def inputs_final_pagamentos(self, total_receber):
