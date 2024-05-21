@@ -101,7 +101,7 @@ class PagamentosPage:
 
         self.repository_vendedor.insert_lancamento_comissao(id_reserva, id_vendedor, valor_receber, valor_pagar,
                                                             id_titular, situacao)
-
+        st.write(valor_pago)
         if float(valor_pago) != 0.00:
             data_formatada = data.strftime("%d/%m/%Y")
             descricao = f'{nome_cliente} do dia {data_formatada}'
