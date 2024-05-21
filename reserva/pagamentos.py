@@ -23,7 +23,7 @@ class PagamentosPage:
             st.session_state.valor_pago = []
 
         escolha_cliente = None
-        
+
         data = st.date_input('Data da reserva', format='DD/MM/YYYY')
 
         select_info_titular = self.reserva.obter_info_titular_reserva_por_data(data)  # Consulta Tabela Reserva
@@ -112,8 +112,10 @@ class PagamentosPage:
         valor_pagar, valor_receber, situacao = self.logica_valor_pagar_e_receber(tipo, forma_pg, id_vendedor,
                                                                                  valor_total, id_reserva, valor_pago)
 
-        self.repository_vendedor.insert_lancamento_comissao(id_reserva, id_vendedor, valor_receber, valor_pagar,
-                                                            id_titular, situacao)
+        if float(valor_pagar) != 0.00 and float(valor_receber) != 0.00:
+
+            self.repository_vendedor.insert_lancamento_comissao(id_reserva, id_vendedor, valor_receber, valor_pagar,
+                                                                id_titular, situacao)
         st.write(valor_pago)
         self.reserva.update_situacao_reserva(id_reserva)
 
