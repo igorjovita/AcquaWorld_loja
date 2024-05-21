@@ -70,7 +70,6 @@ class PagamentosPage:
                 if st.button('Lançar Pagamento'):
 
                     for reserva in reserva_grupo:
-                        st.write(reserva)
                         situacao = reserva[7]
                         if tipo_pagamento == 'Pagamento em Grupo':
                             if situacao != 'Reserva Paga':
@@ -87,8 +86,6 @@ class PagamentosPage:
 
     def processar_pagamento_final(self, reserva, forma_pg, maquina, parcela, status, data, total_receber):
 
-
-        st.write(reserva)
         nome_cliente, id_cliente, id_reserva, receber_loja, id_vendedor, tipo, valor_total, situacao, recebedor, id_titular, total_pago = reserva
 
         # Metodo para atualizar a cor de fundo da planilha diaria
@@ -212,28 +209,39 @@ class PagamentosPage:
             else:
                 valor_pago_vendedor += float(resultado[1])
 
+        st.write(valor_pago_acquaworld)
+        st.write(valor_pago_vendedor)
+
         situacao = 'Pendente'
         valor_receber = 0
         valor_pagar = 0
 
         # Cenario onde o que foi pago pra AcquaWorld é menor que o valor neto
         if valor_pago_acquaworld < valor_neto:
+            st.write('if 1')
             valor_receber = valor_neto - valor_pago_acquaworld
             valor_pagar = 0
 
         # Cenario onde o que foi pago pra AcquaWorld é maior que o valor neto
         elif valor_pago_acquaworld > valor_neto:
+            st.write('if 2')
             valor_receber = 0
             valor_pagar = valor_pago_acquaworld - valor_neto
 
         elif valor_pago_acquaworld == valor_neto:
+            st.write('if 3')
             valor_receber = 0
 
             if valor_pago_vendedor == comissao_vendedor:
+                st.write('if 4')
                 valor_pagar = 0
                 situacao = 'Pago'
 
             else:
                 valor_pagar = comissao_vendedor - valor_pago_vendedor
+                st.write('if 5')
 
+            st.write(valor_pagar)
+            st.write(valor_receber)
+            st.write(situacao)
         return valor_pagar, valor_receber, situacao
