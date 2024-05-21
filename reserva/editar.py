@@ -24,7 +24,7 @@ class Editar:
         if st.button('Pesquisar reserva'):
             st.session_state.pagina_editar = True
 
-        if st.session_state.pagina_editar:
+        if st.session_state.pagina_editar and selectbox_cliente is not None:
 
             data_reserva, id_cliente, nome_cliente, cpf, telefone, roupa, tipo, id_titular, vendedor, id_vendedor, valor_total, valor_receber, data_pratica2 = self.logica_editar(
                 select_info_reserva, lista_nomes_clientes, selectbox_cliente)
