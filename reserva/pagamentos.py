@@ -124,6 +124,8 @@ class PagamentosPage:
 
         valor = st.text_input('Valor Pago', value=total_receber_formatado)
 
+        valor_float = valor.replace('R$', '').strip()
+        valor_float = valor_float.replace('.', '').replace(',', '.')
         forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
                                 index=None)
 
@@ -140,9 +142,9 @@ class PagamentosPage:
 
         status = st.selectbox('Cliente vai pra onde?', ['Chegou na Loja', 'Direto pro pier'], index=None)
 
-        st.session_state.valor_pago.append(valor)
+        st.session_state.valor_pago.append(valor_float)
 
-        return forma_pg, maquina, parcela, status, valor
+        return forma_pg, maquina, parcela, status, valor_float
 
     def formatacao_dados_pagamento(self, id_titular):
 
