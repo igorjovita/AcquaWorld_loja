@@ -50,7 +50,6 @@ class PagamentosPage:
 
             total_receber, reservas_pagas, reservas_pg_pendente = self.formatacao_dados_pagamento(id_titular)
 
-
             # Verificação se todos os clientes já pagaram
             if len(reserva_grupo) == len(reservas_pagas):
                 st.success('Todos os clientes efetuaram o pagamento')
@@ -68,25 +67,26 @@ class PagamentosPage:
                 if tipo_pagamento == 'Pagamento Individual':
                     total_receber, escolha_cliente = self.pagamento_individual(reservas_pg_pendente, reserva_grupo)
 
-                forma_pg, maquina, parcela, status, valor = self.inputs_final_pagamentos(total_receber)
+                if tipo_pagamento is not None:
 
+                    forma_pg, maquina, parcela, status, valor = self.inputs_final_pagamentos(total_receber)
 
-                if st.button('Lançar Pagamento'):
-                    st.write(st.session_state.valor_pago)
-                    for i, reserva in enumerate(reserva_grupo):
-                        situacao = reserva[7]
-                        if tipo_pagamento == 'Pagamento em Grupo':
-                            if situacao != 'Reserva Paga':
-                                self.processar_pagamento_final(reserva, forma_pg, maquina, parcela, status,
-                                                               data, st.session_state.valor_pago[i])
-                                st.success('Pagamento do grupo registrado com sucesso!')
+                     if st.button('Lançar Pagamento'):
+                        st.write(st.session_state.valor_pago)
+                        for i, reserva in enumerate(reserva_grupo):
+                            situacao = reserva[7]
+                            if tipo_pagamento == 'Pagamento em Grupo':
+                                if situacao != 'Reserva Paga':
+                                    self.processar_pagamento_final(reserva, forma_pg, maquina, parcela, status,
+                                                                   data, st.session_state.valor_pago[i])
+                                    st.success('Pagamento do grupo registrado com sucesso!')
 
-                        else:
-                            if escolha_cliente == reserva[0] and situacao != 'Reserva Paga':
-                                self.processar_pagamento_final(reserva, forma_pg, maquina, parcela, status,
-                                                               data, st.session_state.valor_pago[i])
+                            else:
+                                if escolha_cliente == reserva[0] and situacao != 'Reserva Paga':
+                                    self.processar_pagamento_final(reserva, forma_pg, maquina, parcela, status,
+                                                                   data, st.session_state.valor_pago[i])
 
-                                st.success('Pagamento registrado com sucesso!')
+                                    st.success('Pagamento registrado com sucesso!')
 
     def processar_pagamento_final(self, reserva, forma_pg, maquina, parcela, status, data, valor_pago):
 
@@ -112,7 +112,8 @@ class PagamentosPage:
             self.repository_pagamento.insert_pagamentos(data, id_reserva, 'AcquaWorld', valor_pago, forma_pg, parcela,
                                                         id_titular, maquina, 'Pagamento')
 
-            self.repository_pagamento.insert_caixa(id_conta, data_pagamento, tipo_movimento_caixa, tipo, descricao, forma_pg,
+            self.repository_pagamento.insert_caixa(id_conta, data_pagamento, tipo_movimento_caixa, tipo, descricao,
+                                                   forma_pg,
                                                    valor_pago)
 
     def inputs_final_pagamentos(self, total_receber):
@@ -208,7 +209,6 @@ class PagamentosPage:
         comissao_vendedor = valor_total - valor_neto
 
         select_valor_pago_recebedor = self.repository_pagamento.obter_valor_pago_por_idreserva(id_reserva)
-
 
         valor_pago_vendedor = 0
         valor_pago_acquaworld = float(pago_loja)
