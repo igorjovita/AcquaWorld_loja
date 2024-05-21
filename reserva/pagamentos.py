@@ -72,19 +72,19 @@ class PagamentosPage:
                     forma_pg, maquina, parcela, status, valor = self.inputs_final_pagamentos(total_receber)
 
                     if st.button('Lançar Pagamento'):
-                        st.write(st.session_state.valor_pago)
+
                         for i, reserva in enumerate(reserva_grupo):
                             situacao = reserva[7]
                             if tipo_pagamento == 'Pagamento em Grupo':
                                 if situacao != 'Reserva Paga':
                                     self.processar_pagamento_final(reserva, forma_pg, maquina, parcela, status,
-                                                                   data, st.session_state.valor_pago[i])
+                                                                   data, valor)
                                     st.success('Pagamento do grupo registrado com sucesso!')
 
                             else:
                                 if escolha_cliente == reserva[0] and situacao != 'Reserva Paga':
                                     self.processar_pagamento_final(reserva, forma_pg, maquina, parcela, status,
-                                                                   data, st.session_state.valor_pago[i])
+                                                                   data, valor)
 
                                     st.success('Pagamento registrado com sucesso!')
 
@@ -142,8 +142,6 @@ class PagamentosPage:
                 parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
 
         status = st.selectbox('Cliente vai pra onde?', ['Chegou na Loja', 'Direto pro pier'], index=None)
-
-        st.session_state.valor_pago.append(valor_float)
 
         return forma_pg, maquina, parcela, status, valor_float
 
