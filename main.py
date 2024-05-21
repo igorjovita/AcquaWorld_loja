@@ -28,7 +28,7 @@ pagamentos = PagamentosPage(repository_reserva, repository_pagamentos, repositor
 auth.authenticate()
 auth.sidebar()
 
-
+st.set_page_config(layout="wide")
 lista_nivel_1 = ['igorjovita']
 escolha_pagina = None
 if st.session_state["authentication_status"]:
