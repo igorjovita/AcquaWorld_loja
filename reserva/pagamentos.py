@@ -71,7 +71,7 @@ class PagamentosPage:
 
                     forma_pg, maquina, parcela, status, valor = self.inputs_final_pagamentos(total_receber)
 
-                     if st.button('Lançar Pagamento'):
+                    if st.button('Lançar Pagamento'):
                         st.write(st.session_state.valor_pago)
                         for i, reserva in enumerate(reserva_grupo):
                             situacao = reserva[7]
