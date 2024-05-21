@@ -22,6 +22,8 @@ class PagamentosPage:
         if 'valor_pago' not in st.session_state:
             st.session_state.valor_pago = []
 
+        escolha_cliente = None
+        
         data = st.date_input('Data da reserva', format='DD/MM/YYYY')
 
         select_info_titular = self.reserva.obter_info_titular_reserva_por_data(data)  # Consulta Tabela Reserva
@@ -87,9 +89,14 @@ class PagamentosPage:
                                     st.success('Pagamento do grupo registrado com sucesso!')
 
                             else:
-                                if escolha_cliente == reserva[0] and situacao != 'Reserva Paga':
-                                    self.processar_pagamento_final(reserva, forma_pg, maquina, parcela, status,
-                                                                   data, taxa_cartao)
+                                if situacao != 'Reserva Paga':
+                                    if escolha_cliente == reserva[0]:
+                                        self.processar_pagamento_final(reserva, forma_pg, maquina, parcela, status,
+                                                                       data, taxa_cartao)
+
+                                    if escolha_cliente is None:
+                                        self.processar_pagamento_final(reserva, forma_pg, maquina, parcela, status,
+                                                                       data, taxa_cartao)
 
                                     st.success('Pagamento registrado com sucesso!')
 
@@ -109,7 +116,7 @@ class PagamentosPage:
                                                             id_titular, situacao)
         st.write(valor_pago)
         self.reserva.update_situacao_reserva(id_reserva)
-        
+
         if float(valor_pago) != 0.00:
             data_formatada = data.strftime("%d/%m/%Y")
             descricao = f'{nome_cliente} do dia {data_formatada}'
