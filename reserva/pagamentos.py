@@ -135,7 +135,7 @@ class PagamentosPage:
             if taxa_cartao == 'Sim':
                 valor_taxa = st.text_input('Qual o valor da taxa ?', value=10)
                 total_receber = float(total_receber) + float(valor_taxa)
-                valor_taxa = valor_taxa / int(quantidade)
+                valor_taxa = int(valor_taxa) / int(quantidade)
 
             total_receber_formatado = format_currency(total_receber, 'BRL', locale='pt_BR')
 
