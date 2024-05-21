@@ -221,7 +221,7 @@ class Reserva:
             id_reserva = self.repository_reserva.insert_reserva(data, id_cliente, tipo, id_vendedor, valor_total,
                                                                 nome_cliente, id_titular, receber_loja, observacao)
 
-        if sinal != 0:
+        if sinal != '':
             self.repository_pagamentos.insert_pagamentos(data, id_reserva, recebedor_sinal, sinal, 'Pix', '',
                                                          id_titular, '',
                                                          'Sinal')
