@@ -65,7 +65,7 @@ class PagamentosPage:
                 if tipo_pagamento == 'Pagamento Individual':
                     total_receber, escolha_cliente = self.pagamento_individual(reservas_pg_pendente, reserva_grupo)
 
-                forma_pg, maquina, parcela, status = self.inputs_final_pagamentos(total_receber)
+                forma_pg, maquina, parcela, status, valor = self.inputs_final_pagamentos(total_receber)
 
                 if st.button('Lançar Pagamento'):
 
@@ -74,17 +74,17 @@ class PagamentosPage:
                         if tipo_pagamento == 'Pagamento em Grupo':
                             if situacao != 'Reserva Paga':
                                 self.processar_pagamento_final(reserva, forma_pg, maquina, parcela, status,
-                                                               data, total_receber)
+                                                               data)
                                 st.success('Pagamento do grupo registrado com sucesso!')
 
                         else:
                             if escolha_cliente == reserva[0] and situacao != 'Reserva Paga':
                                 self.processar_pagamento_final(reserva, forma_pg, maquina, parcela, status,
-                                                               data, total_receber)
+                                                               data)
 
                                 st.success('Pagamento registrado com sucesso!')
 
-    def processar_pagamento_final(self, reserva, forma_pg, maquina, parcela, status, data, total_receber):
+    def processar_pagamento_final(self, reserva, forma_pg, maquina, parcela, status, data):
 
         nome_cliente, id_cliente, id_reserva, receber_loja, id_vendedor, tipo, valor_total, situacao, recebedor, id_titular, total_pago = reserva
 
@@ -93,7 +93,7 @@ class PagamentosPage:
         self.reserva.update_cor_fundo_reserva(status, nome_cliente, data)
 
         valor_pagar, valor_receber, situacao = self.logica_valor_pagar_e_receber(tipo, forma_pg, id_vendedor,
-                                                                                 valor_total, id_reserva)
+                                                                                 valor_total, id_reserva, receber_loja)
 
         self.repository_vendedor.insert_lancamento_comissao(id_reserva, id_vendedor, valor_receber, valor_pagar,
                                                             id_titular, situacao)
@@ -117,7 +117,7 @@ class PagamentosPage:
 
         total_receber_formatado = format_currency(total_receber, 'BRL', locale='pt_BR')
 
-        st.text_input('Valor Pago', value=total_receber_formatado)
+        valor = st.text_input('Valor Pago', value=total_receber_formatado)
 
         forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
                                 index=None)
@@ -135,7 +135,7 @@ class PagamentosPage:
 
         status = st.selectbox('Cliente vai pra onde?', ['Chegou na Loja', 'Direto pro pier'], index=None)
 
-        return forma_pg, maquina, parcela, status
+        return forma_pg, maquina, parcela, status, valor
 
     def formatacao_dados_pagamento(self, id_titular):
 
@@ -168,7 +168,7 @@ class PagamentosPage:
 
         return total_receber, escolha_cliente
 
-    def logica_valor_pagar_e_receber(self, tipo, forma_pg, id_vendedor, valor_total, id_reserva):
+    def logica_valor_pagar_e_receber(self, tipo, forma_pg, id_vendedor, valor_total, id_reserva, pago_loja):
 
         tipos = ['BAT', 'ACP', 'TUR1', 'TUR2']
         valor_neto = 0
@@ -200,8 +200,9 @@ class PagamentosPage:
 
         select_valor_pago_recebedor = self.repository_pagamento.obter_valor_pago_por_idreserva(id_reserva)
 
+
         valor_pago_vendedor = 0
-        valor_pago_acquaworld = 0
+        valor_pago_acquaworld = float(pago_loja)
 
         for resultado in select_valor_pago_recebedor:
             if resultado[0] == 'AcquaWorld':
@@ -241,7 +242,7 @@ class PagamentosPage:
                 valor_pagar = comissao_vendedor - valor_pago_vendedor
                 st.write('if 5')
 
-            st.write(valor_pagar)
-            st.write(valor_receber)
-            st.write(situacao)
+        st.write(valor_pagar)
+        st.write(valor_receber)
+        st.write(situacao)
         return valor_pagar, valor_receber, situacao
