@@ -71,7 +71,7 @@ class PagamentosPage:
 
                     quantidade_clientes = len(reserva_grupo)
                     forma_pg, maquina, parcela, status, taxa_cartao = self.inputs_final_pagamentos(total_receber,
-                                                                                             quantidade_clientes)
+                                                                                                   quantidade_clientes)
 
                     if st.button('Lançar Pagamento'):
 
@@ -124,34 +124,40 @@ class PagamentosPage:
         parcela = 0
         maquina = ''
         valor_taxa = 0
+        lista_maquinas = []
+        forma_pg = ''
 
-        forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
-                                index=None)
+        if total_receber == 0.00:
+            status = st.selectbox('Cliente vai pra onde?', ['Chegou na Loja', 'Direto pro pier'], index=None)
 
-        if forma_pg == 'Credito' or forma_pg == 'Debito':
+        else:
 
-            taxa_cartao = st.radio('Cobrar taxa de cartão?', options=['Sim', 'Não'], index=None)
+            forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
+                                    index=None)
 
-            if taxa_cartao == 'Sim':
-                valor_taxa = st.text_input('Qual o valor da taxa ?', value=10)
-                total_receber = float(total_receber) + float(valor_taxa)
-                valor_taxa = int(valor_taxa) / int(quantidade)
+            if forma_pg == 'Credito' or forma_pg == 'Debito':
+
+                taxa_cartao = st.radio('Cobrar taxa de cartão?', options=['Sim', 'Não'], index=None)
+
+                if taxa_cartao == 'Sim':
+                    valor_taxa = st.text_input('Qual o valor da taxa ?', value=10)
+                    total_receber = float(total_receber) + float(valor_taxa)
+                    valor_taxa = int(valor_taxa) / int(quantidade)
+
+                select_maquinas = self.repository_pagamento.select_maquina_cartao()
+                for resultado in select_maquinas:
+                    lista_maquinas.append(resultado[0])
+
+                maquina = st.selectbox('Maquininha', lista_maquinas, index=None)
 
             total_receber_formatado = format_currency(total_receber, 'BRL', locale='pt_BR')
 
             st.text_input('Valor Pago', value=total_receber_formatado)
 
-            lista_maquinas = []
-            select_maquinas = self.repository_pagamento.select_maquina_cartao()
-            for resultado in select_maquinas:
-                lista_maquinas.append(resultado[0])
-
-            maquina = st.selectbox('Maquininha', lista_maquinas, index=None)
-
             if forma_pg == 'Credito':
                 parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
 
-        status = st.selectbox('Cliente vai pra onde?', ['Chegou na Loja', 'Direto pro pier'], index=None)
+            status = st.selectbox('Cliente vai pra onde?', ['Chegou na Loja', 'Direto pro pier'], index=None)
 
         return forma_pg, maquina, parcela, status, valor_taxa
 
