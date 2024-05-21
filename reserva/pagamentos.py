@@ -19,6 +19,9 @@ class PagamentosPage:
         if 'pagina' not in st.session_state:
             st.session_state.pagina = False
 
+        if 'valor_pago' not in st.session_state:
+            st.session_state.valor_pago = []
+
         data = st.date_input('Data da reserva', format='DD/MM/YYYY')
 
         select_info_titular = self.reserva.obter_info_titular_reserva_por_data(data)  # Consulta Tabela Reserva
@@ -67,24 +70,25 @@ class PagamentosPage:
 
                 forma_pg, maquina, parcela, status, valor = self.inputs_final_pagamentos(total_receber)
 
+
                 if st.button('Lançar Pagamento'):
 
-                    for reserva in reserva_grupo:
+                    for i, reserva in enumerate(reserva_grupo):
                         situacao = reserva[7]
                         if tipo_pagamento == 'Pagamento em Grupo':
                             if situacao != 'Reserva Paga':
                                 self.processar_pagamento_final(reserva, forma_pg, maquina, parcela, status,
-                                                               data)
+                                                               data, st.session_state.valor_pago[i])
                                 st.success('Pagamento do grupo registrado com sucesso!')
 
                         else:
                             if escolha_cliente == reserva[0] and situacao != 'Reserva Paga':
                                 self.processar_pagamento_final(reserva, forma_pg, maquina, parcela, status,
-                                                               data)
+                                                               data, st.session_state.valor_pago[i])
 
                                 st.success('Pagamento registrado com sucesso!')
 
-    def processar_pagamento_final(self, reserva, forma_pg, maquina, parcela, status, data):
+    def processar_pagamento_final(self, reserva, forma_pg, maquina, parcela, status, data, valor_pago):
 
         nome_cliente, id_cliente, id_reserva, receber_loja, id_vendedor, tipo, valor_total, situacao, recebedor, id_titular, total_pago = reserva
 
@@ -93,23 +97,23 @@ class PagamentosPage:
         self.reserva.update_cor_fundo_reserva(status, nome_cliente, data)
 
         valor_pagar, valor_receber, situacao = self.logica_valor_pagar_e_receber(tipo, forma_pg, id_vendedor,
-                                                                                 valor_total, id_reserva, receber_loja)
+                                                                                 valor_total, id_reserva, valor_pago)
 
         self.repository_vendedor.insert_lancamento_comissao(id_reserva, id_vendedor, valor_receber, valor_pagar,
                                                             id_titular, situacao)
 
-        if receber_loja != 0.00:
+        if float(valor_pago) != 0.00:
             data_formatada = data.strftime("%d/%m/%Y")
             descricao = f'{nome_cliente} do dia {data_formatada}'
             tipo_movimento_caixa = 'ENTRADA'
             id_conta = 1
             data_pagamento = datetime.today()
 
-            self.repository_pagamento.insert_pagamentos(data, id_reserva, 'AcquaWorld', receber_loja, forma_pg, parcela,
+            self.repository_pagamento.insert_pagamentos(data, id_reserva, 'AcquaWorld', valor_pago, forma_pg, parcela,
                                                         id_titular, maquina, 'Pagamento')
 
             self.repository_pagamento.insert_caixa(id_conta, data_pagamento, tipo_movimento_caixa, tipo, descricao, forma_pg,
-                                                   receber_loja)
+                                                   valor_pago)
 
     def inputs_final_pagamentos(self, total_receber):
 
@@ -135,6 +139,8 @@ class PagamentosPage:
                 parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
 
         status = st.selectbox('Cliente vai pra onde?', ['Chegou na Loja', 'Direto pro pier'], index=None)
+
+        st.session_state.valor_pago.append(valor)
 
         return forma_pg, maquina, parcela, status, valor
 
