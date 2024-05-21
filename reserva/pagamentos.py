@@ -55,14 +55,17 @@ class PagamentosPage:
                 st.success('Todos os clientes efetuaram o pagamento')
 
             else:
+                tipo_pagamento = ''
+
                 # Verificação se tem apenas um cliente nesse grupo, se verdadeiro ele define o tipo de pg como
                 # individual
                 if len(reserva_grupo) == 1:
                     tipo_pagamento = 'Pagamento Individual'
 
                 else:
-                    tipo_pagamento = st.radio('Tipo do pagamento',
-                                              ['Pagamento Individual', 'Pagamento em Grupo'], index=None)
+                    if total_receber != 0.00:
+                        tipo_pagamento = st.radio('Tipo do pagamento',
+                                                  ['Pagamento Individual', 'Pagamento em Grupo'], index=None)
 
                 if tipo_pagamento == 'Pagamento Individual':
                     total_receber, escolha_cliente = self.pagamento_individual(reservas_pg_pendente, reserva_grupo)
