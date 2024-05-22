@@ -87,15 +87,14 @@ class Planilhas:
                     <table style="border-collapse: collapse; width: 100%;" border="1">
                     <tbody>
                         <tr style="height: 30px;">
-                            <th style="text-align: center;">#</th>
-                            <th>NOME COMPLETO</th>
-                            <th style="width: 150px">CPF</th>
-                            <th>OBSERVAÇÃO</th>
-                            <th>CERT</th>
-                            <th style="width: 15px">FOTOS</th>
-                            <th style="width: 20px">ROUPA</th>
-                            <th>BATERIA</th>
-                            
+                            <th style="text-align: center; border: 2px solid black;">#</th>
+                            <th style="border: 2px solid black;">NOME COMPLETO</th>
+                            <th style="width: 150px; border: 2px solid black;">CPF</th>
+                            <th style="border: 2px solid black;">OBSERVAÇÃO</th>
+                            <th style="border: 2px solid black;">CERT</th>
+                            <th style="width: 15px; border: 2px solid black;">FOTOS</th>
+                            <th style="width: 20px; border: 2px solid black;">ROUPA</th>
+                            <th style="border: 2px solid black;">BATERIA</th>
                         </tr>
                 """
 
@@ -111,16 +110,16 @@ class Planilhas:
 
             html_table += f"""
                         <tr style="height: 30px;">
-                            <td style="text-align: center;">{i + 1}</td>
-                            <td style= "background-color: {cor_fundo};">{nome_cliente}</td> 
-                            <td>{cpf}</td>
-                            <td>{observacao}</td> 
-                            <td>{tipo}</td>
-                            <td>{fotos}</td>
-                            <td style="width: 20px">{roupa}</td>
-                            <td></td>
-                            
+                            <td style="text-align: center; border: 2px solid black;">{i + 1}</td>
+                            <td style="background-color: {cor_fundo}; border: 2px solid black;">{nome_cliente}</td>
+                            <td style="border: 2px solid black;">{cpf}</td>
+                            <td style="border: 2px solid black;">{observacao}</td>
+                            <td style="border: 2px solid black;">{tipo}</td>
+                            <td style="border: 2px solid black;">{fotos}</td>
+                            <td style="width: 20px; border: 2px solid black;">{roupa}</td>
+                            <td style="border: 2px solid black;"></td>
                         </tr>
+
                     """
         minimo = 20
         if len(dados_para_planilha) < minimo:
@@ -129,41 +128,41 @@ class Planilhas:
             for i in range(numero):
                 html_table += f"""
                                 <tr style="height: 30px;">
-                                    <td style="text-align: center; ">{len(dados_para_planilha) + i + 1}</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td ></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td style="text-align: center; border: 2px solid black;">{len(dados_para_planilha) + i + 1}</td>
+                                    <td style="border: 2px solid black;"></td>
+                                    <td style="border: 2px solid black;"></td>
+                                    <td style="border: 2px solid black;"></td>
+                                    <td style="border: 2px solid black;"></td>
+                                    <td style="border: 2px solid black;"></td>
+                                    <td style="border: 2px solid black;"></td>
+                                    <td style="border: 2px solid black;"></td>
                                 </tr>
                             """
 
         html_table += """
-                    <td style="border-style: solid; height: 18px; background-color: #808080; border-color: #000000; text-align: center;" colspan="8"">STAFFS</td>
-                    <tr style="height: 20px;">
-                        <th style="text-align: center;">#</th>
-                        <th>NOME</th>
-                        <th>CPF</th>
-                        <th>BAT</th>
-                        <th style="width: 15px">TUR</th>
-                        <th>CURSO</th>
-                        <th style="width: 20px">ASSINATURA</th>
-                        <th>OBSERVAÇÃO</th>
-                    </tr>
+                    <td style="border-style: solid; height: 18px; background-color: #808080; border-color: #000000; text-align: center; border: 2px solid black;" colspan="8">STAFFS</td>
+                        <tr style="height: 20px;">
+                            <th style="text-align: center; border: 2px solid black;">#</th>
+                            <th style="border: 2px solid black;">NOME</th>
+                            <th style="border: 2px solid black;">CPF</th>
+                            <th style="border: 2px solid black;">BAT</th>
+                            <th style="width: 15px; border: 2px solid black;">TUR</th>
+                            <th style="border: 2px solid black;">CURSO</th>
+                            <th style="width: 20px; border: 2px solid black;">ASSINATURA</th>
+                            <th style="border: 2px solid black;">OBSERVAÇÃO</th>
+                        </tr>
                     """
         for i in range(10):
             html_table += f"""
                     <tr style="height: 30px;">
-                        <td style="text-align: center;">{i + 1}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td style="text-align: center; border: 2px solid black;">{i + 1}</td>
+                        <td style="border: 2px solid black;"></td>
+                        <td style="border: 2px solid black;"></td>
+                        <td style="border: 2px solid black;"></td>
+                        <td style="border: 2px solid black;"></td>
+                        <td style="border: 2px solid black;"></td>
+                        <td style="border: 2px solid black;"></td>
+                        <td style="border: 2px solid black;"></td>
                     </tr>
                 """
 
