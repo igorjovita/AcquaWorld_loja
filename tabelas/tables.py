@@ -87,14 +87,14 @@ class Planilhas:
                     <table style="border-collapse: collapse; width: 100%;" border="1">
                     <tbody>
                         <tr style="height: 30px;">
-                            <th style="text-align: center; border: 2px solid black; font-size: 13px;">#</th>
-                            <th style="border: 2px solid black; font-size: 13px;">NOME COMPLETO</th>
-                            <th style="width: 150px; border: 2px solid black; font-size: 13px;">CPF</th>
-                            <th style="border: 2px solid black; font-size: 13px;">OBSERVAÇÃO</th>
-                            <th style="border: 2px solid black; font-size: 13px;">CERT</th>
-                            <th style="width: 15px; border: 2px solid black; font-size: 13px;">FOTOS</th>
-                            <th style="width: 20px; border: 2px solid black; font-size: 13px;">ROUPA</th>
-                            <th style="border: 2px solid black; font-size: 13px;">BATERIA</th>
+                            <th style="text-align: center; border: 1px solid black; font-size: 13px;">#</th>
+                            <th style="border: 1px solid black; font-size: 13px;">NOME COMPLETO</th>
+                            <th style="width: 150px; border: 1px solid black; font-size: 13px;">CPF</th>
+                            <th style="border: 1px solid black; font-size: 13px;">OBSERVAÇÃO</th>
+                            <th style="border: 1px solid black; font-size: 13px;">CERT</th>
+                            <th style="width: 15px; border: 1px solid black; font-size: 13px;">FOTOS</th>
+                            <th style="width: 20px; border: 1px solid black; font-size: 13px;">ROUPA</th>
+                            <th style="border: 1px solid black; font-size: 13px;">BATERIA</th>
                         </tr>
 
                 """
@@ -111,14 +111,14 @@ class Planilhas:
 
             html_table += f"""
                         <tr style="height: 30px;">
-                            <td style="text-align: center; border: 2px solid black; font-size: 13px;">{i + 1}</td>
-                            <td style="background-color: {cor_fundo}; border: 2px solid black; font-size: 13px;">{nome_cliente}</td>
-                            <td style="border: 2px solid black; font-size: 13px;">{cpf}</td>
-                            <td style="border: 2px solid black; font-size: 13px;">{observacao}</td>
-                            <td style="border: 2px solid black; font-size: 13px;">{tipo}</td>
-                            <td style="border: 2px solid black; font-size: 13px;">{fotos}</td>
-                            <td style="width: 20px; border: 2px solid black; font-size: 13px;">{roupa}</td>
-                            <td style="border: 2px solid black; font-size: 13px;"></td>
+                            <td style="text-align: center; border: 1px solid black; font-size: 13px;">{i + 1}</td>
+                            <td style="background-color: {cor_fundo}; border: 1px solid black; font-size: 13px;">{nome_cliente}</td>
+                            <td style="border: 1px solid black; font-size: 13px;">{cpf}</td>
+                            <td style="border: 1px solid black; font-size: 13px;">{observacao}</td>
+                            <td style="border: 1px solid black; font-size: 13px;">{tipo}</td>
+                            <td style="border: 1px solid black; font-size: 13px;">{fotos}</td>
+                            <td style="width: 20px; border: 1px solid black; font-size: 13px;">{roupa}</td>
+                            <td style="border: 1px solid black; font-size: 13px;"></td>
                         </tr>
 
                     """
@@ -130,13 +130,13 @@ class Planilhas:
                 html_table += f"""
                                 <tr style="height: 30px;">
                                     <td style="text-align: center; border: 2px solid black; font-size: 13px;">{len(dados_para_planilha) + i + 1}</td>
-                                    <td style="border: 2px solid black; font-size: 13px;"></td>
-                                    <td style="border: 2px solid black; font-size: 13px;"></td>
-                                    <td style="border: 2px solid black; font-size: 13px;"></td>
-                                    <td style="border: 2px solid black; font-size: 13px;"></td>
-                                    <td style="border: 2px solid black; font-size: 13px;"></td>
-                                    <td style="border: 2px solid black; font-size: 13px;"></td>
-                                    <td style="border: 2px solid black; font-size: 13px;"></td>
+                                    <td style="border: 1px solid black; font-size: 13px;"></td>
+                                    <td style="border: 1px solid black; font-size: 13px;"></td>
+                                    <td style="border: 1px solid black; font-size: 13px;"></td>
+                                    <td style="border: 1px solid black; font-size: 13px;"></td>
+                                    <td style="border: 1px solid black; font-size: 13px;"></td>
+                                    <td style="border: 1px solid black; font-size: 13px;"></td>
+                                    <td style="border: 1px solid black; font-size: 13px;"></td>
                                 </tr>
 
                             """
@@ -145,26 +145,26 @@ class Planilhas:
                     <td style="border-style: solid; height: 18px; background-color: #808080; border-color: #000000; text-align: center; border: 2px solid black; font-size: 12px;" colspan="8">STAFFS</td>
                     <tr style="height: 20px;">
                         <th style="text-align: center; border: 2px solid black; font-size: 12px;">#</th>
-                        <th style="border: 2px solid black; font-size: 13px;">NOME</th>
-                        <th style="border: 2px solid black; font-size: 13px;">CPF</th>
-                        <th style="border: 2px solid black; font-size: 13px;">BAT</th>
-                        <th style="width: 15px; border: 2px solid black; font-size: 13px;">TUR</th>
-                        <th style="border: 2px solid black; font-size: 13px;">CURSO</th>
-                        <th style="width: 20px; border: 2px solid black; font-size: 13px;">ASSINATURA</th>
-                        <th style="border: 2px solid black; font-size: 13px;">OBSERVAÇÃO</th>
+                        <th style="border: 1px solid black; font-size: 13px;">NOME</th>
+                        <th style="border: 1px solid black; font-size: 13px;">CPF</th>
+                        <th style="border: 1px solid black; font-size: 13px;">BAT</th>
+                        <th style="width: 15px; border: 1px solid black; font-size: 13px;">TUR</th>
+                        <th style="border: 1px solid black; font-size: 13px;">CURSO</th>
+                        <th style="width: 20px; border: 1px solid black; font-size: 13px;">ASSINATURA</th>
+                        <th style="border: 1px solid black; font-size: 13px;">OBSERVAÇÃO</th>
                     </tr>
                     """
         for i in range(10):
             html_table += f"""
                     <tr style="height: 30px;">
-                        <td style="text-align: center; border: 2px solid black; font-size: 13px;">{i + 1}</td>
-                        <td style="border: 2px solid black; font-size: 13px;"></td>
-                        <td style="border: 2px solid black; font-size: 13px;"></td>
-                        <td style="border: 2px solid black; font-size: 13px;"></td>
-                        <td style="border: 2px solid black; font-size: 13px;"></td>
-                        <td style="border: 2px solid black; font-size: 13px;"></td>
-                        <td style="border: 2px solid black; font-size: 13px;"></td>
-                        <td style="border: 2px solid black; font-size: 13px;"></td>
+                        <td style="text-align: center; border: 1px solid black; font-size: 13px;">{i + 1}</td>
+                        <td style="border: 1px solid black; font-size: 13px;"></td>
+                        <td style="border: 1px solid black; font-size: 13px;"></td>
+                        <td style="border: 1px solid black; font-size: 13px;"></td>
+                        <td style="border: 1px solid black; font-size: 13px;"></td>
+                        <td style="border: 1px solid black; font-size: 13px;"></td>
+                        <td style="border: 1px solid black; font-size: 13px;"></td>
+                        <td style="border: 1px solid black; font-size: 13px;"></td>
                     </tr>
                 """
 
