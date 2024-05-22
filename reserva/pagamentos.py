@@ -253,8 +253,8 @@ class PagamentosPage:
             else:
                 valor_pago_vendedor += float(resultado[1])
 
-        st.write(valor_pago_acquaworld)
-        st.write(valor_pago_vendedor)
+        st.write(f'Pago Acqua : {valor_pago_acquaworld}')
+        st.write(f'Pago Vendedor : {valor_pago_vendedor}')
 
         situacao = 'Pendente'
         valor_receber = 0
@@ -285,7 +285,7 @@ class PagamentosPage:
                 valor_pagar = float(comissao_vendedor) - float(valor_pago_vendedor)
                 st.write('if 5')
 
-        st.write(valor_pagar)
-        st.write(valor_receber)
-        st.write(situacao)
+        st.write(f'Valor a pagar : {valor_pagar}')
+        st.write(f'Valor Receber : {valor_receber}')
+        st.write(f'Situação : {situacao}')
         return valor_pagar, valor_receber, situacao
