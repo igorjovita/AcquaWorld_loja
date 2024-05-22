@@ -113,7 +113,6 @@ class PagamentosPage:
                                                                                  valor_total, id_reserva, valor_pago)
 
         if float(valor_pagar) != 0.00 and float(valor_receber) != 0.00:
-
             self.repository_vendedor.insert_lancamento_comissao(id_reserva, id_vendedor, valor_receber, valor_pagar,
                                                                 id_titular, situacao)
         st.write(valor_pago)
@@ -220,27 +219,26 @@ class PagamentosPage:
             if tipo in tipos:
 
                 select_valor_neto = self.repository_vendedor.select_valor_neto(id_vendedor)
+                neto_bat, neto_bat_cartao, neto_acp, neto_tur1, neto_tur2 = select_valor_neto[0]
 
                 if tipo == 'BAT':
                     if forma_pg == forma_pg == 'Credito' or forma_pg == 'Debito':
-                        valor_neto = select_valor_neto[0][1]
+                        valor_neto = neto_bat_cartao
                     else:
-                        valor_neto = select_valor_neto[0][0]
+                        valor_neto = neto_bat
 
                 elif tipo == 'ACP':
-                    valor_neto = select_valor_neto[0][2]
+                    valor_neto = neto_acp
 
                 elif tipo == 'TUR1':
-                    valor_neto = select_valor_neto[0][3]
+                    valor_neto = neto_tur1
 
                 elif tipo == 'TUR2':
-                    valor_neto = select_valor_neto[0][4]
+                    valor_neto = neto_tur2
 
             else:
                 comissao_curso = valor_total * 10 / 100
                 valor_neto = valor_total - comissao_curso
-
-        comissao_vendedor = valor_total - valor_neto
 
         select_valor_pago_recebedor = self.repository_pagamento.obter_valor_pago_por_idreserva(id_reserva)
 
@@ -252,6 +250,8 @@ class PagamentosPage:
                 valor_pago_acquaworld += float(resultado[1])
             else:
                 valor_pago_vendedor += float(resultado[1])
+
+        comissao_vendedor = float(valor_pago_acquaworld) + float(valor_pago_vendedor) - valor_neto
 
         st.write(f'Pago Acqua : {valor_pago_acquaworld}')
         st.write(f'Pago Vendedor : {valor_pago_vendedor}')
