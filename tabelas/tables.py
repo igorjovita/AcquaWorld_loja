@@ -122,14 +122,14 @@ class Planilhas:
                         </tr>
 
                     """
-        minimo = 30
+        minimo = 25
         if len(dados_para_planilha) < minimo:
             numero = minimo - len(dados_para_planilha)
 
             for i in range(numero):
                 html_table += f"""
                                 <tr style="height: 30px;">
-                                    <td style="text-align: center; border: 2px solid black; font-size: 13px;">{len(dados_para_planilha) + i + 1}</td>
+                                    <td style="text-align: center; border: 1px solid black; font-size: 13px;">{len(dados_para_planilha) + i + 1}</td>
                                     <td style="border: 1px solid black; font-size: 13px;"></td>
                                     <td style="border: 1px solid black; font-size: 13px;"></td>
                                     <td style="border: 1px solid black; font-size: 13px;"></td>
