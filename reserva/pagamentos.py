@@ -282,7 +282,7 @@ class PagamentosPage:
                 situacao = 'Pago'
 
             else:
-                valor_pagar = comissao_vendedor - valor_pago_vendedor
+                valor_pagar = float(comissao_vendedor) - float(valor_pago_vendedor)
                 st.write('if 5')
 
         st.write(valor_pagar)
