@@ -108,7 +108,6 @@ class Planilhas:
             cor_fundo = dado[7] if dado[7] is not None else ''
             observacao = dado[8] if dado[8] is not None else ''
 
-
             html_table += f"""
                         <tr style="height: 30px;">
                             <td style="text-align: center; border: 1px solid black; font-size: 13px;">{i + 1}</td>

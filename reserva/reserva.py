@@ -156,7 +156,7 @@ class Reserva:
 
                 for i in range(int(quantidade_reserva)):
                     iteracao = i
-                    nome_cliente = str(st.session_state[f'nome {i}']).capitalize()
+                    nome_cliente = str(st.session_state[f'nome {i}']).title()
                     cpf = st.session_state[f'cpf {i}']
                     telefone = st.session_state[f'telefone {i}']
                     tipo = st.session_state[f'tipo {i}']

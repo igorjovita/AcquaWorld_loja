@@ -211,28 +211,34 @@ class PagamentosPage:
         tipos = ['BAT', 'ACP', 'TUR1', 'TUR2']
         valor_neto = 0
 
-        if tipo in tipos:
-
-            select_valor_neto = self.repository_vendedor.select_valor_neto(id_vendedor)
-
-            if tipo == 'BAT':
-                if forma_pg == forma_pg == 'Credito' or forma_pg == 'Debito':
-                    valor_neto = select_valor_neto[0][1]
-                else:
-                    valor_neto = select_valor_neto[0][0]
-
-            elif tipo == 'ACP':
-                valor_neto = select_valor_neto[0][2]
-
-            elif tipo == 'TUR1':
-                valor_neto = select_valor_neto[0][3]
-
-            elif tipo == 'TUR2':
-                valor_neto = select_valor_neto[0][4]
+        if id_vendedor == 11:
+            comissao_vendedor = float(valor_total) * 0.005
+            valor_neto = float(valor_total) - float(comissao_vendedor)
 
         else:
-            comissao_curso = valor_total * 10 / 100
-            valor_neto = valor_total - comissao_curso
+
+            if tipo in tipos:
+
+                select_valor_neto = self.repository_vendedor.select_valor_neto(id_vendedor)
+
+                if tipo == 'BAT':
+                    if forma_pg == forma_pg == 'Credito' or forma_pg == 'Debito':
+                        valor_neto = select_valor_neto[0][1]
+                    else:
+                        valor_neto = select_valor_neto[0][0]
+
+                elif tipo == 'ACP':
+                    valor_neto = select_valor_neto[0][2]
+
+                elif tipo == 'TUR1':
+                    valor_neto = select_valor_neto[0][3]
+
+                elif tipo == 'TUR2':
+                    valor_neto = select_valor_neto[0][4]
+
+            else:
+                comissao_curso = valor_total * 10 / 100
+                valor_neto = valor_total - comissao_curso
 
         comissao_vendedor = valor_total - valor_neto
 
