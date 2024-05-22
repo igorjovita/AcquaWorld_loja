@@ -140,6 +140,7 @@ class PagamentosPage:
         lista_maquinas = []
         forma_pg = ''
 
+
         if total_receber == 0.00:
             status = st.selectbox('Cliente vai pra onde?', ['Chegou na Loja', 'Direto pro pier'], index=None)
 
@@ -210,7 +211,7 @@ class PagamentosPage:
         tipos = ['BAT', 'ACP', 'TUR1', 'TUR2']
         valor_neto = 0
 
-        if id_vendedor == 11:
+        if id_vendedor == 12:
             comissao_vendedor = float(valor_total) * 0.005
             valor_neto = float(valor_total) - float(comissao_vendedor)
 
