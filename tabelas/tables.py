@@ -73,13 +73,13 @@ class Planilhas:
 
         return html_table
 
-    def planilha_barco(self, data):
+    def planilha_barco(self, data, barco):
 
         dados_para_planilha = self.repository_reserva.obter_info_reserva_para_planilha_loja(data)
 
         html_table = f"""
                     <h3 style="text-align: center; margin-top: 50px;"><strong>Planilha Operação Diaria</strong></h3>
-                    <h4 style= "margin: 0;">Embarcação Beleza Nativa</h4>
+                    <h4 style= "margin: 0;">Embarcação {barco}</h4>
                     <div style="display: flex;">
                         <h4>Data: {datetime.strptime(str(data), '%Y-%m-%d').strftime('%d/%m/%Y')}</h4>
                         <h4 style="margin-left: 50px;">Horario: 08:30</h4>
