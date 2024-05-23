@@ -66,9 +66,9 @@ class Reserva:
                 if nome_titular is not None:
                     index_lista_titular = lista_titulares.index(nome_titular)
                     id_titular = select_id_nome_titular[index_lista_titular][0]
-
-                index_lista_vendedor = lista_vendedores.index(comissario)
-                st.session_state.id_vendedor = select_vendedores[index_lista_vendedor][0]
+                if comissario is not None:
+                    index_lista_vendedor = lista_vendedores.index(comissario)
+                    st.session_state.id_vendedor = select_vendedores[index_lista_vendedor][0]
 
                 vaga_credenciado, vaga_total = self.contagem_restricoes(data)
 
