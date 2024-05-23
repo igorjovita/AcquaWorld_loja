@@ -137,6 +137,7 @@ class Reserva:
                     valor_total = float(st.text_input(f'Valor do Mergulho', key=f'valor {i}', value=0))
                     receber_loja = float(st.text_input(f'Valor a receber:', key=f'loja {i}', value=0))
 
+                desconto = st.text_input('Desconto Acqua')
                 observacao = st.text_input('Observação', key=f'observacao {i}')
 
                 with st.expander('Data Pratica 2'):
