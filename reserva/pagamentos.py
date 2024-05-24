@@ -194,15 +194,20 @@ class PagamentosPage:
     def pagamento_individual(self, reservas_pg_pendente, reservas_pagamento):
 
         total_receber = 0
-        escolha_cliente = st.selectbox('Escolha o cliente', reservas_pg_pendente)
+        if len(reservas_pagamento) > 1:
+            escolha_cliente = st.selectbox('Escolha o cliente', reservas_pg_pendente)
 
-        for reserva in reservas_pagamento:
-            nome_cliente = reserva[0]
-            receber_loja = reserva[3]
+            for reserva in reservas_pagamento:
+                nome_cliente = reserva[0]
+                receber_loja = reserva[3]
 
-            if nome_cliente == escolha_cliente:
-                total_receber = float(receber_loja)
-                break
+                if nome_cliente == escolha_cliente:
+                    total_receber = float(receber_loja)
+                    break
+
+        else:
+            escolha_cliente = reservas_pagamento[0][0]
+            total_receber = float(reservas_pagamento[0][3])
 
         return total_receber, escolha_cliente
 
