@@ -107,7 +107,7 @@ class PagamentosPage:
 
         nome_cliente, id_cliente, id_reserva, receber_loja, id_vendedor, tipo, valor_total, situacao, recebedor, id_titular, total_pago, desconto = reserva
 
-        desconto = float(input_desconto) + float(desconto)
+        desconto = float(desconto)
         valor_pago = float(receber_loja) + int(taxa_cartao) - float(desconto)
 
         self.reserva.update_cor_fundo_reserva(status, nome_cliente, data)
@@ -117,10 +117,12 @@ class PagamentosPage:
             if len(cliente_desconto) > 1:
                 for cliente in cliente_desconto:
                     if cliente == nome_cliente:
+                        desconto += float(input_desconto)
                         self.reserva.update_desconto_reserva(float(input_desconto) / len(cliente_desconto), id_reserva)
 
             else:
                 if cliente_desconto[0] == nome_cliente:
+                    desconto += float(input_desconto)
                     self.reserva.update_desconto_reserva(float(input_desconto), id_reserva)
 
         valor_pagar, valor_receber, situacao = self.logica_valor_pagar_e_receber(tipo, forma_pg, id_vendedor,
