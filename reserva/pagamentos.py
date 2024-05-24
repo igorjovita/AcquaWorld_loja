@@ -112,7 +112,7 @@ class PagamentosPage:
         valor_pagar, valor_receber, situacao = self.logica_valor_pagar_e_receber(tipo, forma_pg, id_vendedor,
                                                                                  valor_total, id_reserva, valor_pago, desconto)
 
-        if float(valor_pagar) != 0.00 and float(valor_receber) != 0.00:
+        if float(valor_pagar) != 0.00 or float(valor_receber) != 0.00:
             self.repository_vendedor.insert_lancamento_comissao(id_reserva, id_vendedor, valor_receber, valor_pagar,
                                                                 id_titular, situacao)
         st.write(valor_pago)
