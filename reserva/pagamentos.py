@@ -53,6 +53,7 @@ class PagamentosPage:
             total_receber, reservas_pagas, reservas_pg_pendente = self.formatacao_dados_pagamento(id_titular)
 
             st.write(len(reserva_grupo))
+            st.write(reserva_grupo)
             st.write(len(reservas_pagas))
             # Verificação se todos os clientes já pagaram
             if len(reserva_grupo) == len(reservas_pagas):
