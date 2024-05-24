@@ -177,7 +177,7 @@ class Controle:
             lista_maquinas = []
             select_maquina_cartao = self.repository_pagamentos.select_maquina_cartao()
             for item in select_maquina_cartao:
-                lista_maquinas.append(item)
+                lista_maquinas.append(item[0])
 
             select_box_maquina = st.selectbox('Escolha a maquina para pesquisar', lista_maquinas, index=None)
 
