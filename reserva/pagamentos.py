@@ -50,7 +50,8 @@ class PagamentosPage:
 
             reserva_grupo = self.reserva.obter_info_reserva_pagamentos_por_id(id_titular)  # Consulta Tabela Pagamentos
 
-            total_receber, reservas_pagas, reservas_pg_pendente, quantidade_clientes = self.formatacao_dados_pagamento(id_titular)
+            total_receber, reservas_pagas, reservas_pg_pendente, quantidade_clientes = self.formatacao_dados_pagamento(
+                id_titular)
 
             st.write(len(reserva_grupo))
             st.write(reserva_grupo)
@@ -81,7 +82,7 @@ class PagamentosPage:
                         total_receber,
                         quantidade_clientes,
                         reservas_pg_pendente, tipo_pagamento, escolha_cliente)
-
+                    st.write(cliente_desconto)
                     if st.button('Lançar Pagamento'):
 
                         for i, reserva in enumerate(reserva_grupo):
@@ -99,11 +100,6 @@ class PagamentosPage:
                                                                        data, taxa_cartao, input_desconto,
                                                                        cliente_desconto)
 
-                                    if escolha_cliente is None:
-                                        self.processar_pagamento_final(reserva, forma_pg, maquina, parcela, status,
-                                                                       data, taxa_cartao, input_desconto,
-                                                                       cliente_desconto)
-
                                     st.success('Pagamento registrado com sucesso!')
 
     def processar_pagamento_final(self, reserva, forma_pg, maquina, parcela, status, data, taxa_cartao, input_desconto,
@@ -117,6 +113,7 @@ class PagamentosPage:
         self.reserva.update_cor_fundo_reserva(status, nome_cliente, data)
 
         if input_desconto:
+
             if len(cliente_desconto) > 1:
                 for cliente in cliente_desconto:
                     if cliente == nome_cliente:
@@ -192,7 +189,7 @@ class PagamentosPage:
 
             if input_desconto:
                 total_receber = float(total_receber) - float(input_desconto)
-                
+
             total_receber_formatado = format_currency(total_receber, 'BRL', locale='pt_BR')
 
             st.text_input('Valor Pago', value=total_receber_formatado)
