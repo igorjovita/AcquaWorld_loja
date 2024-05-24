@@ -75,8 +75,10 @@ class PagamentosPage:
                 if tipo_pagamento is not None:
 
                     quantidade_clientes = len(reserva_grupo)
-                    forma_pg, maquina, parcela, status, taxa_cartao = self.inputs_final_pagamentos(total_receber,
-                                                                                                   quantidade_clientes)
+                    forma_pg, maquina, parcela, status, taxa_cartao, input_desconto, cliente_desconto = self.inputs_final_pagamentos(
+                        total_receber,
+                        quantidade_clientes,
+                        reservas_pg_pendente, tipo_pagamento, escolha_cliente)
 
                     if st.button('Lançar Pagamento'):
 
@@ -85,22 +87,25 @@ class PagamentosPage:
                             if tipo_pagamento == 'Pagamento em Grupo':
                                 if situacao != 'Reserva Paga':
                                     self.processar_pagamento_final(reserva, forma_pg, maquina, parcela, status,
-                                                                   data, taxa_cartao)
+                                                                   data, taxa_cartao, input_desconto, cliente_desconto)
                                     st.success('Pagamento do grupo registrado com sucesso!')
 
                             else:
                                 if situacao != 'Reserva Paga':
                                     if escolha_cliente == reserva[0]:
                                         self.processar_pagamento_final(reserva, forma_pg, maquina, parcela, status,
-                                                                       data, taxa_cartao)
+                                                                       data, taxa_cartao, input_desconto,
+                                                                       cliente_desconto)
 
                                     if escolha_cliente is None:
                                         self.processar_pagamento_final(reserva, forma_pg, maquina, parcela, status,
-                                                                       data, taxa_cartao)
+                                                                       data, taxa_cartao, input_desconto,
+                                                                       cliente_desconto)
 
                                     st.success('Pagamento registrado com sucesso!')
 
-    def processar_pagamento_final(self, reserva, forma_pg, maquina, parcela, status, data, taxa_cartao):
+    def processar_pagamento_final(self, reserva, forma_pg, maquina, parcela, status, data, taxa_cartao, input_desconto,
+                                  cliente_desconto):
 
         nome_cliente, id_cliente, id_reserva, receber_loja, id_vendedor, tipo, valor_total, situacao, recebedor, id_titular, total_pago, desconto = reserva
 
@@ -109,8 +114,18 @@ class PagamentosPage:
 
         self.reserva.update_cor_fundo_reserva(status, nome_cliente, data)
 
+        if input_desconto:
+            if len(cliente_desconto) > 1:
+                for cliente in cliente_desconto:
+                    if cliente == nome_cliente:
+                        self.reserva.update_desconto_reserva(float(input_desconto) / len(cliente_desconto), id_reserva)
+
+            else:
+                self.reserva.update_desconto_reserva(float(input_desconto), id_reserva)
+
         valor_pagar, valor_receber, situacao = self.logica_valor_pagar_e_receber(tipo, forma_pg, id_vendedor,
-                                                                                 valor_total, id_reserva, valor_pago, desconto)
+                                                                                 valor_total, id_reserva, valor_pago,
+                                                                                 desconto)
 
         if float(valor_pagar) != 0.00 or float(valor_receber) != 0.00:
             self.repository_vendedor.insert_lancamento_comissao(id_reserva, id_vendedor, valor_receber, valor_pagar,
@@ -132,19 +147,28 @@ class PagamentosPage:
                                                    forma_pg,
                                                    valor_pago)
 
-    def inputs_final_pagamentos(self, total_receber, quantidade):
+    def inputs_final_pagamentos(self, total_receber, quantidade, reservas_pg_pendente, tipo_pagamento, escolha_cliente):
 
         parcela = 0
         maquina = ''
         valor_taxa = 0
         lista_maquinas = []
         forma_pg = ''
-
+        input_desconto = None
+        cliente_desconto = None
 
         if total_receber == 0.00:
             status = st.selectbox('Cliente vai pra onde?', ['Chegou na Loja', 'Direto pro pier'], index=None)
 
         else:
+
+            input_desconto = st.text_input('Desconto por parte da empresa')
+
+            if tipo_pagamento == 'Pagamento Grupo':
+                cliente_desconto = st.multiselect('Quem vai receber o desconto?', reservas_pg_pendente)
+
+            elif tipo_pagamento == 'Pagamento Individual':
+                cliente_desconto = st.selectbox('Quem vai receber o desconto?', escolha_cliente, index=None)
 
             forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
                                     index=None)
@@ -173,7 +197,7 @@ class PagamentosPage:
 
             status = st.selectbox('Cliente vai pra onde?', ['Chegou na Loja', 'Direto pro pier'], index=None)
 
-        return forma_pg, maquina, parcela, status, valor_taxa
+        return forma_pg, maquina, parcela, status, valor_taxa, input_desconto, cliente_desconto
 
     def formatacao_dados_pagamento(self, id_titular):
 

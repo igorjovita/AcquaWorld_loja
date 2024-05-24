@@ -236,6 +236,13 @@ class RepositoryReserva:
 
         return self.db.execute_query(query, params)
 
+    def update_desconto_reserva(self, desconto, id_reserva):
+
+        query = "UPDATE reserva set desconto = %s where id = %s"
+        params = (desconto, id_reserva)
+
+        return self.db.execute_query(query, params)
+
     def tabela_comissao(self):
 
         query = """
