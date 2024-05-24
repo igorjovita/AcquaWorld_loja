@@ -217,8 +217,8 @@ class PagamentosPage:
         valor_neto = 0
 
         if id_vendedor == 12:
-            comissao_vendedor = float(valor_total) * 0.005
-            valor_neto = float(valor_total) - float(comissao_vendedor)
+            comissao_vendedor = float(valor_total) * 0.01
+            valor_neto = float(valor_total) - float(comissao_vendedor) - float(desconto)
 
         else:
 
