@@ -190,6 +190,9 @@ class PagamentosPage:
 
                 maquina = st.selectbox('Maquininha', lista_maquinas, index=None)
 
+            if input_desconto:
+                total_receber = float(total_receber) - float(input_desconto)
+                
             total_receber_formatado = format_currency(total_receber, 'BRL', locale='pt_BR')
 
             st.text_input('Valor Pago', value=total_receber_formatado)
