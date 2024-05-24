@@ -179,7 +179,8 @@ class Controle:
             for item in select_maquina_cartao:
                 lista_maquinas.append(item[0])
 
-            select_box_maquina = st.selectbox('Escolha a maquina para pesquisar', lista_maquinas, index=None)
+
+            select_box_maquina = st.selectbox('Escolha a maquina para pesquisar', ['Maquina'], index=None)
 
             if st.form_submit_button('Pesquisar'):
                 maquina_escolhida = self.repository_pagamentos.select_info_pagamento_por_maquina_cartao(
