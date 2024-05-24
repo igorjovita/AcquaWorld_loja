@@ -157,7 +157,7 @@ class PagamentosPage:
         input_desconto = None
         cliente_desconto = None
 
-        if total_receber == 0.00:
+        if len(reservas_pg_pendente) == 0:
             status = st.selectbox('Cliente vai pra onde?', ['Chegou na Loja', 'Direto pro pier'], index=None)
 
         else:
