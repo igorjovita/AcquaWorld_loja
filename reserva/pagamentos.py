@@ -50,13 +50,13 @@ class PagamentosPage:
 
             reserva_grupo = self.reserva.obter_info_reserva_pagamentos_por_id(id_titular)  # Consulta Tabela Pagamentos
 
-            total_receber, reservas_pagas, reservas_pg_pendente = self.formatacao_dados_pagamento(id_titular)
+            total_receber, reservas_pagas, reservas_pg_pendente, quantidade_clientes_mesma_reserva = self.formatacao_dados_pagamento(id_titular)
 
             st.write(len(reserva_grupo))
             st.write(reserva_grupo)
             st.write(len(reservas_pagas))
             # Verificação se todos os clientes já pagaram
-            if len(reserva_grupo) == len(reservas_pagas):
+            if quantidade_clientes_mesma_reserva == len(reservas_pagas):
                 st.success('Todos os clientes efetuaram o pagamento')
 
             else:
@@ -213,10 +213,11 @@ class PagamentosPage:
         total_receber = df['Receber Loja'].sum()
         reservas_pagas = df.loc[df['Situacao'] == 'Reserva Paga', 'Cliente'].tolist()
         reservas_pg_pendente = df.loc[df['Situacao'] == 'Pendente', 'Cliente'].tolist()
+        quantidade_clientes_mesma_reserva = df.shape[0]
 
         st.data_editor(df, hide_index=True, use_container_width=True)
 
-        return total_receber, reservas_pagas, reservas_pg_pendente
+        return total_receber, reservas_pagas, reservas_pg_pendente, quantidade_clientes_mesma_reserva
 
     def pagamento_individual(self, reservas_pg_pendente, reservas_pagamento):
 
