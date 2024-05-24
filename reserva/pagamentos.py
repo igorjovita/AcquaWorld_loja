@@ -107,8 +107,8 @@ class PagamentosPage:
 
         nome_cliente, id_cliente, id_reserva, receber_loja, id_vendedor, tipo, valor_total, situacao, recebedor, id_titular, total_pago, desconto = reserva
 
-        # Metodo para atualizar a cor de fundo da planilha diaria
-        valor_pago = float(receber_loja) + int(taxa_cartao)
+        desconto = float(input_desconto) + float(desconto)
+        valor_pago = float(receber_loja) + int(taxa_cartao) - float(desconto)
 
         self.reserva.update_cor_fundo_reserva(status, nome_cliente, data)
 
