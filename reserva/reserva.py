@@ -137,7 +137,7 @@ class Reserva:
                     valor_total = float(st.text_input(f'Valor do Mergulho', key=f'valor {i}', value=0))
                     receber_loja = float(st.text_input(f'Valor a receber:', key=f'loja {i}', value=0))
 
-                desconto = st.text_input('Desconto Acqua')
+                desconto = st.text_input('Desconto Acqua', key=f'desconto {i}')
                 observacao = st.text_input('Observação', key=f'observacao {i}')
 
                 with st.expander('Data Pratica 2'):
@@ -167,6 +167,7 @@ class Reserva:
                     recebedor_sinal = st.session_state[f'recebedor {i}']
                     receber_loja = st.session_state[f'loja {i}']
                     observacao = st.session_state[f'observacao {i}']
+                    desconto = st.session_state[f'desconto {i}']
                     soma_valor_total += int(valor_total)
                     soma_receber_loja += int(receber_loja)
                     if sinal != '':
@@ -182,13 +183,13 @@ class Reserva:
                         if cpf is None:
                             cpf = f'{nome_cliente} {data}'
                         self.reservar(data, nome_cliente, tipo, cpf, telefone, roupa, valor_total,
-                                      sinal, recebedor_sinal, receber_loja, data_pratica2, id_titular, iteracao, observacao)
+                                      sinal, recebedor_sinal, receber_loja, data_pratica2, id_titular, iteracao, observacao, desconto)
 
                 st.session_state.info_mensagem.append(
                     (nome_titular, nomes_dependentes, soma_valor_total, soma_sinal, soma_receber_loja, data))
 
     def reservar(self, data, nome_cliente, tipo, cpf, telefone, roupa, valor_total, sinal,
-                 recebedor_sinal, receber_loja, data_pratica2, id_titular, iteracao, observacao):
+                 recebedor_sinal, receber_loja, data_pratica2, id_titular, iteracao, observacao, desconto):
 
         if 'id_titular' not in st.session_state:
             st.session_state.id_titular = None
@@ -212,15 +213,15 @@ class Reserva:
                     id_reserva = self.repository_reserva.insert_reserva(data, id_cliente, tipo, id_vendedor,
                                                                         valor_total,
                                                                         (str(nome_cliente) + ' > PRÁTICA 1'),
-                                                                        id_titular, receber_loja, observacao)
+                                                                        id_titular, receber_loja, observacao, desconto)
 
                 else:
                     self.repository_reserva.insert_reserva(data_pratica2, id_cliente, tipo, id_vendedor, valor_total,
                                                            (str(nome_cliente) + ' > PRÁTICA 2'), id_titular,
-                                                           float(0), observacao)
+                                                           float(0), observacao, desconto)
         else:
             id_reserva = self.repository_reserva.insert_reserva(data, id_cliente, tipo, id_vendedor, valor_total,
-                                                                nome_cliente, id_titular, receber_loja, observacao)
+                                                                nome_cliente, id_titular, receber_loja, observacao, desconto)
 
         if sinal != '':
             self.repository_pagamentos.insert_pagamentos(data, id_reserva, recebedor_sinal, sinal, 'Pix', '',

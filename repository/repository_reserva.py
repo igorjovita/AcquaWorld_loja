@@ -54,7 +54,8 @@ class RepositoryReserva:
                     CASE WHEN r.situacao IS NULL THEN 'Pendente' else r.situacao end as situacao,
                     p.recebedor,
                     r.id_titular,
-                    sp.total_pago as total_pago
+                    sp.total_pago as total_pago,
+                    CASE WHEN r.desconto IS NULL THEN 0 ELSE r.desconto END AS desconto
                 from reserva as r 
                 LEFT JOIN pagamentos as p ON p.id_reserva = r.id 
                 LEFT JOIN SomaPagamento as sp ON r.id = sp.id_reserva
@@ -163,13 +164,13 @@ class RepositoryReserva:
         return self.db.execute_query(query, params)
 
     def insert_reserva(self, data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, id_titular,
-                       receber_loja, observacao):
+                       receber_loja, observacao, desconto):
 
-        params = (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente,  id_titular, receber_loja, observacao)
+        params = (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente,  id_titular, receber_loja, observacao, desconto)
         query = """
         INSERT INTO reserva 
-        (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, id_titular, receber_loja, observacao) 
-        VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s)"""
+        (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, id_titular, receber_loja, observacao, desconto) 
+        VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
         return self.db.execute_query(query, params)
 

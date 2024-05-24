@@ -102,7 +102,7 @@ class PagamentosPage:
 
     def processar_pagamento_final(self, reserva, forma_pg, maquina, parcela, status, data, taxa_cartao):
 
-        nome_cliente, id_cliente, id_reserva, receber_loja, id_vendedor, tipo, valor_total, situacao, recebedor, id_titular, total_pago = reserva
+        nome_cliente, id_cliente, id_reserva, receber_loja, id_vendedor, tipo, valor_total, situacao, recebedor, id_titular, total_pago, desconto = reserva
 
         # Metodo para atualizar a cor de fundo da planilha diaria
         valor_pago = float(receber_loja) + int(taxa_cartao)
@@ -110,7 +110,7 @@ class PagamentosPage:
         self.reserva.update_cor_fundo_reserva(status, nome_cliente, data)
 
         valor_pagar, valor_receber, situacao = self.logica_valor_pagar_e_receber(tipo, forma_pg, id_vendedor,
-                                                                                 valor_total, id_reserva, valor_pago)
+                                                                                 valor_total, id_reserva, valor_pago, desconto)
 
         if float(valor_pagar) != 0.00 and float(valor_receber) != 0.00:
             self.repository_vendedor.insert_lancamento_comissao(id_reserva, id_vendedor, valor_receber, valor_pagar,
@@ -206,7 +206,7 @@ class PagamentosPage:
 
         return total_receber, escolha_cliente
 
-    def logica_valor_pagar_e_receber(self, tipo, forma_pg, id_vendedor, valor_total, id_reserva, pago_loja):
+    def logica_valor_pagar_e_receber(self, tipo, forma_pg, id_vendedor, valor_total, id_reserva, pago_loja, desconto):
 
         tipos = ['BAT', 'ACP', 'TUR1', 'TUR2']
         valor_neto = 0
@@ -224,22 +224,22 @@ class PagamentosPage:
 
                 if tipo == 'BAT':
                     if forma_pg == forma_pg == 'Credito' or forma_pg == 'Debito':
-                        valor_neto = neto_bat_cartao
+                        valor_neto = neto_bat_cartao - float(desconto)
                     else:
-                        valor_neto = neto_bat
+                        valor_neto = neto_bat - float(desconto)
 
                 elif tipo == 'ACP':
-                    valor_neto = neto_acp
+                    valor_neto = neto_acp - float(desconto)
 
                 elif tipo == 'TUR1':
-                    valor_neto = neto_tur1
+                    valor_neto = neto_tur1 - float(desconto)
 
                 elif tipo == 'TUR2':
-                    valor_neto = neto_tur2
+                    valor_neto = neto_tur2 - float(desconto)
 
             else:
                 comissao_curso = valor_total * 10 / 100
-                valor_neto = valor_total - comissao_curso
+                valor_neto = valor_total - comissao_curso - float(desconto)
 
         select_valor_pago_recebedor = self.repository_pagamento.obter_valor_pago_por_idreserva(id_reserva)
 
