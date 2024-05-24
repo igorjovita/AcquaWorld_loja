@@ -50,13 +50,13 @@ class PagamentosPage:
 
             reserva_grupo = self.reserva.obter_info_reserva_pagamentos_por_id(id_titular)  # Consulta Tabela Pagamentos
 
-            total_receber, reservas_pagas, reservas_pg_pendente, quantidade_clientes_mesma_reserva = self.formatacao_dados_pagamento(id_titular)
+            total_receber, reservas_pagas, reservas_pg_pendente, quantidade_clientes = self.formatacao_dados_pagamento(id_titular)
 
             st.write(len(reserva_grupo))
             st.write(reserva_grupo)
             st.write(len(reservas_pagas))
             # Verificação se todos os clientes já pagaram
-            if quantidade_clientes_mesma_reserva == len(reservas_pagas):
+            if quantidade_clientes == len(reservas_pagas):
                 st.success('Todos os clientes efetuaram o pagamento')
 
             else:
@@ -77,7 +77,6 @@ class PagamentosPage:
 
                 if tipo_pagamento is not None:
 
-                    quantidade_clientes = len(reserva_grupo)
                     forma_pg, maquina, parcela, status, taxa_cartao, input_desconto, cliente_desconto = self.inputs_final_pagamentos(
                         total_receber,
                         quantidade_clientes,
@@ -167,7 +166,7 @@ class PagamentosPage:
 
             input_desconto = st.text_input('Desconto por parte da empresa')
 
-            if tipo_pagamento == 'Pagamento Grupo':
+            if tipo_pagamento == 'Pagamento em Grupo':
                 cliente_desconto = st.multiselect('Quem vai receber o desconto?', reservas_pg_pendente)
 
             elif tipo_pagamento == 'Pagamento Individual':
@@ -213,7 +212,7 @@ class PagamentosPage:
         total_receber = df['Receber Loja'].sum()
         reservas_pagas = df.loc[df['Situacao'] == 'Reserva Paga', 'Cliente'].tolist()
         reservas_pg_pendente = df.loc[df['Situacao'] == 'Pendente', 'Cliente'].tolist()
-        quantidade_clientes_mesma_reserva = df.shape[0]
+        quantidade_clientes_mesma_reserva = len(df)
 
         st.data_editor(df, hide_index=True, use_container_width=True)
 
