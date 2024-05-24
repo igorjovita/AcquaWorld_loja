@@ -120,7 +120,8 @@ class PagamentosPage:
                         self.reserva.update_desconto_reserva(float(input_desconto) / len(cliente_desconto), id_reserva)
 
             else:
-                self.reserva.update_desconto_reserva(float(input_desconto), id_reserva)
+                if cliente_desconto[0] == nome_cliente:
+                    self.reserva.update_desconto_reserva(float(input_desconto), id_reserva)
 
         valor_pagar, valor_receber, situacao = self.logica_valor_pagar_e_receber(tipo, forma_pg, id_vendedor,
                                                                                  valor_total, id_reserva, valor_pago,
