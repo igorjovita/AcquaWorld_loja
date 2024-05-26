@@ -19,16 +19,19 @@ from cadastros import Cadastro
 from controles import Controle
 import os
 
+from openpyxl import Workbook
+
 st.set_page_config(layout="wide")
 caminho_arquivo = r"C:\Users\Igorj\Downloads\MAIO 2024-teste.xlsx"
 
 caminho_arquivo_modelo = r"C:\Users\Igorj\Downloads\Modelo Planilha Operacao.xlsx"
 
-
-
 auth = Authentication()
 mysql = DataBaseMysql()
 current_directory = os.getcwd()
+wb = Workbook()
+ws = wb.active
+wb.save(current_directory)
 
 st.write(current_directory)
 excel = 'oi'
