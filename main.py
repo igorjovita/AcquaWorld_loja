@@ -34,7 +34,7 @@ wb = Workbook()
 ws = wb.active
 wb.save(caminho_arquivo_modelo)
 
-st.write(current_directory)
+st.write(caminho_arquivo_modelo)
 excel = 'oi'
 # excel = Excel(caminho_arquivo, wb_modelo)
 repository_vendedor = RepositoryVendedor(mysql)
