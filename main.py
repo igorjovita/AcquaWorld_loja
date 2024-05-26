@@ -28,6 +28,9 @@ caminho_arquivo_modelo = r"C:\Users\Igorj\Downloads\Modelo Planilha Operacao.xls
 
 auth = Authentication()
 mysql = DataBaseMysql()
+current_directory = os.getcwd()
+
+st.write(current_directory)
 excel = 'oi'
 # excel = Excel(caminho_arquivo, wb_modelo)
 repository_vendedor = RepositoryVendedor(mysql)
