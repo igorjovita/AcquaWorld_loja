@@ -26,11 +26,15 @@ caminho_arquivo_modelo = r"C:\Users\Igorj\Downloads\Modelo Planilha Operacao.xls
 
 # Verificar se os arquivos existem antes de carregar
 if not os.path.exists(caminho_arquivo):
+    permissao = os.stat(caminho_arquivo).st_mode
+    st.write(f"Permissões do arquivo: {permissao}")
     st.write(f"Arquivo não encontrado: {caminho_arquivo}")
 else:
     st.write(f"Arquivo encontrado: {caminho_arquivo}")
 
 if not os.path.exists(caminho_arquivo_modelo):
+    permissao = os.stat(caminho_arquivo).st_mode
+    st.write(f"Permissões do arquivo: {permissao}")
     st.write(f"Arquivo não encontrado: {caminho_arquivo_modelo}")
 else:
     try:
