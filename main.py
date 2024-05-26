@@ -19,7 +19,7 @@ from cadastros import Cadastro
 from controles import Controle
 import os
 
-from openpyxl import Workbook
+from openpyxl import Workbook, load_workbook
 
 st.set_page_config(layout="wide")
 caminho_arquivo = r"C:\Users\Igorj\Downloads\MAIO 2024-teste.xlsx"
@@ -30,11 +30,11 @@ auth = Authentication()
 mysql = DataBaseMysql()
 current_directory = os.getcwd()
 caminho_arquivo_modelo = os.path.join(current_directory, "modelo.xlsx")
-wb = Workbook()
+wb = load_workbook(r'/mount/src/acquaworld_loja/modelo.xlsx')
 ws = wb.active
-wb.save(caminho_arquivo_modelo)
 
-st.write(caminho_arquivo_modelo)
+
+st.write(ws)
 excel = 'oi'
 # excel = Excel(caminho_arquivo, wb_modelo)
 repository_vendedor = RepositoryVendedor(mysql)
