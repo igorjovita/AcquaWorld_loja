@@ -63,12 +63,16 @@ class Reserva:
                 if 'id_vendedor' not in st.session_state:
                     st.session_state.id_vendedor = None
 
+                if 'nome_vendedor' not in st.session_state:
+                    st.session_state.nome_vendedor = None
+
                 if nome_titular is not None:
                     index_lista_titular = lista_titulares.index(nome_titular)
                     id_titular = select_id_nome_titular[index_lista_titular][0]
                 if comissario is not None:
                     index_lista_vendedor = lista_vendedores.index(comissario)
                     st.session_state.id_vendedor = select_vendedores[index_lista_vendedor][0]
+                    st.session_state.nome_vendedor = comissario
 
                 vaga_credenciado, vaga_total = self.contagem_restricoes(data)
 
@@ -205,6 +209,7 @@ class Reserva:
 
         id_titular = st.session_state.id_titular
         id_vendedor = st.session_state.id_vendedor
+        nome_vendedor = st.session_state.nome_vendedor
 
         id_reserva = None
         if tipo == 'OWD' or tipo == 'ADV':
@@ -213,15 +218,15 @@ class Reserva:
                     id_reserva = self.repository_reserva.insert_reserva(data, id_cliente, tipo, id_vendedor,
                                                                         valor_total,
                                                                         (str(nome_cliente) + ' > PRÁTICA 1'),
-                                                                        id_titular, receber_loja, observacao, desconto)
+                                                                        id_titular, receber_loja, observacao, desconto, telefone, nome_vendedor, roupa)
 
                 else:
                     self.repository_reserva.insert_reserva(data_pratica2, id_cliente, tipo, id_vendedor, valor_total,
                                                            (str(nome_cliente) + ' > PRÁTICA 2'), id_titular,
-                                                           float(0), observacao, desconto)
+                                                           float(0), observacao, desconto, telefone, nome_vendedor, roupa)
         else:
             id_reserva = self.repository_reserva.insert_reserva(data, id_cliente, tipo, id_vendedor, valor_total,
-                                                                nome_cliente, id_titular, receber_loja, observacao, desconto)
+                                                                nome_cliente, id_titular, receber_loja, observacao, desconto, telefone, nome_vendedor, roupa)
 
         if sinal != '':
             self.repository_pagamentos.insert_pagamentos(data, id_reserva, recebedor_sinal, sinal, 'Pix', '',

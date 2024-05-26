@@ -2,8 +2,9 @@ import streamlit as st
 
 
 class RepositoryReserva:
-    def __init__(self, db):
+    def __init__(self, db, excel):
         self.db = db
+        self.excel = excel
 
     def obter_nome_id_tipo_reserva_por_data(self, data):
         params = (data,)
@@ -164,13 +165,19 @@ class RepositoryReserva:
         return self.db.execute_query(query, params)
 
     def insert_reserva(self, data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, id_titular,
-                       receber_loja, observacao, desconto):
+                       receber_loja, observacao, desconto, telefone, nome_vendedor, roupa):
 
-        params = (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente,  id_titular, receber_loja, observacao, desconto)
+        params = (
+        data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, id_titular, receber_loja, observacao, desconto)
         query = """
         INSERT INTO reserva 
         (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, id_titular, receber_loja, observacao, desconto) 
         VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+
+        dados = (nome_cliente, telefone, nome_vendedor, tipo, roupa)
+
+        st.write(f'DATA : {data}')
+        self.excel.insert_excel(dados, data)
 
         return self.db.execute_query(query, params)
 
@@ -185,8 +192,8 @@ class RepositoryReserva:
     def update_reserva_tela_editar(self, novo_data_reserva, novo_tipo, id_novo_vendedor, novo_valor_total,
                                    novo_valor_receber, novo_data_pratica2, id_cliente):
         params = (
-        novo_data_reserva, novo_tipo, id_novo_vendedor, novo_valor_total, novo_valor_receber, novo_data_pratica2,
-        id_cliente)
+            novo_data_reserva, novo_tipo, id_novo_vendedor, novo_valor_total, novo_valor_receber, novo_data_pratica2,
+            id_cliente)
 
         query = """
         UPDATE reserva SET 

@@ -1,9 +1,13 @@
 import pandas as pd
 import streamlit as st
+from openpyxl import load_workbook
+
 from tabelas import Planilhas
 from database import DataBaseMysql
 from repository import RepositoryVendedor, RepositoryReserva, RepositoryCliente, RepositoryControleCurso, \
     RepositoryPagamentos, RepositoryTermo
+
+from excel import Excel
 
 from streamlit_option_menu import option_menu
 
@@ -16,10 +20,13 @@ from controles import Controle
 
 
 st.set_page_config(layout="wide")
+caminho_arquivo = r"C:\Users\Igorj\Downloads\MAIO 2024-teste.xlsx"
+wb_modelo = load_workbook(r"C:\Users\Igorj\Downloads\Modelo Planilha Operacao.xlsx")
 auth = Authentication()
 mysql = DataBaseMysql()
+excel = Excel(caminho_arquivo, wb_modelo)
 repository_vendedor = RepositoryVendedor(mysql)
-repository_reserva = RepositoryReserva(mysql)
+repository_reserva = RepositoryReserva(mysql, excel)
 repository_cliente = RepositoryCliente(mysql)
 repositorio_curso = RepositoryControleCurso(mysql)
 repository_pagamentos = RepositoryPagamentos(mysql)
