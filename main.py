@@ -24,14 +24,15 @@ from openpyxl import Workbook
 st.set_page_config(layout="wide")
 caminho_arquivo = r"C:\Users\Igorj\Downloads\MAIO 2024-teste.xlsx"
 
-caminho_arquivo_modelo = r"C:\Users\Igorj\Downloads\Modelo Planilha Operacao.xlsx"
+# caminho_arquivo_modelo = r"C:\Users\Igorj\Downloads\Modelo Planilha Operacao.xlsx"
 
 auth = Authentication()
 mysql = DataBaseMysql()
 current_directory = os.getcwd()
+caminho_arquivo_modelo = os.path.join(current_directory, "modelo.xlsx")
 wb = Workbook()
 ws = wb.active
-wb.save(current_directory)
+wb.save(caminho_arquivo_modelo)
 
 st.write(current_directory)
 excel = 'oi'
