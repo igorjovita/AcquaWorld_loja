@@ -24,24 +24,12 @@ caminho_arquivo = r"C:\Users\Igorj\Downloads\MAIO 2024-teste.xlsx"
 
 caminho_arquivo_modelo = r"C:\Users\Igorj\Downloads\Modelo Planilha Operacao.xlsx"
 
-# Verificar se os arquivos existem antes de carregar
-if not os.path.exists(caminho_arquivo):
-    st.write(f"Arquivo não encontrado: {caminho_arquivo}")
-else:
-    st.write(f"Arquivo encontrado: {caminho_arquivo}")
 
-if not os.path.exists(caminho_arquivo_modelo):
-    st.write(f"Arquivo não encontrado: {caminho_arquivo_modelo}")
-else:
-    try:
-        wb_modelo = load_workbook(caminho_arquivo_modelo)
-        st.write("Arquivo modelo carregado com sucesso!")
-    except Exception as e:
-        st.write(f"Erro ao carregar o arquivo modelo: {e}")
 
 auth = Authentication()
 mysql = DataBaseMysql()
-excel = Excel(caminho_arquivo, wb_modelo)
+excel = 'oi'
+# excel = Excel(caminho_arquivo, wb_modelo)
 repository_vendedor = RepositoryVendedor(mysql)
 repository_reserva = RepositoryReserva(mysql, excel)
 repository_cliente = RepositoryCliente(mysql)
