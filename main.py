@@ -24,32 +24,15 @@ from openpyxl import Workbook, load_workbook
 st.set_page_config(layout="wide")
 caminho_arquivo = r"C:\Users\Igorj\Downloads\MAIO 2024-teste.xlsx"
 # Caminho do diretório a ser explorado
-caminho_diretorio = r"C:\Users\Igorj\Downloads"
 
-# Verificar se o caminho do diretório é válido
-if os.path.exists(caminho_diretorio) and os.path.isdir(caminho_diretorio):
-    # Listar os diretórios dentro do diretório especificado
-    pastas = [pasta for pasta in os.listdir(caminho_diretorio) if os.path.isdir(os.path.join(caminho_diretorio, pasta))]
-
-    # Exibir as pastas
-    st.title("Pastas dentro de Downloads:")
-    for pasta in pastas:
-        st.write(pasta)
-else:
-    st.write("O caminho do diretório especificado não é válido.")
-
-
-# caminho_arquivo_modelo = r"C:\Users\Igorj\Downloads\Modelo Planilha Operacao.xlsx"
+caminho_arquivo_modelo = r"C:\Users\Igorj\Downloads\Modelo Planilha Operacao.xlsx"
 
 auth = Authentication()
 mysql = DataBaseMysql()
-current_directory = os.getcwd()
-caminho_arquivo_modelo = os.path.join(current_directory, "modelo.xlsx")
-wb = load_workbook(r'/mount/src/acquaworld_loja/modelo.xlsx')
-ws = wb.active
 
+wb_modelo = load_workbook(caminho_arquivo_modelo)
 
-excel = 'oi'
+excel = Excel(caminho_arquivo, wb_modelo)
 # excel = Excel(caminho_arquivo, wb_modelo)
 repository_vendedor = RepositoryVendedor(mysql)
 repository_reserva = RepositoryReserva(mysql, excel)
