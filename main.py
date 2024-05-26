@@ -38,6 +38,7 @@ if os.path.exists(caminho_diretorio) and os.path.isdir(caminho_diretorio):
 else:
     st.write("O caminho do diretório especificado não é válido.")
 
+
 # caminho_arquivo_modelo = r"C:\Users\Igorj\Downloads\Modelo Planilha Operacao.xlsx"
 
 auth = Authentication()
@@ -48,7 +49,6 @@ wb = load_workbook(r'/mount/src/acquaworld_loja/modelo.xlsx')
 ws = wb.active
 
 
-st.write(ws)
 excel = 'oi'
 # excel = Excel(caminho_arquivo, wb_modelo)
 repository_vendedor = RepositoryVendedor(mysql)
