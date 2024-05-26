@@ -26,18 +26,18 @@ caminho_arquivo_modelo = r"C:\Users\Igorj\Downloads\Modelo Planilha Operacao.xls
 
 # Verificar se os arquivos existem antes de carregar
 if not os.path.exists(caminho_arquivo):
-    print(f"Arquivo não encontrado: {caminho_arquivo}")
+    st.write(f"Arquivo não encontrado: {caminho_arquivo}")
 else:
-    print(f"Arquivo encontrado: {caminho_arquivo}")
+    st.write(f"Arquivo encontrado: {caminho_arquivo}")
 
 if not os.path.exists(caminho_arquivo_modelo):
-    print(f"Arquivo não encontrado: {caminho_arquivo_modelo}")
+    st.write(f"Arquivo não encontrado: {caminho_arquivo_modelo}")
 else:
     try:
         wb_modelo = load_workbook(caminho_arquivo_modelo)
-        print("Arquivo modelo carregado com sucesso!")
+        st.write("Arquivo modelo carregado com sucesso!")
     except Exception as e:
-        print(f"Erro ao carregar o arquivo modelo: {e}")
+        st.write(f"Erro ao carregar o arquivo modelo: {e}")
 
 auth = Authentication()
 mysql = DataBaseMysql()
