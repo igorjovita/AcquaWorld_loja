@@ -17,11 +17,28 @@ from comissoes import Comissao
 from auth import Authentication
 from cadastros import Cadastro
 from controles import Controle
-
+import os
 
 st.set_page_config(layout="wide")
 caminho_arquivo = r"C:\Users\Igorj\Downloads\MAIO 2024-teste.xlsx"
-wb_modelo = load_workbook(r"C:\Users\Igorj\Downloads\Modelo Planilha Operacao.xlsx")
+
+caminho_arquivo_modelo = r"C:\Users\Igorj\Downloads\Modelo Planilha Operacao.xlsx"
+
+# Verificar se os arquivos existem antes de carregar
+if not os.path.exists(caminho_arquivo):
+    print(f"Arquivo não encontrado: {caminho_arquivo}")
+else:
+    print(f"Arquivo encontrado: {caminho_arquivo}")
+
+if not os.path.exists(caminho_arquivo_modelo):
+    print(f"Arquivo não encontrado: {caminho_arquivo_modelo}")
+else:
+    try:
+        wb_modelo = load_workbook(caminho_arquivo_modelo)
+        print("Arquivo modelo carregado com sucesso!")
+    except Exception as e:
+        print(f"Erro ao carregar o arquivo modelo: {e}")
+
 auth = Authentication()
 mysql = DataBaseMysql()
 excel = Excel(caminho_arquivo, wb_modelo)
@@ -33,10 +50,8 @@ repository_pagamentos = RepositoryPagamentos(mysql)
 repository_termo = RepositoryTermo(mysql)
 pagamentos = PagamentosPage(repository_reserva, repository_pagamentos, repository_vendedor)
 
-
 auth.authenticate()
 auth.sidebar()
-
 
 lista_nivel_1 = ['igorjovita']
 escolha_pagina = None
@@ -50,7 +65,6 @@ if st.session_state["authentication_status"]:
         opcoes = ['📆 Reservas', '💰 Caixa', '📝 Termo', '🤝 Comissões', '📖 Controles', '📂 Cadastros']
 
     escolha_pagina = st.sidebar.radio('Opçoes', opcoes, label_visibility='collapsed', index=None)
-
 
 if escolha_pagina == '📝 Termo':
     pass
@@ -73,8 +87,8 @@ if escolha_pagina == '📂 Cadastros':
 
 if escolha_pagina == '📆 Reservas':
     menu_reserva = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visualizar', 'Editar', 'Pagamento'],
-                            icons=['book', 'card-checklist', 'pencil-square', 'currency-dollar'],
-                            orientation='horizontal')
+                               icons=['book', 'card-checklist', 'pencil-square', 'currency-dollar'],
+                               orientation='horizontal')
 
     if menu_reserva == 'Reservar':
         reserva = Reserva(repository_vendedor, repository_reserva, repository_cliente, repository_pagamentos)
