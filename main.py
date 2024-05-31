@@ -5,8 +5,8 @@ from openpyxl import load_workbook
 from tabelas import Planilhas
 from database import DataBaseMysql
 from repository import RepositoryVendedor, RepositoryReserva, RepositoryCliente, RepositoryControleCurso, \
-    RepositoryPagamentos, RepositoryTermo
-
+    RepositoryPagamentos, RepositoryTermo, RepositoryAuditLog
+from sincronizacao import Sincronizacao
 from excel import Excel
 
 from streamlit_option_menu import option_menu
@@ -18,24 +18,34 @@ from auth import Authentication
 from cadastros import Cadastro
 from controles import Controle
 import os
+from audit_log import AuditLog
 
 from openpyxl import Workbook, load_workbook
+import sys
 
 st.set_page_config(layout="wide")
-caminho_arquivo = r"C:\Users\Igorj\Downloads\MAIO 2024-teste.xlsx"
-# Caminho do diretório a ser explorado
+# caminho_arquivo = r"C:\Users\Igorj\Downloads\MAIO 2024-teste.xlsx"
+# # Caminho do diretório a ser explorado
+#
+# caminho_arquivo_modelo = r"C:\Users\Igorj\Downloads\Modelo Planilha Operacao.xlsx"
+# caminho_modelo_caixa_diario = r"C:\Users\Igorj\OneDrive\Área de Trabalho\Planilhas\Modelos\Modelo Caixa Diario.xlsx"
+# caminho_caixa = r"C:\Users\Igorj\OneDrive\Área de Trabalho\Planilhas\Caixa\2024\MAIO.xlsx"
+# st.write(sys.executable)
+# st.write(sys.argv[0])
+# st.write(os.getcwd())
 
-caminho_arquivo_modelo = r"C:\Users\Igorj\Downloads\Modelo Planilha Operacao.xlsx"
-
+audit_log = AuditLog()
 auth = Authentication()
-mysql = DataBaseMysql()
+mysql = DataBaseMysql(audit_log)
+repository_audit_log = RepositoryAuditLog(mysql)
+sincronizador = Sincronizacao(repository_audit_log)
 
-wb_modelo = load_workbook(caminho_arquivo_modelo)
+# st.write(wb_modelo)
 
-excel = Excel(caminho_arquivo, wb_modelo)
+
 # excel = Excel(caminho_arquivo, wb_modelo)
 repository_vendedor = RepositoryVendedor(mysql)
-repository_reserva = RepositoryReserva(mysql, excel)
+repository_reserva = RepositoryReserva(mysql)
 repository_cliente = RepositoryCliente(mysql)
 repositorio_curso = RepositoryControleCurso(mysql)
 repository_pagamentos = RepositoryPagamentos(mysql)
@@ -52,9 +62,9 @@ if st.session_state["authentication_status"]:
     st.sidebar.title('Menu')
 
     if st.session_state["username"] in lista_nivel_1:
-        opcoes = ['📆 Reservas', '💰 Caixa', '📝 Termo', '🤝 Comissões', '📖 Controles', '📂 Cadastros', '📈 Financeiro']
+        opcoes = ['📆 Reservas', '💰 Caixa', '📝 Termo', '🤝 Comissões', 'Sincronização', '📖 Controles', '📂 Cadastros', '📈 Financeiro']
     else:
-        opcoes = ['📆 Reservas', '💰 Caixa', '📝 Termo', '🤝 Comissões', '📖 Controles', '📂 Cadastros']
+        opcoes = ['📆 Reservas', '💰 Caixa', '📝 Termo', '🤝 Comissões', 'Sincronização', '📖 Controles', '📂 Cadastros']
 
     escolha_pagina = st.sidebar.radio('Opçoes', opcoes, label_visibility='collapsed', index=None)
 
@@ -76,6 +86,9 @@ if escolha_pagina == '📖 Controles':
 if escolha_pagina == '📂 Cadastros':
     cadastro = Cadastro(repository_vendedor, repository_pagamentos)
     cadastro.tela_cadastro()
+
+if escolha_pagina == 'Sincronização':
+    sincronizador.tela_sincronizacao()
 
 if escolha_pagina == '📆 Reservas':
     menu_reserva = option_menu(menu_title="Planilha Diaria", options=['Reservar', 'Visualizar', 'Editar', 'Pagamento'],

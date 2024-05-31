@@ -1,10 +1,6 @@
-import streamlit as st
-
-
 class RepositoryReserva:
-    def __init__(self, db, excel):
+    def __init__(self, db):
         self.db = db
-        self.excel = excel
 
     def obter_nome_id_tipo_reserva_por_data(self, data):
         params = (data,)
@@ -34,8 +30,8 @@ class RepositoryReserva:
         query = f"SELECT id, id_cliente, tipo, valor_total, receber_loja, id_vendedor FROM reserva WHERE nome_cliente = %s and data = %s"
         return self.db.execute_query(query, params)
 
-    def obter_info_reserva_pagamentos_por_id(self, id_titular):
-        params = (id_titular,)
+    def obter_info_reserva_pagamentos_por_id(self, id_titular, data):
+        params = (id_titular, data)
         query = """WITH SomaPagamento as (
                     SELECT 
                         p.id_reserva,
@@ -45,7 +41,7 @@ class RepositoryReserva:
                     GROUP BY p.id_reserva
                     )
                 SELECT 
-                    r.nome_cliente,
+                    c.nome,
                     r.id_cliente,
                     r.id,
                     CASE  WHEN sp.total_pago >= r.valor_total OR r.receber_loja = sp.total_pago OR r.receber_loja IS NULL THEN 0.00 ELSE r.receber_loja END as receber_loja,
@@ -60,7 +56,8 @@ class RepositoryReserva:
                 from reserva as r 
                 LEFT JOIN pagamentos as p ON p.id_reserva = r.id 
                 LEFT JOIN SomaPagamento as sp ON r.id = sp.id_reserva
-                where r.id_titular = %s
+                JOIN cliente as c ON c.id = r.id_cliente
+                where r.id_titular = %s AND r.data = %s
                 GROUP BY r.id, p.recebedor"""
 
         return self.db.execute_query(query, params)
@@ -79,17 +76,17 @@ class RepositoryReserva:
             r.check_in,
             r.observacao
         FROM reserva AS r 
-        INNER JOIN cliente AS c ON r.id_cliente = c.id 
-        INNER JOIN vendedores AS v ON r.id_vendedor = v.id 
+        LEFT JOIN cliente AS c ON r.id_cliente = c.id 
+        LEFT JOIN vendedores AS v ON r.id_vendedor = v.id 
         WHERE r.data = %s"""
 
         params = (data,)
 
         return self.db.execute_query(query, params)
 
-    def obter_info_pagamento_para_tabela_pagamentos(self, id_titular):
+    def obter_info_pagamento_para_tabela_pagamentos(self, id_titular, data):
 
-        params = (id_titular,)
+        params = (id_titular, data)
         query = """
         WITH SomaPagamento as (
                     SELECT 
@@ -100,9 +97,9 @@ class RepositoryReserva:
                     GROUP BY p.id_reserva
                     )
                 SELECT
-                    r.nome_cliente,
+                    c.nome,
                     r.tipo,
-                    v.nome AS nome_vendedor,
+                    v.apelido AS nome_vendedor,
                     r.valor_total,
                     r.receber_loja,
                     CONCAT(p1.pagamento, ' - ', p1.recebedor),
@@ -118,13 +115,28 @@ class RepositoryReserva:
                 LEFT JOIN pagamentos AS p2 ON p2.id_reserva = r.id AND p2.tipo_pagamento = 'Pagamento'
                 LEFT JOIN vendedores AS v ON v.id = r.id_vendedor 
                 LEFT JOIN SomaPagamento as sp ON r.id = sp.id_reserva
-                WHERE r.id_titular = %s;"""
+                JOIN cliente as c ON c.id = r.id_cliente
+                WHERE r.id_titular = %s AND r.data = %s"""
 
         return self.db.execute_query(query, params)
 
     def obter_info_titular_reserva_por_data(self, data):
         params = (data,)
-        query = "SELECT nome_cliente, id_cliente FROM reserva WHERE data = %s and id_titular = id_cliente"
+        query = """
+        SELECT 
+        c.nome,
+        r.id_cliente 
+        FROM reserva as r 
+        JOIN cliente as c ON c.id = r.id_cliente 
+        WHERE data = %s and id_titular = id_cliente"""
+
+        return self.db.execute_query(query, params)
+
+    def select_id_reserva_por_id_cliente(self, id_cliente, data):
+
+        query = "SELECT id FROM reserva WHERE id_cliente = %s AND data = %s"
+        params = (id_cliente, data)
+
         return self.db.execute_query(query, params)
 
     def obter_info_grupo_reserva_por_titular_data(self, params):
@@ -168,23 +180,31 @@ class RepositoryReserva:
                        receber_loja, observacao, desconto, telefone, nome_vendedor, roupa):
 
         params = (
-        data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, id_titular, receber_loja, observacao, desconto)
+            data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, id_titular, receber_loja, observacao,
+            desconto, nome_vendedor)
         query = """
         INSERT INTO reserva 
-        (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, id_titular, receber_loja, observacao, desconto) 
-        VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+        (data, id_cliente, tipo, id_vendedor, valor_total, nome_cliente, id_titular, receber_loja, observacao, desconto, nome_vendedor) 
+        VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
         dados = (nome_cliente, telefone, nome_vendedor, tipo, roupa)
 
-        st.write(f'DATA : {data}')
-        self.excel.insert_excel(dados, data)
+        # st.write(f'DATA : {data}')
+        # self.excel.insert_excel(dados, data)
+
+        return self.db.execute_query(query, params)
+
+    def insert_segurar_vaga(self, data, id_vendedor):
+
+        query = "INSERT INTO reserva (data, id_vendedor) VALUES (%s, %s)"
+        params = (data, id_vendedor)
 
         return self.db.execute_query(query, params)
 
     def update_reserva_info_termo(self, nome_cliente, id_cliente):
         params = (nome_cliente, id_cliente)
 
-        query = ("UPDATE reserva set nome_cliente = CASE WHEN tipo != 'OWD' AND tipo != 'ADV' THEN %s END WHERE "
+        query = ("UPDATE reserva SET nome_cliente = CASE WHEN tipo != 'OWD' AND tipo != 'ADV' THEN %s END WHERE "
                  "id_cliente = %s and data = %s")
 
         return self.db.execute_query(query, params)
@@ -209,7 +229,7 @@ class RepositoryReserva:
 
     def update_reserva_grupo_tela_editar(self, novo_data_reserva, id_novo_vendedor, id_tiular):
 
-        query = "UPDATE reserva set data_reserva = %s, id_vendedor = %s WHERE id_titular = %s"
+        query = "UPDATE reserva SET data_reserva = %s, id_vendedor = %s WHERE id_titular = %s"
 
         params = (novo_data_reserva, id_novo_vendedor, id_tiular)
 
@@ -218,7 +238,7 @@ class RepositoryReserva:
     def update_reserva_parcial(self, id_cliente, nome_cliente, tipo, valor_total, receber_loja):
         params = (nome_cliente, tipo, valor_total, receber_loja, id_cliente)
 
-        query = ("UPDATE reserva set nome_cliente = %s, tipo = %s, valor_total = %s, receber_loja = %s WHERE "
+        query = ("UPDATE reserva SET nome_cliente = %s, tipo = %s, valor_total = %s, receber_loja = %s WHERE "
                  "id_cliente = %s")
 
         return self.db.execute_query(query, params)
@@ -232,21 +252,35 @@ class RepositoryReserva:
         else:
             codigo_cor = 'FFFFFF'
 
-        query = "UPDATE reserva set check_in = %s where nome_cliente = %s and data = %s"
-        params = (codigo_cor, nome_cliente, data)
+        situacao = 'Reserva Paga'
+        query = "UPDATE reserva SET check_in = %s, situacao = %s WHERE nome_cliente = %s AND data = %s"
+        params = (codigo_cor, situacao, nome_cliente, data)
         return self.db.execute_query(query, params)
 
     def update_situacao_reserva(self, id_reserva):
 
-        query = "UPDATE reserva set situacao = 'Reserva Paga' where id = %s"
+        query = "UPDATE reserva SET situacao = 'Reserva Paga' WHERE id = %s"
         params = (id_reserva,)
 
         return self.db.execute_query(query, params)
 
     def update_desconto_reserva(self, desconto, id_reserva):
 
-        query = "UPDATE reserva set desconto = %s where id = %s"
+        query = "UPDATE reserva SET desconto = %s WHERE id = %s"
         params = (desconto, id_reserva)
+
+        return self.db.execute_query(query, params)
+
+    def update_vaga_separada(self, data, id_cliente, tipo, id_vendedor, valor_total,
+                             nome_cliente, id_titular, receber_loja, observacao, desconto):
+
+        query = ("UPDATE reserva SET id_cliente = %s, tipo = %s, valor_total = %s, nome_cliente = %s, id_titular = %s, "
+                 "receber_loja = %s, observacao = %s, desconto = %s WHERE id_vendedor = %s AND data = %s AND "
+                 "id_cliente is NULL limit 1")
+
+        params = (
+            id_cliente, tipo, valor_total, nome_cliente, id_titular, receber_loja, observacao, desconto, id_vendedor,
+            data)
 
         return self.db.execute_query(query, params)
 

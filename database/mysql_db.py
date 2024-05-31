@@ -5,9 +5,10 @@ from interfaces import DataBaseInterface
 
 
 class DataBaseMysql(DataBaseInterface):
-    def __init__(self, ):
+    def __init__(self, audit_log):
         self.__connection = None
         self.__cursor = None
+        self.audit_log = audit_log
 
     def connect(self):
         mydb = mysql.connector.connect(
@@ -27,7 +28,6 @@ class DataBaseMysql(DataBaseInterface):
 
     def execute_query(self, query, params=None):
         try:
-
             cursor = self.connect()
             cursor.execute(query, params)
 
@@ -37,12 +37,23 @@ class DataBaseMysql(DataBaseInterface):
 
             elif query.strip().startswith('INSERT INTO'):
                 id_lastrow = cursor.lastrowid
+
+                if query.split()[2] != 'audit_log':
+                    log_query, log_params = self.audit_log.preparar_para_log(query, params)
+                    cursor.execute(log_query, log_params)
+
                 if query.strip().startswith('INSERT INTO cliente') and params[0] == '164':
                     self.update_cliente([id_lastrow])
 
                 return id_lastrow
 
             else:
+                if query.strip().startswith('UPDATE audit_log'):
+                    pass
+                else:
+                    log_query, log_params = self.audit_log.preparar_para_log(query, params)
+                    cursor.execute(log_query, log_params)
+
                 return None
         except mysql.connector.Error as e:
             st.error(f"Error executing query: {e}")

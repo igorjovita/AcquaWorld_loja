@@ -22,8 +22,6 @@ class PagamentosPage:
         if 'valor_pago' not in st.session_state:
             st.session_state.valor_pago = []
 
-        escolha_cliente = None
-
         data = st.date_input('Data da reserva', format='DD/MM/YYYY')
 
         select_info_titular = self.reserva.obter_info_titular_reserva_por_data(data)  # Consulta Tabela Reserva
@@ -48,59 +46,36 @@ class PagamentosPage:
             index = nome_titular.index(select_box_titular)
             id_titular = select_info_titular[index][1]
 
-            reserva_grupo = self.reserva.obter_info_reserva_pagamentos_por_id(id_titular)  # Consulta Tabela Pagamentos
+            reserva_grupo = self.reserva.obter_info_reserva_pagamentos_por_id(id_titular,
+                                                                              data)  # Consulta Tabela Pagamentos
 
-            total_receber, reservas_pagas, reservas_pg_pendente, quantidade_clientes = self.formatacao_dados_pagamento(
-                id_titular)
+            total_receber, reservas_pagas, reservas_pg_pendente, quantidade_clientes, lista_pg_pendente = self.formatacao_dados_pagamento(
+                id_titular, data)
 
-            st.write(len(reserva_grupo))
-            st.write(reserva_grupo)
-            st.write(len(reservas_pagas))
             # Verificação se todos os clientes já pagaram
+
             if quantidade_clientes == len(reservas_pagas):
                 st.success('Todos os clientes efetuaram o pagamento')
 
             else:
-                tipo_pagamento = ''
+                nome_pagamento_pendente = []
+                for cliente in lista_pg_pendente:
+                    nome_pagamento_pendente.append(cliente[0])
 
-                # Verificação se tem apenas um cliente nesse grupo, se verdadeiro ele define o tipo de pg como
-                # individual
-                if len(reserva_grupo) == 1:
-                    tipo_pagamento = 'Pagamento Individual'
+                lista_nome_pg_pendente = st.multiselect('Escolha os clientes para lançar o pagamento',
+                                                        nome_pagamento_pendente)
+                total_receber = 0
 
-                else:
-                    if total_receber != 0.00:
-                        tipo_pagamento = st.radio('Tipo do pagamento',
-                                                  ['Pagamento Individual', 'Pagamento em Grupo'], index=None)
+                for resultado in lista_pg_pendente:
+                    nome, valor = resultado
 
-                if tipo_pagamento == 'Pagamento Individual':
-                    total_receber, escolha_cliente = self.pagamento_individual(reservas_pg_pendente, reserva_grupo)
+                    if nome in lista_nome_pg_pendente:
+                        total_receber += valor
 
-                if tipo_pagamento is not None:
-
+                if lista_nome_pg_pendente:
                     forma_pg, maquina, parcela, status, taxa_cartao, input_desconto, cliente_desconto = self.inputs_final_pagamentos(
-                        total_receber,
-                        quantidade_clientes,
-                        reservas_pg_pendente, tipo_pagamento, escolha_cliente)
+                        lista_nome_pg_pendente, total_receber, reserva_grupo, data)
                     st.write(cliente_desconto)
-                    if st.button('Lançar Pagamento'):
-
-                        for i, reserva in enumerate(reserva_grupo):
-                            situacao = reserva[7]
-                            if tipo_pagamento == 'Pagamento em Grupo':
-                                if situacao != 'Reserva Paga':
-                                    self.processar_pagamento_final(reserva, forma_pg, maquina, parcela, status,
-                                                                   data, taxa_cartao, input_desconto, cliente_desconto)
-                                    st.success('Pagamento do grupo registrado com sucesso!')
-
-                            else:
-                                if situacao != 'Reserva Paga':
-                                    if escolha_cliente == reserva[0]:
-                                        self.processar_pagamento_final(reserva, forma_pg, maquina, parcela, status,
-                                                                       data, taxa_cartao, input_desconto,
-                                                                       cliente_desconto)
-
-                                    st.success('Pagamento registrado com sucesso!')
 
     def processar_pagamento_final(self, reserva, forma_pg, maquina, parcela, status, data, taxa_cartao, input_desconto,
                                   cliente_desconto):
@@ -109,8 +84,6 @@ class PagamentosPage:
 
         desconto = float(desconto)
         valor_pago = float(receber_loja) + int(taxa_cartao) - float(desconto)
-
-        self.reserva.update_cor_fundo_reserva(status, nome_cliente, data)
 
         if input_desconto:
 
@@ -121,7 +94,7 @@ class PagamentosPage:
                         valor_pago -= float(input_desconto)
                         self.reserva.update_desconto_reserva(float(input_desconto) / len(cliente_desconto), id_reserva)
 
-            else:
+            elif len(cliente_desconto) == 1:
                 if cliente_desconto[0] == nome_cliente:
                     desconto += float(input_desconto)
                     valor_pago -= float(input_desconto)
@@ -129,99 +102,164 @@ class PagamentosPage:
 
         valor_pagar, valor_receber, situacao = self.logica_valor_pagar_e_receber(tipo, forma_pg, id_vendedor,
                                                                                  valor_total, id_reserva, valor_pago,
-                                                                                 desconto)
+                                                                                 desconto, taxa_cartao)
 
         if float(valor_pagar) != 0.00 or float(valor_receber) != 0.00:
             self.repository_vendedor.insert_lancamento_comissao(id_reserva, id_vendedor, valor_receber, valor_pagar,
                                                                 id_titular, situacao)
         st.write(valor_pago)
-        self.reserva.update_situacao_reserva(id_reserva)
+
+        if tipo == 'OWD' or tipo == 'ADV':
+            self.reserva.update_situacao_reserva(int(id_reserva) + 1)
 
         if float(valor_pago) != 0.00:
-            data_formatada = data.strftime("%d/%m/%Y")
-            descricao = f'{nome_cliente} do dia {data_formatada}'
-            tipo_movimento_caixa = 'ENTRADA'
-            id_conta = 1
-            data_pagamento = datetime.today()
 
             self.repository_pagamento.insert_pagamentos(data, id_reserva, 'AcquaWorld', valor_pago, forma_pg, parcela,
-                                                        id_titular, maquina, 'Pagamento')
+                                                        id_titular, maquina, 'Pagamento', nome_cliente)
 
-            self.repository_pagamento.insert_caixa(id_conta, data_pagamento, tipo_movimento_caixa, tipo, descricao,
-                                                   forma_pg,
-                                                   valor_pago)
+        self.reserva.update_cor_fundo_reserva(status, nome_cliente, data)
 
-    def inputs_final_pagamentos(self, total_receber, quantidade, reservas_pg_pendente, tipo_pagamento, escolha_cliente):
+        return valor_pago
+
+    def inputs_final_pagamentos(self, lista_nome_pg_pendente, total_receber, reserva_grupo, data):
 
         parcela = 0
         maquina = ''
-        valor_taxa = 0
         lista_maquinas = []
         forma_pg = ''
         input_desconto = None
         cliente_desconto = None
+        quantidade = len(lista_nome_pg_pendente)
 
-        if len(reservas_pg_pendente) == 0:
-            status = st.selectbox('Cliente vai pra onde?', ['Chegou na Loja', 'Direto pro pier'], index=None)
+        select_maquinas = self.repository_pagamento.select_maquina_cartao()
+        for resultado in select_maquinas:
+            lista_maquinas.append(resultado[0])
 
-        else:
+        if quantidade >= 1:
+            with st.form('Formulario'):
 
-            input_desconto = st.text_input('Desconto por parte da empresa')
+                st.text(f'Pagamento - {','.join(lista_nome_pg_pendente)}')
+                col1, col2 = st.columns(2)
+                with col1:
+                    input_desconto = st.text_input('Desconto por parte da empresa', value=0)
 
-            if tipo_pagamento == 'Pagamento em Grupo':
-                cliente_desconto = st.multiselect('Quem vai receber o desconto?', reservas_pg_pendente)
+                with col2:
+                    if quantidade > 1:
+                        cliente_desconto = st.multiselect('Quem vai receber o desconto?', lista_nome_pg_pendente)
 
-            elif tipo_pagamento == 'Pagamento Individual':
-                cliente_desconto = st.selectbox('Quem vai receber o desconto?', escolha_cliente, index=None)
+                    else:
+                        cliente_desconto = st.selectbox('Quem vai receber o desconto?', lista_nome_pg_pendente)
 
-            forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
-                                    index=None)
+                forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
+                                        index=None)
 
-            if forma_pg == 'Credito' or forma_pg == 'Debito':
+                colu1, colu2, colu3 = st.columns(3)
 
-                taxa_cartao = st.radio('Cobrar taxa de cartão?', options=['Sim', 'Não'], index=None)
+                with colu1:
+                    maquina = st.selectbox('Maquininha', lista_maquinas, index=None)
 
-                if taxa_cartao == 'Sim':
-                    valor_taxa = st.text_input('Qual o valor da taxa ?', value=10)
-                    total_receber = float(total_receber) + float(valor_taxa)
-                    valor_taxa = int(valor_taxa) / int(quantidade)
+                with colu2:
+                    taxa_cartao = st.text_input('Taxa cartão ?', value=0)
 
-                select_maquinas = self.repository_pagamento.select_maquina_cartao()
-                for resultado in select_maquinas:
-                    lista_maquinas.append(resultado[0])
+                    total_receber = float(total_receber) + float(taxa_cartao)
+                    taxa_cartao = int(taxa_cartao) / int(quantidade)
 
-                maquina = st.selectbox('Maquininha', lista_maquinas, index=None)
+                with colu3:
 
-            if input_desconto:
+                    parcela = st.selectbox('Numero de Parcelas', [1, 2, 3, 4, 5])
+
                 total_receber = float(total_receber) - float(input_desconto)
 
-            total_receber_formatado = format_currency(total_receber, 'BRL', locale='pt_BR')
+                total_receber_formatado = format_currency(total_receber, 'BRL', locale='pt_BR')
 
-            st.text_input('Valor Pago', value=total_receber_formatado)
+                st.text_input('Valor Pago', value=total_receber_formatado)
 
-            if forma_pg == 'Credito':
-                parcela = st.slider('Numero de Parcelas', min_value=1, max_value=6)
+                status = st.selectbox('Cliente vai pra onde?', ['Chegou na Loja', 'Direto pro pier'], index=None)
 
-            status = st.selectbox('Cliente vai pra onde?', ['Chegou na Loja', 'Direto pro pier'], index=None)
+                if st.form_submit_button('Lançar pagamento'):
 
-        return forma_pg, maquina, parcela, status, valor_taxa, input_desconto, cliente_desconto
+                    total_iteracao = len(reserva_grupo)
+                    nomes_pagamento = []
+                    valor_pago_total = 0
+                    id_conta = 1
+                    data_pagamento = datetime.today()
+                    tipo_movimento_caixa = 'ENTRADA'
+                    tipo = 'PAGAMENTO'
 
-    def formatacao_dados_pagamento(self, id_titular):
+                    for i, reserva in enumerate(reserva_grupo):
+                        st.write(lista_nome_pg_pendente)
+                        nome = str(reserva[0])
+                        st.write(nome)
 
-        select_tabela = self.reserva.obter_info_pagamento_para_tabela_pagamentos(id_titular)
+                        if nome in lista_nome_pg_pendente:
+
+                            certificacao = str(reserva[5])
+                            nome_com_tipo = f'{nome} ({certificacao})'
+
+                            nomes_pagamento.append(nome_com_tipo)
+
+                            situacao = reserva[7]
+
+                            if quantidade > 1:
+
+                                if situacao != 'Reserva Paga':
+                                    valor_pago = self.processar_pagamento_final(reserva, forma_pg, maquina, parcela,
+                                                                                status,
+                                                                                data, taxa_cartao, input_desconto,
+                                                                                cliente_desconto)
+
+                                    valor_pago_total += valor_pago
+
+                                    if i == total_iteracao - 1:
+                                        nomes = ','.join(nomes_pagamento)
+
+                                        descricao = f'{nomes} do dia {data}'
+
+                                        self.repository_pagamento.insert_caixa(id_conta, data_pagamento,
+                                                                               tipo_movimento_caixa,
+                                                                               tipo, descricao,
+                                                                               forma_pg,
+                                                                               valor_pago_total)
+                                    st.success('Pagamento do grupo registrado com sucesso!')
+
+                            else:
+                                if situacao != 'Reserva Paga':
+                                    if lista_nome_pg_pendente[0] == reserva[0]:
+                                        valor_pago = self.processar_pagamento_final(reserva, forma_pg, maquina, parcela,
+                                                                                    status,
+                                                                                    data, taxa_cartao, input_desconto,
+                                                                                    cliente_desconto)
+
+                                        descricao = f'{nome} do dia {data}'
+
+                                        self.repository_pagamento.insert_caixa(id_conta, data_pagamento,
+                                                                               tipo_movimento_caixa,
+                                                                               tipo, descricao,
+                                                                               forma_pg,
+                                                                               valor_pago)
+
+                                    st.success('Pagamento registrado com sucesso!')
+
+        return forma_pg, maquina, parcela, status, taxa_cartao, input_desconto, cliente_desconto
+
+    def formatacao_dados_pagamento(self, id_titular, data):
+
+        select_tabela = self.reserva.obter_info_pagamento_para_tabela_pagamentos(id_titular, data)
 
         df = pandas.DataFrame(select_tabela,
                               columns=['Cliente', 'Tipo', 'Vendedor', 'Valor Total', 'Receber Loja', 'Sinal ',
                                        'Pagamento', 'Situacao'])
-
-        total_receber = df['Receber Loja'].sum()
+        df_pendente = df.loc[df['Situacao'] == 'Pendente']
+        total_receber = df_pendente['Receber Loja'].sum()
         reservas_pagas = df.loc[df['Situacao'] == 'Reserva Paga', 'Cliente'].tolist()
-        reservas_pg_pendente = df.loc[df['Situacao'] == 'Pendente', 'Cliente'].tolist()
+        reservas_pg_pendente = df.loc[df['Situacao'] == 'Pendente', ['Cliente', 'Receber Loja']]
         quantidade_clientes_mesma_reserva = len(df)
+        lista_pg_pendente = reservas_pg_pendente.to_records(index=False).tolist()
+        st.write(lista_pg_pendente)
 
-        st.data_editor(df, hide_index=True, use_container_width=True)
+        st.table(df)
 
-        return total_receber, reservas_pagas, reservas_pg_pendente, quantidade_clientes_mesma_reserva
+        return total_receber, reservas_pagas, reservas_pg_pendente, quantidade_clientes_mesma_reserva, lista_pg_pendente
 
     def pagamento_individual(self, reservas_pg_pendente, reservas_pagamento):
 
@@ -243,14 +281,20 @@ class PagamentosPage:
 
         return total_receber, escolha_cliente
 
-    def logica_valor_pagar_e_receber(self, tipo, forma_pg, id_vendedor, valor_total, id_reserva, pago_loja, desconto):
+    def logica_valor_pagar_e_receber(self, tipo, forma_pg, id_vendedor, valor_total, id_reserva, pago_loja, desconto,
+                                     taxa_cartao):
 
         tipos = ['BAT', 'ACP', 'TUR1', 'TUR2']
         valor_neto = 0
 
         if id_vendedor == 12:
+            st.write(f'Valor Total : {valor_total}')
+
             comissao_vendedor = float(valor_total) * 0.01
+            st.write(f'Comissao Vendedor : {comissao_vendedor}')
+
             valor_neto = float(valor_total) - float(comissao_vendedor) - float(desconto)
+            st.write(f'Valor Neto : {valor_neto}')
 
         else:
 
@@ -261,22 +305,22 @@ class PagamentosPage:
 
                 if tipo == 'BAT':
                     if forma_pg == forma_pg == 'Credito' or forma_pg == 'Debito':
-                        valor_neto = neto_bat_cartao - float(desconto)
+                        valor_neto = int(neto_bat_cartao) - float(desconto)
                     else:
-                        valor_neto = neto_bat - float(desconto)
+                        valor_neto = int(neto_bat) - float(desconto)
 
                 elif tipo == 'ACP':
-                    valor_neto = neto_acp - float(desconto)
+                    valor_neto = int(neto_acp) - float(desconto)
 
                 elif tipo == 'TUR1':
-                    valor_neto = neto_tur1 - float(desconto)
+                    valor_neto = int(neto_tur1) - float(desconto)
 
                 elif tipo == 'TUR2':
-                    valor_neto = neto_tur2 - float(desconto)
+                    valor_neto = int(neto_tur2) - float(desconto)
 
             else:
-                comissao_curso = valor_total * 10 / 100
-                valor_neto = valor_total - comissao_curso - float(desconto)
+                comissao_curso = float(valor_total) * 10 / 100
+                valor_neto = float(valor_total) - float(comissao_curso) - float(desconto)
 
         select_valor_pago_recebedor = self.repository_pagamento.obter_valor_pago_por_idreserva(id_reserva)
 
@@ -308,7 +352,7 @@ class PagamentosPage:
         elif valor_pago_acquaworld > valor_neto:
             st.write('if 2')
             valor_receber = 0
-            valor_pagar = valor_pago_acquaworld - valor_neto
+            valor_pagar = valor_pago_acquaworld - valor_neto - taxa_cartao
 
         elif valor_pago_acquaworld == valor_neto:
             st.write('if 3')

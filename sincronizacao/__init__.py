@@ -1,0 +1,1 @@
+from .sincronizacao import Sincronizacao

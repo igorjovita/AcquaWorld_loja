@@ -4,4 +4,5 @@ from .repository_cliente import RepositoryCliente
 from .repository_controle_curso import RepositoryControleCurso
 from .repository_pagamentos import RepositoryPagamentos
 from .repository_termo import RepositoryTermo
+from .repository_audit_log import RepositoryAuditLog
 

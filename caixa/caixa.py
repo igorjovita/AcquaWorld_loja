@@ -78,10 +78,12 @@ class Caixa:
                     select_somatorio = self.repository_pagamentos.obter_somatorio_caixa(data_lancamento)
                     select_somatorio = select_somatorio[0]
                     saldo_loja = (
-                            float(select_somatorio[8]) + float(select_somatorio[10]) - (float(select_somatorio[9])))
+                            float(select_somatorio[1]) + float(select_somatorio[10]) - (float(select_somatorio[5])))
 
                     if saldo_loja == float(valor):
                         self.repository_pagamentos.insert_caixa('', data_lancamento, 'FECHAMENTO', '', '', '', valor)
+                        st.success('Fechamento do caixa realizado com sucesso, saldo correto!')
+
 
                     else:
                         st.error('O valor informado está incorreto')

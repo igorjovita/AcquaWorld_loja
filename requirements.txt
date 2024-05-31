@@ -14,3 +14,4 @@ pip>=24.0
 streamlit-authenticator
 PyYAML~=6.0.1
 openpyxl~=3.1.2
+pyinstaller~=6.7.0

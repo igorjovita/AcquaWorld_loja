@@ -75,13 +75,13 @@ class RepositoryPagamentos:
         return self.db.execute_query(query, params)
 
     def insert_pagamentos(self, data, id_reserva, recebedor, pagamento, forma_pg, parcela, id_titular, maquina,
-                          tipo_pagamento):
-        params = (data, id_reserva, id_titular, recebedor, pagamento, forma_pg, parcela, maquina, tipo_pagamento)
+                          tipo_pagamento, nome_cliente):
+        params = (data, id_reserva, id_titular, recebedor, pagamento, forma_pg, parcela, maquina, tipo_pagamento, nome_cliente)
 
         query = """
         INSERT INTO pagamentos
-        (data ,id_reserva, id_titular, recebedor, pagamento, forma_pg, parcela, maquina, tipo_pagamento) 
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+        (data ,id_reserva, id_titular, recebedor, pagamento, forma_pg, parcela, maquina, tipo_pagamento, nome_cliente) 
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
         return self.db.execute_query(query, params)
 
