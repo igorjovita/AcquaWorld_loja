@@ -82,7 +82,7 @@ class PagamentosPage:
 
         nome_cliente, id_cliente, id_reserva, receber_loja, id_vendedor, tipo, valor_total, situacao, recebedor, id_titular, total_pago, desconto = reserva
 
-        if nome_cliente in pagamento_vendedor:
+        if nome_cliente in [pagamento_vendedor]:
             pagamento = pagamento_vendedor[0][1]
             self.repository_pagamento.insert_pagamentos(data, id_reserva, id_titular, recebedor, pagamento,
                                                         forma_pg, parcela, maquina, 'Pix', nome_cliente)
@@ -263,6 +263,8 @@ class PagamentosPage:
                                                                                valor_pago)
 
                                     st.success('Pagamento registrado com sucesso!')
+
+                    st.session_state.id_titular = None
 
         return forma_pg, maquina, parcela, status, taxa_cartao, input_desconto, cliente_desconto
 
