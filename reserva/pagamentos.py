@@ -78,9 +78,14 @@ class PagamentosPage:
                     st.write(cliente_desconto)
 
     def processar_pagamento_final(self, reserva, forma_pg, maquina, parcela, status, data, taxa_cartao, input_desconto,
-                                  cliente_desconto):
+                                  cliente_desconto, pagamento_vendedor):
 
         nome_cliente, id_cliente, id_reserva, receber_loja, id_vendedor, tipo, valor_total, situacao, recebedor, id_titular, total_pago, desconto = reserva
+
+        if nome_cliente in pagamento_vendedor:
+            pagamento = pagamento_vendedor[0][1]
+            self.repository_pagamento.insert_pagamentos(data, id_reserva, id_titular, recebedor, pagamento,
+                                                        forma_pg, parcela, maquina, 'Pix', nome_cliente)
 
         desconto = float(desconto)
         valor_pago = float(receber_loja) + int(taxa_cartao) - float(desconto)
@@ -113,7 +118,6 @@ class PagamentosPage:
             self.reserva.update_situacao_reserva(int(id_reserva) + 1)
 
         if float(valor_pago) != 0.00:
-
             self.repository_pagamento.insert_pagamentos(data, id_reserva, 'AcquaWorld', valor_pago, forma_pg, parcela,
                                                         id_titular, maquina, 'Pagamento', nome_cliente)
 
@@ -178,7 +182,8 @@ class PagamentosPage:
                     pago_vendedor = st.text_input('Pagamento vendedor')
 
                 with coluna2:
-                    cliente_pagamento_vendedor = st.multiselect('Escolha o cliente para lançar o pagamento', lista_nome_pg_pendente)
+                    cliente_pagamento_vendedor = st.multiselect('Escolha o cliente para lançar o pagamento',
+                                                                lista_nome_pg_pendente)
 
                 total_receber = float(total_receber) - float(input_desconto)
 
@@ -189,6 +194,12 @@ class PagamentosPage:
                 status = st.selectbox('Cliente vai pra onde?', ['Chegou na Loja', 'Direto pro pier'], index=None)
 
                 if st.form_submit_button('Lançar pagamento'):
+                    pagamento_vendedor = []
+                    if cliente_pagamento_vendedor:
+                        valor_por_cliente = float(pago_vendedor) / len(cliente_pagamento_vendedor)
+
+                        for cliente in cliente_pagamento_vendedor:
+                            pagamento_vendedor.append((cliente, valor_por_cliente))
 
                     total_iteracao = len(reserva_grupo)
                     nomes_pagamento = []
@@ -218,7 +229,7 @@ class PagamentosPage:
                                     valor_pago = self.processar_pagamento_final(reserva, forma_pg, maquina, parcela,
                                                                                 status,
                                                                                 data, taxa_cartao, input_desconto,
-                                                                                cliente_desconto)
+                                                                                cliente_desconto, pagamento_vendedor)
 
                                     valor_pago_total += valor_pago
 
@@ -240,7 +251,8 @@ class PagamentosPage:
                                         valor_pago = self.processar_pagamento_final(reserva, forma_pg, maquina, parcela,
                                                                                     status,
                                                                                     data, taxa_cartao, input_desconto,
-                                                                                    cliente_desconto)
+                                                                                    cliente_desconto,
+                                                                                    pagamento_vendedor)
 
                                         descricao = f'{nome} do dia {data}'
 
