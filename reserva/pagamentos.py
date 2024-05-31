@@ -153,6 +153,8 @@ class PagamentosPage:
                 forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
                                         index=None)
 
+                st.text('Caso o pagamento seja no cartão')
+
                 colu1, colu2, colu3 = st.columns(3)
 
                 with colu1:
@@ -167,6 +169,16 @@ class PagamentosPage:
                 with colu3:
 
                     parcela = st.selectbox('Numero de Parcelas', [1, 2, 3, 4, 5])
+
+                st.text('Lançar pagamento vendedor')
+
+                coluna1, coluna2 = st.columns(2)
+
+                with coluna1:
+                    pago_vendedor = st.text_input('Pagamento vendedor')
+
+                with coluna2:
+                    cliente_pagamento_vendedor = st.multiselect('Escolha o cliente para lançar o pagamento', lista_nome_pg_pendente)
 
                 total_receber = float(total_receber) - float(input_desconto)
 

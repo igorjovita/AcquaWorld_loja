@@ -1,4 +1,5 @@
 import datetime
+import time
 
 import streamlit as st
 from babel.numbers import format_currency
@@ -285,6 +286,8 @@ class Reserva:
         st.success(f'{nome_cliente} reservado com sucesso!')
 
         st.session_state.tela_reserva = False
+        time.sleep(0.5)
+        st.rerun()
 
     def mensagem_formatada(self, info):
 
