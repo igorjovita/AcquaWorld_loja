@@ -86,12 +86,12 @@ class PagamentosPage:
             st.write(f'Pagamento {pagamento}')
             st.write(f'Nome {nome_cliente}')
             if nome_cliente == pagamento[0]:
-
                 st.write(f'Pagamento_vendedor {pagamento_vendedor}')
 
                 pagamento = pagamento_vendedor[0][1]
-                self.repository_pagamento.insert_pagamentos(data, id_reserva, id_titular, recebedor, pagamento,
-                                                        forma_pg, parcela, maquina, 'Pix', nome_cliente)
+                st.write(f'Pagamento {pagamento}')
+                self.repository_pagamento.insert_pagamentos(data, id_reserva, recebedor, pagamento,
+                                                            'Pix', parcela, id_titular, maquina, 'Sinal', nome_cliente)
 
         desconto = float(desconto)
         valor_pago = float(receber_loja) + int(taxa_cartao) - float(desconto)
