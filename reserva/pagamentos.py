@@ -81,8 +81,10 @@ class PagamentosPage:
                                   cliente_desconto, pagamento_vendedor):
 
         nome_cliente, id_cliente, id_reserva, receber_loja, id_vendedor, tipo, valor_total, situacao, recebedor, id_titular, total_pago, desconto = reserva
-
+        st.write(f'Pagamento_vendedor {pagamento_vendedor}')
         if nome_cliente in [pagamento_vendedor]:
+            st.write(f'Pagamento_vendedor {pagamento_vendedor}')
+
             pagamento = pagamento_vendedor[0][1]
             self.repository_pagamento.insert_pagamentos(data, id_reserva, id_titular, recebedor, pagamento,
                                                         forma_pg, parcela, maquina, 'Pix', nome_cliente)
