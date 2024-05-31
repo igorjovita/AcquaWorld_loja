@@ -137,8 +137,8 @@ class PagamentosPage:
 
         if quantidade >= 1:
             with st.form('Formulario'):
-
-                st.text(f'Pagamento - {','.join(lista_nome_pg_pendente)}')
+                lista_pendentes = ','.join(lista_nome_pg_pendente)
+                st.text(f'Pagamento - {lista_pendentes}')
                 col1, col2 = st.columns(2)
                 with col1:
                     input_desconto = st.text_input('Desconto por parte da empresa', value=0)
