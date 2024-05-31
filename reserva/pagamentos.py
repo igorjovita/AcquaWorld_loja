@@ -90,7 +90,7 @@ class PagamentosPage:
 
                 pagamento = pagamento_vendedor[0][1]
                 st.write(f'Pagamento {pagamento}')
-                self.repository_pagamento.insert_pagamentos(data, id_reserva, recebedor, pagamento,
+                self.repository_pagamento.insert_pagamentos(data, id_reserva, 'Vendedor', pagamento,
                                                             'Pix', parcela, id_titular, maquina, 'Sinal', nome_cliente)
 
         desconto = float(desconto)
