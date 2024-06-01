@@ -75,26 +75,32 @@ class PagamentosPage:
                 if lista_nome_pg_pendente:
                     forma_pg, maquina, parcela, status, taxa_cartao, input_desconto, cliente_desconto = self.inputs_final_pagamentos(
                         lista_nome_pg_pendente, total_receber, reserva_grupo, data)
-                    st.write(cliente_desconto)
 
     def processar_pagamento_final(self, reserva, forma_pg, maquina, parcela, status, data, taxa_cartao, input_desconto,
                                   cliente_desconto, pagamento_vendedor):
 
         nome_cliente, id_cliente, id_reserva, receber_loja, id_vendedor, tipo, valor_total, situacao, recebedor, id_titular, total_pago, desconto = reserva
+
         st.write(f'Pagamento_vendedor {pagamento_vendedor}')
+
         for pagamento in pagamento_vendedor:
             st.write(f'Pagamento {pagamento}')
             st.write(f'Nome {nome_cliente}')
+
             if nome_cliente == pagamento[0]:
                 st.write(f'Pagamento_vendedor {pagamento_vendedor}')
 
-                pagamento = pagamento_vendedor[0][1]
+                pagamento_vendedor = pagamento_vendedor[0][1]
                 st.write(f'Pagamento {pagamento}')
                 self.repository_pagamento.insert_pagamentos(data, id_reserva, 'Vendedor', pagamento,
                                                             'Pix', parcela, id_titular, maquina, 'Sinal', nome_cliente)
 
         desconto = float(desconto)
-        valor_pago = float(receber_loja) + int(taxa_cartao) - float(desconto)
+        st.write(f'Pagamento Vendedor valor_pago {pagamento_vendedor}')
+        st.write(f'Receber loja valor_pago {receber_loja}')
+        st.write(f'Taxax cartao valor_pago {taxa_cartao}')
+        st.write(f'Desconto valor_pago {desconto}')
+        valor_pago = float(receber_loja) + int(taxa_cartao) - float(desconto) - float(pagamento_vendedor)
 
         if input_desconto:
 
@@ -216,9 +222,8 @@ class PagamentosPage:
                     tipo = 'PAGAMENTO'
 
                     for i, reserva in enumerate(reserva_grupo):
-                        st.write(lista_nome_pg_pendente)
+
                         nome = str(reserva[0])
-                        st.write(nome)
 
                         if nome in lista_nome_pg_pendente:
 
@@ -287,7 +292,6 @@ class PagamentosPage:
         reservas_pg_pendente = df.loc[df['Situacao'] == 'Pendente', ['Cliente', 'Receber Loja']]
         quantidade_clientes_mesma_reserva = len(df)
         lista_pg_pendente = reservas_pg_pendente.to_records(index=False).tolist()
-        st.write(lista_pg_pendente)
 
         st.table(df)
 
