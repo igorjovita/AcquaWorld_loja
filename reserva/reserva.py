@@ -200,6 +200,7 @@ class Reserva:
                     observacao = st.session_state[f'observacao {i}']
                     desconto = st.session_state[f'desconto {i}']
                     vaga_separada = st.session_state[f'vaga {i}']
+                    data_pratica2 = st.session_state[f'data {i}']
                     soma_valor_total += int(valor_total)
                     soma_receber_loja += int(receber_loja)
                     if sinal != '':
