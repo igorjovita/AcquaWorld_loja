@@ -5,7 +5,7 @@ credentials:
       logged_in: False # Will be managed automatically
       name: Igor Jovita
       password: divoom123 # Will be hashed automatically
-    jadelimaverde:
+    jade:
       email: jadelimaverde@gmail.com
       logged_in: False # Will be managed automatically
       name: Jade
