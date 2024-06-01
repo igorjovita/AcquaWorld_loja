@@ -91,7 +91,7 @@ class PagamentosPage:
                 st.write(f'Pagamento_vendedor {pagamento_vendedor}')
 
                 pagamento_vendedor = pagamento_vendedor[0][1]
-                st.write(f'Pagamento {pagamento}')
+                st.write(f'Pagamento {pagamento_vendedor}')
                 self.repository_pagamento.insert_pagamentos(data, id_reserva, 'Vendedor', pagamento,
                                                             'Pix', parcela, id_titular, maquina, 'Sinal', nome_cliente)
 
