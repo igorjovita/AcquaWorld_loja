@@ -89,9 +89,7 @@ class Reserva:
                 if 'id_titular' not in st.session_state:
                     st.session_state.id_titular = None
 
-                st.write(f'Nome Titular {nome_titular}')
                 if nome_titular is not None:
-                    st.write('oi')
                     index_lista_titular = lista_titulares.index(nome_titular)
                     id_titular = select_id_nome_titular[index_lista_titular][1]
                     st.session_state.id_titular = id_titular
@@ -233,8 +231,6 @@ class Reserva:
 
         id_cliente = self.repository_cliente.insert_cliente(nome_cliente, cpf, telefone, roupa)
 
-        st.write(f'Id Titular {st.session_state.id_titular}')
-
         if st.session_state.id_titular is None:
             if iteracao == 0:
                 st.session_state.id_titular = id_cliente
@@ -285,6 +281,7 @@ class Reserva:
 
         st.success(f'{nome_cliente} reservado com sucesso!')
 
+        st.session_state.id_titular = None
         st.session_state.tela_reserva = False
         time.sleep(0.5)
         st.rerun()

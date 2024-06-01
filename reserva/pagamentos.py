@@ -77,7 +77,7 @@ class PagamentosPage:
                         lista_nome_pg_pendente, total_receber, reserva_grupo, data)
 
     def processar_pagamento_final(self, reserva, forma_pg, maquina, parcela, status, data, taxa_cartao, input_desconto,
-                                  cliente_desconto, pagamento_vendedor):
+                                  cliente_desconto, pagamento_vendedor, pago_na_loja):
 
         nome_cliente, id_cliente, id_reserva, receber_loja, id_vendedor, tipo, valor_total, situacao, recebedor, id_titular, total_pago, desconto = reserva
 
@@ -90,7 +90,7 @@ class PagamentosPage:
 
         desconto = float(desconto)
 
-        valor_pago = float(receber_loja) + int(taxa_cartao) - float(desconto) - float(pagamento_vendedor)
+        valor_pago = float(pago_na_loja) + int(taxa_cartao) - float(desconto)
 
         if input_desconto:
 
@@ -111,7 +111,7 @@ class PagamentosPage:
             tipo, forma_pg, id_vendedor,
             valor_total, id_reserva, valor_pago,
             desconto, taxa_cartao)
-        
+
         st.write(f'Cliente - {nome_cliente}')
         st.write(f'Pago Acqua : {valor_pago_acquaworld}')
         st.write(f'Pago Vendedor : {valor_pago_vendedor}')
@@ -184,15 +184,15 @@ class PagamentosPage:
                 coluna1, coluna2 = st.columns(2)
 
                 with coluna1:
-                    pago_vendedor = st.text_input('Pagamento vendedor')
+                    pago_vendedor = st.text_input('Pagamento vendedor', value=0)
 
                 with coluna2:
                     cliente_pagamento_vendedor = st.multiselect('Escolha o cliente para lançar o pagamento',
                                                                 lista_nome_pg_pendente)
 
-                total_receber = float(total_receber) - float(input_desconto)
+                pago_na_loja = float(total_receber) - float(input_desconto) - float(pago_vendedor)
 
-                total_receber_formatado = format_currency(total_receber, 'BRL', locale='pt_BR')
+                total_receber_formatado = format_currency(pago_na_loja, 'BRL', locale='pt_BR')
 
                 st.text_input('Valor Pago', value=total_receber_formatado)
 
@@ -233,7 +233,7 @@ class PagamentosPage:
                                     valor_pago = self.processar_pagamento_final(reserva, forma_pg, maquina, parcela,
                                                                                 status,
                                                                                 data, taxa_cartao, input_desconto,
-                                                                                cliente_desconto, pagamento_vendedor)
+                                                                                cliente_desconto, pagamento_vendedor, pago_na_loja)
 
                                     valor_pago_total += valor_pago
 
@@ -256,7 +256,7 @@ class PagamentosPage:
                                                                                     status,
                                                                                     data, taxa_cartao, input_desconto,
                                                                                     cliente_desconto,
-                                                                                    pagamento_vendedor)
+                                                                                    pagamento_vendedor, pago_na_loja)
 
                                         descricao = f'{nome} do dia {data}'
 
@@ -268,7 +268,7 @@ class PagamentosPage:
 
                                     st.success('Pagamento registrado com sucesso!')
 
-                    st.session_state.id_titular = None
+
 
         return forma_pg, maquina, parcela, status, taxa_cartao, input_desconto, cliente_desconto
 
