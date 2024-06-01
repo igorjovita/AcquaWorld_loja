@@ -92,7 +92,7 @@ class PagamentosPage:
 
                 pagamento_vendedor = pagamento_vendedor[0][1]
                 st.write(f'Pagamento {pagamento_vendedor}')
-                self.repository_pagamento.insert_pagamentos(data, id_reserva, 'Vendedor', pagamento,
+                self.repository_pagamento.insert_pagamentos(data, id_reserva, 'Vendedor', pagamento_vendedor,
                                                             'Pix', parcela, id_titular, maquina, 'Sinal', nome_cliente)
 
         desconto = float(desconto)
@@ -154,7 +154,7 @@ class PagamentosPage:
         if quantidade >= 1:
             with st.form('Formulario'):
                 lista_pendentes = ','.join(lista_nome_pg_pendente)
-                st.text(f'Pagamento - {lista_pendentes}')
+                st.subheader(f'Pagamento - {lista_pendentes}')
                 col1, col2 = st.columns(2)
                 with col1:
                     input_desconto = st.text_input('Desconto por parte da empresa', value=0)
@@ -168,8 +168,6 @@ class PagamentosPage:
 
                 forma_pg = st.selectbox('Forma de pagamento', ['Dinheiro', 'Pix', 'Debito', 'Credito'],
                                         index=None)
-
-                st.text('Caso o pagamento seja no cartão')
 
                 colu1, colu2, colu3 = st.columns(3)
 
@@ -185,8 +183,6 @@ class PagamentosPage:
                 with colu3:
 
                     parcela = st.selectbox('Numero de Parcelas', [1, 2, 3, 4, 5])
-
-                st.text('Lançar pagamento vendedor')
 
                 coluna1, coluna2 = st.columns(2)
 
