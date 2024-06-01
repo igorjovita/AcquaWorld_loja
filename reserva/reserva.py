@@ -222,6 +222,11 @@ class Reserva:
                 st.session_state.info_mensagem.append(
                     (nome_titular, nomes_dependentes, soma_valor_total, soma_sinal, soma_receber_loja, data))
 
+                st.session_state.id_titular = None
+                st.session_state.tela_reserva = False
+                time.sleep(0.5)
+                st.rerun()
+
     def reservar(self, data, nome_cliente, tipo, cpf, telefone, roupa, valor_total, sinal,
                  recebedor_sinal, receber_loja, data_pratica2, iteracao, observacao, desconto,
                  vaga_separada):
@@ -282,10 +287,6 @@ class Reserva:
 
         st.success(f'{nome_cliente} reservado com sucesso!')
 
-        st.session_state.id_titular = None
-        st.session_state.tela_reserva = False
-        time.sleep(0.5)
-        st.rerun()
 
     def mensagem_formatada(self, info):
 
