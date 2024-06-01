@@ -74,10 +74,10 @@ class PagamentosPage:
 
                 if lista_nome_pg_pendente:
                     forma_pg, maquina, parcela, status, taxa_cartao, input_desconto, cliente_desconto = self.inputs_final_pagamentos(
-                        lista_nome_pg_pendente, total_receber, reserva_grupo, data)
+                        lista_nome_pg_pendente, total_receber, reserva_grupo, data, lista_pg_pendente)
 
     def processar_pagamento_final(self, reserva, forma_pg, maquina, parcela, status, data, taxa_cartao, input_desconto,
-                                  cliente_desconto, pagamento_vendedor, pago_na_loja):
+                                  cliente_desconto, pagamento_vendedor, pago_na_loja, lista_pg_pendente):
 
         nome_cliente, id_cliente, id_reserva, receber_loja, id_vendedor, tipo, valor_total, situacao, recebedor, id_titular, total_pago, desconto = reserva
 
@@ -90,7 +90,7 @@ class PagamentosPage:
 
         desconto = float(desconto)
 
-        valor_pago = float(pago_na_loja) + int(taxa_cartao) - float(desconto)
+        valor_pago = float(receber_loja) + int(taxa_cartao) - float(desconto)
 
         if input_desconto:
 
@@ -134,7 +134,7 @@ class PagamentosPage:
 
         return valor_pago
 
-    def inputs_final_pagamentos(self, lista_nome_pg_pendente, total_receber, reserva_grupo, data):
+    def inputs_final_pagamentos(self, lista_nome_pg_pendente, total_receber, reserva_grupo, data, lista_pg_pendente):
 
         parcela = 0
         maquina = ''
@@ -233,7 +233,8 @@ class PagamentosPage:
                                     valor_pago = self.processar_pagamento_final(reserva, forma_pg, maquina, parcela,
                                                                                 status,
                                                                                 data, taxa_cartao, input_desconto,
-                                                                                cliente_desconto, pagamento_vendedor, pago_na_loja)
+                                                                                cliente_desconto, pagamento_vendedor,
+                                                                                pago_na_loja, lista_pg_pendente)
 
                                     valor_pago_total += valor_pago
 
@@ -256,7 +257,7 @@ class PagamentosPage:
                                                                                     status,
                                                                                     data, taxa_cartao, input_desconto,
                                                                                     cliente_desconto,
-                                                                                    pagamento_vendedor, pago_na_loja)
+                                                                                    pagamento_vendedor, pago_na_loja, lista_pg_pendente)
 
                                         descricao = f'{nome} do dia {data}'
 
@@ -267,8 +268,6 @@ class PagamentosPage:
                                                                                valor_pago)
 
                                     st.success('Pagamento registrado com sucesso!')
-
-
 
         return forma_pg, maquina, parcela, status, taxa_cartao, input_desconto, cliente_desconto
 
