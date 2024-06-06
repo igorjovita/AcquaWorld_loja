@@ -81,16 +81,18 @@ class PagamentosPage:
 
         nome_cliente, id_cliente, id_reserva, receber_loja, id_vendedor, tipo, valor_total, situacao, recebedor, id_titular, total_pago, desconto = reserva
 
+        pago_vendedor = 0
         for pagamento in pagamento_vendedor:
 
             if nome_cliente == pagamento[0]:
                 pagamento_vendedor = pagamento_vendedor[0][1]
+                pago_vendedor += pagamento_vendedor
                 self.repository_pagamento.insert_pagamentos(data, id_reserva, 'Vendedor', pagamento_vendedor,
                                                             'Pix', parcela, id_titular, maquina, 'Sinal', nome_cliente)
 
         desconto = float(desconto)
 
-        valor_pago = float(receber_loja) + int(taxa_cartao) - float(desconto)
+        valor_pago = float(receber_loja) + int(taxa_cartao) - float(desconto) -  float(pago_vendedor)
 
         if input_desconto:
 
@@ -349,7 +351,7 @@ class PagamentosPage:
         select_valor_pago_recebedor = self.repository_pagamento.obter_valor_pago_por_idreserva(id_reserva)
 
         valor_pago_vendedor = 0
-        valor_pago_acquaworld = float(pago_loja)
+        valor_pago_acquaworld = float(pago_loja) - float()
 
         for resultado in select_valor_pago_recebedor:
             if resultado[0] == 'AcquaWorld':
