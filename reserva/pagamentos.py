@@ -92,7 +92,7 @@ class PagamentosPage:
 
         desconto = float(desconto)
 
-        valor_pago = float(receber_loja) + int(taxa_cartao) - float(desconto) -  float(pago_vendedor)
+        valor_pago = float(receber_loja) + int(taxa_cartao) - float(desconto) - float(pago_vendedor)
 
         if input_desconto:
 
@@ -183,14 +183,8 @@ class PagamentosPage:
 
                     parcela = st.selectbox('Numero de Parcelas', [1, 2, 3, 4, 5])
 
-                coluna1, coluna2 = st.columns(2)
-
-                with coluna1:
-                    pago_vendedor = st.text_input('Pagamento vendedor', value=0)
-
-                with coluna2:
-                    cliente_pagamento_vendedor = st.multiselect('Escolha o cliente para lançar o pagamento',
-                                                                lista_nome_pg_pendente)
+                for nome in lista_nome_pg_pendente:
+                    pago_vendedor = st.text_input(f'Pago vendedor cliente {nome}', value=0, key=nome)
 
                 pago_na_loja = float(total_receber) - float(input_desconto) - float(pago_vendedor)
 
@@ -202,11 +196,11 @@ class PagamentosPage:
 
                 if st.form_submit_button('Lançar pagamento'):
                     pagamento_vendedor = []
-                    if cliente_pagamento_vendedor:
-                        valor_por_cliente = float(pago_vendedor) / len(cliente_pagamento_vendedor)
 
-                        for cliente in cliente_pagamento_vendedor:
-                            pagamento_vendedor.append((cliente, valor_por_cliente))
+                    for nome in lista_nome_pg_pendente:
+
+                        if st.session_state[nome] != 0:
+                            pagamento_vendedor.append((nome, st.session_state[nome]))
 
                     total_iteracao = len(reserva_grupo)
                     nomes_pagamento = []
@@ -259,7 +253,8 @@ class PagamentosPage:
                                                                                     status,
                                                                                     data, taxa_cartao, input_desconto,
                                                                                     cliente_desconto,
-                                                                                    pagamento_vendedor, pago_na_loja, lista_pg_pendente)
+                                                                                    pagamento_vendedor, pago_na_loja,
+                                                                                    lista_pg_pendente)
 
                                         descricao = f'{nome} do dia {data}'
 
