@@ -84,59 +84,59 @@ class PagamentosPage:
         pago_vendedor = 0
         st.write(pagamento_vendedor)
 
-        # for pagamento in pagamento_vendedor:
-        #
-        #     if nome_cliente == pagamento[0]:
-        #         pagamento_vendedor = pagamento_vendedor[0][1]
-        #         pago_vendedor += float(pagamento_vendedor)
-        #         self.repository_pagamento.insert_pagamentos(data, id_reserva, 'Vendedor', pagamento_vendedor,
-        #                                                     'Pix', parcela, id_titular, maquina, 'Sinal', nome_cliente)
-        #
-        # desconto = float(desconto)
-        #
-        # valor_pago = float(receber_loja) + int(taxa_cartao) - float(desconto) - float(pago_vendedor)
-        #
-        # if input_desconto:
-        #
-        #     if len(cliente_desconto) > 1:
-        #         for cliente in cliente_desconto:
-        #             if cliente == nome_cliente:
-        #                 desconto += float(input_desconto)
-        #                 valor_pago -= float(input_desconto)
-        #                 self.reserva.update_desconto_reserva(float(input_desconto) / len(cliente_desconto), id_reserva)
-        #
-        #     elif len(cliente_desconto) == 1:
-        #         if cliente_desconto[0] == nome_cliente:
-        #             desconto += float(input_desconto)
-        #             valor_pago -= float(input_desconto)
-        #             self.reserva.update_desconto_reserva(float(input_desconto), id_reserva)
-        #
-        # valor_pagar, valor_receber, situacao, valor_pago_acquaworld, valor_pago_vendedor = self.logica_valor_pagar_e_receber(
-        #     tipo, forma_pg, id_vendedor,
-        #     valor_total, id_reserva, valor_pago,
-        #     desconto, taxa_cartao)
-        #
-        # st.write(f'Cliente - {nome_cliente}')
-        # st.write(f'Pago Acqua : {valor_pago_acquaworld}')
-        # st.write(f'Pago Vendedor : {valor_pago_vendedor}')
-        # st.write(f'Valor a pagar : {valor_pagar}')
-        # st.write(f'Valor Receber : {valor_receber}')
-        # st.write(f'Situação : {situacao}')
-        #
-        # if float(valor_pagar) != 0.00 or float(valor_receber) != 0.00:
-        #     self.repository_vendedor.insert_lancamento_comissao(id_reserva, id_vendedor, valor_receber, valor_pagar,
-        #                                                         id_titular, situacao)
-        #
-        # if tipo == 'OWD' or tipo == 'ADV':
-        #     self.reserva.update_situacao_reserva(int(id_reserva) + 1)
-        #
-        # if float(valor_pago) != 0.00:
-        #     self.repository_pagamento.insert_pagamentos(data, id_reserva, 'AcquaWorld', valor_pago, forma_pg, parcela,
-        #                                                 id_titular, maquina, 'Pagamento', nome_cliente)
-        #
-        # self.reserva.update_cor_fundo_reserva(status, nome_cliente, data)
-        #
-        # return valor_pago
+        for pagamento in pagamento_vendedor:
+
+            if nome_cliente == pagamento[0]:
+                pagamento_vendedor = pagamento_vendedor[1]
+                pago_vendedor += float(pagamento_vendedor)
+                self.repository_pagamento.insert_pagamentos(data, id_reserva, 'Vendedor', pagamento_vendedor,
+                                                            'Pix', parcela, id_titular, maquina, 'Sinal', nome_cliente)
+
+        desconto = float(desconto)
+
+        valor_pago = float(receber_loja) + int(taxa_cartao) - float(desconto) - float(pago_vendedor)
+
+        if input_desconto:
+
+            if len(cliente_desconto) > 1:
+                for cliente in cliente_desconto:
+                    if cliente == nome_cliente:
+                        desconto += float(input_desconto)
+                        valor_pago -= float(input_desconto)
+                        self.reserva.update_desconto_reserva(float(input_desconto) / len(cliente_desconto), id_reserva)
+
+            elif len(cliente_desconto) == 1:
+                if cliente_desconto[0] == nome_cliente:
+                    desconto += float(input_desconto)
+                    valor_pago -= float(input_desconto)
+                    self.reserva.update_desconto_reserva(float(input_desconto), id_reserva)
+
+        valor_pagar, valor_receber, situacao, valor_pago_acquaworld, valor_pago_vendedor = self.logica_valor_pagar_e_receber(
+            tipo, forma_pg, id_vendedor,
+            valor_total, id_reserva, valor_pago,
+            desconto, taxa_cartao)
+
+        st.write(f'Cliente - {nome_cliente}')
+        st.write(f'Pago Acqua : {valor_pago_acquaworld}')
+        st.write(f'Pago Vendedor : {valor_pago_vendedor}')
+        st.write(f'Valor a pagar : {valor_pagar}')
+        st.write(f'Valor Receber : {valor_receber}')
+        st.write(f'Situação : {situacao}')
+
+        if float(valor_pagar) != 0.00 or float(valor_receber) != 0.00:
+            self.repository_vendedor.insert_lancamento_comissao(id_reserva, id_vendedor, valor_receber, valor_pagar,
+                                                                id_titular, situacao)
+
+        if tipo == 'OWD' or tipo == 'ADV':
+            self.reserva.update_situacao_reserva(int(id_reserva) + 1)
+
+        if float(valor_pago) != 0.00:
+            self.repository_pagamento.insert_pagamentos(data, id_reserva, 'AcquaWorld', valor_pago, forma_pg, parcela,
+                                                        id_titular, maquina, 'Pagamento', nome_cliente)
+
+        self.reserva.update_cor_fundo_reserva(status, nome_cliente, data)
+
+        return valor_pago
 
     def inputs_final_pagamentos(self, lista_nome_pg_pendente, total_receber, reserva_grupo, data, lista_pg_pendente):
 
