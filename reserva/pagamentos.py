@@ -89,7 +89,7 @@ class PagamentosPage:
             if nome_cliente == pagamento[0]:
                 valor_pago_vendedor = pagamento[1]
                 pago_vendedor += float(valor_pago_vendedor)
-                self.repository_pagamento.insert_pagamentos(data, id_reserva, 'Vendedor', pagamento_vendedor,
+                self.repository_pagamento.insert_pagamentos(data, id_reserva, 'Vendedor', valor_pago_vendedor,
                                                             'Pix', parcela, id_titular, maquina, 'Sinal', nome_cliente)
 
         desconto = float(desconto)
