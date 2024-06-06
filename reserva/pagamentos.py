@@ -87,8 +87,8 @@ class PagamentosPage:
         for pagamento in pagamento_vendedor:
 
             if nome_cliente == pagamento[0]:
-                pagamento_vendedor = pagamento_vendedor[1]
-                pago_vendedor += float(pagamento_vendedor)
+                valor_pago_vendedor = pagamento[1]
+                pago_vendedor += float(valor_pago_vendedor)
                 self.repository_pagamento.insert_pagamentos(data, id_reserva, 'Vendedor', pagamento_vendedor,
                                                             'Pix', parcela, id_titular, maquina, 'Sinal', nome_cliente)
 
