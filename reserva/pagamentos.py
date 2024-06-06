@@ -180,7 +180,6 @@ class PagamentosPage:
                     taxa_cartao = int(taxa_cartao) / int(quantidade)
 
                 with colu3:
-
                     parcela = st.selectbox('Numero de Parcelas', [1, 2, 3, 4, 5])
 
                 for nome in lista_nome_pg_pendente:
