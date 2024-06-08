@@ -49,7 +49,7 @@ class PagamentosPage:
             reserva_grupo = self.reserva.obter_info_reserva_pagamentos_por_id(id_titular,
                                                                               data)  # Consulta Tabela Pagamentos
 
-            reservas_pagas, quantidade_clientes, lista_pg_pendente = self.formatacao_dados_pagamento(
+            reservas_pagas, quantidade_clientes, lista_pg_pendente, reservas_pendentes_nomes = self.formatacao_dados_pagamento(
                 id_titular, data)
 
             # Verificação se todos os clientes já pagaram
@@ -58,12 +58,9 @@ class PagamentosPage:
                 st.success('Todos os clientes efetuaram o pagamento')
 
             else:
-                nome_pagamento_pendente = []
-                for cliente in lista_pg_pendente:
-                    nome_pagamento_pendente.append(cliente[0])
 
                 lista_nome_pg_pendente = st.multiselect('Escolha os clientes para lançar o pagamento',
-                                                        nome_pagamento_pendente)
+                                                        reservas_pendentes_nomes)
                 total_receber = 0
 
                 for resultado in lista_pg_pendente:
@@ -282,11 +279,10 @@ class PagamentosPage:
         reservas_pg_pendente = df.loc[df['Situacao'] == 'Pendente', ['Cliente', 'Receber Loja']]
         quantidade_clientes_mesma_reserva = len(df)
         lista_pg_pendente = reservas_pg_pendente.to_records(index=False).tolist()
-        st.write(reservas_pendentes_nomes)
-        st.write(lista_pg_pendente)
+
         st.table(df)
 
-        return reservas_pagas, quantidade_clientes_mesma_reserva, lista_pg_pendente
+        return reservas_pagas, quantidade_clientes_mesma_reserva, lista_pg_pendente, reservas_pendentes_nomes
 
     def logica_valor_pagar_e_receber(self, tipo, forma_pg, id_vendedor, valor_total, id_reserva, pago_loja, desconto,
                                      taxa_cartao):
