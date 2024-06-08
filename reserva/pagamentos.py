@@ -279,33 +279,16 @@ class PagamentosPage:
         df_pendente = df.loc[df['Situacao'] == 'Pendente']
         total_receber = df_pendente['Receber Loja'].sum()
         reservas_pagas = df.loc[df['Situacao'] == 'Reserva Paga', 'Cliente'].tolist()
+        reservas_pendentes_nomes = df.loc[df['Situacao'] == 'Pendente', 'Cliente'].tolist()
         reservas_pg_pendente = df.loc[df['Situacao'] == 'Pendente', ['Cliente', 'Receber Loja']]
         quantidade_clientes_mesma_reserva = len(df)
         lista_pg_pendente = reservas_pg_pendente.to_records(index=False).tolist()
-
+        st.write(reservas_pendentes_nomes)
+        st.write(reservas_pg_pendente)
+        st.write(lista_pg_pendente)
         st.table(df)
 
         return total_receber, reservas_pagas, reservas_pg_pendente, quantidade_clientes_mesma_reserva, lista_pg_pendente
-
-    def pagamento_individual(self, reservas_pg_pendente, reservas_pagamento):
-
-        total_receber = 0
-        if len(reservas_pagamento) > 1:
-            escolha_cliente = st.selectbox('Escolha o cliente', reservas_pg_pendente)
-
-            for reserva in reservas_pagamento:
-                nome_cliente = reserva[0]
-                receber_loja = reserva[3]
-
-                if nome_cliente == escolha_cliente:
-                    total_receber = float(receber_loja)
-                    break
-
-        else:
-            escolha_cliente = reservas_pagamento[0][0]
-            total_receber = float(reservas_pagamento[0][3])
-
-        return total_receber, escolha_cliente
 
     def logica_valor_pagar_e_receber(self, tipo, forma_pg, id_vendedor, valor_total, id_reserva, pago_loja, desconto,
                                      taxa_cartao):
