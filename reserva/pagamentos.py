@@ -49,7 +49,7 @@ class PagamentosPage:
             reserva_grupo = self.reserva.obter_info_reserva_pagamentos_por_id(id_titular,
                                                                               data)  # Consulta Tabela Pagamentos
 
-            total_receber, reservas_pagas, quantidade_clientes, lista_pg_pendente = self.formatacao_dados_pagamento(
+            reservas_pagas, quantidade_clientes, lista_pg_pendente = self.formatacao_dados_pagamento(
                 id_titular, data)
 
             # Verificação se todos os clientes já pagaram
@@ -279,15 +279,14 @@ class PagamentosPage:
 
         reservas_pagas = df.loc[df['Situacao'] == 'Reserva Paga', 'Cliente'].tolist()
         reservas_pendentes_nomes = df.loc[df['Situacao'] == 'Pendente', 'Cliente'].tolist()
-        reservas_pg_pendente = df.loc[df['Situacao'] == 'Pendente', ['Cliente', 'Receber Loja']].tolist()
+        reservas_pg_pendente = df.loc[df['Situacao'] == 'Pendente', ['Cliente', 'Receber Loja']]
         quantidade_clientes_mesma_reserva = len(df)
         lista_pg_pendente = reservas_pg_pendente.to_records(index=False).tolist()
         st.write(reservas_pendentes_nomes)
-        st.write(reservas_pg_pendente)
         st.write(lista_pg_pendente)
         st.table(df)
 
-        return total_receber, reservas_pagas, quantidade_clientes_mesma_reserva, lista_pg_pendente
+        return reservas_pagas, quantidade_clientes_mesma_reserva, lista_pg_pendente
 
     def logica_valor_pagar_e_receber(self, tipo, forma_pg, id_vendedor, valor_total, id_reserva, pago_loja, desconto,
                                      taxa_cartao):
